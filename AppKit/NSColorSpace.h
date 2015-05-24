@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 
 @interface NSColorSpace : NSObject {
-   CGColorSpaceRef _cgColorSpace;
+    CGColorSpaceRef _cgColorSpace;
 }
 
-+(NSColorSpace *)deviceRGBColorSpace;
++ (NSColorSpace *)deviceRGBColorSpace;
 
--initWithCGColorSpace:(CGColorSpaceRef)cgColorSpace;
+- initWithCGColorSpace:(CGColorSpaceRef)cgColorSpace;
 
--(CGColorSpaceRef)CGColorSpace;
+- (CGColorSpaceRef)CGColorSpace;
 
 @end

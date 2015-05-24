@@ -29,11 +29,11 @@
 #import <Onyx2D/O2Paint.h>
 
 @interface O2Paint_color : O2Paint {
-   O2argb32f _argb32f_PRE;
-   O2argb8u _argb8u_PRE;
+    O2argb32f _argb32f_PRE;
+    O2argb8u _argb8u_PRE;
 }
 
--initWithGray:(O2Float)gray alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
--initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
+- initWithGray:(O2Float)gray alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
+- initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
 
 @end

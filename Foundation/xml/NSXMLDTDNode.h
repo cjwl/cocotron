@@ -11,23 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef int NSXMLDTDNodeKind;
 
 @interface NSXMLDTDNode : NSXMLNode {
-   NSXMLDTDNodeKind _dtdKind;
-   NSString        *_notationName;
-   NSString        *_publicID;
-   NSString        *_systemID;
+    NSXMLDTDNodeKind _dtdKind;
+    NSString *_notationName;
+    NSString *_publicID;
+    NSString *_systemID;
 }
 
--initWithXMLString:(NSString *)string;
+- initWithXMLString:(NSString *)string;
 
--(NSXMLDTDNodeKind)DTDKind;
--(BOOL)isExternal;
--(NSString *)notationName;
--(NSString *)publicID;
--(NSString *)systemID;
+- (NSXMLDTDNodeKind)DTDKind;
+- (BOOL)isExternal;
+- (NSString *)notationName;
+- (NSString *)publicID;
+- (NSString *)systemID;
 
--(void)setDTDKind:(NSXMLDTDNodeKind)kind;
--(void)setNotationName:(NSString *)name;
--(void)setPublicID:(NSString *)publicID;
--(void)setSystemID:(NSString *)systemID;
+- (void)setDTDKind:(NSXMLDTDNodeKind)kind;
+- (void)setNotationName:(NSString *)name;
+- (void)setPublicID:(NSString *)publicID;
+- (void)setSystemID:(NSString *)systemID;
 
 @end

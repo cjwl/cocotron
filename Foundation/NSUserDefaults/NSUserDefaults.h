@@ -8,85 +8,84 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSData,NSMutableDictionary,NSDictionary,NSMutableArray;
+@class NSArray, NSData, NSMutableDictionary, NSDictionary, NSMutableArray;
 
-FOUNDATION_EXPORT NSString * const NSGlobalDomain;
-FOUNDATION_EXPORT NSString * const NSArgumentDomain;
-FOUNDATION_EXPORT NSString * const NSRegistrationDomain;
+FOUNDATION_EXPORT NSString *const NSGlobalDomain;
+FOUNDATION_EXPORT NSString *const NSArgumentDomain;
+FOUNDATION_EXPORT NSString *const NSRegistrationDomain;
 
-FOUNDATION_EXPORT NSString * const NSMonthNameArray;
-FOUNDATION_EXPORT NSString * const NSWeekDayNameArray;
-FOUNDATION_EXPORT NSString * const NSTimeFormatString;
-FOUNDATION_EXPORT NSString * const NSDateFormatString;
-FOUNDATION_EXPORT NSString * const NSAMPMDesignation;
+FOUNDATION_EXPORT NSString *const NSMonthNameArray;
+FOUNDATION_EXPORT NSString *const NSWeekDayNameArray;
+FOUNDATION_EXPORT NSString *const NSTimeFormatString;
+FOUNDATION_EXPORT NSString *const NSDateFormatString;
+FOUNDATION_EXPORT NSString *const NSAMPMDesignation;
 
-FOUNDATION_EXPORT NSString * const NSTimeDateFormatString;
+FOUNDATION_EXPORT NSString *const NSTimeDateFormatString;
 
-FOUNDATION_EXPORT NSString * const NSShortWeekDayNameArray;
-FOUNDATION_EXPORT NSString * const NSShortMonthNameArray;
+FOUNDATION_EXPORT NSString *const NSShortWeekDayNameArray;
+FOUNDATION_EXPORT NSString *const NSShortMonthNameArray;
 
-FOUNDATION_EXPORT NSString * const NSUserDefaultsDidChangeNotification;
+FOUNDATION_EXPORT NSString *const NSUserDefaultsDidChangeNotification;
 
 @interface NSUserDefaults : NSObject {
-   NSMutableDictionary *_domains;
-   NSArray             *_searchList;
-   NSDictionary        *_dictionaryRep;
+    NSMutableDictionary *_domains;
+    NSArray *_searchList;
+    NSDictionary *_dictionaryRep;
 }
 
--init;
--initWithUser:(NSString *)user;
+- init;
+- initWithUser:(NSString *)user;
 
-+(NSUserDefaults *)standardUserDefaults;
-+(void)resetStandardUserDefaults;
++ (NSUserDefaults *)standardUserDefaults;
++ (void)resetStandardUserDefaults;
 
 /** returns YES if the standardUserDefaults */
 + (BOOL)standardUserDefaultsAvailable;
 
--(void)addSuiteNamed:(NSString *)name;
--(void)removeSuiteNamed:(NSString *)name;
+- (void)addSuiteNamed:(NSString *)name;
+- (void)removeSuiteNamed:(NSString *)name;
 
--(NSArray *)searchList;
--(void)setSearchList:(NSArray *)array;
+- (NSArray *)searchList;
+- (void)setSearchList:(NSArray *)array;
 
--(NSDictionary *)dictionaryRepresentation;
+- (NSDictionary *)dictionaryRepresentation;
 
--(void)registerDefaults:(NSDictionary *)values;
+- (void)registerDefaults:(NSDictionary *)values;
 
--(NSArray *)volatileDomainNames;
--(NSArray *)persistentDomainNames;
+- (NSArray *)volatileDomainNames;
+- (NSArray *)persistentDomainNames;
 
--(NSDictionary *)volatileDomainForName:(NSString *)name;
--(NSDictionary *)persistentDomainForName:(NSString *)name;
+- (NSDictionary *)volatileDomainForName:(NSString *)name;
+- (NSDictionary *)persistentDomainForName:(NSString *)name;
 
--(void)setVolatileDomain:(NSDictionary *)domain forName:(NSString *)name;
--(void)setPersistentDomain:(NSDictionary *)domain forName:(NSString *)name;
+- (void)setVolatileDomain:(NSDictionary *)domain forName:(NSString *)name;
+- (void)setPersistentDomain:(NSDictionary *)domain forName:(NSString *)name;
 
--(void)removeVolatileDomainForName:(NSString *)name;
--(void)removePersistentDomainForName:(NSString *)name;
+- (void)removeVolatileDomainForName:(NSString *)name;
+- (void)removePersistentDomainForName:(NSString *)name;
 
--(BOOL)synchronize;
+- (BOOL)synchronize;
 
--objectForKey:(NSString *)key;
--(NSData *)dataForKey:(NSString *)key;
--(NSString *)stringForKey:(NSString *)key;
--(NSArray *)arrayForKey:(NSString *)key;
--(NSDictionary *)dictionaryForKey:(NSString *)key;
--(NSArray *)stringArrayForKey:(NSString *)key;
--(BOOL)boolForKey:(NSString *)key;  
--(NSInteger)integerForKey:(NSString *)key; 
--(float)floatForKey:(NSString *)key;
--(double)doubleForKey:(NSString *)key;
+- objectForKey:(NSString *)key;
+- (NSData *)dataForKey:(NSString *)key;
+- (NSString *)stringForKey:(NSString *)key;
+- (NSArray *)arrayForKey:(NSString *)key;
+- (NSDictionary *)dictionaryForKey:(NSString *)key;
+- (NSArray *)stringArrayForKey:(NSString *)key;
+- (BOOL)boolForKey:(NSString *)key;
+- (NSInteger)integerForKey:(NSString *)key;
+- (float)floatForKey:(NSString *)key;
+- (double)doubleForKey:(NSString *)key;
 
--(void)setObject:value forKey:(NSString *)key;
--(void)setBool:(BOOL)value forKey:(NSString *)key;
--(void)setInteger:(NSInteger)value forKey:(NSString *)key;
--(void)setFloat:(float)value forKey:(NSString *)key;
--(void)setDouble:(double)value forKey:(NSString *)key;
+- (void)setObject:value forKey:(NSString *)key;
+- (void)setBool:(BOOL)value forKey:(NSString *)key;
+- (void)setInteger:(NSInteger)value forKey:(NSString *)key;
+- (void)setFloat:(float)value forKey:(NSString *)key;
+- (void)setDouble:(double)value forKey:(NSString *)key;
 
--(void)removeObjectForKey:(NSString *)key;
+- (void)removeObjectForKey:(NSString *)key;
 
--(BOOL)objectIsForcedForKey:(NSString *)key;
--(BOOL)objectIsForcedForKey:(NSString *)key inDomain:(NSString *)domain;
+- (BOOL)objectIsForcedForKey:(NSString *)key;
+- (BOOL)objectIsForcedForKey:(NSString *)key inDomain:(NSString *)domain;
 
 @end
-

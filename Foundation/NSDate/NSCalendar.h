@@ -10,57 +10,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 #import <CoreFoundation/CFCalendar.h>
 
-@class NSDateComponents,NSTimeZone,NSLocale,NSDate;
+@class NSDateComponents, NSTimeZone, NSLocale, NSDate;
 
 enum {
-	NSEraCalendarUnit = kCFCalendarUnitEra,
-	NSYearCalendarUnit = kCFCalendarUnitYear,
-	NSMonthCalendarUnit = kCFCalendarUnitMonth,
-	NSDayCalendarUnit = kCFCalendarUnitDay,
-	NSHourCalendarUnit = kCFCalendarUnitHour,
-	NSMinuteCalendarUnit = kCFCalendarUnitMinute,
-	NSSecondCalendarUnit = kCFCalendarUnitSecond,
-	NSWeekCalendarUnit = kCFCalendarUnitWeek,
-	NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
+    NSEraCalendarUnit = kCFCalendarUnitEra,
+    NSYearCalendarUnit = kCFCalendarUnitYear,
+    NSMonthCalendarUnit = kCFCalendarUnitMonth,
+    NSDayCalendarUnit = kCFCalendarUnitDay,
+    NSHourCalendarUnit = kCFCalendarUnitHour,
+    NSMinuteCalendarUnit = kCFCalendarUnitMinute,
+    NSSecondCalendarUnit = kCFCalendarUnitSecond,
+    NSWeekCalendarUnit = kCFCalendarUnitWeek,
+    NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
     NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal,
-//   NSQuarterCalendarUnit = kCFCalendarUnitQuarter,
+    //   NSQuarterCalendarUnit = kCFCalendarUnitQuarter,
 };
 typedef NSUInteger NSCalendarUnit;
 
-FOUNDATION_EXPORT NSString * const NSGregorianCalendar;
+FOUNDATION_EXPORT NSString *const NSGregorianCalendar;
 
 @interface NSCalendar : NSObject <NSCopying> {
-   NSString   *_identifier;
-   NSUInteger    _firstWeekday;
-   NSUInteger    _minimumDaysInFirstWeek;
-   NSTimeZone *_timeZone;
-   NSLocale   *_locale;
+    NSString *_identifier;
+    NSUInteger _firstWeekday;
+    NSUInteger _minimumDaysInFirstWeek;
+    NSTimeZone *_timeZone;
+    NSLocale *_locale;
 }
 
-+currentCalendar;
++ currentCalendar;
 
--initWithCalendarIdentifier:(NSString *)identifier;
+- initWithCalendarIdentifier:(NSString *)identifier;
 
--(NSString *)calendarIdentifier;
--(NSUInteger)firstWeekday;
--(NSUInteger)minimumDaysInFirstWeek;
--(NSTimeZone *)timeZone;
--(NSLocale *)locale;
+- (NSString *)calendarIdentifier;
+- (NSUInteger)firstWeekday;
+- (NSUInteger)minimumDaysInFirstWeek;
+- (NSTimeZone *)timeZone;
+- (NSLocale *)locale;
 
--(void)setFirstWeekday:(NSUInteger)weekday;
--(void)setMinimumDaysInFirstWeek:(NSUInteger)days;
--(void)setTimeZone:(NSTimeZone *)timeZone;
--(void)setLocale:(NSLocale *)locale;
+- (void)setFirstWeekday:(NSUInteger)weekday;
+- (void)setMinimumDaysInFirstWeek:(NSUInteger)days;
+- (void)setTimeZone:(NSTimeZone *)timeZone;
+- (void)setLocale:(NSLocale *)locale;
 
--(NSRange)minimumRangeOfUnit:(NSCalendarUnit)unit;
--(NSRange)maximumRangeOfUnit:(NSCalendarUnit)unit;
--(NSRange)rangeOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
--(NSUInteger)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
+- (NSRange)minimumRangeOfUnit:(NSCalendarUnit)unit;
+- (NSRange)maximumRangeOfUnit:(NSCalendarUnit)unit;
+- (NSRange)rangeOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
+- (NSUInteger)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
 
--(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)date;
--(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(NSUInteger)options;
+- (NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)date;
+- (NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(NSUInteger)options;
 
--(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(NSUInteger)options;
--(NSDate *)dateFromComponents:(NSDateComponents *)components;
- 
+- (NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(NSUInteger)options;
+- (NSDate *)dateFromComponents:(NSDateComponents *)components;
+
 @end

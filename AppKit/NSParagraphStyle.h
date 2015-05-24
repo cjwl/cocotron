@@ -9,65 +9,65 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSText.h>
 
 typedef enum {
-   NSLineBreakByWordWrapping,
-   NSLineBreakByCharWrapping,
-   NSLineBreakByClipping,
-   NSLineBreakByTruncatingHead,
-   NSLineBreakByTruncatingTail,
-   NSLineBreakByTruncatingMiddle
+    NSLineBreakByWordWrapping,
+    NSLineBreakByCharWrapping,
+    NSLineBreakByClipping,
+    NSLineBreakByTruncatingHead,
+    NSLineBreakByTruncatingTail,
+    NSLineBreakByTruncatingMiddle
 } NSLineBreakMode;
 
-@interface NSParagraphStyle : NSObject <NSCopying,NSMutableCopying> {
-   NSWritingDirection _writingDirection;
-   float              _paragraphSpacing;
-   float              _paragraphSpacingBefore;
-   NSArray           *_textBlocks;
-   NSArray           *_textLists;
-   int                _headerLevel;
-   float              _firstLineHeadIndent;
-   float              _headIndent;
-   float              _tailIndent;
-   NSTextAlignment    _alignment;
-   NSLineBreakMode    _lineBreakMode;
-   float              _minimumLineHeight;
-   float              _maximumLineHeight;
-   float              _lineHeightMultiple;
-   float              _lineSpacing;
-   float             _defaultTabInterval;
-   NSArray          *_tabStops;
-   float             _hyphenationFactor;
-   float             _tighteningFactorForTruncation;
+@interface NSParagraphStyle : NSObject <NSCopying, NSMutableCopying> {
+    NSWritingDirection _writingDirection;
+    float _paragraphSpacing;
+    float _paragraphSpacingBefore;
+    NSArray *_textBlocks;
+    NSArray *_textLists;
+    int _headerLevel;
+    float _firstLineHeadIndent;
+    float _headIndent;
+    float _tailIndent;
+    NSTextAlignment _alignment;
+    NSLineBreakMode _lineBreakMode;
+    float _minimumLineHeight;
+    float _maximumLineHeight;
+    float _lineHeightMultiple;
+    float _lineSpacing;
+    float _defaultTabInterval;
+    NSArray *_tabStops;
+    float _hyphenationFactor;
+    float _tighteningFactorForTruncation;
 }
 
-+(NSParagraphStyle *)defaultParagraphStyle;
++ (NSParagraphStyle *)defaultParagraphStyle;
 
--(NSWritingDirection)baseWritingDirection;
+- (NSWritingDirection)baseWritingDirection;
 
--(float)paragraphSpacing;
--(float)paragraphSpacingBefore;
+- (float)paragraphSpacing;
+- (float)paragraphSpacingBefore;
 
--(NSArray *)textBlocks;
--(NSArray *)textLists;
+- (NSArray *)textBlocks;
+- (NSArray *)textLists;
 
--(int)headerLevel;
+- (int)headerLevel;
 
--(float)firstLineHeadIndent;
--(float)headIndent;
--(float)tailIndent;
+- (float)firstLineHeadIndent;
+- (float)headIndent;
+- (float)tailIndent;
 
--(NSTextAlignment)alignment;
--(NSLineBreakMode)lineBreakMode;
+- (NSTextAlignment)alignment;
+- (NSLineBreakMode)lineBreakMode;
 
--(float)minimumLineHeight;
--(float)maximumLineHeight;
--(float)lineHeightMultiple;
--(float)lineSpacing;
+- (float)minimumLineHeight;
+- (float)maximumLineHeight;
+- (float)lineHeightMultiple;
+- (float)lineSpacing;
 
--(float)defaultTabInterval;
--(NSArray *)tabStops;
+- (float)defaultTabInterval;
+- (NSArray *)tabStops;
 
--(float)hyphenationFactor;
--(float)tighteningFactorForTruncation;
+- (float)hyphenationFactor;
+- (float)tighteningFactorForTruncation;
 
 @end
 

@@ -10,27 +10,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 #import <Onyx2D/O2Geometry.h>
 
-@class NSData,NSInputStream,NSURL;
+@class NSData, NSInputStream, NSURL;
 
 @class O2DataProvider;
 
 typedef O2DataProvider *O2DataProviderRef;
 
-typedef void (*O2DataProviderReleaseDataCallback)(void *info,const void *data,size_t size);
+typedef void (*O2DataProviderReleaseDataCallback)(void *info, const void *data, size_t size);
 
 @interface O2DataProvider : NSObject {
-   NSInputStream *_inputStream;
-   NSData        *_data;
-   NSString      *_path;
-   BOOL           _isDirectAccess;
-   const void    *_bytes;
-   size_t         _length;
+    NSInputStream *_inputStream;
+    NSData *_data;
+    NSString *_path;
+    BOOL _isDirectAccess;
+    const void *_bytes;
+    size_t _length;
 }
 
--initWithURL:(NSURL *)url;
--initWithBytes:(const void *)bytes length:(size_t)length;
+- initWithURL:(NSURL *)url;
+- initWithBytes:(const void *)bytes length:(size_t)length;
 
-O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_t size,O2DataProviderReleaseDataCallback releaseCallback);
+O2DataProviderRef O2DataProviderCreateWithData(void *info, const void *data, size_t size, O2DataProviderReleaseDataCallback releaseCallback);
 O2DataProviderRef O2DataProviderCreateWithCFData(CFDataRef data);
 O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url);
 O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString);
@@ -39,20 +39,20 @@ void O2DataProviderRelease(O2DataProviderRef self);
 CFDataRef O2DataProviderCopyData(O2DataProviderRef self);
 
 size_t O2DataProviderRewind(O2DataProviderRef self);
-size_t O2DataProviderGetBytesAtPosition(O2DataProviderRef self,void *buffer,size_t length,size_t position);
-size_t O2DataProviderGetBytes(O2DataProviderRef self,void *buffer,size_t length);
+size_t O2DataProviderGetBytesAtPosition(O2DataProviderRef self, void *buffer, size_t length, size_t position);
+size_t O2DataProviderGetBytes(O2DataProviderRef self, void *buffer, size_t length);
 
--(NSInputStream *)inputStream;
+- (NSInputStream *)inputStream;
 
--(BOOL)isDirectAccess;
+- (BOOL)isDirectAccess;
 
--(NSString *)path;
+- (NSString *)path;
 
--(NSData *)data;
--(const void *)bytes;
--(size_t)length;
+- (NSData *)data;
+- (const void *)bytes;
+- (size_t)length;
 
--(void)rewind;
--(NSInteger)getBytes:(void *)bytes range:(NSRange)range;
+- (void)rewind;
+- (NSInteger)getBytes:(void *)bytes range:(NSRange)range;
 
 @end

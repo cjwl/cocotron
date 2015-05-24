@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 
 @interface Win32Cursor : NSObject {
-   HCURSOR _handle;
-   BOOL    _destroy;
+    HCURSOR _handle;
+    BOOL _destroy;
 }
 
--initWithHCURSOR:(HCURSOR)handle;
--initWithName:(NSString *)name;
+- initWithHCURSOR:(HCURSOR)handle;
+- initWithName:(NSString *)name;
 
--(HCURSOR)cursorHandle;
+- (HCURSOR)cursorHandle;
 
 @end

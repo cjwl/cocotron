@@ -11,23 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageCell.h>
 
 @interface NSImageView : NSControl {
-   id  _target;
-   SEL _action;
+    id _target;
+    SEL _action;
 }
 
--(BOOL)allowsCutCopyPaste;
--(BOOL)animates;
--(NSImage *)image;
--(NSImageAlignment)imageAlignment;
--(NSImageFrameStyle)imageFrameStyle;
--(NSImageScaling)imageScaling;
--(BOOL)isEditable;
--(void)setAllowsCutCopyPaste:(BOOL)allow;
--(void)setAnimates:(BOOL)flag;
--(void)setEditable:(BOOL)flag;
--(void)setImage:(NSImage *)image;
--(void)setImageAlignment:(NSImageAlignment)alignment;
--(void)setImageFrameStyle:(NSImageFrameStyle)frameStyle;
--(void)setImageScaling:(NSImageScaling)scaling;
+- (BOOL)allowsCutCopyPaste;
+- (BOOL)animates;
+- (NSImage *)image;
+- (NSImageAlignment)imageAlignment;
+- (NSImageFrameStyle)imageFrameStyle;
+- (NSImageScaling)imageScaling;
+- (BOOL)isEditable;
+- (void)setAllowsCutCopyPaste:(BOOL)allow;
+- (void)setAnimates:(BOOL)flag;
+- (void)setEditable:(BOOL)flag;
+- (void)setImage:(NSImage *)image;
+- (void)setImageAlignment:(NSImageAlignment)alignment;
+- (void)setImageFrameStyle:(NSImageFrameStyle)frameStyle;
+- (void)setImageScaling:(NSImageScaling)scaling;
 
 @end

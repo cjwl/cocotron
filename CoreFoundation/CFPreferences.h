@@ -16,22 +16,21 @@ COREFOUNDATION_EXPORT const CFStringRef kCFPreferencesAnyApplication;
 COREFOUNDATION_EXPORT const CFStringRef kCFPreferencesAnyHost;
 COREFOUNDATION_EXPORT const CFStringRef kCFPreferencesAnyUser;
 
-COREFOUNDATION_EXPORT void              CFPreferencesAddSuitePreferencesToApp(CFStringRef application,CFStringRef suite);
-COREFOUNDATION_EXPORT Boolean           CFPreferencesAppSynchronize(CFStringRef application);
-COREFOUNDATION_EXPORT Boolean           CFPreferencesAppValueIsForced(CFStringRef key,CFStringRef application);
+COREFOUNDATION_EXPORT void CFPreferencesAddSuitePreferencesToApp(CFStringRef application, CFStringRef suite);
+COREFOUNDATION_EXPORT Boolean CFPreferencesAppSynchronize(CFStringRef application);
+COREFOUNDATION_EXPORT Boolean CFPreferencesAppValueIsForced(CFStringRef key, CFStringRef application);
 
-COREFOUNDATION_EXPORT CFArrayRef        CFPreferencesCopyApplicationList(CFStringRef user,CFStringRef host);
-COREFOUNDATION_EXPORT CFPropertyListRef CFPreferencesCopyAppValue(CFStringRef key,CFStringRef application);
-COREFOUNDATION_EXPORT Boolean           CFPreferencesGetAppBooleanValue(CFStringRef key,CFStringRef application,Boolean *validKey);
-COREFOUNDATION_EXPORT CFIndex           CFPreferencesGetAppIntegerValue(CFStringRef key,CFStringRef application,Boolean *validKey);
+COREFOUNDATION_EXPORT CFArrayRef CFPreferencesCopyApplicationList(CFStringRef user, CFStringRef host);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPreferencesCopyAppValue(CFStringRef key, CFStringRef application);
+COREFOUNDATION_EXPORT Boolean CFPreferencesGetAppBooleanValue(CFStringRef key, CFStringRef application, Boolean *validKey);
+COREFOUNDATION_EXPORT CFIndex CFPreferencesGetAppIntegerValue(CFStringRef key, CFStringRef application, Boolean *validKey);
 
-COREFOUNDATION_EXPORT CFArrayRef        CFPreferencesCopyKeyList(CFStringRef application,CFStringRef user,CFStringRef host);
-COREFOUNDATION_EXPORT CFDictionaryRef   CFPreferencesCopyMultiple(CFArrayRef keysToFetch,CFStringRef application,CFStringRef user,CFStringRef host);
-COREFOUNDATION_EXPORT CFPropertyListRef CFPreferencesCopyValue(CFStringRef key,CFStringRef application,CFStringRef user,CFStringRef host);
-COREFOUNDATION_EXPORT void              CFPreferencesSetAppValue(CFStringRef key,CFPropertyListRef value,CFStringRef application);
-COREFOUNDATION_EXPORT void              CFPreferencesSetMultiple(CFDictionaryRef dictionary,CFArrayRef removeTheseKeys,CFStringRef application,CFStringRef user,CFStringRef host);
-COREFOUNDATION_EXPORT void              CFPreferencesSetValue(CFStringRef key,CFPropertyListRef value,CFStringRef application,CFStringRef user,CFStringRef host);
+COREFOUNDATION_EXPORT CFArrayRef CFPreferencesCopyKeyList(CFStringRef application, CFStringRef user, CFStringRef host);
+COREFOUNDATION_EXPORT CFDictionaryRef CFPreferencesCopyMultiple(CFArrayRef keysToFetch, CFStringRef application, CFStringRef user, CFStringRef host);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPreferencesCopyValue(CFStringRef key, CFStringRef application, CFStringRef user, CFStringRef host);
+COREFOUNDATION_EXPORT void CFPreferencesSetAppValue(CFStringRef key, CFPropertyListRef value, CFStringRef application);
+COREFOUNDATION_EXPORT void CFPreferencesSetMultiple(CFDictionaryRef dictionary, CFArrayRef removeTheseKeys, CFStringRef application, CFStringRef user, CFStringRef host);
+COREFOUNDATION_EXPORT void CFPreferencesSetValue(CFStringRef key, CFPropertyListRef value, CFStringRef application, CFStringRef user, CFStringRef host);
 
-COREFOUNDATION_EXPORT void              CFPreferencesRemoveSuitePreferencesFromApp(CFStringRef application,CFStringRef suite);
-COREFOUNDATION_EXPORT Boolean           CFPreferencesSynchronize(CFStringRef application,CFStringRef user,CFStringRef host);
-
+COREFOUNDATION_EXPORT void CFPreferencesRemoveSuitePreferencesFromApp(CFStringRef application, CFStringRef suite);
+COREFOUNDATION_EXPORT Boolean CFPreferencesSynchronize(CFStringRef application, CFStringRef user, CFStringRef host);

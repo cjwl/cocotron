@@ -12,46 +12,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef O2PDFScanner *O2PDFScannerRef;
 
-@class NSData,NSMutableArray;
-@class O2PDFContentStream,O2PDFOperatorTable;
-@class O2PDFString,O2PDFArray,O2PDFDictionary,O2PDFStream,O2PDFxref,O2PDFObject_identifier;
+@class NSData, NSMutableArray;
+@class O2PDFContentStream, O2PDFOperatorTable;
+@class O2PDFString, O2PDFArray, O2PDFDictionary, O2PDFStream, O2PDFxref, O2PDFObject_identifier;
 
-BOOL O2PDFScanBackwardsByLines(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,int delta);
-BOOL O2PDFScanVersion(const char *bytes,unsigned length,O2PDFString **string);
-BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject **objectp);
-BOOL O2PDFScanIdentifier(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject_identifier **identifier);
-BOOL O2PDFScanInteger(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFInteger *value);
+BOOL O2PDFScanBackwardsByLines(const char *bytes, unsigned length, O2PDFInteger position, O2PDFInteger *lastPosition, int delta);
+BOOL O2PDFScanVersion(const char *bytes, unsigned length, O2PDFString **string);
+BOOL O2PDFScanObject(const char *bytes, unsigned length, O2PDFInteger position, O2PDFInteger *lastPosition, O2PDFObject **objectp);
+BOOL O2PDFScanIdentifier(const char *bytes, unsigned length, O2PDFInteger position, O2PDFInteger *lastPosition, O2PDFObject_identifier **identifier);
+BOOL O2PDFScanInteger(const char *bytes, unsigned length, O2PDFInteger position, O2PDFInteger *lastPosition, O2PDFInteger *value);
 
-BOOL O2PDFParse_xref(NSData *data,O2PDFxref **xrefp);
-BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **objectp,O2PDFInteger number,O2PDFInteger generation,O2PDFxref *xref);
+BOOL O2PDFParse_xref(NSData *data, O2PDFxref **xrefp);
+BOOL O2PDFParseIndirectObject(NSData *data, O2PDFInteger position, O2PDFObject **objectp, O2PDFInteger number, O2PDFInteger generation, O2PDFxref *xref);
 
 @interface O2PDFScanner : NSObject {
-   NSMutableArray     *_stack;
-   O2PDFContentStream *_stream;
-   O2PDFOperatorTable *_operatorTable;
-   void               *_info;
-   O2PDFInteger        _currentStream;
-   O2PDFInteger        _position;
+    NSMutableArray *_stack;
+    O2PDFContentStream *_stream;
+    O2PDFOperatorTable *_operatorTable;
+    void *_info;
+    O2PDFInteger _currentStream;
+    O2PDFInteger _position;
 }
 
--initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info;
+- initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info;
 
--(O2PDFContentStream *)contentStream;
+- (O2PDFContentStream *)contentStream;
 
-BOOL O2PDFScannerPopObject(O2PDFScanner *scanner,O2PDFObject **value);
-BOOL O2PDFScannerPopBoolean(O2PDFScanner *scanner,O2PDFBoolean *value);
-BOOL O2PDFScannerPopInteger(O2PDFScanner *scanner,O2PDFInteger *value);
-BOOL O2PDFScannerPopNumber(O2PDFScanner *scanner,O2PDFReal *value);
-BOOL O2PDFScannerPopName(O2PDFScanner *scanner,const char **value);
-BOOL O2PDFScannerPopString(O2PDFScanner *scanner,O2PDFString **value);
-BOOL O2PDFScannerPopArray(O2PDFScanner *scanner,O2PDFArray **value);
-BOOL O2PDFScannerPopDictionary(O2PDFScanner *scanner,O2PDFDictionary **value);
-BOOL O2PDFScannerPopStream(O2PDFScanner *scanner,O2PDFStream **value);
+BOOL O2PDFScannerPopObject(O2PDFScanner *scanner, O2PDFObject **value);
+BOOL O2PDFScannerPopBoolean(O2PDFScanner *scanner, O2PDFBoolean *value);
+BOOL O2PDFScannerPopInteger(O2PDFScanner *scanner, O2PDFInteger *value);
+BOOL O2PDFScannerPopNumber(O2PDFScanner *scanner, O2PDFReal *value);
+BOOL O2PDFScannerPopName(O2PDFScanner *scanner, const char **value);
+BOOL O2PDFScannerPopString(O2PDFScanner *scanner, O2PDFString **value);
+BOOL O2PDFScannerPopArray(O2PDFScanner *scanner, O2PDFArray **value);
+BOOL O2PDFScannerPopDictionary(O2PDFScanner *scanner, O2PDFDictionary **value);
+BOOL O2PDFScannerPopStream(O2PDFScanner *scanner, O2PDFStream **value);
 
-NSData *O2PDFScannerCreateDataWithLength(O2PDFScanner *scanner,size_t length);
+NSData *O2PDFScannerCreateDataWithLength(O2PDFScanner *scanner, size_t length);
 
-
--(BOOL)scan;
+- (BOOL)scan;
 
 @end
-

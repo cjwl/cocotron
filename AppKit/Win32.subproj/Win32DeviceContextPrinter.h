@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface Win32DeviceContextPrinter : O2DeviceContext_gdi
 
--(NSSize)pageSize;
+- (NSSize)pageSize;
 
--(void)abortDocument;
+- (void)abortDocument;
 
 @end

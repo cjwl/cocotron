@@ -11,83 +11,82 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSString, NSMutableArray, NSScrollView, NSRulerMarker, NSMeasurementUnit;
 
 typedef enum {
-   NSHorizontalRuler,
-   NSVerticalRuler
+    NSHorizontalRuler,
+    NSVerticalRuler
 } NSRulerOrientation;
 
-@interface NSRulerView : NSView  {
-    NSScrollView      *_scrollView;
-    NSView            *_clientView;
-    NSView            *_accessoryView;
-    NSMutableArray    *_markers;
+@interface NSRulerView : NSView {
+    NSScrollView *_scrollView;
+    NSView *_clientView;
+    NSView *_accessoryView;
+    NSMutableArray *_markers;
     NSMeasurementUnit *_measurementUnit;
-    NSMutableArray    *_rulerlineLocations;
-    
+    NSMutableArray *_rulerlineLocations;
+
     float _originOffset;
     float _ruleThickness;
     float _thicknessForMarkers;
     float _thicknessForAccessoryView;
-    
+
     NSRulerOrientation _orientation;
 }
 
-+(void)registerUnitWithName:(NSString *)name abbreviation:(NSString *)abbreviation unitToPointsConversionFactor:(float)conversionFactor stepUpCycle:(NSArray *)stepUpCycle stepDownCycle:(NSArray *)stepDownCycle;
++ (void)registerUnitWithName:(NSString *)name abbreviation:(NSString *)abbreviation unitToPointsConversionFactor:(float)conversionFactor stepUpCycle:(NSArray *)stepUpCycle stepDownCycle:(NSArray *)stepDownCycle;
 
--initWithScrollView:(NSScrollView *)scrollView orientation:(NSRulerOrientation)orientation;
+- initWithScrollView:(NSScrollView *)scrollView orientation:(NSRulerOrientation)orientation;
 
--(NSScrollView *)scrollView;
--(NSView *)clientView;
--(NSView *)accessoryView;
--(NSArray *)markers;
--(NSString *)measurementUnits;
--(NSRulerOrientation)orientation;
--(float)ruleThickness;
--(float)reservedThicknessForMarkers;
--(float)reservedThicknessForAccessoryView;
--(float)originOffset;
--(float)baselineLocation;
--(float)requiredThickness;
+- (NSScrollView *)scrollView;
+- (NSView *)clientView;
+- (NSView *)accessoryView;
+- (NSArray *)markers;
+- (NSString *)measurementUnits;
+- (NSRulerOrientation)orientation;
+- (float)ruleThickness;
+- (float)reservedThicknessForMarkers;
+- (float)reservedThicknessForAccessoryView;
+- (float)originOffset;
+- (float)baselineLocation;
+- (float)requiredThickness;
 
+- (void)setScrollView:(NSScrollView *)scrollView;
+- (void)setClientView:(NSView *)view;
+- (void)setAccessoryView:(NSView *)view;
+- (void)setMarkers:(NSArray *)markers;
+- (void)addMarker:(NSRulerMarker *)marker;
+- (void)removeMarker:(NSRulerMarker *)marker;
+- (void)setMeasurementUnits:(NSString *)unitName;
+- (void)setOrientation:(NSRulerOrientation)orientation;
+- (void)setRuleThickness:(float)value;
+- (void)setReservedThicknessForMarkers:(float)value;
+- (void)setReservedThicknessForAccessoryView:(float)value;
+- (void)setOriginOffset:(float)value;
 
--(void)setScrollView:(NSScrollView *)scrollView;
--(void)setClientView:(NSView *)view;
--(void)setAccessoryView:(NSView *)view;
--(void)setMarkers:(NSArray *)markers;
--(void)addMarker:(NSRulerMarker *)marker;
--(void)removeMarker:(NSRulerMarker *)marker;
--(void)setMeasurementUnits:(NSString *)unitName;
--(void)setOrientation:(NSRulerOrientation)orientation;
--(void)setRuleThickness:(float)value;
--(void)setReservedThicknessForMarkers:(float)value;
--(void)setReservedThicknessForAccessoryView:(float)value;
--(void)setOriginOffset:(float)value;
+- (BOOL)trackMarker:(NSRulerMarker *)marker withMouseEvent:(NSEvent *)event;
 
--(BOOL)trackMarker:(NSRulerMarker *)marker withMouseEvent:(NSEvent *)event;
+- (void)moveRulerlineFromLocation:(float)fromLocation toLocation:(float)toLocation;
 
--(void)moveRulerlineFromLocation:(float)fromLocation toLocation:(float)toLocation;
+- (void)invalidateHashMarks;
 
--(void)invalidateHashMarks;
-
--(void)drawHashMarksAndLabelsInRect:(NSRect)rect;
--(void)drawMarkersInRect:(NSRect)rect;
+- (void)drawHashMarksAndLabelsInRect:(NSRect)rect;
+- (void)drawMarkersInRect:(NSRect)rect;
 
 @end
 
 @interface NSView (NSRulerMarker_clientView)
 
--(void)rulerView:(NSRulerView *)rulerView willSetClientView:(NSView *)clientView;
+- (void)rulerView:(NSRulerView *)rulerView willSetClientView:(NSView *)clientView;
 
--(void)rulerView:(NSRulerView *)rulerView handleMouseDown:(NSEvent *)event;
+- (void)rulerView:(NSRulerView *)rulerView handleMouseDown:(NSEvent *)event;
 
--(BOOL)rulerView:(NSRulerView *)rulerView shouldAddMarker:(NSRulerMarker *)marker;
--(float)rulerView:(NSRulerView *)rulerView willAddMarker:(NSRulerMarker *)marker atLocation:(float)location;
--(void)rulerView:(NSRulerView *)rulerView didAddMarker:(NSRulerMarker *)marker;
+- (BOOL)rulerView:(NSRulerView *)rulerView shouldAddMarker:(NSRulerMarker *)marker;
+- (float)rulerView:(NSRulerView *)rulerView willAddMarker:(NSRulerMarker *)marker atLocation:(float)location;
+- (void)rulerView:(NSRulerView *)rulerView didAddMarker:(NSRulerMarker *)marker;
 
--(BOOL)rulerView:(NSRulerView *)rulerView shouldRemoveMarker:(NSRulerMarker *)marker;
--(void)rulerView:(NSRulerView *)rulerView didRemoveMarker:(NSRulerMarker *)marker;
+- (BOOL)rulerView:(NSRulerView *)rulerView shouldRemoveMarker:(NSRulerMarker *)marker;
+- (void)rulerView:(NSRulerView *)rulerView didRemoveMarker:(NSRulerMarker *)marker;
 
--(BOOL)rulerView:(NSRulerView *)rulerView shouldMoveMarker:(NSRulerMarker *)marker;
--(float)rulerView:(NSRulerView *)rulerView willMoveMarker:(NSRulerMarker *)marker toLocation:(float)location;
--(void)rulerView:(NSRulerView *)rulerView didMoveMarker:(NSRulerMarker *)marker;
+- (BOOL)rulerView:(NSRulerView *)rulerView shouldMoveMarker:(NSRulerMarker *)marker;
+- (float)rulerView:(NSRulerView *)rulerView willMoveMarker:(NSRulerMarker *)marker toLocation:(float)location;
+- (void)rulerView:(NSRulerView *)rulerView didMoveMarker:(NSRulerMarker *)marker;
 
 @end

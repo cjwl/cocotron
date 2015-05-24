@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@interface NSWindowAnimationContext : NSObject 
-{
+@interface NSWindowAnimationContext : NSObject {
     id _window;
     NSRect _targetRect;
     NSRect _stepRect;
@@ -36,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-@interface NSObject(NSWindowAnimationContext)
+@interface NSObject (NSWindowAnimationContext)
 - (NSRect)frame;
 - (void)setFrame:(NSRect)frame display:(BOOL)display;
 @end

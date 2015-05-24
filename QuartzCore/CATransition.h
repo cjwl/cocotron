@@ -1,10 +1,10 @@
 #import <QuartzCore/CAAnimation.h>
 
 @interface CATransition : CAAnimation {
-   NSString *_type;
-   NSString *_subtype;
-   float     _startProgress;
-   float     _endProgress;
+    NSString *_type;
+    NSString *_subtype;
+    float _startProgress;
+    float _endProgress;
 }
 
 @property(copy) NSString *type;
@@ -13,4 +13,3 @@
 @property float endProgress;
 
 @end
-

@@ -16,36 +16,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef O2PDFPage *O2PDFPageRef;
 
 typedef enum {
-   kO2PDFMediaBox,
-   kO2PDFCropBox,
-   kO2PDFBleedBox,
-   kO2PDFTrimBox,
-   kO2PDFArtBox,
+    kO2PDFMediaBox,
+    kO2PDFCropBox,
+    kO2PDFBleedBox,
+    kO2PDFTrimBox,
+    kO2PDFArtBox,
 } O2PDFBox;
 
-@class O2PDFDocument,O2PDFDictionary,O2Context;
+@class O2PDFDocument, O2PDFDictionary, O2Context;
 
 @interface O2PDFPage : NSObject {
-   O2PDFDocument   *_document;
-   int                _pageNumber;
-   O2PDFDictionary *_dictionary;
+    O2PDFDocument *_document;
+    int _pageNumber;
+    O2PDFDictionary *_dictionary;
 }
 
--initWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
+- initWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
 
-+(O2PDFPage *)pdfPageWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
++ (O2PDFPage *)pdfPageWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
 
--(O2PDFDocument *)document;
--(int)pageNumber;
+- (O2PDFDocument *)document;
+- (int)pageNumber;
 
--(O2PDFDictionary *)dictionary;
+- (O2PDFDictionary *)dictionary;
 
--(BOOL)getRect:(O2Rect *)rect forBox:(O2PDFBox)box;
+- (BOOL)getRect:(O2Rect *)rect forBox:(O2PDFBox)box;
 
--(int)rotationAngle;
+- (int)rotationAngle;
 
-O2AffineTransform O2PDFPageGetDrawingTransform(O2PDFPageRef self,O2PDFBox box,O2Rect rect,int clockwiseDegrees,bool preserveAspectRatio);
+O2AffineTransform O2PDFPageGetDrawingTransform(O2PDFPageRef self, O2PDFBox box, O2Rect rect, int clockwiseDegrees, bool preserveAspectRatio);
 
--(void)drawInContext:(O2Context *)context;
+- (void)drawInContext:(O2Context *)context;
 
 @end

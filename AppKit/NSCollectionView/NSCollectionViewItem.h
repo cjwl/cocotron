@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSCollectionView;
 
-@interface NSCollectionViewItem : NSViewController <NSCoding,NSCopying> {
-   NSCollectionView *_collectionView;
-   BOOL _isSelected;
+@interface NSCollectionViewItem : NSViewController <NSCoding, NSCopying> {
+    NSCollectionView *_collectionView;
+    BOOL _isSelected;
 }
 
--(NSCollectionView *)collectionView;
+- (NSCollectionView *)collectionView;
 
--(BOOL)isSelected;
+- (BOOL)isSelected;
 
--(void)setSelected:(BOOL)value;
+- (void)setSelected:(BOOL)value;
 
 @end

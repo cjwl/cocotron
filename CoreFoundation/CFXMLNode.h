@@ -11,97 +11,96 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 typedef struct CFXMLNode *CFXMLNodeRef;
 
 enum {
-   kCFXMLNodeCurrentVersion=1,
+    kCFXMLNodeCurrentVersion = 1,
 };
 
-typedef enum  {
-   kCFXMLNodeTypeDocument                = 1,
-   kCFXMLNodeTypeElement                 = 2,
-   kCFXMLNodeTypeAttribute               = 3,
-   kCFXMLNodeTypeProcessingInstruction   = 4,
-   kCFXMLNodeTypeComment                 = 5,
-   kCFXMLNodeTypeText                    = 6,
-   kCFXMLNodeTypeCDATASection            = 7,
-   kCFXMLNodeTypeDocumentFragment        = 8,
-   kCFXMLNodeTypeEntity                  = 9,
-   kCFXMLNodeTypeEntityReference         =10,
-   kCFXMLNodeTypeDocumentType            =11,
-   kCFXMLNodeTypeWhitespace              =12,
-   kCFXMLNodeTypeNotation                =13,
-   kCFXMLNodeTypeElementTypeDeclaration  =14,
-   kCFXMLNodeTypeAttributeListDeclaration=15,
+typedef enum {
+    kCFXMLNodeTypeDocument = 1,
+    kCFXMLNodeTypeElement = 2,
+    kCFXMLNodeTypeAttribute = 3,
+    kCFXMLNodeTypeProcessingInstruction = 4,
+    kCFXMLNodeTypeComment = 5,
+    kCFXMLNodeTypeText = 6,
+    kCFXMLNodeTypeCDATASection = 7,
+    kCFXMLNodeTypeDocumentFragment = 8,
+    kCFXMLNodeTypeEntity = 9,
+    kCFXMLNodeTypeEntityReference = 10,
+    kCFXMLNodeTypeDocumentType = 11,
+    kCFXMLNodeTypeWhitespace = 12,
+    kCFXMLNodeTypeNotation = 13,
+    kCFXMLNodeTypeElementTypeDeclaration = 14,
+    kCFXMLNodeTypeAttributeListDeclaration = 15,
 } CFXMLNodeTypeCode;
 
-typedef enum  {
-   kCFXMLEntityTypeParameter     =0,
-   kCFXMLEntityTypeParsedInternal=1,
-   kCFXMLEntityTypeParsedExternal=2,
-   kCFXMLEntityTypeUnparsed      =3,
-   kCFXMLEntityTypeCharacter     =4,
+typedef enum {
+    kCFXMLEntityTypeParameter = 0,
+    kCFXMLEntityTypeParsedInternal = 1,
+    kCFXMLEntityTypeParsedExternal = 2,
+    kCFXMLEntityTypeUnparsed = 3,
+    kCFXMLEntityTypeCharacter = 4,
 } CFXMLEntityTypeCode;
 
-typedef struct  {
-   CFURLRef         sourceURL;
-   CFStringEncoding encoding;
+typedef struct {
+    CFURLRef sourceURL;
+    CFStringEncoding encoding;
 } CFXMLDocumentInfo;
 
-typedef struct  {
-   CFDictionaryRef attributes;
-   CFArrayRef      attributeOrder;
-   Boolean         isEmpty;
+typedef struct {
+    CFDictionaryRef attributes;
+    CFArrayRef attributeOrder;
+    Boolean isEmpty;
 } CFXMLElementInfo;
 
-typedef struct  {
-   CFURLRef    systemID;
-   CFStringRef publicID;
+typedef struct {
+    CFURLRef systemID;
+    CFStringRef publicID;
 } CFXMLExternalID;
 
-typedef struct  {
-   CFXMLExternalID externalID;
+typedef struct {
+    CFXMLExternalID externalID;
 } CFXMLNotationInfo;
 
-typedef struct  {
-   CFStringRef dataString;
+typedef struct {
+    CFStringRef dataString;
 } CFXMLProcessingInstructionInfo;
 
 typedef struct {
-   CFStringRef attributeName;
-   CFStringRef typeString;
-   CFStringRef defaultString;
+    CFStringRef attributeName;
+    CFStringRef typeString;
+    CFStringRef defaultString;
 } CFXMLAttributeDeclarationInfo;
 
-typedef struct  {
-   CFIndex                        numberOfAttributes;
-   CFXMLAttributeDeclarationInfo *attributes;
+typedef struct {
+    CFIndex numberOfAttributes;
+    CFXMLAttributeDeclarationInfo *attributes;
 } CFXMLAttributeListDeclarationInfo;
 
-typedef struct  {
-   CFXMLExternalID externalID;
+typedef struct {
+    CFXMLExternalID externalID;
 } CFXMLDocumentTypeInfo;
 
-typedef struct  {
-   CFStringRef contentDescription;
+typedef struct {
+    CFStringRef contentDescription;
 } CFXMLElementTypeDeclarationInfo;
 
-typedef struct  {
-   CFXMLEntityTypeCode entityType;
-   CFStringRef         replacementText;
-   CFXMLExternalID     entityID;
-   CFStringRef         notationName;
-}CFXMLEntityInfo;
+typedef struct {
+    CFXMLEntityTypeCode entityType;
+    CFStringRef replacementText;
+    CFXMLExternalID entityID;
+    CFStringRef notationName;
+} CFXMLEntityInfo;
 
-typedef struct  {
-   CFXMLEntityTypeCode entityType;
-}CFXMLEntityReferenceInfo;
+typedef struct {
+    CFXMLEntityTypeCode entityType;
+} CFXMLEntityReferenceInfo;
 
+COREFOUNDATION_EXPORT CFTypeID CFXMLNodeGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFTypeID          CFXMLNodeGetTypeID(void);
+COREFOUNDATION_EXPORT CFXMLNodeRef CFXMLNodeCreate(CFAllocatorRef allocator, CFXMLNodeTypeCode typeCode, CFStringRef string, const void *infoPtr, CFIndex version);
 
-COREFOUNDATION_EXPORT CFXMLNodeRef      CFXMLNodeCreate(CFAllocatorRef allocator,CFXMLNodeTypeCode typeCode,CFStringRef string,const void *infoPtr,CFIndex version);
-
-COREFOUNDATION_EXPORT CFXMLNodeRef      CFXMLNodeCreateCopy(CFAllocatorRef allocator,CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFXMLNodeRef CFXMLNodeCreateCopy(CFAllocatorRef allocator, CFXMLNodeRef self);
 
 COREFOUNDATION_EXPORT CFXMLNodeTypeCode CFXMLNodeGetTypeCode(CFXMLNodeRef self);
-COREFOUNDATION_EXPORT CFStringRef       CFXMLNodeGetString(CFXMLNodeRef self);
-COREFOUNDATION_EXPORT const void       *CFXMLNodeGetInfoPtr(CFXMLNodeRef self);
-COREFOUNDATION_EXPORT CFIndex           CFXMLNodeGetVersion(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFStringRef CFXMLNodeGetString(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT const void *CFXMLNodeGetInfoPtr(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFIndex CFXMLNodeGetVersion(CFXMLNodeRef self);

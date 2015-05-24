@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 
 @interface NSValue_concrete : NSValue {
-   char _bytes[0]; // type \0 value
+    char _bytes[0]; // type \0 value
 }
 
 @end
 
-NSValue *NSValue_concreteNew(NSZone *zone,const void *value,const char *type);
+NSValue *NSValue_concreteNew(NSZone *zone, const void *value, const char *type);

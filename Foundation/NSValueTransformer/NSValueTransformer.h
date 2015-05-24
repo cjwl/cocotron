@@ -9,24 +9,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-FOUNDATION_EXPORT NSString * const NSIsNilTransformerName;
-FOUNDATION_EXPORT NSString * const NSIsNotNilTransformerName;
-FOUNDATION_EXPORT NSString * const NSNegateBooleanTransformerName;
-FOUNDATION_EXPORT NSString * const NSUnarchiveFromDataTransformerName;
-FOUNDATION_EXPORT NSString * const NSKeyedUnarchiveFromDataTransformerName;
+FOUNDATION_EXPORT NSString *const NSIsNilTransformerName;
+FOUNDATION_EXPORT NSString *const NSIsNotNilTransformerName;
+FOUNDATION_EXPORT NSString *const NSNegateBooleanTransformerName;
+FOUNDATION_EXPORT NSString *const NSUnarchiveFromDataTransformerName;
+FOUNDATION_EXPORT NSString *const NSKeyedUnarchiveFromDataTransformerName;
 
 @interface NSValueTransformer : NSObject
 
-+(NSArray *)valueTransformerNames;
++ (NSArray *)valueTransformerNames;
 
-+(NSValueTransformer *)valueTransformerForName:(NSString *)name;
++ (NSValueTransformer *)valueTransformerForName:(NSString *)name;
 
-+(void)setValueTransformer:(NSValueTransformer *)transformer forName:(NSString *)name;
++ (void)setValueTransformer:(NSValueTransformer *)transformer forName:(NSString *)name;
 
-+(Class)transformedValueClass;
-+(BOOL)allowsReverseTransformation;
++ (Class)transformedValueClass;
++ (BOOL)allowsReverseTransformation;
 
--transformedValue:value;
--reverseTransformedValue:value;
+- transformedValue:value;
+- reverseTransformedValue:value;
 
 @end

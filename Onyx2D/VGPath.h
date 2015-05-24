@@ -31,30 +31,30 @@
 #import <Onyx2D/O2Context_builtin.h>
 
 @interface VGPath : NSObject {
-   O2Path *_path;
-    int     _vertexCount;
-    int     _vertexCapacity;
+    O2Path *_path;
+    int _vertexCount;
+    int _vertexCapacity;
     struct Vertex *_vertices;
-    
-    int     _segmentToVertexCapacity;
+
+    int _segmentToVertexCapacity;
     struct VertexIndex *_segmentToVertex;
-    
-	O2Float				m_userMinx;
-	O2Float				m_userMiny;
-	O2Float				m_userMaxx;
-	O2Float				m_userMaxy;
+
+    O2Float m_userMinx;
+    O2Float m_userMiny;
+    O2Float m_userMaxx;
+    O2Float m_userMaxy;
 }
 
--initWithKGPath:(O2Path *)path;
+- initWithKGPath:(O2Path *)path;
 
-void VGPathFill(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context);	
-void VGPathStroke(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context, const O2Float* dashPattern,int dashPatternSize, O2Float dashPhase, BOOL dashPhaseReset, O2Float strokeWidth, O2LineCap capStyle, O2LineJoin joinStyle, O2Float miterLimit);	
+void VGPathFill(VGPath *self, O2AffineTransform pathToSurface, O2Context_builtin *context);
+void VGPathStroke(VGPath *self, O2AffineTransform pathToSurface, O2Context_builtin *context, const O2Float *dashPattern, int dashPatternSize, O2Float dashPhase, BOOL dashPhaseReset, O2Float strokeWidth, O2LineCap capStyle, O2LineJoin joinStyle, O2Float miterLimit);
 
-void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, O2Float distance, O2Point *p, O2Point *t);	
-O2Float VGPathGetLength(VGPath *self,int startIndex, int numSegments);	
-void VGPathGetPathBounds(VGPath *self,O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);	
-void VGPathGetPathTransformedBounds(VGPath *self,O2AffineTransform pathToSurface, O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);
+void VGPathGetPointAlong(VGPath *self, int startIndex, int numSegments, O2Float distance, O2Point *p, O2Point *t);
+O2Float VGPathGetLength(VGPath *self, int startIndex, int numSegments);
+void VGPathGetPathBounds(VGPath *self, O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);
+void VGPathGetPathTransformedBounds(VGPath *self, O2AffineTransform pathToSurface, O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);
 
-void VGPathTessellateIfNeeded(VGPath *self);	
+void VGPathTessellateIfNeeded(VGPath *self);
 
 @end

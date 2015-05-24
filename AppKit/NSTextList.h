@@ -8,19 +8,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 enum {
-   NSTextListPrependEnclosingMarker=0x01
+    NSTextListPrependEnclosingMarker = 0x01
 };
 
 @interface NSTextList : NSObject {
-   NSString *_markerFormat;
-   unsigned  _options;
+    NSString *_markerFormat;
+    unsigned _options;
 }
 
--initWithMarkerFormat:(NSString *)format options:(unsigned)options;
+- initWithMarkerFormat:(NSString *)format options:(unsigned)options;
 
--(NSString *)markerFormat;
--(unsigned)listOptions;
+- (NSString *)markerFormat;
+- (unsigned)listOptions;
 
--(NSString *)markerForItemNumber:(int)index;
+- (NSString *)markerForItemNumber:(int)index;
 
 @end

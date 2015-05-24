@@ -11,34 +11,34 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 typedef struct __NSNumberFormatter *CFNumberFormatterRef;
 
 enum {
-   kCFNumberFormatterNoStyle        =0,
-   kCFNumberFormatterDecimalStyle   =1,
-   kCFNumberFormatterCurrencyStyle  =2,
-   kCFNumberFormatterPercentStyle   =3,
-   kCFNumberFormatterScientificStyle=4,
-   kCFNumberFormatterSpellOutStyle  =5,
+    kCFNumberFormatterNoStyle = 0,
+    kCFNumberFormatterDecimalStyle = 1,
+    kCFNumberFormatterCurrencyStyle = 2,
+    kCFNumberFormatterPercentStyle = 3,
+    kCFNumberFormatterScientificStyle = 4,
+    kCFNumberFormatterSpellOutStyle = 5,
 };
 typedef CFIndex CFNumberFormatterStyle;
 
 enum {
-   kCFNumberFormatterParseIntegersOnly= 1
+    kCFNumberFormatterParseIntegersOnly = 1
 };
 
 typedef enum {
-   kCFNumberFormatterRoundCeiling = 0,
-   kCFNumberFormatterRoundFloor = 1,
-   kCFNumberFormatterRoundDown = 2,
-   kCFNumberFormatterRoundUp = 3,
-   kCFNumberFormatterRoundHalfEven = 4,
-   kCFNumberFormatterRoundHalfDown = 5,
-   kCFNumberFormatterRoundHalfUp = 6
+    kCFNumberFormatterRoundCeiling = 0,
+    kCFNumberFormatterRoundFloor = 1,
+    kCFNumberFormatterRoundDown = 2,
+    kCFNumberFormatterRoundUp = 3,
+    kCFNumberFormatterRoundHalfEven = 4,
+    kCFNumberFormatterRoundHalfDown = 5,
+    kCFNumberFormatterRoundHalfUp = 6
 } CFNumberFormatterRoundingMode;
 
 enum {
-   kCFNumberFormatterPadBeforePrefix = 0,
-   kCFNumberFormatterPadAfterPrefix = 1,
-   kCFNumberFormatterPadBeforeSuffix = 2,
-   kCFNumberFormatterPadAfterSuffix = 3
+    kCFNumberFormatterPadBeforePrefix = 0,
+    kCFNumberFormatterPadAfterPrefix = 1,
+    kCFNumberFormatterPadBeforeSuffix = 2,
+    kCFNumberFormatterPadAfterSuffix = 3
 };
 
 COREFOUNDATION_EXPORT const CFStringRef kCFNumberFormatterCurrencyCode;
@@ -82,18 +82,18 @@ COREFOUNDATION_EXPORT const CFStringRef kCFNumberFormatterMaxSignificantDigits;
 
 COREFOUNDATION_EXPORT CFTypeID CFNumberFormatterGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFNumberFormatterRef CFNumberFormatterCreate(CFAllocatorRef allocator,CFLocaleRef locale,CFNumberFormatterStyle style);
+COREFOUNDATION_EXPORT CFNumberFormatterRef CFNumberFormatterCreate(CFAllocatorRef allocator, CFLocaleRef locale, CFNumberFormatterStyle style);
 
-COREFOUNDATION_EXPORT CFLocaleRef            CFNumberFormatterGetLocale(CFNumberFormatterRef self);
+COREFOUNDATION_EXPORT CFLocaleRef CFNumberFormatterGetLocale(CFNumberFormatterRef self);
 COREFOUNDATION_EXPORT CFNumberFormatterStyle CFNumberFormatterGetStyle(CFNumberFormatterRef self);
-COREFOUNDATION_EXPORT CFStringRef            CFNumberFormatterGetFormat(CFNumberFormatterRef self);
+COREFOUNDATION_EXPORT CFStringRef CFNumberFormatterGetFormat(CFNumberFormatterRef self);
 
-COREFOUNDATION_EXPORT void CFNumberFormatterSetFormat(CFNumberFormatterRef self,CFStringRef format);
-COREFOUNDATION_EXPORT void CFNumberFormatterSetProperty(CFNumberFormatterRef self,CFStringRef key,CFTypeRef value);
+COREFOUNDATION_EXPORT void CFNumberFormatterSetFormat(CFNumberFormatterRef self, CFStringRef format);
+COREFOUNDATION_EXPORT void CFNumberFormatterSetProperty(CFNumberFormatterRef self, CFStringRef key, CFTypeRef value);
 
-COREFOUNDATION_EXPORT CFTypeRef CFNumberFormatterCopyProperty(CFNumberFormatterRef self,CFStringRef key);
-COREFOUNDATION_EXPORT CFNumberRef CFNumberFormatterCreateNumberFromString(CFAllocatorRef allocator,CFNumberFormatterRef self,CFStringRef string,CFRange *rangep,CFOptionFlags options);
-COREFOUNDATION_EXPORT CFStringRef CFNumberFormatterCreateStringWithNumber(CFAllocatorRef allocator,CFNumberFormatterRef self,CFNumberRef number);
-COREFOUNDATION_EXPORT CFStringRef CFNumberFormatterCreateStringWithValue(CFAllocatorRef allocator,CFNumberFormatterRef self,CFNumberType numberType,const void *valuep);
-COREFOUNDATION_EXPORT Boolean CFNumberFormatterGetDecimalInfoForCurrencyCode(CFStringRef currencyCode,int32_t *defaultFractionDigits,double *roundingIncrement);
-COREFOUNDATION_EXPORT Boolean CFNumberFormatterGetValueFromString(CFNumberFormatterRef self,CFStringRef string,CFRange *rangep,CFNumberType numberType,void *valuep);
+COREFOUNDATION_EXPORT CFTypeRef CFNumberFormatterCopyProperty(CFNumberFormatterRef self, CFStringRef key);
+COREFOUNDATION_EXPORT CFNumberRef CFNumberFormatterCreateNumberFromString(CFAllocatorRef allocator, CFNumberFormatterRef self, CFStringRef string, CFRange *rangep, CFOptionFlags options);
+COREFOUNDATION_EXPORT CFStringRef CFNumberFormatterCreateStringWithNumber(CFAllocatorRef allocator, CFNumberFormatterRef self, CFNumberRef number);
+COREFOUNDATION_EXPORT CFStringRef CFNumberFormatterCreateStringWithValue(CFAllocatorRef allocator, CFNumberFormatterRef self, CFNumberType numberType, const void *valuep);
+COREFOUNDATION_EXPORT Boolean CFNumberFormatterGetDecimalInfoForCurrencyCode(CFStringRef currencyCode, int32_t *defaultFractionDigits, double *roundingIncrement);
+COREFOUNDATION_EXPORT Boolean CFNumberFormatterGetValueFromString(CFNumberFormatterRef self, CFStringRef string, CFRange *rangep, CFNumberType numberType, void *valuep);

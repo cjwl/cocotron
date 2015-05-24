@@ -11,27 +11,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSString,NSAttributedString;
+@class NSString, NSAttributedString;
 
-APPKIT_EXPORT NSString * const NSContextHelpModeDidActivateNotification;
-APPKIT_EXPORT NSString * const NSContextHelpModeDidDeactivateNotification;
+APPKIT_EXPORT NSString *const NSContextHelpModeDidActivateNotification;
+APPKIT_EXPORT NSString *const NSContextHelpModeDidDeactivateNotification;
 
 @interface NSHelpManager : NSObject {
-   NSMapTable *_objectToText;
+    NSMapTable *_objectToText;
 }
 
-+(NSHelpManager *)sharedHelpManager;
++ (NSHelpManager *)sharedHelpManager;
 
-+(BOOL)isContextHelpModeActive;
-+(void)setContextHelpModeActive:(BOOL)flag;
++ (BOOL)isContextHelpModeActive;
++ (void)setContextHelpModeActive:(BOOL)flag;
 
--(NSAttributedString *)contextHelpForObject:object;
--(void)setContextHelp:(NSAttributedString *)text forObject:object;
--(void)removeContextHelpForObject:object;
+- (NSAttributedString *)contextHelpForObject:object;
+- (void)setContextHelp:(NSAttributedString *)text forObject:object;
+- (void)removeContextHelpForObject:object;
 
--(void)showContextHelpForObject:object locationHint:(NSPoint)hintPoint;
+- (void)showContextHelpForObject:object locationHint:(NSPoint)hintPoint;
 
--(void)findString:(NSString *)string inBook:(NSString *)bookName;
--(void)openHelpAnchor:(NSString *)anchor inBook:(NSString *)bookName;
+- (void)findString:(NSString *)string inBook:(NSString *)bookName;
+- (void)openHelpAnchor:(NSString *)anchor inBook:(NSString *)bookName;
 
 @end

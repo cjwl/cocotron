@@ -10,21 +10,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableString : NSString
 
--initWithCapacity:(NSUInteger)capacity;
+- initWithCapacity:(NSUInteger)capacity;
 
-+string;
-+stringWithCapacity:(NSUInteger)capacity;
++ string;
++ stringWithCapacity:(NSUInteger)capacity;
 
--(void)appendString:(NSString *)string;
--(void)appendFormat:(NSString *)format,...;
+- (void)appendString:(NSString *)string;
+- (void)appendFormat:(NSString *)format, ...;
 
--(void)deleteCharactersInRange:(NSRange)range;
+- (void)deleteCharactersInRange:(NSRange)range;
 
--(void)insertString:(NSString *)string atIndex:(NSUInteger)index;
+- (void)insertString:(NSString *)string atIndex:(NSUInteger)index;
 
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
--(void)setString:(NSString *)string;
+- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+- (void)setString:(NSString *)string;
 
--(NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)opts range:(NSRange)searchRange;
+- (NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)opts range:(NSRange)searchRange;
 
 @end

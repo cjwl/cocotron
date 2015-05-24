@@ -11,28 +11,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSColor;
 
 @interface NSColorWell : NSControl {
-   NSColor *_color;
-   id       _target;
-   SEL      _action;
-   BOOL     _isEnabled;
-   BOOL     _isContinuous;
-   BOOL     _isBordered;
-   BOOL     _isActive;
-	BOOL	_notifyingColorPanel;
+    NSColor *_color;
+    id _target;
+    SEL _action;
+    BOOL _isEnabled;
+    BOOL _isContinuous;
+    BOOL _isBordered;
+    BOOL _isActive;
+    BOOL _notifyingColorPanel;
 }
 
--(NSColor *)color;
--(BOOL)isBordered;
--(BOOL)isActive;
+- (NSColor *)color;
+- (BOOL)isBordered;
+- (BOOL)isActive;
 
--(void)setColor:(NSColor *)color;
--(void)setBordered:(BOOL)flag;
+- (void)setColor:(NSColor *)color;
+- (void)setBordered:(BOOL)flag;
 
--(void)activate:(BOOL)exclusive;
--(void)deactivate;
+- (void)activate:(BOOL)exclusive;
+- (void)deactivate;
 
--(void)drawWellInside:(NSRect)rect;
+- (void)drawWellInside:(NSRect)rect;
 
--(void)takeColorFrom:sender;
+- (void)takeColorFrom:sender;
 
 @end

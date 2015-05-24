@@ -12,38 +12,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableArray;
 
 @interface NSUnarchiver : NSCoder {
-   NSData              *_data;
-   const uint8_t *_bytes;
-   NSUInteger             _position,_length;
-   NSZone              *_objectZone;
-   
-   uint32_t    _version;
-   NSMapTable *_objects;
-   NSMapTable *_classes;
-   NSMapTable *_cStrings;
-   NSMapTable *_classVersions;
-   NSMutableArray *_allObjects;
+    NSData *_data;
+    const uint8_t *_bytes;
+    NSUInteger _position, _length;
+    NSZone *_objectZone;
+
+    uint32_t _version;
+    NSMapTable *_objects;
+    NSMapTable *_classes;
+    NSMapTable *_cStrings;
+    NSMapTable *_classVersions;
+    NSMutableArray *_allObjects;
 }
 
-+unarchiveObjectWithData:(NSData *)data;
-+unarchiveObjectWithFile:(NSString *)path;
++ unarchiveObjectWithData:(NSData *)data;
++ unarchiveObjectWithFile:(NSString *)path;
 
-+(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
-+(NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
++ (void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
++ (NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
 
--(void)decodeValueOfObjCType:(const char *)type at:(void *)data;
--(NSData *)decodeDataObject;
--(NSInteger)versionForClassName:(NSString *)className;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)data;
+- (NSData *)decodeDataObject;
+- (NSInteger)versionForClassName:(NSString *)className;
 
--initForReadingWithData:(NSData *)data;
+- initForReadingWithData:(NSData *)data;
 
--(BOOL)isAtEnd;
--(NSZone *)objectZone;
--(void)setObjectZone:(NSZone *)zone;
+- (BOOL)isAtEnd;
+- (NSZone *)objectZone;
+- (void)setObjectZone:(NSZone *)zone;
 
--(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
--(NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
+- (void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
+- (NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
 
--(void)replaceObject:original withObject:replacement;
+- (void)replaceObject:original withObject:replacement;
 
 @end

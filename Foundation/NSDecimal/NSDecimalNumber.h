@@ -9,10 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSDecimal.h>
 
-FOUNDATION_EXPORT NSString * const NSDecimalNumberDivideByZeroException;
-FOUNDATION_EXPORT NSString * const NSDecimalNumberUnderflowException;
-FOUNDATION_EXPORT NSString * const NSDecimalNumberOverflowException;
-FOUNDATION_EXPORT NSString * const NSDecimalNumberExactnessException;
+FOUNDATION_EXPORT NSString *const NSDecimalNumberDivideByZeroException;
+FOUNDATION_EXPORT NSString *const NSDecimalNumberUnderflowException;
+FOUNDATION_EXPORT NSString *const NSDecimalNumberOverflowException;
+FOUNDATION_EXPORT NSString *const NSDecimalNumberExactnessException;
 
 @protocol NSDecimalNumberBehaviors
 @end
@@ -20,48 +20,48 @@ FOUNDATION_EXPORT NSString * const NSDecimalNumberExactnessException;
 @interface NSDecimalNumber : NSNumber {
 }
 
--initWithDecimal:(NSDecimal)decimal;
--initWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)flag;
--initWithString:(NSString *)string;
--initWithString:(NSString *)string locale:(NSDictionary *)locale;
+- initWithDecimal:(NSDecimal)decimal;
+- initWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)flag;
+- initWithString:(NSString *)string;
+- initWithString:(NSString *)string locale:(NSDictionary *)locale;
 
-+(NSDecimalNumber *)decimalNumberWithDecimal:(NSDecimal)decimal;
-+(NSDecimalNumber *)decimalNumberWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)negative;
-+(NSDecimalNumber *)decimalNumberWithString:(NSString *)string;
-+(NSDecimalNumber *)decimalNumberWithString:(NSString *)string locale:(NSDictionary *)locale;
++ (NSDecimalNumber *)decimalNumberWithDecimal:(NSDecimal)decimal;
++ (NSDecimalNumber *)decimalNumberWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)negative;
++ (NSDecimalNumber *)decimalNumberWithString:(NSString *)string;
++ (NSDecimalNumber *)decimalNumberWithString:(NSString *)string locale:(NSDictionary *)locale;
 
-+(NSDecimalNumber *)zero;
-+(NSDecimalNumber *)one;
-+(NSDecimalNumber *)minimumDecimalNumber;
-+(NSDecimalNumber *)maximumDecimalNumber;
-+(NSDecimalNumber *)notANumber;
++ (NSDecimalNumber *)zero;
++ (NSDecimalNumber *)one;
++ (NSDecimalNumber *)minimumDecimalNumber;
++ (NSDecimalNumber *)maximumDecimalNumber;
++ (NSDecimalNumber *)notANumber;
 
-+(id <NSDecimalNumberBehaviors>)defaultBehavior;
-+(void)setDefaultBehavior:(id <NSDecimalNumberBehaviors>)behavior;
++ (id<NSDecimalNumberBehaviors>)defaultBehavior;
++ (void)setDefaultBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSComparisonResult)compare:(NSNumber *)other;
+- (NSComparisonResult)compare:(NSNumber *)other;
 
--(double)doubleValue;
--(const char *)objCType;
+- (double)doubleValue;
+- (const char *)objCType;
 
--(NSDecimalNumber *)decimalNumberByRoundingAccordingToBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByRoundingAccordingToBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other;
--(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
--(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other;
--(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other;
+- (NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other;
+- (NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other;
--(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
--(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other;
--(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other;
+- (NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other;
+- (NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power;
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power;
+- (NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power;
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+- (NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power;
+- (NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale;
 
 @end

@@ -12,16 +12,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSFormatter : NSObject <NSCoding>
 
--(BOOL)isPartialStringValid:(NSString *)partial newEditingString:(NSString **)editing errorDescription:(NSString **)error;
+- (BOOL)isPartialStringValid:(NSString *)partial newEditingString:(NSString **)editing errorDescription:(NSString **)error;
 
--(BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error;
+- (BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error;
 
--(NSString *)stringForObjectValue:object;
+- (NSString *)stringForObjectValue:object;
 
--(NSString *)editingStringForObjectValue:object;
+- (NSString *)editingStringForObjectValue:object;
 
--(NSAttributedString *)attributedStringForObjectValue:object withDefaultAttributes:(NSDictionary *)attributes;
+- (NSAttributedString *)attributedStringForObjectValue:object withDefaultAttributes:(NSDictionary *)attributes;
 
--(BOOL)isPartialStringValid:(NSString **)partialStringp proposedSelectedRange:(NSRange *)proposedRangep originalString:(NSString *)originalString originalSelectedRange:(NSRange)originalRange errorDescription:(NSString **)errorStringp;
+- (BOOL)isPartialStringValid:(NSString **)partialStringp proposedSelectedRange:(NSRange *)proposedRangep originalString:(NSString *)originalString originalSelectedRange:(NSRange)originalRange errorDescription:(NSString **)errorStringp;
 
 @end

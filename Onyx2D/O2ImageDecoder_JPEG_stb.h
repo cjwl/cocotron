@@ -4,6 +4,6 @@
     CFDataRef _pixelData;
 }
 
--initWithDataProvider:(O2DataProviderRef)dataProvider;
+- initWithDataProvider:(O2DataProviderRef)dataProvider;
 
 @end

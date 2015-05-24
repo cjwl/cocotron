@@ -9,21 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSNibConnector : NSObject <NSCoding> {
-   id        _source;
-   id        _destination;
-   NSString *_label;
+    id _source;
+    id _destination;
+    NSString *_label;
 }
 
--source;
--destination;
--(NSString *)label;
+- source;
+- destination;
+- (NSString *)label;
 
--(void)setSource:source;
--(void)setDestination:destination;
--(void)setLabel:(NSString *)label;
+- (void)setSource:source;
+- (void)setDestination:destination;
+- (void)setLabel:(NSString *)label;
 
--(void)replaceObject:original withObject:replacement;
+- (void)replaceObject:original withObject:replacement;
 
--(void)establishConnection;
+- (void)establishConnection;
 
 @end

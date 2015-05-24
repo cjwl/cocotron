@@ -7,34 +7,34 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <AppKit/NSCell.h>
 
-@class NSTextAttachment,NSTextContainer,NSLayoutManager;
+@class NSTextAttachment, NSTextContainer, NSLayoutManager;
 
 @protocol NSTextAttachmentCell <NSObject>
 
--(NSTextAttachment *)attachment;
+- (NSTextAttachment *)attachment;
 
--(void)setAttachment:(NSTextAttachment *)attachment;
+- (void)setAttachment:(NSTextAttachment *)attachment;
 
--(NSSize)cellSize;
--(NSPoint)cellBaselineOffset;
--(NSRect)cellFrameForTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(NSRect)proposedRect glyphPosition:(NSPoint)glyphPoint characterIndex:(unsigned)characterIndex;
+- (NSSize)cellSize;
+- (NSPoint)cellBaselineOffset;
+- (NSRect)cellFrameForTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(NSRect)proposedRect glyphPosition:(NSPoint)glyphPoint characterIndex:(unsigned)characterIndex;
 
--(BOOL)wantsToTrackMouse;
--(BOOL)wantsToTrackMouseForEvent:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view atCharacterIndex:(unsigned)characterIndex;
+- (BOOL)wantsToTrackMouse;
+- (BOOL)wantsToTrackMouseForEvent:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view atCharacterIndex:(unsigned)characterIndex;
 
--(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view atCharacterIndex:(unsigned)characterIndex untilMouseUp:(BOOL)untilMouseUp;
--(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view untilMouseUp:(BOOL)untilMouseUp;
+- (BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view atCharacterIndex:(unsigned)characterIndex untilMouseUp:(BOOL)untilMouseUp;
+- (BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)rect ofView:(NSView *)view untilMouseUp:(BOOL)untilMouseUp;
 
--(void)highlight:(BOOL)highlight withFrame:(NSRect)frame inView:(NSView *)view;
+- (void)highlight:(BOOL)highlight withFrame:(NSRect)frame inView:(NSView *)view;
 
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)view characterIndex:(unsigned)characterIndex layoutManager:(NSLayoutManager *)layoutManager;
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)view characterIndex:(unsigned)characterIndex;
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)view;
+- (void)drawWithFrame:(NSRect)frame inView:(NSView *)view characterIndex:(unsigned)characterIndex layoutManager:(NSLayoutManager *)layoutManager;
+- (void)drawWithFrame:(NSRect)frame inView:(NSView *)view characterIndex:(unsigned)characterIndex;
+- (void)drawWithFrame:(NSRect)frame inView:(NSView *)view;
 
 @end
 
 @interface NSTextAttachmentCell : NSCell <NSTextAttachmentCell> {
-   NSTextAttachment *_attachment;
+    NSTextAttachment *_attachment;
 }
 
 @end

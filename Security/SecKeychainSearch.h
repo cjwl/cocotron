@@ -12,16 +12,16 @@
 @class SecKeychainCursor;
 
 @interface SecKeychainSearch : NSObject {
-   CFArrayRef                _array;
-   SecItemClass              _itemClass;
-   SecKeychainAttributeList *_attributeList;
-   
-   int _arrayCursor;
-   SecKeychainCursor *_keychainCursor;
+    CFArrayRef _array;
+    SecItemClass _itemClass;
+    SecKeychainAttributeList *_attributeList;
+
+    int _arrayCursor;
+    SecKeychainCursor *_keychainCursor;
 }
 
--initWithKeychainOrArray:(CFTypeRef)keychainOrArray itemClass:(SecItemClass)itemClass attributeList:(const SecKeychainAttributeList *)attributeList;
+- initWithKeychainOrArray:(CFTypeRef)keychainOrArray itemClass:(SecItemClass)itemClass attributeList:(const SecKeychainAttributeList *)attributeList;
 
--(SecKeychainItemRef)copyNextItem;
+- (SecKeychainItemRef)copyNextItem;
 
 @end

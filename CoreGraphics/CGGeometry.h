@@ -16,84 +16,83 @@ COREGRAPHICS_EXPORT const CGPoint CGPointZero;
 COREGRAPHICS_EXPORT const CGSize CGSizeZero;
 
 static inline CGRect CGRectMake(CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
-   CGRect result={{x,y},{width,height}};
-   return result;
+    CGRect result = {{x, y}, {width, height}};
+    return result;
 }
 
-static inline CGPoint CGPointMake(CGFloat x,CGFloat y){
-   CGPoint result={x,y};
-   return result;
+static inline CGPoint CGPointMake(CGFloat x, CGFloat y) {
+    CGPoint result = {x, y};
+    return result;
 }
 
-static inline CGSize CGSizeMake(CGFloat x,CGFloat y){
-   CGSize result={x,y};
-   return result;
+static inline CGSize CGSizeMake(CGFloat x, CGFloat y) {
+    CGSize result = {x, y};
+    return result;
 }
 
 static bool CGSizeEqualToSize(CGSize a, CGSize b) {
-	return a.width == b.width && a.height == b.height;
+    return a.width == b.width && a.height == b.height;
 }
 
-static inline CGFloat CGRectGetMinX(CGRect rect){
-   return rect.origin.x;
+static inline CGFloat CGRectGetMinX(CGRect rect) {
+    return rect.origin.x;
 }
 
-static inline CGFloat CGRectGetMaxX(CGRect rect){
-   return rect.origin.x+rect.size.width;
+static inline CGFloat CGRectGetMaxX(CGRect rect) {
+    return rect.origin.x + rect.size.width;
 }
 
-static inline CGFloat CGRectGetMidX(CGRect rect){
-	return CGRectGetMinX(rect) + ((CGRectGetMaxX(rect)-CGRectGetMinX(rect))/2.f);
+static inline CGFloat CGRectGetMidX(CGRect rect) {
+    return CGRectGetMinX(rect) + ((CGRectGetMaxX(rect) - CGRectGetMinX(rect)) / 2.f);
 }
 
-static inline CGFloat CGRectGetMinY(CGRect rect){
-   return rect.origin.y;
+static inline CGFloat CGRectGetMinY(CGRect rect) {
+    return rect.origin.y;
 }
 
-static inline CGFloat CGRectGetMaxY(CGRect rect){
-   return rect.origin.y+rect.size.height;
+static inline CGFloat CGRectGetMaxY(CGRect rect) {
+    return rect.origin.y + rect.size.height;
 }
 
-static inline CGFloat CGRectGetMidY(CGRect rect){
-	return CGRectGetMinY(rect) + ((CGRectGetMaxY(rect)-CGRectGetMinY(rect))/2.f);
+static inline CGFloat CGRectGetMidY(CGRect rect) {
+    return CGRectGetMinY(rect) + ((CGRectGetMaxY(rect) - CGRectGetMinY(rect)) / 2.f);
 }
 
-static inline CGFloat CGRectGetWidth(CGRect rect){
-        return rect.size.width;
+static inline CGFloat CGRectGetWidth(CGRect rect) {
+    return rect.size.width;
 }
 
-static inline CGFloat CGRectGetHeight(CGRect rect){
-        return rect.size.height;
+static inline CGFloat CGRectGetHeight(CGRect rect) {
+    return rect.size.height;
 }
 
-static inline bool CGRectContainsPoint(CGRect rect,CGPoint point) {
-   return (point.x>=CGRectGetMinX(rect) && point.x<=CGRectGetMaxX(rect)) && (point.y>=CGRectGetMinY(rect) && point.y<=CGRectGetMaxY(rect));
+static inline bool CGRectContainsPoint(CGRect rect, CGPoint point) {
+    return (point.x >= CGRectGetMinX(rect) && point.x <= CGRectGetMaxX(rect)) && (point.y >= CGRectGetMinY(rect) && point.y <= CGRectGetMaxY(rect));
 }
 
-static inline bool CGPointEqualToPoint(CGPoint a,CGPoint b){
-   return ((a.x==b.x) && (a.y==b.y))?TRUE:FALSE;
+static inline bool CGPointEqualToPoint(CGPoint a, CGPoint b) {
+    return ((a.x == b.x) && (a.y == b.y)) ? TRUE : FALSE;
 }
 
-static inline CGRect CGRectInset(CGRect rect,CGFloat dx,CGFloat dy) {
-   rect.origin.x+=dx;
-   rect.origin.y+=dy;
-   rect.size.width-=dx*2;
-   rect.size.height-=dy*2;
-   return rect;
+static inline CGRect CGRectInset(CGRect rect, CGFloat dx, CGFloat dy) {
+    rect.origin.x += dx;
+    rect.origin.y += dy;
+    rect.size.width -= dx * 2;
+    rect.size.height -= dy * 2;
+    return rect;
 }
 
-static inline CGRect CGRectOffset(CGRect rect,CGFloat dx,CGFloat dy) {
-	rect.origin.x+=dx;
-	rect.origin.y+=dy;
-	return rect;
+static inline CGRect CGRectOffset(CGRect rect, CGFloat dx, CGFloat dy) {
+    rect.origin.x += dx;
+    rect.origin.y += dy;
+    return rect;
 }
 
 static inline bool CGRectIsEmpty(CGRect rect) {
-   return ((rect.size.width==0) && (rect.size.height==0))?TRUE:FALSE;
+    return ((rect.size.width == 0) && (rect.size.height == 0)) ? TRUE : FALSE;
 }
 
-static inline bool CGRectIntersectsRect(CGRect a, CGRect b)
-{
+static inline bool CGRectIntersectsRect(CGRect a, CGRect b) {
     if(b.origin.x > a.origin.x + a.size.width)
         return false;
     if(b.origin.y > a.origin.y + a.size.height)
@@ -106,29 +105,27 @@ static inline bool CGRectIntersectsRect(CGRect a, CGRect b)
 }
 
 static inline bool CGRectEqualToRect(CGRect a, CGRect b) {
-	return CGPointEqualToPoint(a.origin, b.origin) && CGSizeEqualToSize(a.size, b.size);
+    return CGPointEqualToPoint(a.origin, b.origin) && CGSizeEqualToSize(a.size, b.size);
 }
 
 static inline bool CGRectIsInfinite(CGRect rect) {
-	return (isinf(rect.origin.x) ||
-			isinf(rect.origin.y) || 
-			isinf(rect.size.width) ||
-			isinf(rect.size.height));
+    return (isinf(rect.origin.x) ||
+        isinf(rect.origin.y) ||
+        isinf(rect.size.width) ||
+        isinf(rect.size.height));
 }
 
 static inline bool CGRectIsNull(CGRect rect) {
-	return CGRectEqualToRect(rect, CGRectNull);
+    return CGRectEqualToRect(rect, CGRectNull);
 }
-
 
 COREGRAPHICS_EXPORT CGRect CGRectUnion(CGRect a, CGRect b);
 COREGRAPHICS_EXPORT CGRect CGRectIntersection(CGRect a, CGRect b);
 COREGRAPHICS_EXPORT CGRect CGRectIntegral(CGRect rect);
 
-static inline bool CGRectContainsRect(CGRect a, CGRect b)
-{
-	return (CGRectGetMinX(b) >= CGRectGetMinX(a) &&
-			CGRectGetMaxX(b) <= CGRectGetMaxX(a) &&
-			CGRectGetMinY(b) >= CGRectGetMinY(a) &&
-			CGRectGetMaxY(b) <= CGRectGetMaxY(a));
+static inline bool CGRectContainsRect(CGRect a, CGRect b) {
+    return (CGRectGetMinX(b) >= CGRectGetMinX(a) &&
+        CGRectGetMaxX(b) <= CGRectGetMaxX(a) &&
+        CGRectGetMinY(b) >= CGRectGetMinY(a) &&
+        CGRectGetMaxY(b) <= CGRectGetMaxY(a));
 }

@@ -9,26 +9,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextBlock.h>
 
 typedef enum {
-   NSTextTableAutomaticLayoutAlgorithm,
-   NSTextTableFixedLayoutAlgorithm
+    NSTextTableAutomaticLayoutAlgorithm,
+    NSTextTableFixedLayoutAlgorithm
 } NSTextTableLayoutAlgorithm;
 
 @interface NSTextTable : NSTextBlock {
-   unsigned                   _numberOfColumns;
-   BOOL                       _collapsesBorders;
-   BOOL                       _hidesEmptyCells;
-   NSTextTableLayoutAlgorithm _layoutAlgorithm;
+    unsigned _numberOfColumns;
+    BOOL _collapsesBorders;
+    BOOL _hidesEmptyCells;
+    NSTextTableLayoutAlgorithm _layoutAlgorithm;
 }
 
--(unsigned)numberOfColumns;
--(BOOL)collapsesBorders;
--(BOOL)hidesEmptyCells;
--(NSTextTableLayoutAlgorithm)layoutAlgorithm;
+- (unsigned)numberOfColumns;
+- (BOOL)collapsesBorders;
+- (BOOL)hidesEmptyCells;
+- (NSTextTableLayoutAlgorithm)layoutAlgorithm;
 
--(void)setNumberOfColumns:(unsigned)numberOfColumns;
--(void)setCollapsesBorders:(BOOL)yorn;
--(void)setHidesEmptyCells:(BOOL)yorn;
--(void)setLayoutAlgorithm:(NSTextTableLayoutAlgorithm)algorithm;
+- (void)setNumberOfColumns:(unsigned)numberOfColumns;
+- (void)setCollapsesBorders:(BOOL)yorn;
+- (void)setHidesEmptyCells:(BOOL)yorn;
+- (void)setLayoutAlgorithm:(NSTextTableLayoutAlgorithm)algorithm;
 
 #if 0
 -(NSRect)boundsRectForBlock:(NSTextTableBlock *)block contentRect:(NSRect)contentRect inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)range;

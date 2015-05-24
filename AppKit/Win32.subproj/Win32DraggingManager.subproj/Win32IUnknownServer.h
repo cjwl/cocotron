@@ -14,55 +14,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ole2.h>
 
 @protocol IUnknown
--(HRESULT)QueryInterface:(REFIID)riid :(void **)ppvObject;
--(ULONG)AddRef;
--(ULONG)Release;
+- (HRESULT)QueryInterface:(REFIID)riid:(void **)ppvObject;
+- (ULONG)AddRef;
+- (ULONG)Release;
 @end
 
 @protocol IDropTarget
--(HRESULT)DragEnter:(IDataObject *)pDataObj :(DWORD)grfKeyState :(POINTL)pt :(DWORD *)pdwEffect;
--(HRESULT)DragOver:(DWORD)grfKeyState :(POINTL)pt :(DWORD *)pdwEffect;
--(HRESULT)DragLeave;
--(HRESULT)Drop:(IDataObject *)pDataObj :(DWORD)grfKeyState :(POINTL)pt :(DWORD *)pdwEffect;
+- (HRESULT)DragEnter:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+- (HRESULT)DragOver:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+- (HRESULT)DragLeave;
+- (HRESULT)Drop:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
 @end
 
 @protocol IDropSource
--(HRESULT)QueryContinueDrag:(BOOL)fEscapedPressed :(DWORD)grfKeyState;
--(HRESULT)GiveFeedback:(DWORD)dwEffect;
+- (HRESULT)QueryContinueDrag:(BOOL)fEscapedPressed:(DWORD)grfKeyState;
+- (HRESULT)GiveFeedback:(DWORD)dwEffect;
 @end
 
 @protocol IDataObject
--(HRESULT)GetData:(FORMATETC *)formatEtcp :(STGMEDIUM *)pmedium;
--(HRESULT)GetDataHere:(FORMATETC *)formatEtcp :(STGMEDIUM *)pmedium;
--(HRESULT)QueryGetData:(FORMATETC *)formatEtcp;
--(HRESULT)GetCanonicalFormatEtc:(FORMATETC *)formatEtcp :(FORMATETC *)pformatetcOut;
--(HRESULT)SetData:(FORMATETC *)formatEtcp :(STGMEDIUM *)pmedium :(BOOL)fRelease;
--(HRESULT)EnumFormatEtc:(DWORD)dwDirection :(IEnumFORMATETC  **)ppenumFormatEtc;
--(HRESULT)DAdvise:(FORMATETC *)pformatetc :(DWORD)advf :(IAdviseSink *)pAdvSink :(DWORD *)pdwConnection;
--(HRESULT)DUnadvise:(DWORD)dwConnection;
--(HRESULT)EnumDAdvise:(IEnumSTATDATA **)ppenumAdvise;
+- (HRESULT)GetData:(FORMATETC *)formatEtcp:(STGMEDIUM *)pmedium;
+- (HRESULT)GetDataHere:(FORMATETC *)formatEtcp:(STGMEDIUM *)pmedium;
+- (HRESULT)QueryGetData:(FORMATETC *)formatEtcp;
+- (HRESULT)GetCanonicalFormatEtc:(FORMATETC *)formatEtcp:(FORMATETC *)pformatetcOut;
+- (HRESULT)SetData:(FORMATETC *)formatEtcp:(STGMEDIUM *)pmedium:(BOOL)fRelease;
+- (HRESULT)EnumFormatEtc:(DWORD)dwDirection:(IEnumFORMATETC **)ppenumFormatEtc;
+- (HRESULT)DAdvise:(FORMATETC *)pformatetc:(DWORD)advf:(IAdviseSink *)pAdvSink:(DWORD *)pdwConnection;
+- (HRESULT)DUnadvise:(DWORD)dwConnection;
+- (HRESULT)EnumDAdvise:(IEnumSTATDATA **)ppenumAdvise;
 @end
 
 @protocol IEnumFORMATETC
--(HRESULT)Next:(ULONG)celt:(FORMATETC *)rgelt :(ULONG *)pceltFetched;
--(HRESULT)Skip:(ULONG)celt;
--(HRESULT)Reset;
--(HRESULT)Clone:(IEnumFORMATETC **)ppenum;
+- (HRESULT)Next:(ULONG)celt:(FORMATETC *)rgelt:(ULONG *)pceltFetched;
+- (HRESULT)Skip:(ULONG)celt;
+- (HRESULT)Reset;
+- (HRESULT)Clone:(IEnumFORMATETC **)ppenum;
 @end
 
 @interface Win32IUnknownServer : NSObject {
-   unsigned               _capacity,_count;
-   struct Win32COMObject *_interfaces;
+    unsigned _capacity, _count;
+    struct Win32COMObject *_interfaces;
 }
 
--initAsIDropTarget;
--initAsIDropSource;
--initAsIDataObject;
--initAsIEnumFORMATETC;
+- initAsIDropTarget;
+- initAsIDropSource;
+- initAsIDataObject;
+- initAsIEnumFORMATETC;
 
--(void *)iUknown;
-
+- (void *)iUknown;
 
 @end
-
-

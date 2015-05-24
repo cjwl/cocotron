@@ -11,21 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSSound : NSObject {
 }
 
-+(NSArray *)soundUnfilteredFileTypes;
++ (NSArray *)soundUnfilteredFileTypes;
 
-+(NSSound *)soundNamed:(NSString *)name;
++ (NSSound *)soundNamed:(NSString *)name;
 
--(id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference;
--(id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference;
--(BOOL)setName:(NSString *)name;
+- (id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference;
+- (id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference;
+- (BOOL)setName:(NSString *)name;
 
--(BOOL)play;
--(BOOL)pause;
--(BOOL)resume;
--(BOOL)stop;
+- (BOOL)play;
+- (BOOL)pause;
+- (BOOL)resume;
+- (BOOL)stop;
 
 @end
 
-@interface NSBundle(NSSound)
--(NSString *)pathForSoundResource:(NSString *)sound;
+@interface NSBundle (NSSound)
+- (NSString *)pathForSoundResource:(NSString *)sound;
 @end

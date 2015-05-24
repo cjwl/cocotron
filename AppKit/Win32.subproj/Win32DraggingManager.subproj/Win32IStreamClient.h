@@ -14,12 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ole2.h>
 
 @interface Win32IStreamClient : NSObject {
-   struct IStream *_stream;
-   BOOL _release;
+    struct IStream *_stream;
+    BOOL _release;
 }
 
--initWithIStream:(IStream *)stream release:(BOOL)release;
+- initWithIStream:(IStream *)stream release:(BOOL)release;
 
--(NSData *)readDataToEndOfFile;
+- (NSData *)readDataToEndOfFile;
 
 @end

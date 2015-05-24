@@ -31,59 +31,89 @@
 #import <Foundation/Foundation.h>
 
 //#define RI_ASSERT(_) NSCParameterAssert(_)
-#define RI_ASSERT(_) 
+#define RI_ASSERT(_)
 
 static inline int RI_ISNAN(float a) {
-    return (a!=a)?1:0;
+    return (a != a) ? 1 : 0;
 }
 
-static inline O2Float	RI_MAX(O2Float a, O2Float b)				{ return (a > b) ? a : b; }
-static inline O2Float	RI_MIN(O2Float a, O2Float b)				{ return (a < b) ? a : b; }
-static inline O2Float	RI_CLAMP(O2Float a, O2Float l, O2Float h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-static inline O2Float	RI_SQR(O2Float a)							{ return a * a; }
-static inline O2Float	RI_MOD(O2Float a, O2Float b){
-   if(RI_ISNAN(a) || RI_ISNAN(b))
-    return 0.0f;
-    
-   RI_ASSERT(b >= 0.0f);
-   
-   if(b == 0.0f)
-    return 0.0f;
-    
-   O2Float f = (O2Float)fmod(a, b);
-   
-   if(f < 0.0f)
-    f += b;
-   RI_ASSERT(f >= 0.0f && f <= b);
-   return f;
+static inline O2Float RI_MAX(O2Float a, O2Float b) {
+    return (a > b) ? a : b;
+}
+static inline O2Float RI_MIN(O2Float a, O2Float b) {
+    return (a < b) ? a : b;
+}
+static inline O2Float RI_CLAMP(O2Float a, O2Float l, O2Float h) {
+    if(RI_ISNAN(a))
+        return l;
+    RI_ASSERT(l <= h);
+    return (a < l) ? l : (a > h) ? h : a;
+}
+static inline O2Float RI_SQR(O2Float a) {
+    return a * a;
+}
+static inline O2Float RI_MOD(O2Float a, O2Float b) {
+    if(RI_ISNAN(a) || RI_ISNAN(b))
+        return 0.0f;
+
+    RI_ASSERT(b >= 0.0f);
+
+    if(b == 0.0f)
+        return 0.0f;
+
+    O2Float f = (O2Float)fmod(a, b);
+
+    if(f < 0.0f)
+        f += b;
+    RI_ASSERT(f >= 0.0f && f <= b);
+    return f;
 }
 
-static inline int RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
-static inline int RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
-static inline uint16_t RI_UINT16_MIN(uint16_t a,uint16_t b) { return (a < b) ? a : b; } 
-static inline uint32_t RI_UINT32_MIN(uint32_t a, uint32_t b)			{ return (a < b) ? a : b; }
-static inline int RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
-static inline int RI_INT_CLAMP(int a, int l, int h)	{ RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-
-static inline int RI_FLOORF_TO_INT(float value){
-   if(value<0)
-    return floorf(value);
-    
-   return value;
+static inline int RI_INT_MAX(int a, int b) {
+    return (a > b) ? a : b;
+}
+static inline int RI_INT_MIN(int a, int b) {
+    return (a < b) ? a : b;
+}
+static inline uint16_t RI_UINT16_MIN(uint16_t a, uint16_t b) {
+    return (a < b) ? a : b;
+}
+static inline uint32_t RI_UINT32_MIN(uint32_t a, uint32_t b) {
+    return (a < b) ? a : b;
+}
+static inline int RI_INT_MOD(int a, int b) {
+    RI_ASSERT(b >= 0);
+    if(!b)
+        return 0;
+    int i = a % b;
+    if(i < 0)
+        i += b;
+    RI_ASSERT(i >= 0 && i < b);
+    return i;
+}
+static inline int RI_INT_CLAMP(int a, int l, int h) {
+    RI_ASSERT(l <= h);
+    return (a < l) ? l : (a > h) ? h : a;
 }
 
-static inline int RI_FLOOR_TO_INT(double value){
-   if(value<0)
-    return floor(value);
-    
-   return value;
+static inline int RI_FLOORF_TO_INT(float value) {
+    if(value < 0)
+        return floorf(value);
+
+    return value;
 }
 
-static inline O2Point Vector2Subtract(O2Point v1,O2Point v2){
-   return O2PointMake(v1.x-v2.x, v1.y-v2.y);
+static inline int RI_FLOOR_TO_INT(double value) {
+    if(value < 0)
+        return floor(value);
+
+    return value;
 }
 
-static inline O2Float Vector2Dot(O2Point v1,O2Point v2){
-   return v1.x*v2.x+v1.y*v2.y;
+static inline O2Point Vector2Subtract(O2Point v1, O2Point v2) {
+    return O2PointMake(v1.x - v2.x, v1.y - v2.y);
 }
 
+static inline O2Float Vector2Dot(O2Point v1, O2Point v2) {
+    return v1.x * v2.x + v1.y * v2.y;
+}

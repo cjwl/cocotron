@@ -9,29 +9,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/O2DeviceContext_gdi.h>
 
 enum {
-   uxthBUTTON,
-   uxthCOMBOBOX,
-   uxthEDIT,
-   uxthHEADER,
-   uxthMENU,
-   uxthPROGRESS,
-   uxthSCROLLBAR,
-   uxthSPIN,
-   uxthTAB,
-   uxthTRACKBAR,
-   uxthTREEVIEW,
-   uxthNumClasses
+    uxthBUTTON,
+    uxthCOMBOBOX,
+    uxthEDIT,
+    uxthHEADER,
+    uxthMENU,
+    uxthPROGRESS,
+    uxthSCROLLBAR,
+    uxthSPIN,
+    uxthTAB,
+    uxthTRACKBAR,
+    uxthTREEVIEW,
+    uxthNumClasses
 };
 
 @interface Win32DeviceContextWindow : O2DeviceContext_gdi {
-   HWND   _handle;
-   HANDLE _theme[uxthNumClasses];
+    HWND _handle;
+    HANDLE _theme[uxthNumClasses];
 }
 
--initWithWindowHandle:(HWND)handle;
+- initWithWindowHandle:(HWND)handle;
 
--(HWND)windowHandle;
--(HANDLE)theme:(int)uxthClassId;
--(void)themeChanged;
+- (HWND)windowHandle;
+- (HANDLE)theme:(int)uxthClassId;
+- (void)themeChanged;
 
 @end

@@ -8,15 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
-NSUInteger NSConvertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,uint8_t *utf8);
+NSUInteger NSConvertUTF16toUTF8(const unichar *utf16, NSUInteger utf16Length, uint8_t *utf8);
 
-unichar *NSUTF8ToUnicode(const char *utf8,NSUInteger length,
-  NSUInteger *resultLength,NSZone *zone);
+unichar *NSUTF8ToUnicode(const char *utf8, NSUInteger length,
+    NSUInteger *resultLength, NSZone *zone);
 
-NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength);
-char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters, NSUInteger length, NSUInteger *location, char *cString, NSUInteger maxLength);
+char *NSUnicodeToUTF8(const unichar *characters, NSUInteger length,
+    BOOL lossy, NSUInteger *resultLength, NSZone *zone, BOOL zeroTerminate);
 
-NSUInteger NSConvertUTF8toUTF16(const unsigned char *utf8,NSUInteger utf8Length,unichar *utf16);
+NSUInteger NSConvertUTF8toUTF16(const unsigned char *utf8, NSUInteger utf8Length, unichar *utf16);
 
-BOOL NSUTF8IsASCII(const char *utf8,NSUInteger length);
+BOOL NSUTF8IsASCII(const char *utf8, NSUInteger length);

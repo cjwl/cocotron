@@ -8,12 +8,11 @@
 
 #import <Foundation/NSSocketPort.h>
 
-@interface NSSocketPort_posix : NSSocketPort
-{
+@interface NSSocketPort_posix : NSSocketPort {
     NSSocketNativeHandle _socket;
 }
 
--initWithTCPPort:(unsigned short)port;
--(NSSocketNativeHandle)socket;
+- initWithTCPPort:(unsigned short)port;
+- (NSSocketNativeHandle)socket;
 
 @end

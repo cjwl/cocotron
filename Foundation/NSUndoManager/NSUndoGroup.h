@@ -10,8 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray, NSMutableArray, NSInvocation;
 
-@interface NSUndoGroup : NSObject
-{
+@interface NSUndoGroup : NSObject {
     NSUndoGroup *_parentGroup;
     NSMutableArray *_invocations;
 }

@@ -9,38 +9,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSavePanel.h>
 
 @interface NSOpenPanel : NSSavePanel {
-   NSArray *_filenames;
-   BOOL _allowsMultipleSelection;
-   BOOL _canChooseDirectories;
-   BOOL _canChooseFiles;
-   BOOL _resolvesAliases;
+    NSArray *_filenames;
+    BOOL _allowsMultipleSelection;
+    BOOL _canChooseDirectories;
+    BOOL _canChooseFiles;
+    BOOL _resolvesAliases;
 }
 
-+(NSOpenPanel *)openPanel;
++ (NSOpenPanel *)openPanel;
 
--(NSArray *)filenames;
--(NSArray *)URLs;
+- (NSArray *)filenames;
+- (NSArray *)URLs;
 
--(int)runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
--(int)runModalForTypes:(NSArray *)types;
+- (int)runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
+- (int)runModalForTypes:(NSArray *)types;
 
--(BOOL)allowsMultipleSelection;
--(BOOL)canChooseDirectories;
--(BOOL)canChooseFiles;
--(BOOL)resolvesAliases;
+- (BOOL)allowsMultipleSelection;
+- (BOOL)canChooseDirectories;
+- (BOOL)canChooseFiles;
+- (BOOL)resolvesAliases;
 
--(void)setAllowsMultipleSelection:(BOOL)flag;
--(void)setCanChooseDirectories:(BOOL)flag;
--(void)setCanChooseFiles:(BOOL)flag;
--(void)setResolvesAliases:(BOOL)value;
-
+- (void)setAllowsMultipleSelection:(BOOL)flag;
+- (void)setCanChooseDirectories:(BOOL)flag;
+- (void)setCanChooseFiles:(BOOL)flag;
+- (void)setResolvesAliases:(BOOL)value;
 
 - (void)beginSheetForDirectory:(NSString *)path
-                          file:(NSString *)name 
+                          file:(NSString *)name
                          types:(NSArray *)fileTypes
                 modalForWindow:(NSWindow *)docWindow
-                 modalDelegate:(id)modalDelegate 
-                didEndSelector:(SEL)didEndSelector 
+                 modalDelegate:(id)modalDelegate
+                didEndSelector:(SEL)didEndSelector
                    contextInfo:(void *)contextInfo;
 
 @end

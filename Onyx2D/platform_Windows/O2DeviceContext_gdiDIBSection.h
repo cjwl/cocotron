@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 
 @interface O2DeviceContext_gdiDIBSection : O2DeviceContext_gdi {
-   O2DeviceContext_gdi *_compatible;
-   HBITMAP              _bitmap;
-   int                  _bitsPerPixel;
-   size_t               _bitsPerComponent;
-   size_t               _bytesPerRow;
-   void                *_bits;
+    O2DeviceContext_gdi *_compatible;
+    HBITMAP _bitmap;
+    int _bitsPerPixel;
+    size_t _bitsPerComponent;
+    size_t _bytesPerRow;
+    void *_bits;
 }
 
--initARGB32WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
--initGray8WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
+- initARGB32WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
+- initGray8WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
 
--(void *)bitmapBytes;
+- (void *)bitmapBytes;
 
--(size_t)bitsPerComponent;
--(size_t)bytesPerRow;
+- (size_t)bitsPerComponent;
+- (size_t)bytesPerRow;
 
--(int)bitsPerPixel;
+- (int)bitsPerPixel;
 
 @end

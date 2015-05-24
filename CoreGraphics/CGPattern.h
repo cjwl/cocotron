@@ -13,21 +13,21 @@ typedef struct O2Pattern *CGPatternRef;
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGContext.h>
 
-typedef void (*CGPatternReleaseInfoCallback)(void*);
+typedef void (*CGPatternReleaseInfoCallback)(void *);
 
 typedef struct {
-   unsigned int version;
-   void       (*drawPattern)(void *,CGContextRef);
-   void       (*releaseInfo)(void *);
+    unsigned int version;
+    void (*drawPattern)(void *, CGContextRef);
+    void (*releaseInfo)(void *);
 } CGPatternCallbacks;
 
-typedef enum  {
-   kCGPatternTilingNoDistortion,
-   kCGPatternTilingConstantSpacingMinimalDistortion,
-   kCGPatternTilingConstantSpacing,
+typedef enum {
+    kCGPatternTilingNoDistortion,
+    kCGPatternTilingConstantSpacingMinimalDistortion,
+    kCGPatternTilingConstantSpacing,
 } CGPatternTiling;
 
 COREGRAPHICS_EXPORT CGPatternRef CGPatternRetain(CGPatternRef self);
-COREGRAPHICS_EXPORT void         CGPatternRelease(CGPatternRef self);
+COREGRAPHICS_EXPORT void CGPatternRelease(CGPatternRef self);
 
-COREGRAPHICS_EXPORT CGPatternRef CGPatternCreate(void *info,CGRect bounds,CGAffineTransform matrix,CGFloat xstep,CGFloat ystep,CGPatternTiling tiling,bool isColored,const CGPatternCallbacks *callbacks);
+COREGRAPHICS_EXPORT CGPatternRef CGPatternCreate(void *info, CGRect bounds, CGAffineTransform matrix, CGFloat xstep, CGFloat ystep, CGPatternTiling tiling, bool isColored, const CGPatternCallbacks *callbacks);

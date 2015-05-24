@@ -15,78 +15,77 @@ typedef O2ColorSpace *O2ColorSpaceRef;
 #import <Onyx2D/O2Function.h>
 
 typedef enum {
-   kO2RenderingIntentDefault,
-   kO2RenderingIntentAbsoluteColorimetric,
-   kO2RenderingIntentRelativeColorimetric,
-   kO2RenderingIntentSaturation,
-   kO2RenderingIntentPerceptual,
+    kO2RenderingIntentDefault,
+    kO2RenderingIntentAbsoluteColorimetric,
+    kO2RenderingIntentRelativeColorimetric,
+    kO2RenderingIntentSaturation,
+    kO2RenderingIntentPerceptual,
 } O2ColorRenderingIntent;
 
 typedef enum {
-   kO2ColorSpaceModelMonochrome,
-   kO2ColorSpaceModelRGB,
-   kO2ColorSpaceModelCMYK,
-   kO2ColorSpaceModelLab,
-   kO2ColorSpaceModelDeviceN,
-   kO2ColorSpaceModelIndexed,
-   kO2ColorSpaceModelPattern,
+    kO2ColorSpaceModelMonochrome,
+    kO2ColorSpaceModelRGB,
+    kO2ColorSpaceModelCMYK,
+    kO2ColorSpaceModelLab,
+    kO2ColorSpaceModelDeviceN,
+    kO2ColorSpaceModelIndexed,
+    kO2ColorSpaceModelPattern,
 } O2ColorSpaceModel;
 
 @interface O2ColorSpace : NSObject <NSCopying> {
-   O2ColorSpaceModel _type;
-   BOOL              _isPlatformRGB;
+    O2ColorSpaceModel _type;
+    BOOL _isPlatformRGB;
 }
 
--(O2ColorSpaceModel)type;
+- (O2ColorSpaceModel)type;
 
 O2ColorSpaceRef O2ColorSpaceRetain(O2ColorSpaceRef self);
-void            O2ColorSpaceRelease(O2ColorSpaceRef self);
+void O2ColorSpaceRelease(O2ColorSpaceRef self);
 
 O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void);
 O2ColorSpaceRef O2ColorSpaceCreatePattern(O2ColorSpaceRef baseSpace);
-O2ColorSpaceRef O2ColorSpaceCreateDeviceN(const char **names,O2ColorSpaceRef alternateSpace,O2FunctionRef tintTransform);
+O2ColorSpaceRef O2ColorSpaceCreateDeviceN(const char **names, O2ColorSpaceRef alternateSpace, O2FunctionRef tintTransform);
 
 O2ColorSpaceRef O2ColorSpaceCreatePlatformRGB(void);
-BOOL            O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self);
+BOOL O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self);
 
-size_t          O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self);
+size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self);
 
 O2ColorSpaceModel O2ColorSpaceGetModel(O2ColorSpaceRef self);
 
--initWithPlatformRGB;
+- initWithPlatformRGB;
 
--(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other;
+- (BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other;
 
 @end
 
 @interface O2ColorSpace_indexed : O2ColorSpace {
-   O2ColorSpace  *_base;
-   unsigned       _hival;
-   unsigned char *_bytes;
+    O2ColorSpace *_base;
+    unsigned _hival;
+    unsigned char *_bytes;
 }
 
--initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
--(O2ColorSpaceRef)baseColorSpace;
--(unsigned)hival;
--(const unsigned char *)paletteBytes;
+- initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
+- (O2ColorSpaceRef)baseColorSpace;
+- (unsigned)hival;
+- (const unsigned char *)paletteBytes;
 
 @end
 
 @interface O2ColorSpace_DeviceN : O2ColorSpace {
-@public
-   unsigned        _numberOfComponents;
-@protected
-   char          **_names;
-   O2ColorSpaceRef _alternateSpace;
-   O2FunctionRef   _tintTransform;
+  @public
+    unsigned _numberOfComponents;
+  @protected
+    char **_names;
+    O2ColorSpaceRef _alternateSpace;
+    O2FunctionRef _tintTransform;
 }
 
--initWithComponentNames:(const char **)names alternateSpace:(O2ColorSpaceRef)altSpace tintTransform:(O2FunctionRef)tintTransform;
+- initWithComponentNames:(const char **)names alternateSpace:(O2ColorSpaceRef)altSpace tintTransform:(O2FunctionRef)tintTransform;
 
--(O2ColorSpaceRef)alternateSpace;
--(O2FunctionRef)tintTransform;
+- (O2ColorSpaceRef)alternateSpace;
+- (O2FunctionRef)tintTransform;
 
 @end
-

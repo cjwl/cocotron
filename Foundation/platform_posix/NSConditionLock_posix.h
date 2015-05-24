@@ -12,10 +12,10 @@
 @class NSThread;
 
 @interface NSConditionLock_posix : NSConditionLock {
-   pthread_cond_t _cond;
-   pthread_mutex_t _mutex;
-   NSInteger _value;
-   NSThread *_lockingThread;
+    pthread_cond_t _cond;
+    pthread_mutex_t _mutex;
+    NSInteger _value;
+    NSThread *_lockingThread;
 }
 
 @end

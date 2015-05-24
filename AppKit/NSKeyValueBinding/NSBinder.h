@@ -8,21 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSString, NSMutableDictionary, NSValueTransformer,NSArray;
+@class NSString, NSMutableDictionary, NSValueTransformer, NSArray;
 
 @interface _NSBinder : NSObject {
-	id _source;
-	id _destination;
-	NSString* _keyPath;
-	NSString* _bindingPath;
-	NSString* _binding;
-	NSMutableDictionary *_options;
+    id _source;
+    id _destination;
+    NSString *_keyPath;
+    NSString *_bindingPath;
+    NSString *_binding;
+    NSMutableDictionary *_options;
 }
-
 
 // override this if you need to provide different defaults.
 // the default implementation gets its options from source.
--(id)defaultBindingOptionsForBinding:(id)binding;
+- (id)defaultBindingOptionsForBinding:(id)binding;
 
 - (id)options;
 - (void)setOptions:(id)value;
@@ -33,36 +32,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (id)destination;
 - (void)setDestination:(id)value;
 
-- (NSString*)keyPath;
-- (void)setKeyPath:(NSString*)value;
+- (NSString *)keyPath;
+- (void)setKeyPath:(NSString *)value;
 
-- (NSString*)binding;
-- (void)setBinding:(NSString*)value;
+- (NSString *)binding;
+- (void)setBinding:(NSString *)value;
 
--(void)bind;
--(void)unbind;
+- (void)bind;
+- (void)unbind;
 
--(void)setBindingPath:(id)value;
--(id)bindingPath;
+- (void)setBindingPath:(id)value;
+- (id)bindingPath;
 
--(NSArray *)peerBinders;
+- (NSArray *)peerBinders;
 
--(void)startObservingChanges;
--(void)stopObservingChanges;
+- (void)startObservingChanges;
+- (void)stopObservingChanges;
 
 @end
 
 @interface _NSBinder (BindingOptions)
--(BOOL)conditionallySetsEditable;
--(BOOL)conditionallySetsEnabled;
--(BOOL)allowsEditingMultipleValues;
--(BOOL)createsSortDescriptor;
--(BOOL)raisesForNotApplicableKeys;
--(BOOL)continuouslyUpdatesValue;
--(id)multipleValuesPlaceholder;
--(id)noSelectionPlaceholder;
--(id)nullPlaceholder;
--(id)transformedObject:(id)object;
--(id)reverseTransformedObject:(id)object;
+- (BOOL)conditionallySetsEditable;
+- (BOOL)conditionallySetsEnabled;
+- (BOOL)allowsEditingMultipleValues;
+- (BOOL)createsSortDescriptor;
+- (BOOL)raisesForNotApplicableKeys;
+- (BOOL)continuouslyUpdatesValue;
+- (id)multipleValuesPlaceholder;
+- (id)noSelectionPlaceholder;
+- (id)nullPlaceholder;
+- (id)transformedObject:(id)object;
+- (id)reverseTransformedObject:(id)object;
 @end
-

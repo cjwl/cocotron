@@ -8,27 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSExpression.h>
 
 typedef enum {
- NSExpressionOperatorNegate=NSFunctionExpressionType+1,
- NSExpressionOperatorAdd,
- NSExpressionOperatorSubtract,
- NSExpressionOperatorMultiply,
- NSExpressionOperatorDivide,
- NSExpressionOperatorExp,
- NSExpressionOperatorAssign,
- NSExpressionOperatorKeypath,
- NSExpressionOperatorIndex,
- NSExpressionOperatorIndexFirst,
- NSExpressionOperatorIndexLast,
- NSExpressionOperatorIndexSize,
+    NSExpressionOperatorNegate = NSFunctionExpressionType + 1,
+    NSExpressionOperatorAdd,
+    NSExpressionOperatorSubtract,
+    NSExpressionOperatorMultiply,
+    NSExpressionOperatorDivide,
+    NSExpressionOperatorExp,
+    NSExpressionOperatorAssign,
+    NSExpressionOperatorKeypath,
+    NSExpressionOperatorIndex,
+    NSExpressionOperatorIndexFirst,
+    NSExpressionOperatorIndexLast,
+    NSExpressionOperatorIndexSize,
 } NSExpressionOperator;
 
 @interface NSExpression_operator : NSExpression {
-   NSExpressionOperator _operator;
-   NSArray             *_arguments;
+    NSExpressionOperator _operator;
+    NSArray *_arguments;
 }
 
-+(NSExpression *)expressionForOperator:(NSExpressionOperator)operator arguments:(NSArray *)arguments;
++ (NSExpression *)expressionForOperator:(NSExpressionOperator) operator arguments:(NSArray *)arguments;
 
--(NSArray *)arguments;
+- (NSArray *)arguments;
 
 @end

@@ -10,17 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 
 @interface NSObjectToObservers : NSObject {
-   NSMapTable *_objectToObservers;
+    NSMapTable *_objectToObservers;
 }
 
--(void)invalidate;
+- (void)invalidate;
 
--(void)addObserver:(NSNotificationObserver *)observer object:object;
+- (void)addObserver:(NSNotificationObserver *)observer object:object;
 
--(void)removeObserver:anObserver object:object;
+- (void)removeObserver:anObserver object:object;
 
--(void)postNotification:(NSNotification *)note;
+- (void)postNotification:(NSNotification *)note;
 
--(NSUInteger)count;
+- (NSUInteger)count;
 
 @end

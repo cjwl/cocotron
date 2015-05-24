@@ -7,24 +7,24 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSPort,NSArray,NSMutableArray,NSDate;
+@class NSPort, NSArray, NSMutableArray, NSDate;
 
 @interface NSPortMessage : NSObject {
-   NSPort  *_sendPort;
-   NSPort  *_receivePort;
-   NSMutableArray *_components;
-   uint32_t _msgid;
+    NSPort *_sendPort;
+    NSPort *_receivePort;
+    NSMutableArray *_components;
+    uint32_t _msgid;
 }
 
--initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components;
+- initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components;
 
--(uint32_t)msgid;
--(NSArray *)components;
--(NSPort *)sendPort;
--(NSPort *)receivePort;
+- (uint32_t)msgid;
+- (NSArray *)components;
+- (NSPort *)sendPort;
+- (NSPort *)receivePort;
 
--(void)setMsgid:(uint32_t)msgid;
+- (void)setMsgid:(uint32_t)msgid;
 
--(BOOL)sendBeforeDate:(NSDate *)date;
- 
+- (BOOL)sendBeforeDate:(NSDate *)date;
+
 @end

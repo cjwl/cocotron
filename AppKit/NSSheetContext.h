@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 
 @interface NSSheetContext : NSObject {
-   NSWindow *_sheet;
-   id        _modalDelegate;
-   SEL       _didEndSelector;
-   void     *_contextInfo;
-   NSRect    _frame;
-	NSModalSession _session;
+    NSWindow *_sheet;
+    id _modalDelegate;
+    SEL _didEndSelector;
+    void *_contextInfo;
+    NSRect _frame;
+    NSModalSession _session;
 }
 
-+(NSSheetContext *)sheetContextWithSheet:(NSWindow *)sheet modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo frame:(NSRect)frame;
++ (NSSheetContext *)sheetContextWithSheet:(NSWindow *)sheet modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo frame:(NSRect)frame;
 
--(NSWindow *)sheet;
--modalDelegate;
--(SEL)didEndSelector;
--(void *)contextInfo;
+- (NSWindow *)sheet;
+- modalDelegate;
+- (SEL)didEndSelector;
+- (void *)contextInfo;
 
--(NSRect)frame;
+- (NSRect)frame;
 
 - (void)setModalSession:(NSModalSession)session;
 - (NSModalSession)modalSession;

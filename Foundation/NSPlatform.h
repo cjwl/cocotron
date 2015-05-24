@@ -10,52 +10,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <Foundation/NSError.h>
 
-@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet, NSError;
+@class NSTimeZone, NSThread, NSInputSource, NSInputSourceSet, NSError;
 
-FOUNDATION_EXPORT NSString * const NSPlatformExecutableFileExtension;
-FOUNDATION_EXPORT NSString * const NSPlatformLoadableObjectFileExtension;
-FOUNDATION_EXPORT NSString * const NSPlatformLoadableObjectFilePrefix;
-FOUNDATION_EXPORT NSString * const NSPlatformExecutableDirectory;
-FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
+FOUNDATION_EXPORT NSString *const NSPlatformExecutableFileExtension;
+FOUNDATION_EXPORT NSString *const NSPlatformLoadableObjectFileExtension;
+FOUNDATION_EXPORT NSString *const NSPlatformLoadableObjectFilePrefix;
+FOUNDATION_EXPORT NSString *const NSPlatformExecutableDirectory;
+FOUNDATION_EXPORT NSString *const NSPlatformResourceNameSuffix;
 
 @interface NSPlatform : NSObject
 
-+currentPlatform;
++ currentPlatform;
 
--(NSInputSource *)parentDeathInputSource;
+- (NSInputSource *)parentDeathInputSource;
 
--(Class)taskClass;
--(Class)socketClass;
--(Class)socketPortClass;
--(Class)pipeClass;
--(Class)lockClass;
--(Class)recursiveLockClass;
--(Class)conditionLockClass;
--(Class)persistantDomainClass;
--(Class)timeZoneClass;
--(Class)conditionClass;
+- (Class)taskClass;
+- (Class)socketClass;
+- (Class)socketPortClass;
+- (Class)pipeClass;
+- (Class)lockClass;
+- (Class)recursiveLockClass;
+- (Class)conditionLockClass;
+- (Class)persistantDomainClass;
+- (Class)timeZoneClass;
+- (Class)conditionClass;
 
--(NSString *)userName;
--(NSString *)fullUserName;
--(NSString *)homeDirectory;
--(NSString *)libraryDirectory;
--(NSString *)temporaryDirectory;
+- (NSString *)userName;
+- (NSString *)fullUserName;
+- (NSString *)homeDirectory;
+- (NSString *)libraryDirectory;
+- (NSString *)temporaryDirectory;
 
--(NSArray *)arguments;
--(NSDictionary *)environment;
+- (NSArray *)arguments;
+- (NSDictionary *)environment;
 
--(NSString *)hostName;
+- (NSString *)hostName;
 
--(NSString *)DNSHostName;
--(NSArray *)addressesForDNSHostName:(NSString *)name;
--(NSString *)hostNameByAddress:(NSString *)address;
+- (NSString *)DNSHostName;
+- (NSArray *)addressesForDNSHostName:(NSString *)name;
+- (NSString *)hostNameByAddress:(NSString *)address;
 
--(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
--(void)unmapAddress:(void *)ptr length:(NSUInteger)length;
+- (void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
+- (void)unmapAddress:(void *)ptr length:(NSUInteger)length;
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp;
+- (BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp;
 
--(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
+- (void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end
 
 FOUNDATION_EXPORT int NSPlatformProcessorCount();
@@ -64,7 +64,7 @@ FOUNDATION_EXPORT NSUInteger NSPlatformThreadID();
 FOUNDATION_EXPORT NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate();
 FOUNDATION_EXPORT void NSPlatformLogString(NSString *string);
 FOUNDATION_EXPORT void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval);
-FOUNDATION_EXPORT void *NSPlatformContentsOfFile(NSString *path,NSUInteger *length);
+FOUNDATION_EXPORT void *NSPlatformContentsOfFile(NSString *path, NSUInteger *length);
 
 // These functions are implemented in the platform subproject
 
@@ -73,5 +73,5 @@ void NSPlatformSetCurrentThread(NSThread *thread);
 #ifdef WINDOWS
 NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg, NSError **errorp);
 #else
-NSUInteger NSPlatformDetachThread(void *(* func)(void *arg), void *arg, NSError **errorp);
+NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg, NSError **errorp);
 #endif

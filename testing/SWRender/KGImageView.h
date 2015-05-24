@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 
 @interface KGImageView : NSView {
-   CGImageRef _imageRef;
+    CGImageRef _imageRef;
 }
 
--(void)setImageRef:(CGImageRef)imageRef;
+- (void)setImageRef:(CGImageRef)imageRef;
 
 @end

@@ -11,6 +11,6 @@
 // The GCC runtime implementations of these differ slightly.
 // The Apple runtime does not have one of them.
 // Therefore use the Cocotron implementation.
-size_t objc_ext_sizeof_type (const char *type);
-size_t objc_ext_alignof_type (const char *type);
-const char *objc_ext_skip_type_specifier (const char *type,BOOL skipDigits);
+size_t objc_ext_sizeof_type(const char *type);
+size_t objc_ext_alignof_type(const char *type);
+const char *objc_ext_skip_type_specifier(const char *type, BOOL skipDigits);

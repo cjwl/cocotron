@@ -10,9 +10,9 @@
 #import <AppKit/AppKit.h>
 
 @interface TextFieldBindings : NibBasedTest {
-   id IBOutlet _textField;
-   id _textFieldContents;
+    id IBOutlet _textField;
+    id _textFieldContents;
 }
-@property (copy) NSString *textFieldContents;
+@property(copy) NSString *textFieldContents;
 
 @end

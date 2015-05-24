@@ -8,15 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSPanel.h>
 
-@class NSTextField,NSButton;
+@class NSTextField, NSButton;
 
 @interface NSAlertPanel : NSPanel {
-   NSTextField *_messageText;
-   NSButton    *_defaultButton;
-   NSButton    *_alternateButton;
-   NSButton    *_otherButton;
+    NSTextField *_messageText;
+    NSButton *_defaultButton;
+    NSButton *_alternateButton;
+    NSButton *_otherButton;
 }
 
--initWithTitle:(NSString *)title message:(NSString *)message defaultButton:(NSString *)defaulteTitle alternateButton:(NSString *)alternateTitle otherButton:(NSString *)otherTitle sheet:(BOOL)sheet;
+- initWithTitle:(NSString *)title message:(NSString *)message defaultButton:(NSString *)defaulteTitle alternateButton:(NSString *)alternateTitle otherButton:(NSString *)otherTitle sheet:(BOOL)sheet;
 
 @end

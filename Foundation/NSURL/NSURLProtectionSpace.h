@@ -8,26 +8,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSURLProtectionSpace : NSObject <NSCopying> {
-   NSString *_host;
-   int       _port;
-   NSString *_protocol;
-   NSString *_realm;
-   NSString *_authenticationMethod;
-   BOOL      _isProxy;
+    NSString *_host;
+    int _port;
+    NSString *_protocol;
+    NSString *_realm;
+    NSString *_authenticationMethod;
+    BOOL _isProxy;
 }
 
--initWithHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
--initWithProxyHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
+- initWithHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
+- initWithProxyHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
 
--(NSString *)host;
--(int)port;
--(NSString *)protocol;
--(NSString *)realm;
--(NSString *)authenticationMethod;
+- (NSString *)host;
+- (int)port;
+- (NSString *)protocol;
+- (NSString *)realm;
+- (NSString *)authenticationMethod;
 
--(NSString *)proxyType;
+- (NSString *)proxyType;
 
--(BOOL)receivesCredentialsSecurely;
--(BOOL)isProxy;
+- (BOOL)receivesCredentialsSecurely;
+- (BOOL)isProxy;
 
 @end

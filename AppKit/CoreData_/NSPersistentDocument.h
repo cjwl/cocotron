@@ -15,31 +15,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSManagedObjectContext *_context;
 }
 
-- (NSManagedObjectContext *) managedObjectContext;
-- (NSManagedObjectModel *) managedObjectModel;
-- (void) setManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
-- (BOOL) configurePersistentStoreCoordinatorForURL: (NSURL *) url
-					    ofType: (NSString *) fileType
-				modelConfiguration: (NSString *) configuration
-				      storeOptions: (NSDictionary *) storeOptions
-					     error: (NSError **) error;
-- (NSString *) persistentStoreTypeForFileType: (NSString *) fileType;
+- (NSManagedObjectContext *)managedObjectContext;
+- (NSManagedObjectModel *)managedObjectModel;
+- (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (BOOL)configurePersistentStoreCoordinatorForURL:(NSURL *)url
+                                           ofType:(NSString *)fileType
+                               modelConfiguration:(NSString *)configuration
+                                     storeOptions:(NSDictionary *)storeOptions
+                                            error:(NSError **)error;
+- (NSString *)persistentStoreTypeForFileType:(NSString *)fileType;
 
-- (BOOL) hasUndoManager;
-- (void) setHasUndoManager: (BOOL) flag;
-- (void) setUndoManager: (NSUndoManager *) undoManager;
-- (BOOL) isDocumentEdited;
+- (BOOL)hasUndoManager;
+- (void)setHasUndoManager:(BOOL)flag;
+- (void)setUndoManager:(NSUndoManager *)undoManager;
+- (BOOL)isDocumentEdited;
 
-- (BOOL) readFromURL: (NSURL *) absoluteURL
-	      ofType: (NSString *) typeName
-	       error: (NSError **) outError;
-- (BOOL) revertToContentsOfURL: (NSURL *) inAbsoluteURL
-			ofType: (NSString *) inTypeName
-			 error: (NSError **) outError;
-- (BOOL) writeToURL: (NSURL *) absoluteURL
-	     ofType: (NSString *) typeName
-   forSaveOperation: (NSSaveOperationType) saveOperation
-originalContentsURL: (NSURL *) absoluteOriginalContentsURL
-	      error:(NSError **)error;
+- (BOOL)readFromURL:(NSURL *)absoluteURL
+             ofType:(NSString *)typeName
+              error:(NSError **)outError;
+- (BOOL)revertToContentsOfURL:(NSURL *)inAbsoluteURL
+                       ofType:(NSString *)inTypeName
+                        error:(NSError **)outError;
+- (BOOL)writeToURL:(NSURL *)absoluteURL
+                 ofType:(NSString *)typeName
+       forSaveOperation:(NSSaveOperationType)saveOperation
+    originalContentsURL:(NSURL *)absoluteOriginalContentsURL
+                  error:(NSError **)error;
 
 @end

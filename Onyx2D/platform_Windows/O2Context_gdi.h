@@ -9,24 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <windows.h>
 
-@class O2DeviceContext_gdi,Win32Font;
+@class O2DeviceContext_gdi, Win32Font;
 
 @interface O2Context_gdi : O2Context {
-   O2DeviceContext_gdi *_deviceContext;
-   O2Surface           *_surface;
-   HDC  _dc;
-   BOOL _isAdvanced;
-   Win32Font *_gdiFont;
+    O2DeviceContext_gdi *_deviceContext;
+    O2Surface *_surface;
+    HDC _dc;
+    BOOL _isAdvanced;
+    Win32Font *_gdiFont;
 }
 
--initWithGraphicsState:(O2GState *)state deviceContext:(O2DeviceContext_gdi *)deviceContext;
+- initWithGraphicsState:(O2GState *)state deviceContext:(O2DeviceContext_gdi *)deviceContext;
 
--(NSSize)pointSize;
+- (NSSize)pointSize;
 
--(HDC)dc;
--(HFONT)fontHandle;
+- (HDC)dc;
+- (HFONT)fontHandle;
 
--(O2DeviceContext_gdi *)deviceContext;
+- (O2DeviceContext_gdi *)deviceContext;
 
 @end
-

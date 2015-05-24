@@ -12,10 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32;
 
 @interface NSParentDeathMonitor_win32 : NSObject {
-   NSHandleMonitor_win32 *_monitor;
-   HANDLE              _parentHandle;
+    NSHandleMonitor_win32 *_monitor;
+    HANDLE _parentHandle;
 }
 
--(NSHandleMonitor_win32 *)handleMonitor;
+- (NSHandleMonitor_win32 *)handleMonitor;
 
 @end

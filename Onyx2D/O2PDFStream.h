@@ -8,25 +8,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2PDFObject.h>
 
-@class NSData,NSMutableData;
-@class O2PDFDictionary,O2PDFxref;
+@class NSData, NSMutableData;
+@class O2PDFDictionary, O2PDFxref;
 
 @interface O2PDFStream : O2PDFObject {
-   O2PDFDictionary *_dictionary;
-   NSData          *_data;
-   NSData          *_resultData;
-   O2PDFxref       *_xref;
+    O2PDFDictionary *_dictionary;
+    NSData *_data;
+    NSData *_resultData;
+    O2PDFxref *_xref;
 }
 
-+(O2PDFStream *)pdfStream;
-+(O2PDFStream *)pdfStreamWithData:(NSData *)data;
-+(O2PDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length;
++ (O2PDFStream *)pdfStream;
++ (O2PDFStream *)pdfStreamWithData:(NSData *)data;
++ (O2PDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length;
 
--initWithDictionary:(O2PDFDictionary *)dictionary xref:(O2PDFxref *)xref position:(O2PDFInteger)position;
+- initWithDictionary:(O2PDFDictionary *)dictionary xref:(O2PDFxref *)xref position:(O2PDFInteger)position;
 
--(O2PDFxref *)xref;
--(O2PDFDictionary *)dictionary;
--(NSData *)data;
--(NSMutableData *)mutableData;
+- (O2PDFxref *)xref;
+- (O2PDFDictionary *)dictionary;
+- (NSData *)data;
+- (NSMutableData *)mutableData;
 
 @end

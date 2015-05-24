@@ -9,44 +9,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSRichTextReader : NSString {
-    NSString            *_imageDirectory;
-    NSData              *_data;
+    NSString *_imageDirectory;
+    NSData *_data;
     const unsigned char *_bytes;
-    NSUInteger           _length;
-    NSRange              _range;
-    
+    NSUInteger _length;
+    NSRange _range;
+
     NSStringEncoding _encoding;
-    int  _state;
+    int _state;
     unichar _univalue;
-    
-    NSInteger     _currentCharset;
-    
+
+    NSInteger _currentCharset;
+
     NSRange _letterRange;
-    int     _argValue;
-    int     _argSign;
-    
-    // The current parsed part of buffer 
+    int _argValue;
+    int _argSign;
+
+    // The current parsed part of buffer
     NSMutableData *_bufferIn;
-    
-    NSMutableDictionary       *_fontTable;
-    NSMutableDictionary       *_currentFontInfo;
-    NSMutableDictionary       *_colorTable;
-    NSMutableDictionary       *_currentColorInfo;
-    
-    NSMutableDictionary       *_currentAttributes;
+
+    NSMutableDictionary *_fontTable;
+    NSMutableDictionary *_currentFontInfo;
+    NSMutableDictionary *_colorTable;
+    NSMutableDictionary *_currentColorInfo;
+
+    NSMutableDictionary *_currentAttributes;
     NSMutableAttributedString *_attributedString;
-    
+
     // Stack of the current parser states - only contains the chars destination for now but should be
     // extended to contains the whole current state for a more complete parser
     NSMutableArray *_states;
 }
 
--initWithData:(NSData *)data;
--initWithContentsOfFile:(NSString *)path;
+- initWithData:(NSData *)data;
+- initWithContentsOfFile:(NSString *)path;
 
-+(NSAttributedString *)attributedStringWithData:(NSData *)data;
-+(NSAttributedString *)attributedStringWithContentsOfFile:(NSString *)path;
++ (NSAttributedString *)attributedStringWithData:(NSData *)data;
++ (NSAttributedString *)attributedStringWithContentsOfFile:(NSString *)path;
 
--(NSAttributedString *)parseAttributedString;
+- (NSAttributedString *)parseAttributedString;
 
 @end

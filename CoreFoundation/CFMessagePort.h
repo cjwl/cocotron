@@ -10,38 +10,38 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct __NSMessagePort *CFMessagePortRef;
 
-typedef void (*CFMessagePortInvalidationCallBack)(CFMessagePortRef self,void *info);
+typedef void (*CFMessagePortInvalidationCallBack)(CFMessagePortRef self, void *info);
 
-typedef struct  {
-   CFIndex                            version;
-   void                              *info;
-   CFAllocatorRetainCallBack          retain;
-   CFAllocatorReleaseCallBack         release;
-   CFAllocatorCopyDescriptionCallBack copyDescription;
+typedef struct {
+    CFIndex version;
+    void *info;
+    CFAllocatorRetainCallBack retain;
+    CFAllocatorReleaseCallBack release;
+    CFAllocatorCopyDescriptionCallBack copyDescription;
 } CFMessagePortContext;
 
 enum {
-   kCFMessagePortSuccess       = 0,
-   kCFMessagePortSendTimeout   =-1,
-   kCFMessagePortReceiveTimeout=-2,
-   kCFMessagePortIsInvalid     =-3,
-   kCFMessagePortTransportError=-4,
+    kCFMessagePortSuccess = 0,
+    kCFMessagePortSendTimeout = -1,
+    kCFMessagePortReceiveTimeout = -2,
+    kCFMessagePortIsInvalid = -3,
+    kCFMessagePortTransportError = -4,
 };
 
-typedef CFDataRef (*CFMessagePortCallBack)(CFMessagePortRef local,CFInteger msgId,CFDataRef data,void *info);
+typedef CFDataRef (*CFMessagePortCallBack)(CFMessagePortRef local, CFInteger msgId, CFDataRef data, void *info);
 
-COREFOUNDATION_EXPORT CFTypeID                          CFMessagePortGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFMessagePortGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFMessagePortRef                  CFMessagePortCreateLocal(CFAllocatorRef allocator,CFStringRef name,CFMessagePortCallBack callback,CFMessagePortContext *context,Boolean *callerFreeInfo);
-COREFOUNDATION_EXPORT CFMessagePortRef                  CFMessagePortCreateRemote(CFAllocatorRef allocator,CFStringRef name);
+COREFOUNDATION_EXPORT CFMessagePortRef CFMessagePortCreateLocal(CFAllocatorRef allocator, CFStringRef name, CFMessagePortCallBack callback, CFMessagePortContext *context, Boolean *callerFreeInfo);
+COREFOUNDATION_EXPORT CFMessagePortRef CFMessagePortCreateRemote(CFAllocatorRef allocator, CFStringRef name);
 
-COREFOUNDATION_EXPORT CFRunLoopSourceRef                CFMessagePortCreateRunLoopSource(CFAllocatorRef allocator,CFMessagePortRef self,CFIndex order);
-COREFOUNDATION_EXPORT void                              CFMessagePortGetContext(CFMessagePortRef self,CFMessagePortContext *context);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef CFMessagePortCreateRunLoopSource(CFAllocatorRef allocator, CFMessagePortRef self, CFIndex order);
+COREFOUNDATION_EXPORT void CFMessagePortGetContext(CFMessagePortRef self, CFMessagePortContext *context);
 COREFOUNDATION_EXPORT CFMessagePortInvalidationCallBack CFMessagePortGetInvalidationCallBack(CFMessagePortRef self);
-COREFOUNDATION_EXPORT CFStringRef                       CFMessagePortGetName(CFMessagePortRef self);
-COREFOUNDATION_EXPORT void                              CFMessagePortInvalidate(CFMessagePortRef self);
-COREFOUNDATION_EXPORT Boolean                           CFMessagePortIsRemote(CFMessagePortRef self);
-COREFOUNDATION_EXPORT Boolean                           CFMessagePortIsValid(CFMessagePortRef self);
-COREFOUNDATION_EXPORT CFInteger                         CFMessagePortSendRequest(CFMessagePortRef self,CFInteger msgId,CFDataRef data,CFTimeInterval sendTimeout,CFTimeInterval receiveTimeout,CFStringRef replyMode,CFDataRef *replyData);
-COREFOUNDATION_EXPORT void                              CFMessagePortSetInvalidationCallBack(CFMessagePortRef self,CFMessagePortInvalidationCallBack callback);
-COREFOUNDATION_EXPORT Boolean                           CFMessagePortSetName(CFMessagePortRef self,CFStringRef name);
+COREFOUNDATION_EXPORT CFStringRef CFMessagePortGetName(CFMessagePortRef self);
+COREFOUNDATION_EXPORT void CFMessagePortInvalidate(CFMessagePortRef self);
+COREFOUNDATION_EXPORT Boolean CFMessagePortIsRemote(CFMessagePortRef self);
+COREFOUNDATION_EXPORT Boolean CFMessagePortIsValid(CFMessagePortRef self);
+COREFOUNDATION_EXPORT CFInteger CFMessagePortSendRequest(CFMessagePortRef self, CFInteger msgId, CFDataRef data, CFTimeInterval sendTimeout, CFTimeInterval receiveTimeout, CFStringRef replyMode, CFDataRef *replyData);
+COREFOUNDATION_EXPORT void CFMessagePortSetInvalidationCallBack(CFMessagePortRef self, CFMessagePortInvalidationCallBack callback);
+COREFOUNDATION_EXPORT Boolean CFMessagePortSetName(CFMessagePortRef self, CFStringRef name);

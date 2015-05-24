@@ -12,16 +12,16 @@
 #import <ft2build.h>
 
 #ifdef LINUX
-typedef int ptrdiff_t; 
+typedef int ptrdiff_t;
 #endif
 #import FT_FREETYPE_H
 #import FT_RENDER_H
 
 @class NSSet;
 
-@interface KTFont_FT : KTFont 
+@interface KTFont_FT : KTFont
 
--(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
--(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
+- (CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
+- (void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
 @end

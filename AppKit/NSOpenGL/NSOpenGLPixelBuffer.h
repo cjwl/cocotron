@@ -9,16 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSOpenGLPixelBuffer : NSObject {
-
 }
 
--initWithTextureTarget:(unsigned long)textureTarget textureInternalFormat:(unsigned long)textureFormat textureMaxMipMapLevel:(long)mipMapLevel pixelsWide:(int)pixelsWide pixelsHigh:(int)pixelsHigh;
+- initWithTextureTarget:(unsigned long)textureTarget textureInternalFormat:(unsigned long)textureFormat textureMaxMipMapLevel:(long)mipMapLevel pixelsWide:(int)pixelsWide pixelsHigh:(int)pixelsHigh;
 
--(unsigned)textureTarget;
--(unsigned long)textureInternalFormat;
--(long)textureMaxMipMapLevel;
+- (unsigned)textureTarget;
+- (unsigned long)textureInternalFormat;
+- (long)textureMaxMipMapLevel;
 
--(int)pixelsWide;
--(int)pixelsHigh;
+- (int)pixelsWide;
+- (int)pixelsHigh;
 
 @end

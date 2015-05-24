@@ -10,18 +10,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSStepper : NSControl
 
--(double)minValue;
--(double)increment;
--(double)maxValue;
+- (double)minValue;
+- (double)increment;
+- (double)maxValue;
 
--(BOOL)autorepeat;
--(BOOL)valueWraps;
+- (BOOL)autorepeat;
+- (BOOL)valueWraps;
 
--(void)setMinValue:(double)value;
--(void)setIncrement:(double)value;
--(void)setMaxValue:(double)value;
+- (void)setMinValue:(double)value;
+- (void)setIncrement:(double)value;
+- (void)setMaxValue:(double)value;
 
--(void)setAutorepeat:(BOOL)flag;
--(void)setValueWraps:(BOOL)flag;
+- (void)setAutorepeat:(BOOL)flag;
+- (void)setValueWraps:(BOOL)flag;
 
 @end

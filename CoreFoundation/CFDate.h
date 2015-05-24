@@ -9,60 +9,60 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct __NSDate *CFDateRef;
 
-typedef double         CFTimeInterval;
+typedef double CFTimeInterval;
 typedef CFTimeInterval CFAbsoluteTime;
 
 #import <CoreFoundation/CFTimeZone.h>
 
 typedef struct {
-   SInt32 year;
-   SInt8  month;
-   SInt8  day;
-   SInt8  hour;
-   SInt8  minute;
-   double second;
+    SInt32 year;
+    SInt8 month;
+    SInt8 day;
+    SInt8 hour;
+    SInt8 minute;
+    double second;
 } CFGregorianDate;
 
 typedef struct {
-   SInt32 years;
-   SInt32 months;
-   SInt32 days;
-   SInt32 hours;
-   SInt32 minutes;
-   double seconds;
+    SInt32 years;
+    SInt32 months;
+    SInt32 days;
+    SInt32 hours;
+    SInt32 minutes;
+    double seconds;
 } CFGregorianUnits;
 
 typedef enum {
-   kCFGregorianUnitsYears   = 0x01,
-   kCFGregorianUnitsMonths  = 0x02,
-   kCFGregorianUnitsDays    = 0x04,
-   kCFGregorianUnitsHours   = 0x08,
-   kCFGregorianUnitsMinutes = 0x10,
-   kCFGregorianUnitsSeconds = 0x20,
-   kCFGregorianAllUnits     = 0x00FFFFFF
+    kCFGregorianUnitsYears = 0x01,
+    kCFGregorianUnitsMonths = 0x02,
+    kCFGregorianUnitsDays = 0x04,
+    kCFGregorianUnitsHours = 0x08,
+    kCFGregorianUnitsMinutes = 0x10,
+    kCFGregorianUnitsSeconds = 0x20,
+    kCFGregorianAllUnits = 0x00FFFFFF
 } CFGregorianUnitFlags;
 
 COREFOUNDATION_EXPORT const CFTimeInterval kCFAbsoluteTimeIntervalSince1970;
 COREFOUNDATION_EXPORT const CFTimeInterval kCFAbsoluteTimeIntervalSince1904;
 
-COREFOUNDATION_EXPORT CFTypeID           CFDateGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFDateGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFDateRef          CFDateCreate(CFAllocatorRef allocator,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT CFDateRef CFDateCreate(CFAllocatorRef allocator, CFAbsoluteTime absoluteTime);
 
-COREFOUNDATION_EXPORT CFComparisonResult CFDateCompare(CFDateRef self,CFDateRef other,void *context);
-COREFOUNDATION_EXPORT CFAbsoluteTime     CFDateGetAbsoluteTime(CFDateRef self);
-COREFOUNDATION_EXPORT CFTimeInterval     CFDateGetTimeIntervalSinceDate(CFDateRef self,CFDateRef other);
+COREFOUNDATION_EXPORT CFComparisonResult CFDateCompare(CFDateRef self, CFDateRef other, void *context);
+COREFOUNDATION_EXPORT CFAbsoluteTime CFDateGetAbsoluteTime(CFDateRef self);
+COREFOUNDATION_EXPORT CFTimeInterval CFDateGetTimeIntervalSinceDate(CFDateRef self, CFDateRef other);
 
-COREFOUNDATION_EXPORT CFAbsoluteTime   CFAbsoluteTimeGetCurrent();
+COREFOUNDATION_EXPORT CFAbsoluteTime CFAbsoluteTimeGetCurrent();
 
-COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetWeekOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
-COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetDayOfWeek(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
-COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetDayOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT SInt32 CFAbsoluteTimeGetWeekOfYear(CFAbsoluteTime absoluteTime, CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT SInt32 CFAbsoluteTimeGetDayOfWeek(CFAbsoluteTime absoluteTime, CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT SInt32 CFAbsoluteTimeGetDayOfYear(CFAbsoluteTime absoluteTime, CFTimeZoneRef timeZone);
 
-COREFOUNDATION_EXPORT CFAbsoluteTime   CFAbsoluteTimeAddGregorianUnits(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone,CFGregorianUnits units);
-COREFOUNDATION_EXPORT CFGregorianUnits CFAbsoluteTimeGetDifferenceAsGregorianUnits (CFAbsoluteTime absoluteTime,CFAbsoluteTime other,CFTimeZoneRef timeZone,CFOptionFlags unitFlags);
-COREFOUNDATION_EXPORT CFGregorianDate  CFAbsoluteTimeGetGregorianDate(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT CFAbsoluteTime CFAbsoluteTimeAddGregorianUnits(CFAbsoluteTime absoluteTime, CFTimeZoneRef timeZone, CFGregorianUnits units);
+COREFOUNDATION_EXPORT CFGregorianUnits CFAbsoluteTimeGetDifferenceAsGregorianUnits(CFAbsoluteTime absoluteTime, CFAbsoluteTime other, CFTimeZoneRef timeZone, CFOptionFlags unitFlags);
+COREFOUNDATION_EXPORT CFGregorianDate CFAbsoluteTimeGetGregorianDate(CFAbsoluteTime absoluteTime, CFTimeZoneRef timeZone);
 
-COREFOUNDATION_EXPORT CFAbsoluteTime   CFGregorianDateGetAbsoluteTime(CFGregorianDate gregorianDate,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT CFAbsoluteTime CFGregorianDateGetAbsoluteTime(CFGregorianDate gregorianDate, CFTimeZoneRef timeZone);
 
-COREFOUNDATION_EXPORT Boolean          CFGregorianDateIsValid(CFGregorianDate gregorianDate,CFOptionFlags unitFlags);
+COREFOUNDATION_EXPORT Boolean CFGregorianDateIsValid(CFGregorianDate gregorianDate, CFOptionFlags unitFlags);

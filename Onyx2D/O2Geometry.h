@@ -27,62 +27,61 @@ extern const O2Point O2PointZero;
 extern const O2Size O2SizeZero;
 
 static inline O2Rect O2RectMake(O2Float x, O2Float y, O2Float width, O2Float height) {
-   return NSMakeRect(x,y,width,height);
+    return NSMakeRect(x, y, width, height);
 }
 
-static inline O2Point O2PointMake(O2Float x,O2Float y){
-   return NSMakePoint(x,y);
+static inline O2Point O2PointMake(O2Float x, O2Float y) {
+    return NSMakePoint(x, y);
 }
 
-static inline O2Size O2SizeMake(O2Float x,O2Float y){
-   O2Size result={x,y};
-   return result;
+static inline O2Size O2SizeMake(O2Float x, O2Float y) {
+    O2Size result = {x, y};
+    return result;
 }
 
-static inline O2Float O2RectGetMinX(O2Rect rect){
-   return rect.origin.x;
+static inline O2Float O2RectGetMinX(O2Rect rect) {
+    return rect.origin.x;
 }
 
-static inline O2Float O2RectGetMaxX(O2Rect rect){
-   return rect.origin.x+rect.size.width;
+static inline O2Float O2RectGetMaxX(O2Rect rect) {
+    return rect.origin.x + rect.size.width;
 }
 
-static inline O2Float O2RectGetMinY(O2Rect rect){
-   return rect.origin.y;
+static inline O2Float O2RectGetMinY(O2Rect rect) {
+    return rect.origin.y;
 }
 
-static inline O2Float O2RectGetMaxY(O2Rect rect){
-   return rect.origin.y+rect.size.height;
+static inline O2Float O2RectGetMaxY(O2Rect rect) {
+    return rect.origin.y + rect.size.height;
 }
 
-static inline BOOL O2RectContainsPoint(O2Rect rect,O2Point point) {
-   return (point.x>=NSMinX(rect) && point.x<=NSMaxX(rect)) && (point.y>=NSMinY(rect) && point.y<=NSMaxY(rect));
+static inline BOOL O2RectContainsPoint(O2Rect rect, O2Point point) {
+    return (point.x >= NSMinX(rect) && point.x <= NSMaxX(rect)) && (point.y >= NSMinY(rect) && point.y <= NSMaxY(rect));
 }
 
-static inline BOOL O2PointEqualToPoint(O2Point a,O2Point b){
-   return ((a.x==b.x) && (a.y==b.y))?YES:NO;
+static inline BOOL O2PointEqualToPoint(O2Point a, O2Point b) {
+    return ((a.x == b.x) && (a.y == b.y)) ? YES : NO;
 }
 
-static inline O2Rect O2RectIntersection(O2Rect rect0,O2Rect rect1) {
-// FIX: embed code
-   return NSIntersectionRect(rect0,rect1);
+static inline O2Rect O2RectIntersection(O2Rect rect0, O2Rect rect1) {
+    // FIX: embed code
+    return NSIntersectionRect(rect0, rect1);
 }
 
-static inline O2Rect O2RectIntegral(O2Rect rect){
-   float minx=floor(rect.origin.x);
-   float miny=floor(rect.origin.y);
-   float maxx=ceil(O2RectGetMaxX(rect));
-   float maxy=ceil(O2RectGetMaxY(rect));
-   
-   rect.origin.x=minx;
-   rect.origin.y=miny;
-   rect.size.width=maxx-minx;
-   rect.size.height=maxy-miny;
+static inline O2Rect O2RectIntegral(O2Rect rect) {
+    float minx = floor(rect.origin.x);
+    float miny = floor(rect.origin.y);
+    float maxx = ceil(O2RectGetMaxX(rect));
+    float maxy = ceil(O2RectGetMaxY(rect));
 
-   return rect; 
+    rect.origin.x = minx;
+    rect.origin.y = miny;
+    rect.size.width = maxx - minx;
+    rect.size.height = maxy - miny;
+
+    return rect;
 }
 
 #ifdef __cplusplus
 }
 #endif
-

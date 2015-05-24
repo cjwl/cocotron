@@ -7,12 +7,12 @@
 #import <fontconfig.h>
 
 @interface O2Font_FT : O2Font {
-   FT_Face _face; 
+    FT_Face _face;
 }
 
--(FT_Face)face;
+- (FT_Face)face;
 
 @end
 
 FT_Library O2FontSharedFreeTypeLibrary();
-FcConfig  *O2FontSharedFontConfig();
+FcConfig *O2FontSharedFontConfig();

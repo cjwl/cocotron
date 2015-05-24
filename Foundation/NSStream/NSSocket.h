@@ -8,33 +8,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-@class NSError,NSHost,NSData,CFSSLHandler;
+@class NSError, NSHost, NSData, CFSSLHandler;
 
-@interface NSSocket :  NSObject
+@interface NSSocket : NSObject
 
 // returns nil if descriptor is not a socket
--initWithFileDescriptor:(int)descriptor;
+- initWithFileDescriptor:(int)descriptor;
 
--initConnectedToSocket:(NSSocket **)other;
+- initConnectedToSocket:(NSSocket **)other;
 
--initTCPStream;
+- initTCPStream;
 
--(int)fileDescriptor;
+- (int)fileDescriptor;
 
--(NSError *)close;
+- (NSError *)close;
 
--(NSError *)connectToHost:(NSHost *)host port:(NSInteger)port immediate:(BOOL *)immediate;
+- (NSError *)connectToHost:(NSHost *)host port:(NSInteger)port immediate:(BOOL *)immediate;
 
--(BOOL)hasBytesAvailable;
+- (BOOL)hasBytesAvailable;
 
--(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
--(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
+- (NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
 
--(NSSocket *)acceptWithError:(NSError **)errorp;
+- (NSSocket *)acceptWithError:(NSError **)errorp;
 
--(CFSSLHandler *)sslHandler;
--(BOOL)setSSLProperties:(CFDictionaryRef)sslProperties;
+- (CFSSLHandler *)sslHandler;
+- (BOOL)setSSLProperties:(CFDictionaryRef)sslProperties;
 
 @end
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface);
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address, NSUInteger length, uint16_t port, uint32_t interface);

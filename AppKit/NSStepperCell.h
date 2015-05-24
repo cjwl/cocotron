@@ -9,28 +9,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSActionCell.h>
 
 @interface NSStepperCell : NSActionCell {
-   double _minValue;
-   double _increment;
-   double _maxValue;
-   BOOL   _autorepeat;
-   BOOL   _valueWraps;
+    double _minValue;
+    double _increment;
+    double _maxValue;
+    BOOL _autorepeat;
+    BOOL _valueWraps;
 
-   BOOL _isUpHighlighted;
-   BOOL _isDownHighlighted;
+    BOOL _isUpHighlighted;
+    BOOL _isDownHighlighted;
 }
 
--(double)minValue;
--(double)increment;
--(double)maxValue;
+- (double)minValue;
+- (double)increment;
+- (double)maxValue;
 
--(BOOL)autorepeat;
--(BOOL)valueWraps;
+- (BOOL)autorepeat;
+- (BOOL)valueWraps;
 
--(void)setMinValue:(double)value;
--(void)setMaxValue:(double)value;
--(void)setIncrement:(double)value;
+- (void)setMinValue:(double)value;
+- (void)setMaxValue:(double)value;
+- (void)setIncrement:(double)value;
 
--(void)setAutorepeat:(BOOL)flag;
--(void)setValueWraps:(BOOL)flag;
+- (void)setAutorepeat:(BOOL)flag;
+- (void)setValueWraps:(BOOL)flag;
 
 @end

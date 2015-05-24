@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSCustomObject : NSObject {
-   NSString *_className;
+    NSString *_className;
 }
 
--(id)createCustomInstance;
+- (id)createCustomInstance;
 
 @end

@@ -11,15 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void waitForTaskChildProcess();
 
 @interface NSTask_posix : NSTask {
-   int _processID;
-   int _terminationStatus;
+    int _processID;
+    int _terminationStatus;
 }
 
--(void)launch;
--(BOOL)isRunning;
--(void)terminate;
+- (void)launch;
+- (BOOL)isRunning;
+- (void)terminate;
 
--(void)setTerminationStatus:(int)terminationStatus;
--(void)taskFinished;
+- (void)setTerminationStatus:(int)terminationStatus;
+- (void)taskFinished;
 
 @end

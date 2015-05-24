@@ -13,6 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSInteger _secondsFromGMT;
 }
 
--initWithSecondsFromGMT:(NSInteger)seconds;
+- initWithSecondsFromGMT:(NSInteger)seconds;
 
 @end

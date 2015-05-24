@@ -1,6 +1,6 @@
 
 struct sched_param {
-   int sched_priority;
+    int sched_priority;
 };
 
 int sched_yield(void);

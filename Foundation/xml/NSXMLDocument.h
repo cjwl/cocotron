@@ -9,71 +9,71 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSXMLNodeOptions.h>
 
-@class NSXMLDTD,NSURL,NSData,NSMutableArray;
+@class NSXMLDTD, NSURL, NSData, NSMutableArray;
 
 enum {
-	NSXMLDocumentXMLKind = 0,
-    NSXMLDocumentXHTMLKind=1,
-    NSXMLDocumentHTMLKind=2,
-    NSXMLDocumentTextKind=3,
+    NSXMLDocumentXMLKind = 0,
+    NSXMLDocumentXHTMLKind = 1,
+    NSXMLDocumentHTMLKind = 2,
+    NSXMLDocumentTextKind = 3,
 };
 
 typedef NSUInteger NSXMLDocumentContentKind;
 
 @interface NSXMLDocument : NSXMLNode {
-   NSXMLDocumentContentKind _contentKind;
-   NSString     *_version;
-   NSString     *_characterEncoding;
-   NSString     *_mimeType;
-   BOOL          _isStandalone;
+    NSXMLDocumentContentKind _contentKind;
+    NSString *_version;
+    NSString *_characterEncoding;
+    NSString *_mimeType;
+    BOOL _isStandalone;
 
-   NSXMLElement *_rootElement;
-   NSXMLDTD     *_dtd;
-   NSString     *_uri;
+    NSXMLElement *_rootElement;
+    NSXMLDTD *_dtd;
+    NSString *_uri;
 
-// parsing state, should be moved out
-   NSMutableArray *_elementStack;
+    // parsing state, should be moved out
+    NSMutableArray *_elementStack;
 }
 
-+(Class)replacementClassForClass:(Class)aClass;
++ (Class)replacementClassForClass:(Class)aClass;
 
--initWithRootElement:(NSXMLElement *)element;
--initWithXMLString:(NSString *)string options:(NSUInteger)options error:(NSError **)error;
--initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
--initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
+- initWithRootElement:(NSXMLElement *)element;
+- initWithXMLString:(NSString *)string options:(NSUInteger)options error:(NSError **)error;
+- initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
+- initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
 
--(NSXMLDocumentContentKind)documentContentKind;
--(NSString *)version;
--(NSString *)characterEncoding;
--(NSString *)MIMEType;
--(BOOL)isStandalone;
--(NSXMLElement *)rootElement;
--(NSXMLDTD *)DTD;
--(NSString *)URI;
+- (NSXMLDocumentContentKind)documentContentKind;
+- (NSString *)version;
+- (NSString *)characterEncoding;
+- (NSString *)MIMEType;
+- (BOOL)isStandalone;
+- (NSXMLElement *)rootElement;
+- (NSXMLDTD *)DTD;
+- (NSString *)URI;
 
--(void)setDocumentContentKind:(NSXMLDocumentContentKind)kind;
--(void)setCharacterEncoding:(NSString *)encoding;
--(void)setVersion:(NSString *)version;
--(void)setMIMEType:(NSString *)mimeType;
--(void)setStandalone:(BOOL)flag;
--(void)setRootElement:(NSXMLNode *)element;
--(void)setDTD:(NSXMLDTD *)dtd;
--(void)setURI:(NSString *)uri;
+- (void)setDocumentContentKind:(NSXMLDocumentContentKind)kind;
+- (void)setCharacterEncoding:(NSString *)encoding;
+- (void)setVersion:(NSString *)version;
+- (void)setMIMEType:(NSString *)mimeType;
+- (void)setStandalone:(BOOL)flag;
+- (void)setRootElement:(NSXMLNode *)element;
+- (void)setDTD:(NSXMLDTD *)dtd;
+- (void)setURI:(NSString *)uri;
 
--(void)setChildren:(NSArray *)children;
--(void)addChild:(NSXMLNode *)child;
--(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
--(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
--(void)removeChildAtIndex:(NSUInteger)index;
--(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
+- (void)setChildren:(NSArray *)children;
+- (void)addChild:(NSXMLNode *)child;
+- (void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+- (void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+- (void)removeChildAtIndex:(NSUInteger)index;
+- (void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
--(BOOL)validateAndReturnError:(NSError **)error;
+- (BOOL)validateAndReturnError:(NSError **)error;
 
--(NSData *)XMLData;
--(NSData *)XMLDataWithOptions:(NSUInteger)options;
+- (NSData *)XMLData;
+- (NSData *)XMLDataWithOptions:(NSUInteger)options;
 
--objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError *)error;
--objectByApplyingXSLTAtURL:(NSURL *)url arguments:(NSDictionary *)arguments error:(NSError *)error;
--objectByApplyingXSLTString:(NSString *)string arguments:(NSDictionary *)arguments error:(NSError *)error;
+- objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError *)error;
+- objectByApplyingXSLTAtURL:(NSURL *)url arguments:(NSDictionary *)arguments error:(NSError *)error;
+- objectByApplyingXSLTString:(NSString *)string arguments:(NSDictionary *)arguments error:(NSError *)error;
 
 @end

@@ -12,34 +12,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSOldXMLAttribute, NSMutableArray, NSArray;
 
 @interface NSOldXMLElement : NSObject {
-   NSString       *_name;
-   NSMutableArray *_attributes;
-   NSMutableArray *_contents;
+    NSString *_name;
+    NSMutableArray *_attributes;
+    NSMutableArray *_contents;
 }
 
-+(NSOldXMLElement *)elementWithName:(NSString *)name;
++ (NSOldXMLElement *)elementWithName:(NSString *)name;
 
--initWithName:(NSString *)name;
+- initWithName:(NSString *)name;
 
--(NSString *)name;
--(NSArray *)attributes;
--(NSArray *)contents;
+- (NSString *)name;
+- (NSArray *)attributes;
+- (NSArray *)contents;
 
--(NSString *)xid;
+- (NSString *)xid;
 
--(NSOldXMLAttribute *)attributeWithName:(NSString *)name;
+- (NSOldXMLAttribute *)attributeWithName:(NSString *)name;
 
--(void)addAttribute:(NSOldXMLAttribute *)attribute;
+- (void)addAttribute:(NSOldXMLAttribute *)attribute;
 
--(void)addContent:(id)content;
+- (void)addContent:(id)content;
 
--(NSString *)stringValue;
--(int)intValue;
--(unsigned)unsignedIntValue;
--(float)floatValue;
--(NSRect)rectValue;
--(NSSize)sizeValue;
+- (NSString *)stringValue;
+- (int)intValue;
+- (unsigned)unsignedIntValue;
+- (float)floatValue;
+- (NSRect)rectValue;
+- (NSSize)sizeValue;
 
--(NSOldXMLElement *)nextElement;
+- (NSOldXMLElement *)nextElement;
 
 @end

@@ -11,70 +11,70 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTabViewItem, NSFont;
 
-typedef enum  {
- NSTopTabsBezelBorder,
- NSLeftTabsBezelBorder,
- NSBottomTabsBezelBorder,
- NSRightTabsBezelBorder,
- NSNoTabsBezelBorder,
- NSNoTabsLineBorder,
- NSNoTabsNoBorder
+typedef enum {
+    NSTopTabsBezelBorder,
+    NSLeftTabsBezelBorder,
+    NSBottomTabsBezelBorder,
+    NSRightTabsBezelBorder,
+    NSNoTabsBezelBorder,
+    NSNoTabsLineBorder,
+    NSNoTabsNoBorder
 } NSTabViewType;
 
 @interface NSTabView : NSView {
-   NSMutableArray *_items;
-   NSTabViewItem  *_selectedItem;
-   NSFont         *_font;
-   NSTabViewType   _type;
-   BOOL            _allowsTruncatedLabels;
-   id              _delegate;
-   BOOL            _drawsBackground;
-   NSControlSize   _controlSize;
+    NSMutableArray *_items;
+    NSTabViewItem *_selectedItem;
+    NSFont *_font;
+    NSTabViewType _type;
+    BOOL _allowsTruncatedLabels;
+    id _delegate;
+    BOOL _drawsBackground;
+    NSControlSize _controlSize;
 }
 
--delegate;
+- delegate;
 
--(NSSize)minimumSize;
--(NSRect)contentRect;
+- (NSSize)minimumSize;
+- (NSRect)contentRect;
 
--(NSFont *)font;
--(NSTabViewType)tabViewType;
--(BOOL)drawsBackground;
--(BOOL)allowsTruncatedLabels;
+- (NSFont *)font;
+- (NSTabViewType)tabViewType;
+- (BOOL)drawsBackground;
+- (BOOL)allowsTruncatedLabels;
 
--(void)setDelegate:delegate;
--(void)setFont:(NSFont *)font;
--(void)setTabViewType:(NSTabViewType)type;
--(void)setDrawsBackground:(BOOL)flag;
--(void)setAllowsTruncatedLabels:(BOOL)flag;
+- (void)setDelegate:delegate;
+- (void)setFont:(NSFont *)font;
+- (void)setTabViewType:(NSTabViewType)type;
+- (void)setDrawsBackground:(BOOL)flag;
+- (void)setAllowsTruncatedLabels:(BOOL)flag;
 
--(int)numberOfTabViewItems;
--(NSArray *)tabViewItems;
--(NSTabViewItem *)tabViewItemAtIndex:(int)index;
--(NSTabViewItem *)tabViewItemAtPoint:(NSPoint)point;
--(int)indexOfTabViewItem:(NSTabViewItem *)item;
--(int)indexOfTabViewItemWithIdentifier:identifier;
+- (int)numberOfTabViewItems;
+- (NSArray *)tabViewItems;
+- (NSTabViewItem *)tabViewItemAtIndex:(int)index;
+- (NSTabViewItem *)tabViewItemAtPoint:(NSPoint)point;
+- (int)indexOfTabViewItem:(NSTabViewItem *)item;
+- (int)indexOfTabViewItemWithIdentifier:identifier;
 
--(void)addTabViewItem:(NSTabViewItem *)item;
--(void)removeTabViewItem:(NSTabViewItem *)item;
--(void)insertTabViewItem:(NSTabViewItem *)item atIndex:(int)index;
+- (void)addTabViewItem:(NSTabViewItem *)item;
+- (void)removeTabViewItem:(NSTabViewItem *)item;
+- (void)insertTabViewItem:(NSTabViewItem *)item atIndex:(int)index;
 
--(NSTabViewItem *)selectedTabViewItem;	
--(void)selectTabViewItem:(NSTabViewItem *)item;
--(void)selectTabViewItemAtIndex:(int)index;
--(void)selectTabViewItemWithIdentifier:identifier;
--(void)selectFirstTabViewItem:sender;
--(void)selectLastTabViewItem:sender;
--(void)takeSelectedTabViewItemFromSender:sender;
+- (NSTabViewItem *)selectedTabViewItem;
+- (void)selectTabViewItem:(NSTabViewItem *)item;
+- (void)selectTabViewItemAtIndex:(int)index;
+- (void)selectTabViewItemWithIdentifier:identifier;
+- (void)selectFirstTabViewItem:sender;
+- (void)selectLastTabViewItem:sender;
+- (void)takeSelectedTabViewItemFromSender:sender;
 
 - (void)_itemViewDidChange:(NSTabViewItem *)item;
 
 @end
 
-@interface NSObject(NSTabView_delegate)
--(void)tabViewDidChangeNumberOfTabViewItems:(NSTabView *)tabView;
+@interface NSObject (NSTabView_delegate)
+- (void)tabViewDidChangeNumberOfTabViewItems:(NSTabView *)tabView;
 
--(BOOL)tabView:(NSTabView *)tabView shouldSelectTabViewItem:(NSTabViewItem *)item;
--(void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)item;
--(void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)item;
+- (BOOL)tabView:(NSTabView *)tabView shouldSelectTabViewItem:(NSTabViewItem *)item;
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)item;
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)item;
 @end

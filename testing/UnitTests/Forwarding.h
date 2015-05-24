@@ -6,28 +6,24 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 #import <SenTestingKit/SenTestingKit.h>
 
-typedef struct 
-{
-   float a;
-   long long b;
-   char padding[27];
-   char c;
-   struct
-   {
-      float d;
-      double e;
-   };
+typedef struct
+    {
+    float a;
+    long long b;
+    char padding[27];
+    char c;
+    struct
+        {
+        float d;
+        double e;
+    };
 } TestingStruct;
 
-@interface Forwarding : SenTestCase 
-{
-	BOOL beenInMethodFlag;
+@interface Forwarding : SenTestCase {
+    BOOL beenInMethodFlag;
 }
--(id)makeStringFromStructs:(NSSize)size :(char)c :(NSRange)range :(NSRect)rect :(double)d :(long long)l;
--(TestingStruct)returnTestingStructWithParam:(float)x;
+- (id)makeStringFromStructs:(NSSize)size:(char)c:(NSRange)range:(NSRect)rect:(double)d:(long long)l;
+- (TestingStruct)returnTestingStructWithParam:(float)x;
 @end
-
-

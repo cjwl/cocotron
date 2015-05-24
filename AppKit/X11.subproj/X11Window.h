@@ -12,37 +12,37 @@
 #import <GL/glx.h>
 #import <OpenGL/OpenGL.h>
 
-@class O2Context_cairo, X11Display,CAWindowOpenGLContext;
+@class O2Context_cairo, X11Display, CAWindowOpenGLContext;
 
 @interface X11Window : CGWindow {
-   int          _level; //TODO: care about this value
-   Display     *_display;
-   XVisualInfo *_visualInfo;
-   Window       _window;
-   CGLContextObj _cglContext;
-   CAWindowOpenGLContext *_caContext;
+    int _level; //TODO: care about this value
+    Display *_display;
+    XVisualInfo *_visualInfo;
+    Window _window;
+    CGLContextObj _cglContext;
+    CAWindowOpenGLContext *_caContext;
 
-   id       _delegate;
-   CGSBackingStoreType  _backingType;
-   O2Context    *_backingContext;
-   O2Context    *_context;
-   
-   NSMutableDictionary *_deviceDictionary;
-   O2Rect _frame;
-   BOOL _mapped;
+    id _delegate;
+    CGSBackingStoreType _backingType;
+    O2Context *_backingContext;
+    O2Context *_context;
+
+    NSMutableDictionary *_deviceDictionary;
+    O2Rect _frame;
+    BOOL _mapped;
 }
-+(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy;
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
--(O2Rect)frame;
--(Visual*)visual;
--(Drawable)drawable;
--(NSPoint)transformPoint:(NSPoint)pos;
--(O2Rect)transformFrame:(O2Rect)frame;
++ (void)removeDecorationForWindow:(Window)w onDisplay:(Display *)dpy;
+- initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
+- (O2Rect)frame;
+- (Visual *)visual;
+- (Drawable)drawable;
+- (NSPoint)transformPoint:(NSPoint)pos;
+- (O2Rect)transformFrame:(O2Rect)frame;
 
--(Window)windowHandle;
+- (Window)windowHandle;
 
--(void)frameChanged;
+- (void)frameChanged;
 
 @end
 
-void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right);
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask, CGFloat *top, CGFloat *left, CGFloat *bottom, CGFloat *right);

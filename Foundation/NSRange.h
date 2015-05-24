@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 typedef struct _NSRange {
-   NSUInteger location;
-   NSUInteger length;
+    NSUInteger location;
+    NSUInteger length;
 } NSRange;
 
 typedef NSRange *NSRangePointer;
 
-FOUNDATION_EXPORT NSRange   NSMakeRange(NSUInteger location,NSUInteger length);
-FOUNDATION_EXPORT BOOL      NSEqualRanges(NSRange range, NSRange otherRange);
-FOUNDATION_EXPORT NSUInteger  NSMaxRange(NSRange range);
+FOUNDATION_EXPORT NSRange NSMakeRange(NSUInteger location, NSUInteger length);
+FOUNDATION_EXPORT BOOL NSEqualRanges(NSRange range, NSRange otherRange);
+FOUNDATION_EXPORT NSUInteger NSMaxRange(NSRange range);
 FOUNDATION_EXPORT NSString *NSStringFromRange(NSRange range);
-FOUNDATION_EXPORT NSRange   NSRangeFromString(NSString *s);
+FOUNDATION_EXPORT NSRange NSRangeFromString(NSString *s);
 
-FOUNDATION_EXPORT BOOL      NSLocationInRange(NSUInteger location,NSRange range);
-FOUNDATION_EXPORT NSRange   NSIntersectionRange(NSRange range,NSRange otherRange);
-FOUNDATION_EXPORT NSRange   NSUnionRange(NSRange range,NSRange otherRange);
+FOUNDATION_EXPORT BOOL NSLocationInRange(NSUInteger location, NSRange range);
+FOUNDATION_EXPORT NSRange NSIntersectionRange(NSRange range, NSRange otherRange);
+FOUNDATION_EXPORT NSRange NSUnionRange(NSRange range, NSRange otherRange);

@@ -12,24 +12,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableAttributedString : NSAttributedString
 
--(NSMutableString *)mutableString;
+- (NSMutableString *)mutableString;
 
--(void)addAttribute:(NSString *)name value:(id)value range:(NSRange)range;
--(void)addAttributes:(NSDictionary *)attributes range:(NSRange)range;
--(void)appendAttributedString:(NSAttributedString *)attributedString;
+- (void)addAttribute:(NSString *)name value:(id)value range:(NSRange)range;
+- (void)addAttributes:(NSDictionary *)attributes range:(NSRange)range;
+- (void)appendAttributedString:(NSAttributedString *)attributedString;
 
--(void)deleteCharactersInRange:(NSRange)range;
+- (void)deleteCharactersInRange:(NSRange)range;
 
--(void)removeAttribute:(NSString *)name range:(NSRange)range;
+- (void)removeAttribute:(NSString *)name range:(NSRange)range;
 
--(void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(NSUInteger)index;
+- (void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(NSUInteger)index;
 
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
--(void)replaceCharactersInRange:(NSRange)range withAttributedString:(NSAttributedString *)attributedString;
--(void)setAttributes:(NSDictionary *)attributes range:(NSRange)range;
--(void)setAttributedString:(NSAttributedString *)attributedString;
+- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+- (void)replaceCharactersInRange:(NSRange)range withAttributedString:(NSAttributedString *)attributedString;
+- (void)setAttributes:(NSDictionary *)attributes range:(NSRange)range;
+- (void)setAttributedString:(NSAttributedString *)attributedString;
 
--(void)beginEditing;
--(void)endEditing;
+- (void)beginEditing;
+- (void)endEditing;
 
 @end

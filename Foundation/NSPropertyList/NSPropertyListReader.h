@@ -8,15 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSDictionary,NSArray,NSData;
+@class NSDictionary, NSArray, NSData;
 
 @interface NSPropertyListReader : NSObject
 
-+propertyListFromData:(NSData *)data;
++ propertyListFromData:(NSData *)data;
 
-+propertyListFromString:(NSString *)string;
++ propertyListFromString:(NSString *)string;
 
-+(NSDictionary *)dictionaryWithContentsOfFile:(NSString *)path;
-+(NSArray *)arrayWithContentsOfFile:(NSString *)path;
++ (NSDictionary *)dictionaryWithContentsOfFile:(NSString *)path;
++ (NSArray *)arrayWithContentsOfFile:(NSString *)path;
 
 @end

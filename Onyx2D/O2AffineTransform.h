@@ -13,31 +13,30 @@ extern "C" {
 #endif
 
 typedef struct {
-   O2Float a;
-   O2Float b;
-   O2Float c;
-   O2Float d;
-   O2Float tx;
-   O2Float ty;
+    O2Float a;
+    O2Float b;
+    O2Float c;
+    O2Float d;
+    O2Float tx;
+    O2Float ty;
 } O2AffineTransform;
 
 ONYX2D_EXPORT const O2AffineTransform O2AffineTransformIdentity;
 
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformMake(O2Float a,O2Float b,O2Float c,O2Float d,O2Float tx,O2Float ty);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformMake(O2Float a, O2Float b, O2Float c, O2Float d, O2Float tx, O2Float ty);
 ONYX2D_EXPORT O2AffineTransform O2AffineTransformMakeRotation(O2Float radians);
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformMakeScale(O2Float scalex,O2Float scaley);
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformMakeTranslation(O2Float tx,O2Float ty);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformMakeScale(O2Float scalex, O2Float scaley);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformMakeTranslation(O2Float tx, O2Float ty);
 
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformConcat(O2AffineTransform xform,O2AffineTransform append);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformConcat(O2AffineTransform xform, O2AffineTransform append);
 ONYX2D_EXPORT O2AffineTransform O2AffineTransformInvert(O2AffineTransform xform);
 
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformRotate(O2AffineTransform xform,O2Float radians);
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformScale(O2AffineTransform xform,O2Float scalex,O2Float scaley);
-ONYX2D_EXPORT O2AffineTransform O2AffineTransformTranslate(O2AffineTransform xform,O2Float tx,O2Float ty);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformRotate(O2AffineTransform xform, O2Float radians);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformScale(O2AffineTransform xform, O2Float scalex, O2Float scaley);
+ONYX2D_EXPORT O2AffineTransform O2AffineTransformTranslate(O2AffineTransform xform, O2Float tx, O2Float ty);
 
 ONYX2D_EXPORT O2Point O2PointApplyAffineTransform(O2Point point, O2AffineTransform xform);
 ONYX2D_EXPORT O2Size O2SizeApplyAffineTransform(O2Size size, O2AffineTransform xform);
-
 
 #ifdef __cplusplus
 }

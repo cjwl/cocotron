@@ -12,38 +12,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableData, NSMutableDictionary;
 
 @interface NSArchiver : NSCoder {
-   NSMutableData *_data;
-   uint8_t *_bytes;
-   NSUInteger     _position;
+    NSMutableData *_data;
+    uint8_t *_bytes;
+    NSUInteger _position;
 
-   NSUInteger       _pass;
-   NSHashTable   *_conditionals;
-   NSHashTable   *_objects;
-   NSHashTable   *_classes;
-   NSHashTable   *_cStrings;
+    NSUInteger _pass;
+    NSHashTable *_conditionals;
+    NSHashTable *_objects;
+    NSHashTable *_classes;
+    NSHashTable *_cStrings;
 }
 
--init;
+- init;
 
-+(NSData *)archivedDataWithRootObject:rootObject;
-+(BOOL)archiveRootObject:rootObject toFile:(NSString *)path;
++ (NSData *)archivedDataWithRootObject:rootObject;
++ (BOOL)archiveRootObject:rootObject toFile:(NSString *)path;
 
--(NSMutableData *)archiverData;
+- (NSMutableData *)archiverData;
 
--(void)encodeValueOfObjCType:(const char *)type at:(const void *)addr;
--(void)encodeDataObject:(NSData *)data;
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)addr;
+- (void)encodeDataObject:(NSData *)data;
 
--(void)encodeRootObject:rootObject;
--(void)encodeConditionalObject:object;
+- (void)encodeRootObject:rootObject;
+- (void)encodeConditionalObject:object;
 
--(void)encodeClassName:(NSString *)runtime intoClassName:(NSString *)archive;
+- (void)encodeClassName:(NSString *)runtime intoClassName:(NSString *)archive;
 
--(void)replaceObject:original withObject:replacement;
+- (void)replaceObject:original withObject:replacement;
 
 @end
 
-@interface NSObject(NSArchiver)
--replacementObjectForArchiver:(NSArchiver *)archiver;
+@interface NSObject (NSArchiver)
+- replacementObjectForArchiver:(NSArchiver *)archiver;
 @end
 
 #import <Foundation/NSUnarchiver.h>

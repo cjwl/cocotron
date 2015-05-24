@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if defined(FOUNDATION_INSIDE_BUILD)
 #define FOUNDATION_EXPORT extern "C" FOUNDATION_DLLEXPORT
 #else
-#define FOUNDATION_EXPORT extern "C" FOUNDATION_DLLIMPORT 
+#define FOUNDATION_EXPORT extern "C" FOUNDATION_DLLIMPORT
 #endif
 #else
 #define FOUNDATION_EXPORT extern "C"
@@ -90,27 +90,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define NSINTEGER_DEFINED 1
 
 #if defined(__LP64__)
-    typedef long          NSInteger;
-    typedef unsigned long NSUInteger;
-    #define NSIntegerMax  LONG_MAX
-    #define NSIntegerMin  LONG_MIN
-    #define NSUIntegerMax ULONG_MAX
-    #define NSIntegerFormat "%ld"
-    #define NSUIntegerFormat "%lu"
+typedef long NSInteger;
+typedef unsigned long NSUInteger;
+#define NSIntegerMax LONG_MAX
+#define NSIntegerMin LONG_MIN
+#define NSUIntegerMax ULONG_MAX
+#define NSIntegerFormat "%ld"
+#define NSUIntegerFormat "%lu"
 #else
-    typedef int           NSInteger;
-    typedef unsigned int  NSUInteger;
-    #define NSIntegerMax  INT_MAX
-    #define NSIntegerMin  INT_MIN
-    #define NSUIntegerMax UINT_MAX
-    #define NSIntegerFormat "%d"
-    #define NSUIntegerFormat "%u"
+typedef int NSInteger;
+typedef unsigned int NSUInteger;
+#define NSIntegerMax INT_MAX
+#define NSIntegerMin INT_MIN
+#define NSUIntegerMax UINT_MAX
+#define NSIntegerFormat "%d"
+#define NSUIntegerFormat "%u"
 #endif
 
 enum {
-   NSOrderedAscending=-1,
-   NSOrderedSame=0,
-   NSOrderedDescending=1
+    NSOrderedAscending = -1,
+    NSOrderedSame = 0,
+    NSOrderedDescending = 1
 };
 
 typedef NSInteger NSComparisonResult;
@@ -118,13 +118,13 @@ typedef NSInteger NSComparisonResult;
 #define NSNotFound NSIntegerMax
 
 #ifndef MIN
-#define MIN(a,b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a < _b) ? _a : _b; })
+#define MIN(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a < _b) ? _a : _b; })
 #else
 #warning MIN is already defined, MIN(a, b) may not behave as expected.
 #endif
-  
+
 #ifndef MAX
-#define MAX(a,b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a > _b) ? _a : _b; })
+#define MAX(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a > _b) ? _a : _b; })
 #else
 #warning MAX is already defined, MAX(a, b) may not not behave as expected.
 #endif
@@ -136,24 +136,24 @@ typedef NSInteger NSComparisonResult;
 #endif
 
 #ifndef NS_ENUM
-#define NS_ENUM(_type, _name) _type _name; enum
+#define NS_ENUM(_type, _name) \
+    _type _name;              \
+    enum
 #endif
 
 #ifndef NS_OPTIONS
-#define NS_OPTIONS(_type, _name) _type _name; enum
+#define NS_OPTIONS(_type, _name) \
+    _type _name;                 \
+    enum
 #endif
 
-FOUNDATION_EXPORT void NSLog(NSString *format,...);
-FOUNDATION_EXPORT void NSLogv(NSString *format,va_list args);
+FOUNDATION_EXPORT void NSLog(NSString *format, ...);
+FOUNDATION_EXPORT void NSLogv(NSString *format, va_list args);
 
-FOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment);
+FOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *type, NSUInteger *size, NSUInteger *alignment);
 
 FOUNDATION_EXPORT SEL NSSelectorFromString(NSString *selectorName);
 FOUNDATION_EXPORT NSString *NSStringFromSelector(SEL selector);
 
 FOUNDATION_EXPORT Class NSClassFromString(NSString *className);
 FOUNDATION_EXPORT NSString *NSStringFromClass(Class aClass);
-
-
-
-

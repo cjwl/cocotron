@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if defined(COMMONCRYPTO_INSIDE_BUILD)
 #define COMMONCRYPTO_EXPORT extern "C" __declspec(dllexport)
 #else
-#define COMMONCRYPTO_EXPORT extern "C" __declspec(dllimport) 
+#define COMMONCRYPTO_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define COMMONCRYPTO_EXPORT extern "C"
@@ -29,6 +29,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #else
 #define COMMONCRYPTO_EXPORT extern
 #endif
-
 
 #endif // __cplusplus

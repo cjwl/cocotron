@@ -8,13 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
-@class NSOpenGLPixelFormat,NSOpenGLContext;
+@class NSOpenGLPixelFormat, NSOpenGLContext;
 
 @interface NSOpenGLView : NSView {
-@private
-	NSOpenGLPixelFormat *_pixelFormat;
-	NSOpenGLContext     *_context;
-	BOOL                 _needsReshape;
+  @private
+    NSOpenGLPixelFormat *_pixelFormat;
+    NSOpenGLContext *_context;
+    BOOL _needsReshape;
 }
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat;

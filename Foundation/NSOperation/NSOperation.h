@@ -14,21 +14,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableArray;
 
 enum {
-	NSOperationQueuePriorityVeryLow = -8,
-	NSOperationQueuePriorityLow = -4,
-	NSOperationQueuePriorityNormal = 0,
-	NSOperationQueuePriorityHigh = 4,
-	NSOperationQueuePriorityVeryHigh = 8
+    NSOperationQueuePriorityVeryLow = -8,
+    NSOperationQueuePriorityLow = -4,
+    NSOperationQueuePriorityNormal = 0,
+    NSOperationQueuePriorityHigh = 4,
+    NSOperationQueuePriorityVeryHigh = 8
 };
 typedef NSInteger NSOperationQueuePriority;
 
 @interface NSOperation : NSObject {
-	NSOperationQueuePriority priority;
-	NSMutableArray *dependencies;
-	
-	int executing : 1;
-	int cancelled : 1;
-	int finished : 1;
+    NSOperationQueuePriority priority;
+    NSMutableArray *dependencies;
+
+    int executing : 1;
+    int cancelled : 1;
+    int finished : 1;
 }
 
 - (void)start;
@@ -53,19 +53,18 @@ typedef NSInteger NSOperationQueuePriority;
 
 @end
 
-extern NSString * const NSInvocationOperationVoidResultException;
-extern NSString * const NSInvocationOperationCancelledException;
-
+extern NSString *const NSInvocationOperationVoidResultException;
+extern NSString *const NSInvocationOperationCancelledException;
 
 @interface NSInvocationOperation : NSOperation {
-   NSInvocation *_invocation;
+    NSInvocation *_invocation;
 }
 
--initWithInvocation:(NSInvocation *)invocation;
--initWithTarget:target selector:(SEL)selector object:argument;
+- initWithInvocation:(NSInvocation *)invocation;
+- initWithTarget:target selector:(SEL)selector object:argument;
 
 - (NSInvocation *)invocation;
 
--result;
+- result;
 
 @end

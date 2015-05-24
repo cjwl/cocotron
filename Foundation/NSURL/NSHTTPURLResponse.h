@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary;
 
 @interface NSHTTPURLResponse : NSURLResponse {
-   NSInteger     _statusCode;
-   NSDictionary *_allHeaderFields;
+    NSInteger _statusCode;
+    NSDictionary *_allHeaderFields;
 }
 
-+(NSString *)localizedStringForStatusCode:(NSInteger)statusCode;
++ (NSString *)localizedStringForStatusCode:(NSInteger)statusCode;
 
--(NSDictionary *)allHeaderFields;
--(NSInteger)statusCode;
+- (NSDictionary *)allHeaderFields;
+- (NSInteger)statusCode;
 
 @end

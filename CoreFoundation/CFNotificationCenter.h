@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct __NSNotificationCenter *CFNotificationCenterRef;
 
-typedef enum  {
-   CFNotificationSuspensionBehaviorDrop              =1,
-   CFNotificationSuspensionBehaviorCoalesce          =2,
-   CFNotificationSuspensionBehaviorHold              =3,
-   CFNotificationSuspensionBehaviorDeliverImmediately=4,
+typedef enum {
+    CFNotificationSuspensionBehaviorDrop = 1,
+    CFNotificationSuspensionBehaviorCoalesce = 2,
+    CFNotificationSuspensionBehaviorHold = 3,
+    CFNotificationSuspensionBehaviorDeliverImmediately = 4,
 } CFNotificationSuspensionBehavior;
 
-typedef void (*CFNotificationCallback)(CFNotificationCenterRef self,void *observer,CFStringRef name,const void *object,CFDictionaryRef userInfo);
+typedef void (*CFNotificationCallback)(CFNotificationCenterRef self, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo);
 
 COREFOUNDATION_EXPORT CFTypeID CFNotificationCenterGetTypeID(void);
 
 COREFOUNDATION_EXPORT CFNotificationCenterRef CFNotificationCenterGetLocalCenter(void);
 COREFOUNDATION_EXPORT CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 
-COREFOUNDATION_EXPORT void CFNotificationCenterAddObserver(CFNotificationCenterRef self,const void *observer,CFNotificationCallback callback,CFStringRef name,const void *object,CFNotificationSuspensionBehavior suspensionBehavior);
-COREFOUNDATION_EXPORT void CFNotificationCenterPostNotification(CFNotificationCenterRef self,CFStringRef name,const void *object,CFDictionaryRef userInfo,Boolean immediate);
-COREFOUNDATION_EXPORT void CFNotificationCenterPostNotificationWithOptions(CFNotificationCenterRef self,CFStringRef name,const void *object,CFDictionaryRef userInfo,CFOptionFlags options);
-COREFOUNDATION_EXPORT void CFNotificationCenterRemoveEveryObserver(CFNotificationCenterRef self,const void *observer);
-COREFOUNDATION_EXPORT void CFNotificationCenterRemoveObserver(CFNotificationCenterRef self,const void *observer,CFStringRef name,const void *object);
+COREFOUNDATION_EXPORT void CFNotificationCenterAddObserver(CFNotificationCenterRef self, const void *observer, CFNotificationCallback callback, CFStringRef name, const void *object, CFNotificationSuspensionBehavior suspensionBehavior);
+COREFOUNDATION_EXPORT void CFNotificationCenterPostNotification(CFNotificationCenterRef self, CFStringRef name, const void *object, CFDictionaryRef userInfo, Boolean immediate);
+COREFOUNDATION_EXPORT void CFNotificationCenterPostNotificationWithOptions(CFNotificationCenterRef self, CFStringRef name, const void *object, CFDictionaryRef userInfo, CFOptionFlags options);
+COREFOUNDATION_EXPORT void CFNotificationCenterRemoveEveryObserver(CFNotificationCenterRef self, const void *observer);
+COREFOUNDATION_EXPORT void CFNotificationCenterRemoveObserver(CFNotificationCenterRef self, const void *observer, CFStringRef name, const void *object);

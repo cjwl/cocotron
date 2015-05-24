@@ -8,127 +8,126 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-
 enum {
- NSTIFFTypeBYTE=1,
- NSTIFFTypeASCII=2,
- NSTIFFTypeSHORT=3,
- NSTIFFTypeLONG=4,
- NSTIFFTypeRATIONAL=5,
+    NSTIFFTypeBYTE = 1,
+    NSTIFFTypeASCII = 2,
+    NSTIFFTypeSHORT = 3,
+    NSTIFFTypeLONG = 4,
+    NSTIFFTypeRATIONAL = 5,
 };
 
 enum {
- NSTIFFTagArtist=315,
- NSTIFFTagBitsPerSample=258,
- NSTIFFTagCellLength=265,
- NSTIFFTagCellWidth=264,
- NSTIFFTagColorMap=320,
- NSTIFFTagCompression=259,
- NSTIFFTagCopyright=33432,
- NSTIFFTagDateTime=306,
- NSTIFFTagDocumentName=269,
- NSTIFFTagExtraSamples=338,
- NSTIFFTagFillOrder=266,
- NSTIFFTagFreeByteCounts=289,
- NSTIFFTagFreeOffsets=288,
- NSTIFFTagGrayResponseCurve=291,
- NSTIFFTagGrayResponseUnit=290,
- NSTIFFTagHostComputer=316,
- NSTIFFTagImageDescription=270,
- NSTIFFTagImageLength=257,
- NSTIFFTagImageWidth=256,
- NSTIFFTagMake=271,
- NSTIFFTagMaxSampleValue=281,
- NSTIFFTagMinSampleValue=280,
- NSTIFFTagModel=272,
- NSTIFFTagNewSubfileType=254,
- NSTIFFTagOrientation=274,
- NSTIFFTagPageName=285,
- NSTIFFTagPageNumber=297,
- NSTIFFTagPhotometricInterpretation=262,
- NSTIFFTagPlanarConfiguration=284,
- NSTIFFTagResolutionUnit=296,
- NSTIFFTagRowsPerStrip=278,
- NSTIFFTagSampleFormat=339,
- NSTIFFTagSamplesPerPixel=277,
- NSTIFFTagSoftware=305,
- NSTIFFTagStripByteCounts=279,
- NSTIFFTagStripOffsets=273,
- NSTIFFTagSubfileType=255,
- NSTIFFTagThreshholding=263,
- NSTIFFTagXMP=700,
- NSTIFFTagXPosition=286,
- NSTIFFTagXResolution=282,
- NSTIFFTagYPosition=287,
- NSTIFFTagYResolution=283,
- NSTIFFTagPredictor=317,
- 
- NSTIFFTagPhotoshopPrivate1=34377,
- NSTIFFTagPhotoshopPrivate2=37724,
- NSTIFFTagExifIFD=34665,
- NSTIFFTagGPSIFD=34853,
+    NSTIFFTagArtist = 315,
+    NSTIFFTagBitsPerSample = 258,
+    NSTIFFTagCellLength = 265,
+    NSTIFFTagCellWidth = 264,
+    NSTIFFTagColorMap = 320,
+    NSTIFFTagCompression = 259,
+    NSTIFFTagCopyright = 33432,
+    NSTIFFTagDateTime = 306,
+    NSTIFFTagDocumentName = 269,
+    NSTIFFTagExtraSamples = 338,
+    NSTIFFTagFillOrder = 266,
+    NSTIFFTagFreeByteCounts = 289,
+    NSTIFFTagFreeOffsets = 288,
+    NSTIFFTagGrayResponseCurve = 291,
+    NSTIFFTagGrayResponseUnit = 290,
+    NSTIFFTagHostComputer = 316,
+    NSTIFFTagImageDescription = 270,
+    NSTIFFTagImageLength = 257,
+    NSTIFFTagImageWidth = 256,
+    NSTIFFTagMake = 271,
+    NSTIFFTagMaxSampleValue = 281,
+    NSTIFFTagMinSampleValue = 280,
+    NSTIFFTagModel = 272,
+    NSTIFFTagNewSubfileType = 254,
+    NSTIFFTagOrientation = 274,
+    NSTIFFTagPageName = 285,
+    NSTIFFTagPageNumber = 297,
+    NSTIFFTagPhotometricInterpretation = 262,
+    NSTIFFTagPlanarConfiguration = 284,
+    NSTIFFTagResolutionUnit = 296,
+    NSTIFFTagRowsPerStrip = 278,
+    NSTIFFTagSampleFormat = 339,
+    NSTIFFTagSamplesPerPixel = 277,
+    NSTIFFTagSoftware = 305,
+    NSTIFFTagStripByteCounts = 279,
+    NSTIFFTagStripOffsets = 273,
+    NSTIFFTagSubfileType = 255,
+    NSTIFFTagThreshholding = 263,
+    NSTIFFTagXMP = 700,
+    NSTIFFTagXPosition = 286,
+    NSTIFFTagXResolution = 282,
+    NSTIFFTagYPosition = 287,
+    NSTIFFTagYResolution = 283,
+    NSTIFFTagPredictor = 317,
+
+    NSTIFFTagPhotoshopPrivate1 = 34377,
+    NSTIFFTagPhotoshopPrivate2 = 37724,
+    NSTIFFTagExifIFD = 34665,
+    NSTIFFTagGPSIFD = 34853,
 };
 
 enum {
- NSTIFFExtraSamples_unspecified=0,
- NSTIFFExtraSamples_associatedAlpha=1,
- NSTIFFExtraSamples_unassociatedAlpha=2,
+    NSTIFFExtraSamples_unspecified = 0,
+    NSTIFFExtraSamples_associatedAlpha = 1,
+    NSTIFFExtraSamples_unassociatedAlpha = 2,
 
- NSTIFFCompression_none=1,
- NSTIFFCompression_CCITTGroup3=2,
- NSTIFFCompression_LZW=5,
- NSTIFFCompression_packBits=32773,
+    NSTIFFCompression_none = 1,
+    NSTIFFCompression_CCITTGroup3 = 2,
+    NSTIFFCompression_LZW = 5,
+    NSTIFFCompression_packBits = 32773,
 
- NSTIFFResolutionUnit_none=1,
- NSTIFFResolutionUnit_inch=2,
- NSTIFFResolutionUnit_centimeter=3,
- 
- NSTIFFSampleFormat_UINT=1,
- NSTIFFSampleFormat_INT=2,
- NSTIFFSampleFormat_IEEEFP=3,
- NSTIFFSampleFormat_VOID=4,
- NSTIFFSampleFormat_COMPLEXINT=5,
- NSTIFFSampleFormat_COMPLEXIEEEFP=6,
+    NSTIFFResolutionUnit_none = 1,
+    NSTIFFResolutionUnit_inch = 2,
+    NSTIFFResolutionUnit_centimeter = 3,
 
- NSTIFFTagPredictor_none=1,
- NSTIFFTagPredictor_horizontal=2,
- NSTIFFTagPredictor_floatingPoint=3,
- 
- NSTIFFPhotometricInterpretationWhiteIsZero=0,
- NSTIFFPhotometricInterpretationBlackIsZero=1,
- NSTIFFPhotometricInterpretationRGB=2,
- NSTIFFPhotometricInterpretationPalette=3,
- NSTIFFPhotometricInterpretationTransparencyMask=3,
+    NSTIFFSampleFormat_UINT = 1,
+    NSTIFFSampleFormat_INT = 2,
+    NSTIFFSampleFormat_IEEEFP = 3,
+    NSTIFFSampleFormat_VOID = 4,
+    NSTIFFSampleFormat_COMPLEXINT = 5,
+    NSTIFFSampleFormat_COMPLEXIEEEFP = 6,
+
+    NSTIFFTagPredictor_none = 1,
+    NSTIFFTagPredictor_horizontal = 2,
+    NSTIFFTagPredictor_floatingPoint = 3,
+
+    NSTIFFPhotometricInterpretationWhiteIsZero = 0,
+    NSTIFFPhotometricInterpretationBlackIsZero = 1,
+    NSTIFFPhotometricInterpretationRGB = 2,
+    NSTIFFPhotometricInterpretationPalette = 3,
+    NSTIFFPhotometricInterpretationTransparencyMask = 3,
 };
 
 @interface O2Decoder_TIFF : NSObject {
-  NSData              *_data;
-  const unsigned char *_bytes;
-  unsigned             _length,_position;
-  BOOL                 _bigEndian;
+    NSData *_data;
+    const unsigned char *_bytes;
+    unsigned _length, _position;
+    BOOL _bigEndian;
 
-  NSMutableArray      *_directory;
+    NSMutableArray *_directory;
 }
 
--initWithContentsOfFile:(NSString *)path;
--initWithData:(NSData *)data;
+- initWithContentsOfFile:(NSString *)path;
+- initWithData:(NSData *)data;
 
--(NSData *)data;
+- (NSData *)data;
 
--(NSArray *)imageFileDirectory;
+- (NSArray *)imageFileDirectory;
 
--(unsigned)currentOffset;
--(void)seekToOffset:(unsigned)offset;
+- (unsigned)currentOffset;
+- (void)seekToOffset:(unsigned)offset;
 
 unsigned O2DecoderNextUnsigned16_TIFF(O2Decoder_TIFF *self);
--(unsigned)nextUnsigned32;
--(unsigned)expectUnsigned16;
--(unsigned)expectUnsigned32;
--(double)expectRational;
--(NSString *)expectASCII;
--(unsigned)expectUnsigned16OrUnsigned32;
--(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp;
--(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp;
--(void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp;
+- (unsigned)nextUnsigned32;
+- (unsigned)expectUnsigned16;
+- (unsigned)expectUnsigned32;
+- (double)expectRational;
+- (NSString *)expectASCII;
+- (unsigned)expectUnsigned16OrUnsigned32;
+- (void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp;
+- (void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp;
+- (void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp;
 
 @end

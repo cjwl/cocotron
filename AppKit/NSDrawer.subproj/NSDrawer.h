@@ -13,23 +13,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDrawerWindow;
 
 typedef enum {
-   NSDrawerClosedState,
-   NSDrawerOpeningState,
-   NSDrawerOpenState,
-   NSDrawerClosingState
+    NSDrawerClosedState,
+    NSDrawerOpeningState,
+    NSDrawerOpenState,
+    NSDrawerClosingState
 } NSDrawerState;
 
-APPKIT_EXPORT NSString * const NSDrawerWillOpenNotification;
-APPKIT_EXPORT NSString * const NSDrawerDidOpenNotification;
-APPKIT_EXPORT NSString * const NSDrawerWillCloseNotification;
-APPKIT_EXPORT NSString * const NSDrawerDidCloseNotification;
+APPKIT_EXPORT NSString *const NSDrawerWillOpenNotification;
+APPKIT_EXPORT NSString *const NSDrawerDidOpenNotification;
+APPKIT_EXPORT NSString *const NSDrawerWillCloseNotification;
+APPKIT_EXPORT NSString *const NSDrawerDidCloseNotification;
 
 @interface NSDrawer : NSResponder {
     NSSize _contentSize;
     NSDrawerState _state;
     NSRectEdge _edge;
     NSRectEdge _preferredEdge;
-    float _leadingOffset; 
+    float _leadingOffset;
     float _trailingOffset;
     NSDrawerWindow *_drawerWindow;
     NSWindow *_parentWindow;
@@ -44,64 +44,64 @@ APPKIT_EXPORT NSString * const NSDrawerDidCloseNotification;
 
 + (NSRectEdge)visibleEdgeWithPreferredEdge:(NSRectEdge)preferredEdge parentWindow:(NSWindow *)parentWindow drawerWindow:(NSWindow *)drawerWindow;
 
--(id)initWithCoder:(NSCoder *)coder;
+- (id)initWithCoder:(NSCoder *)coder;
 
--(id)initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge;
+- (id)initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge;
 
--(id)delegate;
--(NSWindow *)parentWindow;
--(NSView *)contentView;
--(NSSize)contentSize;
--(NSSize)minContentSize;
--(NSSize)maxContentSize;
--(float)leadingOffset;
--(float)trailingOffset;
--(NSRectEdge)preferredEdge;
--(int)state;
--(NSRectEdge)edge;
+- (id)delegate;
+- (NSWindow *)parentWindow;
+- (NSView *)contentView;
+- (NSSize)contentSize;
+- (NSSize)minContentSize;
+- (NSSize)maxContentSize;
+- (float)leadingOffset;
+- (float)trailingOffset;
+- (NSRectEdge)preferredEdge;
+- (int)state;
+- (NSRectEdge)edge;
 
--(void)setDelegate:delegate;
--(void)setParentWindow:(NSWindow *)window;
--(void)setContentView:(NSView *)view;
--(void)setContentSize:(NSSize)size;
--(void)setMinContentSize:(NSSize)size;
--(void)setMaxContentSize:(NSSize)size;
--(void)setPreferredEdge:(NSRectEdge)edge;
--(void)setLeadingOffset:(float)offset;
--(void)setTrailingOffset:(float)offset;
+- (void)setDelegate:delegate;
+- (void)setParentWindow:(NSWindow *)window;
+- (void)setContentView:(NSView *)view;
+- (void)setContentSize:(NSSize)size;
+- (void)setMinContentSize:(NSSize)size;
+- (void)setMaxContentSize:(NSSize)size;
+- (void)setPreferredEdge:(NSRectEdge)edge;
+- (void)setLeadingOffset:(float)offset;
+- (void)setTrailingOffset:(float)offset;
 
--(void)open;
--(void)openOnEdge:(NSRectEdge)edge;
--(void)close;
+- (void)open;
+- (void)openOnEdge:(NSRectEdge)edge;
+- (void)close;
 
--(void)open:sender;
--(void)close:sender;
--(void)toggle:sender;
+- (void)open:sender;
+- (void)close:sender;
+- (void)toggle:sender;
 
--(void)parentWindowDidActivate:(NSWindow *)window;
--(void)parentWindowDidDeactivate:(NSWindow *)window;
--(void)parentWindowDidChangeFrame:(NSWindow *)window;
--(void)parentWindowDidExitMove:(NSWindow *)window;
--(void)parentWindowDidMiniaturize:(NSWindow *)window;
--(void)parentWindowDidDeminiaturize:(NSWindow *)window;
--(void)parentWindowDidClose:(NSWindow *)window;
+- (void)parentWindowDidActivate:(NSWindow *)window;
+- (void)parentWindowDidDeactivate:(NSWindow *)window;
+- (void)parentWindowDidChangeFrame:(NSWindow *)window;
+- (void)parentWindowDidExitMove:(NSWindow *)window;
+- (void)parentWindowDidMiniaturize:(NSWindow *)window;
+- (void)parentWindowDidDeminiaturize:(NSWindow *)window;
+- (void)parentWindowDidClose:(NSWindow *)window;
 
--(void)drawerWindowDidActivate:(NSDrawerWindow *)window;
--(NSSize)drawerWindow:(NSDrawerWindow *)window constrainSize:(NSSize)size edge:(NSRectEdge)edge;
--(void)drawerWindowDidResize:(NSDrawerWindow *)window;
+- (void)drawerWindowDidActivate:(NSDrawerWindow *)window;
+- (NSSize)drawerWindow:(NSDrawerWindow *)window constrainSize:(NSSize)size edge:(NSRectEdge)edge;
+- (void)drawerWindowDidResize:(NSDrawerWindow *)window;
 
 @end
 
-@interface NSObject(NSDrawer_delegate)
+@interface NSObject (NSDrawer_delegate)
 
--(NSSize)drawerWillResizeContents:(NSDrawer *)drawer toSize:(NSSize)contentSize;
+- (NSSize)drawerWillResizeContents:(NSDrawer *)drawer toSize:(NSSize)contentSize;
 
--(BOOL)drawerShouldOpen:(NSDrawer *)drawer;
--(void)drawerWillOpen:(NSNotification *)note;
--(void)drawerDidOpen:(NSNotification *)note;
+- (BOOL)drawerShouldOpen:(NSDrawer *)drawer;
+- (void)drawerWillOpen:(NSNotification *)note;
+- (void)drawerDidOpen:(NSNotification *)note;
 
--(BOOL)drawerShouldClose:(NSDrawer *)drawer;
--(void)drawerWillClose:(NSNotification *)note;
--(void)drawerDidClose:(NSNotification *)note;
+- (BOOL)drawerShouldClose:(NSDrawer *)drawer;
+- (void)drawerWillClose:(NSNotification *)note;
+- (void)drawerDidClose:(NSNotification *)note;
 
 @end

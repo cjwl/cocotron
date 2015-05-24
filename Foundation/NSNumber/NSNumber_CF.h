@@ -2,7 +2,7 @@
 #import <CoreFoundation/CFNumber.h>
 
 @interface NSNumber_CF : NSNumber {
-@public
+  @public
     CFNumberType _type;
 }
 

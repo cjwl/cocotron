@@ -12,12 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Don't use autorelease, this is a limited resource in the GDI
 
 @interface Win32Font : NSObject {
-   HFONT _handle;
+    HFONT _handle;
 }
 
--initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias;
--initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle;
+- initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias;
+- initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle;
 
--(HFONT)fontHandle;
+- (HFONT)fontHandle;
 
 @end

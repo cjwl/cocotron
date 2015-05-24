@@ -9,60 +9,60 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/NSFont.h>
 
-@class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, NSView, NSSavePanel, NSOpenPanel, CGWindow;
+@class NSEvent, NSColor, NSPasteboard, NSDraggingManager, NSPrintInfo, NSView, NSSavePanel, NSOpenPanel, CGWindow;
 
 @interface NSDisplay : NSObject {
-   NSMutableArray *_eventQueue;
+    NSMutableArray *_eventQueue;
 }
 
-+(NSDisplay *)currentDisplay;
++ (NSDisplay *)currentDisplay;
 
--(NSArray *)screens;
+- (NSArray *)screens;
 
--(NSPasteboard *)pasteboardWithName:(NSString *)name;
+- (NSPasteboard *)pasteboardWithName:(NSString *)name;
 
--(NSDraggingManager *)draggingManager;
+- (NSDraggingManager *)draggingManager;
 
--(CGWindow *)windowWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
--(CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
+- (CGWindow *)windowWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
+- (CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
 
--(NSColor *)colorWithName:(NSString *)colorName;
--(void)_addSystemColor:(NSColor *) result forName:(NSString *)colorName;
+- (NSColor *)colorWithName:(NSString *)colorName;
+- (void)_addSystemColor:(NSColor *)result forName:(NSString *)colorName;
 
--(NSTimeInterval)textCaretBlinkInterval;
+- (NSTimeInterval)textCaretBlinkInterval;
 
--(void)hideCursor;
--(void)unhideCursor;
+- (void)hideCursor;
+- (void)unhideCursor;
 
--(id)cursorWithName:(NSString *)name;
--(void)setCursor:(id)cursor;
+- (id)cursorWithName:(NSString *)name;
+- (void)setCursor:(id)cursor;
 
--(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue;
+- (NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue;
 
--(void)discardEventsMatchingMask:(unsigned)mask beforeEvent:(NSEvent *)event;
+- (void)discardEventsMatchingMask:(unsigned)mask beforeEvent:(NSEvent *)event;
 
--(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
+- (void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
 
--(BOOL)containsAndRemovePeriodicEvents;
+- (BOOL)containsAndRemovePeriodicEvents;
 
--(unsigned)modifierForDefault:(NSString *)key :(unsigned)standard;
+- (unsigned)modifierForDefault:(NSString *)key:(unsigned)standard;
 
--(void)beep;
+- (void)beep;
 
--(NSSet *)allFontFamilyNames;
--(NSArray *)fontTypefacesForFamilyName:(NSString *)name;
+- (NSSet *)allFontFamilyNames;
+- (NSArray *)fontTypefacesForFamilyName:(NSString *)name;
 
--(float)scrollerWidth;
+- (float)scrollerWidth;
 
--(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
--(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes;
+- (int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
+- (int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes;
 
--(CGContextRef)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;
+- (CGContextRef)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;
 
--(int)savePanel:(NSSavePanel *)savePanel runModalForDirectory:(NSString *)directory file:(NSString *)file;
--(int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
+- (int)savePanel:(NSSavePanel *)savePanel runModalForDirectory:(NSString *)directory file:(NSString *)file;
+- (int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
 
--(NSPoint)mouseLocation;
--(NSUInteger)currentModifierFlags;
+- (NSPoint)mouseLocation;
+- (NSUInteger)currentModifierFlags;
 
 @end

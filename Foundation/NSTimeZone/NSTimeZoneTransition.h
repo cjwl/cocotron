@@ -10,16 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDate;
 
-@interface NSTimeZoneTransition : NSObject <NSCopying,NSCoding> {
+@interface NSTimeZoneTransition : NSObject <NSCopying, NSCoding> {
     NSDate *_transitionDate;
     unsigned _typeIndex;
 }
 
-+(NSTimeZoneTransition *)timeZoneTransitionWithTransitionDate:(NSDate *)transitionDate typeIndex:(unsigned)typeIndex;
++ (NSTimeZoneTransition *)timeZoneTransitionWithTransitionDate:(NSDate *)transitionDate typeIndex:(unsigned)typeIndex;
 
--initWithTransitionDate:(NSDate *)transitionDate typeIndex:(unsigned)typeIndex;
+- initWithTransitionDate:(NSDate *)transitionDate typeIndex:(unsigned)typeIndex;
 
--(NSDate *)transitionDate;
--(unsigned)typeIndex;
+- (NSDate *)transitionDate;
+- (unsigned)typeIndex;
 
 @end

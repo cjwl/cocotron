@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSOutputStream.h>
 
 @interface NSOutputStream_buffer : NSOutputStream {
-   id              _delegate;
-   NSError        *_error;
-   NSStreamStatus _status;
-   uint8_t  *_buffer;
-   NSUInteger        _capacity;
-   NSUInteger        _position;
+    id _delegate;
+    NSError *_error;
+    NSStreamStatus _status;
+    uint8_t *_buffer;
+    NSUInteger _capacity;
+    NSUInteger _position;
 }
 
 @end

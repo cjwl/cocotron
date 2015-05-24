@@ -12,7 +12,7 @@
 #if defined(COREDATA_INSIDE_BUILD)
 #define COREDATA_EXPORT extern "C" COREDATA_DLLEXPORT
 #else
-#define COREDATA_EXPORT extern "C" COREDATA_DLLIMPORT 
+#define COREDATA_EXPORT extern "C" COREDATA_DLLIMPORT
 #endif
 #else
 #define COREDATA_EXPORT extern "C"
@@ -31,4 +31,3 @@
 #endif
 
 #endif
-

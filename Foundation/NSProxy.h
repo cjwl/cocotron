@@ -10,23 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMethodSignature, NSInvocation;
 
-NS_ROOT_CLASS @interface NSProxy <NSObject> {
-    Class	isa;
+NS_ROOT_CLASS @interface NSProxy<NSObject> {
+    Class isa;
 }
 
-+allocWithZone:(NSZone *)zone;
-+alloc;
++ allocWithZone:(NSZone *)zone;
++ alloc;
 
-+(Class)class;
++ (Class) class;
 //+(BOOL)respondsToSelector:(SEL)selector;
 
--(void)dealloc;
--(void)finalize;
+- (void)dealloc;
+- (void)finalize;
 
--(NSMethodSignature *)methodSignatureForSelector:(SEL)selector;
--(void)forwardInvocation:(NSInvocation *)invocation;
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(NSInvocation *)invocation;
 
--(NSString *)description;
+- (NSString *)description;
 
 @end
-

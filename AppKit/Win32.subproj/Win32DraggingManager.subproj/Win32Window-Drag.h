@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class Win32DragSession;
 
-@interface Win32Window(Win32Window_drag)
--(void)dragEnter:(Win32DragSession *)session;
--(void)dragOver:(Win32DragSession *)session;
--(void)dragLeave:(Win32DragSession *)session;
--(void)drop:(Win32DragSession *)session;
+@interface Win32Window (Win32Window_drag)
+- (void)dragEnter:(Win32DragSession *)session;
+- (void)dragOver:(Win32DragSession *)session;
+- (void)dragLeave:(Win32DragSession *)session;
+- (void)drop:(Win32DragSession *)session;
 @end

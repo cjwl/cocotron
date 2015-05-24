@@ -11,22 +11,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct O2ColorSpace *CGColorSpaceRef;
 
 typedef enum {
-   kCGRenderingIntentDefault,
-   kCGRenderingIntentAbsoluteColorimetric,
-   kCGRenderingIntentRelativeColorimetric,
-   kCGRenderingIntentSaturation,
-   kCGRenderingIntentPerceptual,
+    kCGRenderingIntentDefault,
+    kCGRenderingIntentAbsoluteColorimetric,
+    kCGRenderingIntentRelativeColorimetric,
+    kCGRenderingIntentSaturation,
+    kCGRenderingIntentPerceptual,
 } CGColorRenderingIntent;
 
 typedef enum {
-   kCGColorSpaceModelUnknown = -1,
-   kCGColorSpaceModelMonochrome,
-   kCGColorSpaceModelRGB,
-   kCGColorSpaceModelCMYK,
-   kCGColorSpaceModelLab,
-   kCGColorSpaceModelDeviceN,
-   kCGColorSpaceModelIndexed,
-   kCGColorSpaceModelPattern,
+    kCGColorSpaceModelUnknown = -1,
+    kCGColorSpaceModelMonochrome,
+    kCGColorSpaceModelRGB,
+    kCGColorSpaceModelCMYK,
+    kCGColorSpaceModelLab,
+    kCGColorSpaceModelDeviceN,
+    kCGColorSpaceModelIndexed,
+    kCGColorSpaceModelPattern,
 } CGColorSpaceModel;
 
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceRetain(CGColorSpaceRef colorSpace);

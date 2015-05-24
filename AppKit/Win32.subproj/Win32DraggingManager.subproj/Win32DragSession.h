@@ -11,25 +11,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class Win32Window;
 
 @interface Win32DragSession : NSObject <NSDraggingInfo> {
-   Win32Window    *_window;
-   id              _receiver;
-   NSDragOperation _sourceOperationMask;
-   NSPoint         _screenLocation;
-   NSPoint         _imageLocation;
-   NSImage        *_image;
-   NSPasteboard   *_pasteboard;
-   id              _source;
-   int             _sequenceNumber;
-} 
+    Win32Window *_window;
+    id _receiver;
+    NSDragOperation _sourceOperationMask;
+    NSPoint _screenLocation;
+    NSPoint _imageLocation;
+    NSImage *_image;
+    NSPasteboard *_pasteboard;
+    id _source;
+    int _sequenceNumber;
+}
 
--initWithWindow:(Win32Window *)window pasteboard:(NSPasteboard *)pasteboard;
+- initWithWindow:(Win32Window *)window pasteboard:(NSPasteboard *)pasteboard;
 
--(void)setSourceOperationMask:(unsigned)mask;
--(void)setScreenLocation:(NSPoint)point;
+- (void)setSourceOperationMask:(unsigned)mask;
+- (void)setScreenLocation:(NSPoint)point;
 
--(id)receiver;
--(void)setReceiver:(id)object;
+- (id)receiver;
+- (void)setReceiver:(id)object;
 
--(BOOL)pasteboardTypesIntersectTypes:(NSArray *)types;
+- (BOOL)pasteboardTypesIntersectTypes:(NSArray *)types;
 
 @end

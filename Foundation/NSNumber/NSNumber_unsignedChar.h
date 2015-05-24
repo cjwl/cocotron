@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_CF.h>
 
 @interface NSNumber_unsignedChar : NSNumber_CF {
-   unsigned char _value;
+    unsigned char _value;
 }
 @end
 
-NSNumber *NSNumber_unsignedCharNew(NSZone *zone,unsigned char value);
+NSNumber *NSNumber_unsignedCharNew(NSZone *zone, unsigned char value);

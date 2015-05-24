@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSIndexPath : NSObject <NSCopying, NSCoding> {
-   NSUInteger  _length;
-   NSUInteger *_indexes;
+    NSUInteger _length;
+    NSUInteger *_indexes;
 }
 
 + (NSIndexPath *)indexPathWithIndex:(NSUInteger)index;
-+ (NSIndexPath *)indexPathWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length;   
++ (NSIndexPath *)indexPathWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length;
 
 - (id)initWithIndex:(NSUInteger)index;
-- (id)initWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length;    // designated initializer
+- (id)initWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length; // designated initializer
 
 - (NSIndexPath *)indexPathByAddingIndex:(NSUInteger)index;
 - (NSIndexPath *)indexPathByRemovingLastIndex;
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)getIndexes:(NSUInteger *)indexes;
 
-	// comparison support
+// comparison support
 - (NSComparisonResult)compare:(NSIndexPath *)otherObject; // sorting an array of indexPaths using this comparison results in an array representing nodes in depth-first traversal order
 
 @end

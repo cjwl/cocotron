@@ -9,11 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2ImageSource.h>
 
 @interface O2ImageSource_BMP : O2ImageSource {
-   NSData *_bmp;
+    NSData *_bmp;
 }
 
--(unsigned)count;
+- (unsigned)count;
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+- (O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

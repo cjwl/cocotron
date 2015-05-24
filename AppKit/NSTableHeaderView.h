@@ -12,18 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSTableHeaderView : NSView {
     NSTableView *_tableView;
-    int          _resizedColumn;
+    int _resizedColumn;
 }
 
--(NSTableView *)tableView;
+- (NSTableView *)tableView;
 
--(int)resizedColumn;
--(int)draggedColumn;
--(float)draggedDistance;
+- (int)resizedColumn;
+- (int)draggedColumn;
+- (float)draggedDistance;
 
--(void)setTableView:(NSTableView *)tableView;
+- (void)setTableView:(NSTableView *)tableView;
 
--(NSRect)headerRectOfColumn:(int)column;
--(int)columnAtPoint:(NSPoint)point;
+- (NSRect)headerRectOfColumn:(int)column;
+- (int)columnAtPoint:(NSPoint)point;
 
 @end

@@ -11,69 +11,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMenuItem;
 
 typedef enum {
-	NSPopUpNoArrow       = 0,
-	NSPopUpArrowAtCenter = 1,
-	NSPopUpArrowAtBottom = 2
+    NSPopUpNoArrow = 0,
+    NSPopUpArrowAtCenter = 1,
+    NSPopUpArrowAtBottom = 2
 } NSPopUpArrowPosition;
 
 @interface NSPopUpButtonCell : NSButtonCell {
-   NSMenu *             _menu;
-   NSInteger            _selectedIndex;
-   BOOL                 _pullsDown;
-   BOOL                 _autoenablesItems;
-   BOOL                 _usesItemFromMenu;
-   NSPopUpArrowPosition _arrowPosition;
-   NSRectEdge           _preferredEdge;
+    NSMenu *_menu;
+    NSInteger _selectedIndex;
+    BOOL _pullsDown;
+    BOOL _autoenablesItems;
+    BOOL _usesItemFromMenu;
+    NSPopUpArrowPosition _arrowPosition;
+    NSRectEdge _preferredEdge;
 }
 
--initTextCell:(NSString *)string pullsDown:(BOOL)pullDown;
+- initTextCell:(NSString *)string pullsDown:(BOOL)pullDown;
 
--(NSPopUpArrowPosition)arrowPosition;
--(BOOL)pullsDown;
--(NSMenu *)menu;
--(BOOL)autoenablesItems;
--(NSRectEdge)preferredEdge;
+- (NSPopUpArrowPosition)arrowPosition;
+- (BOOL)pullsDown;
+- (NSMenu *)menu;
+- (BOOL)autoenablesItems;
+- (NSRectEdge)preferredEdge;
 
--(NSArray *)itemArray;
--(NSInteger)numberOfItems;
+- (NSArray *)itemArray;
+- (NSInteger)numberOfItems;
 
--(NSMenuItem *)itemAtIndex:(NSInteger)index;
--(NSMenuItem *)itemWithTitle:(NSString *)title;
--(NSMenuItem *)lastItem;
+- (NSMenuItem *)itemAtIndex:(NSInteger)index;
+- (NSMenuItem *)itemWithTitle:(NSString *)title;
+- (NSMenuItem *)lastItem;
 
--(NSInteger)indexOfItem:(NSMenuItem *)item;
--(NSInteger)indexOfItemWithTitle:(NSString *)title;
--(NSInteger)indexOfItemWithTag:(NSInteger)tag;
--(NSInteger)indexOfItemWithRepresentedObject:object;
--(NSInteger)indexOfItemWithTarget:target andAction:(SEL)action;
+- (NSInteger)indexOfItem:(NSMenuItem *)item;
+- (NSInteger)indexOfItemWithTitle:(NSString *)title;
+- (NSInteger)indexOfItemWithTag:(NSInteger)tag;
+- (NSInteger)indexOfItemWithRepresentedObject:object;
+- (NSInteger)indexOfItemWithTarget:target andAction:(SEL)action;
 
--(NSMenuItem *)selectedItem;
--(NSString *)titleOfSelectedItem;
--(NSInteger)indexOfSelectedItem;
+- (NSMenuItem *)selectedItem;
+- (NSString *)titleOfSelectedItem;
+- (NSInteger)indexOfSelectedItem;
 
--(void)setArrowPosition:(NSPopUpArrowPosition)position;
--(void)setPullsDown:(BOOL)flag;
--(void)setMenu:(NSMenu *)menu;
--(void)setAutoenablesItems:(BOOL)value;
--(void)setPreferredEdge:(NSRectEdge)edge;
+- (void)setArrowPosition:(NSPopUpArrowPosition)position;
+- (void)setPullsDown:(BOOL)flag;
+- (void)setMenu:(NSMenu *)menu;
+- (void)setAutoenablesItems:(BOOL)value;
+- (void)setPreferredEdge:(NSRectEdge)edge;
 
--(void)addItemWithTitle:(NSString *)title;
--(void)addItemsWithTitles:(NSArray *)titles;
+- (void)addItemWithTitle:(NSString *)title;
+- (void)addItemsWithTitles:(NSArray *)titles;
 
--(void)removeAllItems;
--(void)removeItemAtIndex:(NSInteger)index;
--(void)removeItemWithTitle:(NSString *)title;
+- (void)removeAllItems;
+- (void)removeItemAtIndex:(NSInteger)index;
+- (void)removeItemWithTitle:(NSString *)title;
 
--(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index;
+- (void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index;
 
--(void)selectItem:(NSMenuItem *)item;
--(void)selectItemAtIndex:(NSInteger)index;
--(void)selectItemWithTitle:(NSString *)title;
--(BOOL)selectItemWithTag:(NSInteger)tag;
+- (void)selectItem:(NSMenuItem *)item;
+- (void)selectItemAtIndex:(NSInteger)index;
+- (void)selectItemWithTitle:(NSString *)title;
+- (BOOL)selectItemWithTag:(NSInteger)tag;
 
--(NSString *)itemTitleAtIndex:(NSInteger)index;
--(NSArray *)itemTitles;
+- (NSString *)itemTitleAtIndex:(NSInteger)index;
+- (NSArray *)itemTitles;
 
--(void)synchronizeTitleAndSelectedItem;
+- (void)synchronizeTitleAndSelectedItem;
 
 @end

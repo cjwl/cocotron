@@ -8,47 +8,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSXMLNode.h>
 
-@class NSXMLNode,NSArray,NSError,NSDictionary,NSMutableDictionary,NSMutableArray;
+@class NSXMLNode, NSArray, NSError, NSDictionary, NSMutableDictionary, NSMutableArray;
 
 @interface NSXMLElement : NSXMLNode <NSCopying> {
-   NSMutableDictionary *_attributes;
-   NSMutableDictionary *_namespaces;
+    NSMutableDictionary *_attributes;
+    NSMutableDictionary *_namespaces;
 }
 
--initWithName:(NSString *)name;
--initWithName:(NSString *)name stringValue:(NSString *)string;
--initWithName:(NSString *)name URI:(NSString *)uri;
--initWithXMLString:(NSString *)xml error:(NSError **)error;
+- initWithName:(NSString *)name;
+- initWithName:(NSString *)name stringValue:(NSString *)string;
+- initWithName:(NSString *)name URI:(NSString *)uri;
+- initWithXMLString:(NSString *)xml error:(NSError **)error;
 
--(NSArray *)attributes;
--(NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri;
--(NSXMLNode *)attributeForName:(NSString *)name;
--(NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri;
--(NSArray *)elementsForName:(NSString *)name;
--(NSArray *)namespaces;
--(NSXMLNode *)namespaceForPrefix:(NSString *)prefix;
+- (NSArray *)attributes;
+- (NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri;
+- (NSXMLNode *)attributeForName:(NSString *)name;
+- (NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri;
+- (NSArray *)elementsForName:(NSString *)name;
+- (NSArray *)namespaces;
+- (NSXMLNode *)namespaceForPrefix:(NSString *)prefix;
 
--(void)setAttributes:(NSArray *)attributes;
--(void)setAttributesAsDictionary:(NSDictionary *)attributes;
--(void)setChildren:(NSArray *)children;
--(void)setNamespaces:(NSArray *)namespaces;
+- (void)setAttributes:(NSArray *)attributes;
+- (void)setAttributesAsDictionary:(NSDictionary *)attributes;
+- (void)setChildren:(NSArray *)children;
+- (void)setNamespaces:(NSArray *)namespaces;
 
--(void)addChild:(NSXMLNode *)child;
--(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
--(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
--(void)removeChildAtIndex:(NSUInteger)index;
--(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
+- (void)addChild:(NSXMLNode *)child;
+- (void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+- (void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+- (void)removeChildAtIndex:(NSUInteger)index;
+- (void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
--(void)addAttribute:(NSXMLNode *)attribute;
--(void)removeAttributeForName:(NSString *)name;
+- (void)addAttribute:(NSXMLNode *)attribute;
+- (void)removeAttributeForName:(NSString *)name;
 
--(void)addNamespace:(NSXMLNode *)aNamespace;
--(void)removeNamespaceForPrefix:(NSString *)prefix;
+- (void)addNamespace:(NSXMLNode *)aNamespace;
+- (void)removeNamespaceForPrefix:(NSString *)prefix;
 
--(void)resolveNamespaceForName:(NSString *)name;
--(void)resolvePrefixForNamespaceURI:(NSString *)uri;
+- (void)resolveNamespaceForName:(NSString *)name;
+- (void)resolvePrefixForNamespaceURI:(NSString *)uri;
 
--(void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve;
+- (void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve;
 
 @end
-

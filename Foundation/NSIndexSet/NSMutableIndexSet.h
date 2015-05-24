@@ -8,21 +8,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSIndexSet.h>
 
 @interface NSMutableIndexSet : NSIndexSet {
-   NSUInteger _capacity;
+    NSUInteger _capacity;
 }
 
--(void)addIndexesInRange:(NSRange)range;
--(void)addIndexes:(NSIndexSet *)other;
--(void)addIndex:(NSUInteger)index;
+- (void)addIndexesInRange:(NSRange)range;
+- (void)addIndexes:(NSIndexSet *)other;
+- (void)addIndex:(NSUInteger)index;
 
--(void)removeAllIndexes;
--(void)removeIndexesInRange:(NSRange)range;
--(void)removeIndexes:(NSIndexSet *)other;
--(void)removeIndex:(NSUInteger)index;
+- (void)removeAllIndexes;
+- (void)removeIndexesInRange:(NSRange)range;
+- (void)removeIndexes:(NSIndexSet *)other;
+- (void)removeIndex:(NSUInteger)index;
 
--(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta;
+- (void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta;
 
--(void)encodeWithCoder:(NSCoder *)coder;
--(id)initWithCoder:(NSCoder *)coder;
+- (void)encodeWithCoder:(NSCoder *)coder;
+- (id)initWithCoder:(NSCoder *)coder;
 
 @end

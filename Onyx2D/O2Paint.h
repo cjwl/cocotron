@@ -32,19 +32,19 @@
 typedef O2Paint *O2PaintRef;
 
 // this function returns the number of pixels read as a positive value or skipped as a negative value
-typedef int (*O2PaintReadSpan_argb8u_PRE_function)(O2Paint *self,int x,int y,O2argb8u *span,int length);
-typedef int (*O2PaintReadSpan_largb32f_PRE_function)(O2Paint *self,int x,int y,O2argb32f *span,int length);
+typedef int (*O2PaintReadSpan_argb8u_PRE_function)(O2Paint *self, int x, int y, O2argb8u *span, int length);
+typedef int (*O2PaintReadSpan_largb32f_PRE_function)(O2Paint *self, int x, int y, O2argb32f *span, int length);
 
 @interface O2Paint : NSObject {
-@public
+  @public
     O2PaintReadSpan_argb8u_PRE_function _paint_largb8u_PRE;
     O2PaintReadSpan_largb32f_PRE_function _paint_largb32f_PRE;
     bool isOpaque;
-@protected
-    O2AffineTransform               m_surfaceToPaintMatrix;
+  @protected
+    O2AffineTransform m_surfaceToPaintMatrix;
 }
 
-O2PaintRef O2PaintInitWithTransform(O2PaintRef self,O2AffineTransform transform);
+O2PaintRef O2PaintInitWithTransform(O2PaintRef self, O2AffineTransform transform);
 
 O2PaintRef O2PaintRetain(O2PaintRef self);
 void O2PaintRelease(O2PaintRef self);
@@ -53,13 +53,13 @@ void O2PaintRelease(O2PaintRef self);
 
 // _always_ generates alpha=1.0
 static inline bool O2PaintIsOpaque(O2PaintRef self) {
-   return self->isOpaque;
+    return self->isOpaque;
 }
 
-static inline int O2PaintReadSpan_argb8u_PRE(O2Paint *self,int x,int y,O2argb8u *span,int length) {
-   return self->_paint_largb8u_PRE(self,x,y,span,length);
+static inline int O2PaintReadSpan_argb8u_PRE(O2Paint *self, int x, int y, O2argb8u *span, int length) {
+    return self->_paint_largb8u_PRE(self, x, y, span, length);
 }
 
-static inline int O2PaintReadSpan_largb32f_PRE(O2Paint *self,int x,int y,O2argb32f *span,int length) {
-   return self->_paint_largb32f_PRE(self,x,y,span,length);
+static inline int O2PaintReadSpan_largb32f_PRE(O2Paint *self, int x, int y, O2argb32f *span, int length) {
+    return self->_paint_largb32f_PRE(self, x, y, span, length);
 }

@@ -11,20 +11,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface NSOrderedPerform : NSObject {
-   SEL      _selector;
-   id       _target;
-   id       _argument;
-   NSUInteger _order;
-   NSArray *_modes;
+    SEL _selector;
+    id _target;
+    id _argument;
+    NSUInteger _order;
+    NSArray *_modes;
 }
 
-+(NSOrderedPerform *)orderedPerformWithSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
++ (NSOrderedPerform *)orderedPerformWithSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
 
--(SEL)selector;
--(id)target;
--(id)argument;
--(NSUInteger)order;
+- (SEL)selector;
+- (id)target;
+- (id)argument;
+- (NSUInteger)order;
 
--(BOOL)fireInMode:(NSString *)mode;
+- (BOOL)fireInMode:(NSString *)mode;
 
 @end

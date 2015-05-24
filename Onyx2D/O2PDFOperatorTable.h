@@ -11,16 +11,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class O2PDFScanner;
 
-typedef void (*O2PDFOperatorCallback)(O2PDFScanner *scanner,void *info);
+typedef void (*O2PDFOperatorCallback)(O2PDFScanner *scanner, void *info);
 
 @interface O2PDFOperatorTable : NSObject {
-   NSMapTable *_table;
+    NSMapTable *_table;
 }
 
-+(O2PDFOperatorTable *)renderingOperatorTable;
++ (O2PDFOperatorTable *)renderingOperatorTable;
 
--(O2PDFOperatorCallback)callbackForName:(const char *)name;
+- (O2PDFOperatorCallback)callbackForName:(const char *)name;
 
--(void)setCallback:(O2PDFOperatorCallback)callback forName:(const char *)name;
+- (void)setCallback:(O2PDFOperatorCallback)callback forName:(const char *)name;
 
 @end

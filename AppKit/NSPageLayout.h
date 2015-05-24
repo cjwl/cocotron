@@ -11,12 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSPrintInfo;
 
 @interface NSPageLayout : NSObject {
-
 }
 
-+(NSPageLayout *)pageLayout;
++ (NSPageLayout *)pageLayout;
 
--(int)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
--(int)runModal;
+- (int)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
+- (int)runModal;
 
 @end

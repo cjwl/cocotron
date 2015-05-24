@@ -1,22 +1,22 @@
 #import <AppKit/NSView.h>
 
-@class PDFDocument,PDFSelection;
+@class PDFDocument, PDFSelection;
 
 @interface PDFDocumentView : NSView {
-   PDFDocument    *_document;
-   NSMutableArray *_pageViews;
-   float           _scaleFactor;
+    PDFDocument *_document;
+    NSMutableArray *_pageViews;
+    float _scaleFactor;
 }
 
--(void)setDocument:(PDFDocument *)document;
+- (void)setDocument:(PDFDocument *)document;
 
--(void)layoutDocumentView;
+- (void)layoutDocumentView;
 
--(void)pageUp:sender;
--(void)pageDown:sender;
+- (void)pageUp:sender;
+- (void)pageDown:sender;
 
--(void)goToPageAtIndex:(NSUInteger)pageIndex;
+- (void)goToPageAtIndex:(NSUInteger)pageIndex;
 
--(void)setCurrentSelection:(PDFSelection *)selection;
+- (void)setCurrentSelection:(PDFSelection *)selection;
 
 @end

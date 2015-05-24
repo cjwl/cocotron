@@ -10,16 +10,15 @@
 
 @class NSMutableDictionary;
 
-
 @interface NSSpellEngine_hunspell : NSSpellEngine {
-   NSMutableDictionary *_dictionaries;
-   
-   NSString *_directory;
-   NSString *_localeIdentifier;
-   
-   void *_hunspell;
+    NSMutableDictionary *_dictionaries;
+
+    NSString *_directory;
+    NSString *_localeIdentifier;
+
+    void *_hunspell;
 }
 
--initWithContentsOfFile:(NSString *)path;
+- initWithContentsOfFile:(NSString *)path;
 
 @end

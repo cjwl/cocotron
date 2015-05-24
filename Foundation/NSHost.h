@@ -11,25 +11,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface NSHost : NSObject {
-   NSString *_name;
-   NSArray  *_addresses;
+    NSString *_name;
+    NSArray *_addresses;
 }
 
-+(BOOL)isHostCacheEnabled;
-+(void)setHostCacheEnabled:(BOOL)value;
-+(void)flushHostCache;
++ (BOOL)isHostCacheEnabled;
++ (void)setHostCacheEnabled:(BOOL)value;
++ (void)flushHostCache;
 
-+(NSHost *)currentHost;
++ (NSHost *)currentHost;
 
-+(NSHost *)hostWithName:(NSString *)name;
-+(NSHost *)hostWithAddress:(NSString *)address;
++ (NSHost *)hostWithName:(NSString *)name;
++ (NSHost *)hostWithAddress:(NSString *)address;
 
--(BOOL)isEqualToHost:(NSHost *)host;
+- (BOOL)isEqualToHost:(NSHost *)host;
 
--(NSArray *)names;
--(NSString *)name;
+- (NSArray *)names;
+- (NSString *)name;
 
--(NSArray *)addresses;
--(NSString *)address;
+- (NSArray *)addresses;
+- (NSString *)address;
 
 @end

@@ -1,6 +1,6 @@
 #import <AppKit/NSNibConnector.h>
 
-@interface NSNibAXRelationshipConnector : NSNibConnector  {
+@interface NSNibAXRelationshipConnector : NSNibConnector {
 }
 
 @end

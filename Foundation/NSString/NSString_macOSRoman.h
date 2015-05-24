@@ -9,23 +9,23 @@
 #import <Foundation/NSString.h>
 
 @interface NSString_macOSRoman : NSString {
-	NSUInteger  _length;
-	unsigned char _bytes[1];
+    NSUInteger _length;
+    unsigned char _bytes[1];
 }
 
 @end
 
-unichar *NSMacOSRomanToUnicode(const char *cString,NSUInteger length,
-							NSUInteger *resultLength,NSZone *zone);
+unichar *NSMacOSRomanToUnicode(const char *cString, NSUInteger length,
+    NSUInteger *resultLength, NSZone *zone);
 
-char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
-						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+char *NSUnicodeToMacOSRoman(const unichar *characters, NSUInteger length,
+    BOOL lossy, NSUInteger *resultLength, NSZone *zone, BOOL zeroTerminate);
 
 NSString *NSString_macOSRomanNewWithBytes(NSZone *zone,
-									   const char *bytes,NSUInteger length);
+    const char *bytes, NSUInteger length);
 
 NSString *NSMacOSRomanCStringNewWithCharacters(NSZone *zone,
-                                               const unichar *characters,NSUInteger length,BOOL lossy);
+    const unichar *characters, NSUInteger length, BOOL lossy);
 
-NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInteger length,
-                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters, NSUInteger length,
+    NSUInteger *location, char *cString, NSUInteger maxLength, BOOL lossy);

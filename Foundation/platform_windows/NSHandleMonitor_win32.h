@@ -9,32 +9,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInputSource.h>
 
 enum {
-  Win32HandleSignaled=0,
-  Win32HandleAbandoned=1,
+    Win32HandleSignaled = 0,
+    Win32HandleAbandoned = 1,
 };
 
 @interface NSHandleMonitor_win32 : NSInputSource {
-   void    *_handle;
-   id       _delegate;
-   NSUInteger _currentActivity;
-   BOOL _isValid;
+    void *_handle;
+    id _delegate;
+    NSUInteger _currentActivity;
+    BOOL _isValid;
 }
 
-+(NSHandleMonitor_win32 *)handleMonitorWithHandle:(void *)handle;
++ (NSHandleMonitor_win32 *)handleMonitorWithHandle:(void *)handle;
 
--initWithHandle:(void *)handle;
+- initWithHandle:(void *)handle;
 
--(void *)handle;
+- (void *)handle;
 
--(void)setDelegate:delegate;
+- (void)setDelegate:delegate;
 
--(void)setCurrentActivity:(NSUInteger)activity;
+- (void)setCurrentActivity:(NSUInteger)activity;
 
--(void)notifyDelegateOfCurrentActivity;
+- (void)notifyDelegateOfCurrentActivity;
 
 @end
 
-@interface NSObject(NSHandleMonitor_win32)
--(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor;
--(void)handleMonitorIndicatesAbandoned:(NSHandleMonitor_win32 *)monitor;
+@interface NSObject (NSHandleMonitor_win32)
+- (void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor;
+- (void)handleMonitorIndicatesAbandoned:(NSHandleMonitor_win32 *)monitor;
 @end

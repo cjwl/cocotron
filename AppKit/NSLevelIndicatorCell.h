@@ -10,45 +10,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSliderCell.h>
 
 typedef enum {
-   NSRatingLevelIndicatorStyle,
-   NSDiscreteCapacityLevelIndicatorStyle,
-   NSContinuousCapacityLevelIndicatorStyle,
-   NSRelevancyLevelIndicatorStyle,
+    NSRatingLevelIndicatorStyle,
+    NSDiscreteCapacityLevelIndicatorStyle,
+    NSContinuousCapacityLevelIndicatorStyle,
+    NSRelevancyLevelIndicatorStyle,
 } NSLevelIndicatorStyle;
 
 @interface NSLevelIndicatorCell : NSActionCell {
-   NSLevelIndicatorStyle _style;
-   double                _minValue;
-   double                _maxValue;
-   double                _warningValue;
-   double                _criticalValue;
-   int                   _numberOfTickMarks;
-   int                   _numberOfMajorTickMarks;
-   NSTickMarkPosition    _tickMarkPosition;
+    NSLevelIndicatorStyle _style;
+    double _minValue;
+    double _maxValue;
+    double _warningValue;
+    double _criticalValue;
+    int _numberOfTickMarks;
+    int _numberOfMajorTickMarks;
+    NSTickMarkPosition _tickMarkPosition;
 }
 
--initWithLevelIndicatorStyle:(NSLevelIndicatorStyle)style;
+- initWithLevelIndicatorStyle:(NSLevelIndicatorStyle)style;
 
--(NSLevelIndicatorStyle)levelIndicatorStyle;
--(double)minValue;
--(double)maxValue;
--(double)warningValue;
--(double)criticalValue;
--(int)numberOfTickMarks;
--(int)numberOfMajorTickMarks;
--(NSTickMarkPosition)tickMarkPosition;
+- (NSLevelIndicatorStyle)levelIndicatorStyle;
+- (double)minValue;
+- (double)maxValue;
+- (double)warningValue;
+- (double)criticalValue;
+- (int)numberOfTickMarks;
+- (int)numberOfMajorTickMarks;
+- (NSTickMarkPosition)tickMarkPosition;
 
--(void)setLevelIndicatorStyle:(NSLevelIndicatorStyle)style;
--(void)setMinValue:(double)value;
--(void)setMaxValue:(double)value;
--(void)setWarningValue:(double)value;
--(void)setCriticalValue:(double)value;
--(void)setNumberOfTickMarks:(int)count;
--(void)setNumberOfMajorTickMarks:(int)count;
--(void)setTickMarkPosition:(NSTickMarkPosition)position;
--(void)setImage:(NSImage *)image;
+- (void)setLevelIndicatorStyle:(NSLevelIndicatorStyle)style;
+- (void)setMinValue:(double)value;
+- (void)setMaxValue:(double)value;
+- (void)setWarningValue:(double)value;
+- (void)setCriticalValue:(double)value;
+- (void)setNumberOfTickMarks:(int)count;
+- (void)setNumberOfMajorTickMarks:(int)count;
+- (void)setTickMarkPosition:(NSTickMarkPosition)position;
+- (void)setImage:(NSImage *)image;
 
--(double)tickMarkValueAtIndex:(int)index;
--(NSRect)rectOfTickMarkAtIndex:(int)index;
+- (double)tickMarkValueAtIndex:(int)index;
+- (NSRect)rectOfTickMarkAtIndex:(int)index;
 
 @end

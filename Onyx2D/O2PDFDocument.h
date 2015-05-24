@@ -6,26 +6,25 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 #import <Foundation/Foundation.h>
 
-@class O2PDFString,O2PDFxref,O2PDFDictionary,O2PDFPage,O2DataProvider;
+@class O2PDFString, O2PDFxref, O2PDFDictionary, O2PDFPage, O2DataProvider;
 
 @interface O2PDFDocument : NSObject {
-   O2PDFString *_version;
-   O2PDFxref   *_xref;
+    O2PDFString *_version;
+    O2PDFxref *_xref;
 }
 
--initWithData:(NSData *)data;
--initWithDataProvider:(O2DataProvider *)provider;
+- initWithData:(NSData *)data;
+- initWithDataProvider:(O2DataProvider *)provider;
 
--(O2PDFxref *)xref;
+- (O2PDFxref *)xref;
 
--(O2PDFDictionary *)catalog;
--(O2PDFDictionary *)infoDictionary;
--(O2PDFDictionary *)encryptDictionary;
+- (O2PDFDictionary *)catalog;
+- (O2PDFDictionary *)infoDictionary;
+- (O2PDFDictionary *)encryptDictionary;
 
--(int)pageCount;
--(O2PDFPage *)pageAtNumber:(int)pageNumber;
+- (int)pageCount;
+- (O2PDFPage *)pageAtNumber:(int)pageNumber;
 
 @end

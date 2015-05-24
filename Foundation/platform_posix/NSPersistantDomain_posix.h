@@ -9,23 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSPersistantDomain.h>
 
-#define POSIX_ENVIRONMENT_BASE	@"HOME"
+#define POSIX_ENVIRONMENT_BASE @"HOME"
 
 @class NSArray, NSDictionary;
 
 @interface NSPersistantDomain_posix : NSPersistantDomain {
-    NSString            *_path;
+    NSString *_path;
     NSMutableDictionary *_mutableDomain;
 }
 
-+(NSPersistantDomain_posix *)persistantDomainWithName:(NSString *)name;
++ (NSPersistantDomain_posix *)persistantDomainWithName:(NSString *)name;
 
--(NSArray *)allKeys;
--(NSEnumerator *)keyEnumerator;
--objectForKey:(NSString *)key;
--(void)setObject:object forKey:(NSString *)key;
--(void)removeObjectForKey:(NSString *)key;
+- (NSArray *)allKeys;
+- (NSEnumerator *)keyEnumerator;
+- objectForKey:(NSString *)key;
+- (void)setObject:object forKey:(NSString *)key;
+- (void)removeObjectForKey:(NSString *)key;
 
--(void)synchronize;
+- (void)synchronize;
 
 @end

@@ -11,23 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSelectInputSource.h>
 #import <CoreFoundation/CFStream.h>
 
-@class NSSocket,NSSelectInputSource;
+@class NSSocket, NSSelectInputSource;
 
 @interface NSInputStream_socket : NSInputStream {
-   CFOptionFlags        _events;
-   CFReadStreamClientCallBack _callBack;
-   CFStreamClientContext _context;
-   id                   _delegate;
-   NSError             *_error;
-   NSStreamStatus       _status;
-   NSSocket            *_socket;
-   NSSelectInputSource *_inputSource;
+    CFOptionFlags _events;
+    CFReadStreamClientCallBack _callBack;
+    CFStreamClientContext _context;
+    id _delegate;
+    NSError *_error;
+    NSStreamStatus _status;
+    NSSocket *_socket;
+    NSSelectInputSource *_inputSource;
 }
 
--initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
+- initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
 
--(NSSocket *)socket;
+- (NSSocket *)socket;
 
--(void)setClientEvents:(CFOptionFlags)events callBack:(CFReadStreamClientCallBack)callBack context:(CFStreamClientContext *)context;
+- (void)setClientEvents:(CFOptionFlags)events callBack:(CFReadStreamClientCallBack)callBack context:(CFStreamClientContext *)context;
 
 @end

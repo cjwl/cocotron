@@ -10,17 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2DataProvider;
 
 @interface O2ImageSource_ICNS : O2ImageSource {
-   NSData              *_data;
-   const unsigned char *_bytes;
-   unsigned             _length,_position;
-   struct O2ICNSNode   *_iconNodes;
-   struct O2ICNSNode   *_maskNodes;
-   NSMutableArray      *_images;
-   bool                 _parsed;
+    NSData *_data;
+    const unsigned char *_bytes;
+    unsigned _length, _position;
+    struct O2ICNSNode *_iconNodes;
+    struct O2ICNSNode *_maskNodes;
+    NSMutableArray *_images;
+    bool _parsed;
 }
 
--(unsigned)count;
+- (unsigned)count;
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+- (O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

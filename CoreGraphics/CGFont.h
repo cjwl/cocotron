@@ -15,23 +15,23 @@ typedef uint16_t CGGlyph;
 
 COREGRAPHICS_EXPORT CGFontRef CGFontCreateWithFontName(CFStringRef name);
 COREGRAPHICS_EXPORT CGFontRef CGFontRetain(CGFontRef self);
-COREGRAPHICS_EXPORT void      CGFontRelease(CGFontRef self);
+COREGRAPHICS_EXPORT void CGFontRelease(CGFontRef self);
 
 COREGRAPHICS_EXPORT CFStringRef CGFontCopyFullName(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetUnitsPerEm(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetAscent(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetDescent(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetLeading(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetCapHeight(CGFontRef self);
-COREGRAPHICS_EXPORT int       CGFontGetXHeight(CGFontRef self);
-COREGRAPHICS_EXPORT CGFloat   CGFontGetItalicAngle(CGFontRef self);
-COREGRAPHICS_EXPORT CGFloat   CGFontGetStemV(CGFontRef self);
-COREGRAPHICS_EXPORT CGRect    CGFontGetFontBBox(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetUnitsPerEm(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetAscent(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetDescent(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetLeading(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetCapHeight(CGFontRef self);
+COREGRAPHICS_EXPORT int CGFontGetXHeight(CGFontRef self);
+COREGRAPHICS_EXPORT CGFloat CGFontGetItalicAngle(CGFontRef self);
+COREGRAPHICS_EXPORT CGFloat CGFontGetStemV(CGFontRef self);
+COREGRAPHICS_EXPORT CGRect CGFontGetFontBBox(CGFontRef self);
 
-COREGRAPHICS_EXPORT size_t    CGFontGetNumberOfGlyphs(CGFontRef self);
-COREGRAPHICS_EXPORT bool      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t count,int *advances);
+COREGRAPHICS_EXPORT size_t CGFontGetNumberOfGlyphs(CGFontRef self);
+COREGRAPHICS_EXPORT bool CGFontGetGlyphAdvances(CGFontRef self, const CGGlyph *glyphs, size_t count, int *advances);
 
-COREGRAPHICS_EXPORT CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,CFStringRef name);
-COREGRAPHICS_EXPORT CFStringRef CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph);
+COREGRAPHICS_EXPORT CGGlyph CGFontGetGlyphWithGlyphName(CGFontRef self, CFStringRef name);
+COREGRAPHICS_EXPORT CFStringRef CGFontCopyGlyphNameForGlyph(CGFontRef self, CGGlyph glyph);
 
-COREGRAPHICS_EXPORT CFDataRef CGFontCopyTableForTag(CGFontRef self,uint32_t tag);
+COREGRAPHICS_EXPORT CFDataRef CGFontCopyTableForTag(CGFontRef self, uint32_t tag);

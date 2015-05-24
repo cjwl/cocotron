@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSOpenPanel.h>
 
-@interface NSOpenPanel(Win32)
+@interface NSOpenPanel (Win32)
 
--(int)_SHBrowseForFolder:(NSString *)initialPath;
--(int)_GetOpenFileNameForTypes:(NSArray *)types;
+- (int)_SHBrowseForFolder:(NSString *)initialPath;
+- (int)_GetOpenFileNameForTypes:(NSArray *)types;
 
 @end

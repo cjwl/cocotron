@@ -8,29 +8,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSCoder.h>
 
-@class NSPort,NSConnection,NSArray;
+@class NSPort, NSConnection, NSArray;
 
 @interface NSPortCoder : NSCoder
 
--initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components;
+- initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components;
 
-+portCoderWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components;
++ portCoderWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components;
 
--(NSConnection *)connection;
+- (NSConnection *)connection;
 
--(void)encodePortObject:(NSPort *)port;
+- (void)encodePortObject:(NSPort *)port;
 
--(NSPort *)decodePortObject;
+- (NSPort *)decodePortObject;
 
--(BOOL)isBycopy;
+- (BOOL)isBycopy;
 
--(BOOL)isByref;
+- (BOOL)isByref;
 
--(void)dispatch;
+- (void)dispatch;
 
 @end
 
-@interface NSObject(NSPortCoder)
--(Class)classForPortCoder;
--replacementObjectForPortCoder:(NSPortCoder *)coder;
+@interface NSObject (NSPortCoder)
+- (Class)classForPortCoder;
+- replacementObjectForPortCoder:(NSPortCoder *)coder;
 @end

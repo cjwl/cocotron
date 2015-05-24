@@ -11,14 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct O2PDFPage *CGPDFPageRef;
 
 typedef enum {
-   kCGPDFMediaBox=0,
-   kCGPDFCropBox=1,
-   kCGPDFBleedBox=2,
-   kCGPDFTrimBox=3,
-   kCGPDFArtBox=4,
+    kCGPDFMediaBox = 0,
+    kCGPDFCropBox = 1,
+    kCGPDFBleedBox = 2,
+    kCGPDFTrimBox = 3,
+    kCGPDFArtBox = 4,
 } CGPDFBox;
 
-COREGRAPHICS_EXPORT CGPDFPageRef      CGPDFPageRetain(CGPDFPageRef self);
-COREGRAPHICS_EXPORT void              CGPDFPageRelease(CGPDFPageRef self);
-COREGRAPHICS_EXPORT CGRect            CGPDFPageGetBoxRect(CGPDFPageRef self,CGPDFBox box);
-COREGRAPHICS_EXPORT CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self,CGPDFBox box,CGRect rect,int clockwiseDegrees,bool preserveAspectRatio);
+COREGRAPHICS_EXPORT CGPDFPageRef CGPDFPageRetain(CGPDFPageRef self);
+COREGRAPHICS_EXPORT void CGPDFPageRelease(CGPDFPageRef self);
+COREGRAPHICS_EXPORT CGRect CGPDFPageGetBoxRect(CGPDFPageRef self, CGPDFBox box);
+COREGRAPHICS_EXPORT CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self, CGPDFBox box, CGRect rect, int clockwiseDegrees, bool preserveAspectRatio);

@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInlineSetTable.h>
 
 @interface NSSet_concrete : NSSet {
-   NSSetTable   _table;
-   NSSetBucket *_buckets[0];
+    NSSetTable _table;
+    NSSetBucket *_buckets[0];
 }
 @end
 
-NSSet *NSSet_concreteNew(NSZone *zone,id *objects,NSUInteger count);
+NSSet *NSSet_concreteNew(NSZone *zone, id *objects, NSUInteger count);

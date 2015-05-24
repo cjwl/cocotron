@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSColorPicker.h>
 
-@interface NSColorPickerColorList : NSColorPicker
-{
+@interface NSColorPickerColorList : NSColorPicker {
     NSBrowser *colorBrowser;
     NSPopUpButton *colorListPopUp;
 

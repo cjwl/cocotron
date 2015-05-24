@@ -12,19 +12,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface O2PDFFunction_Type0 : O2Function {
-   unsigned      _sizeCount;
-   O2PDFInteger *_size;
-   O2PDFInteger  _bitsPerSample;
-   O2PDFInteger  _order;
-   unsigned      _encodeCount;
-   O2PDFReal    *_encode;
-   unsigned      _decodeCount;
-   O2PDFReal    *_decode;
-   NSData       *_data;
-   NSUInteger    _dataLength;
-   const void   *_bytes;
+    unsigned _sizeCount;
+    O2PDFInteger *_size;
+    O2PDFInteger _bitsPerSample;
+    O2PDFInteger _order;
+    unsigned _encodeCount;
+    O2PDFReal *_encode;
+    unsigned _decodeCount;
+    O2PDFReal *_decode;
+    NSData *_data;
+    NSUInteger _dataLength;
+    const void *_bytes;
 }
 
--initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range size:(O2PDFArray *)size bitsPerSample:(O2PDFInteger)bps order:(O2PDFInteger)order encode:(O2PDFArray *)encode decode:(O2PDFArray *)decode data:(NSData *)data;
+- initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range size:(O2PDFArray *)size bitsPerSample:(O2PDFInteger)bps order:(O2PDFInteger)order encode:(O2PDFArray *)encode decode:(O2PDFArray *)decode data:(NSData *)data;
 
 @end

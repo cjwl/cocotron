@@ -9,109 +9,109 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSZone.h>
 
-@class NSCoder,NSInvocation,NSMethodSignature,NSString;
+@class NSCoder, NSInvocation, NSMethodSignature, NSString;
 
 @protocol NSObject
 
--(NSZone *)zone;
+- (NSZone *)zone;
 
--self;
--(Class)class;
--(Class)superclass;
+- self;
+- (Class) class;
+- (Class)superclass;
 
--autorelease;
--(oneway void)release;
--retain;
--(NSUInteger)retainCount;
+- autorelease;
+- (oneway void)release;
+- retain;
+- (NSUInteger)retainCount;
 
--(NSUInteger)hash;
--(BOOL)isEqual:object;
+- (NSUInteger)hash;
+- (BOOL)isEqual:object;
 
--(BOOL)isKindOfClass:(Class)aClass;
--(BOOL)isMemberOfClass:(Class)aClass;
--(BOOL)conformsToProtocol:(Protocol *)protocol;
+- (BOOL)isKindOfClass:(Class)aClass;
+- (BOOL)isMemberOfClass:(Class)aClass;
+- (BOOL)conformsToProtocol:(Protocol *)protocol;
 
--(BOOL)respondsToSelector:(SEL)selector;
--performSelector:(SEL)selector;
--performSelector:(SEL)selector withObject:object0;
--performSelector:(SEL)selector withObject:object0 withObject:object1;
+- (BOOL)respondsToSelector:(SEL)selector;
+- performSelector:(SEL)selector;
+- performSelector:(SEL)selector withObject:object0;
+- performSelector:(SEL)selector withObject:object0 withObject:object1;
 
--(BOOL)isProxy;
+- (BOOL)isProxy;
 
--(NSString *)description;
--(NSString *)debugDescription;
+- (NSString *)description;
+- (NSString *)debugDescription;
 
 @end
 
 @protocol NSCopying
--copyWithZone:(NSZone *)zone;
+- copyWithZone:(NSZone *)zone;
 @end
 
 @protocol NSMutableCopying
--mutableCopyWithZone:(NSZone *)zone;
+- mutableCopyWithZone:(NSZone *)zone;
 @end
 
 @protocol NSCoding
--initWithCoder:(NSCoder *)coder;
--(void)encodeWithCoder:(NSCoder *)coder;
+- initWithCoder:(NSCoder *)coder;
+- (void)encodeWithCoder:(NSCoder *)coder;
 @end
 
-NS_ROOT_CLASS @interface NSObject <NSObject> {
-   Class isa;
+NS_ROOT_CLASS @interface NSObject<NSObject> {
+    Class isa;
 }
 
-+(NSInteger)version;
-+(void)setVersion:(NSInteger)version;
++ (NSInteger)version;
++ (void)setVersion:(NSInteger)version;
 
-+(void)load;
++ (void)load;
 
-+(void)initialize;
++ (void)initialize;
 
-+(Class)superclass;
-+(Class)class;
-+(BOOL)isSubclassOfClass:(Class)cls;
++ (Class)superclass;
++ (Class) class;
++ (BOOL)isSubclassOfClass:(Class)cls;
 
-+(BOOL)instancesRespondToSelector:(SEL)selector;
-+(BOOL)conformsToProtocol:(Protocol *)protocol;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (BOOL)conformsToProtocol:(Protocol *)protocol;
 
-+(IMP)instanceMethodForSelector:(SEL)selector;
-+(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector;
-+(BOOL)resolveClassMethod:(SEL)selector;
-+(BOOL)resolveInstanceMethod:(SEL)selector;
++ (IMP)instanceMethodForSelector:(SEL)selector;
++ (NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector;
++ (BOOL)resolveClassMethod:(SEL)selector;
++ (BOOL)resolveInstanceMethod:(SEL)selector;
 
-+copyWithZone:(NSZone *)zone;
-+mutableCopyWithZone:(NSZone *)zone;
++ copyWithZone:(NSZone *)zone;
++ mutableCopyWithZone:(NSZone *)zone;
 
 + (void)poseAsClass:(Class)aClass;
 
-+(NSString *)description;
-+(NSString *)debugDescription;
++ (NSString *)description;
++ (NSString *)debugDescription;
 
-+alloc;
-+allocWithZone:(NSZone *)zone;
++ alloc;
++ allocWithZone:(NSZone *)zone;
 
--init;
-+new;
--(void)dealloc;
--(void)finalize;
+- init;
++ new;
+- (void)dealloc;
+- (void)finalize;
 
--copy;
--mutableCopy;
+- copy;
+- mutableCopy;
 
--(Class)classForCoder;
--(Class)classForArchiver;
--(Class)classForKeyedArchiver;
+- (Class)classForCoder;
+- (Class)classForArchiver;
+- (Class)classForKeyedArchiver;
 
--replacementObjectForCoder:(NSCoder *)coder;
--awakeAfterUsingCoder:(NSCoder *)coder;
+- replacementObjectForCoder:(NSCoder *)coder;
+- awakeAfterUsingCoder:(NSCoder *)coder;
 
--(IMP)methodForSelector:(SEL)selector;
+- (IMP)methodForSelector:(SEL)selector;
 
--(void)doesNotRecognizeSelector:(SEL)selector;
+- (void)doesNotRecognizeSelector:(SEL)selector;
 
--(NSMethodSignature *)methodSignatureForSelector:(SEL)selector;
--(void)forwardInvocation:(NSInvocation *)invocation;
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(NSInvocation *)invocation;
 
--(NSString *)className;
+- (NSString *)className;
 
 @end

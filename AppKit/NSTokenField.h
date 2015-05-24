@@ -10,18 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTokenFieldCell.h>
 
 @interface NSTokenField : NSTextField {
-
 }
 
-+(NSTimeInterval)defaultCompletionDelay;
-+(NSCharacterSet *)defaultTokenizingCharacterSet;
++ (NSTimeInterval)defaultCompletionDelay;
++ (NSCharacterSet *)defaultTokenizingCharacterSet;
 
--(NSTokenStyle)tokenStyle;
--(NSCharacterSet *)tokenizingCharacterSet;
--(NSTimeInterval)completionDelay;
+- (NSTokenStyle)tokenStyle;
+- (NSCharacterSet *)tokenizingCharacterSet;
+- (NSTimeInterval)completionDelay;
 
--(void)setTokenStyle:(NSTokenStyle)style;
--(void)setTokenizingCharacterSet:(NSCharacterSet *)set;
--(void)setCompletionDelay:(NSTimeInterval)delay;
+- (void)setTokenStyle:(NSTokenStyle)style;
+- (void)setTokenizingCharacterSet:(NSCharacterSet *)set;
+- (void)setCompletionDelay:(NSTimeInterval)delay;
 
 @end

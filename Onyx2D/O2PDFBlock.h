@@ -3,12 +3,12 @@
 @class NSMutableArray;
 
 @interface O2PDFBlock : O2PDFObject {
-   NSMutableArray *_objects;
+    NSMutableArray *_objects;
 }
 
-+pdfBlock;
++ pdfBlock;
 
--(NSArray *)objects;
--(void)addObject:object;
+- (NSArray *)objects;
+- (void)addObject:object;
 
 @end

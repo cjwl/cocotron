@@ -12,12 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSPersistantDomain : NSObject
 
-+(NSPersistantDomain *)persistantDomainWithName:(NSString *)name;
++ (NSPersistantDomain *)persistantDomainWithName:(NSString *)name;
 
--(NSArray *)allKeys;
--(NSEnumerator *)keyEnumerator;
--objectForKey:(NSString *)key;
--(void)setObject:object forKey:(NSString *)key;
--(void)removeObjectForKey:(NSString *)key;
+- (NSArray *)allKeys;
+- (NSEnumerator *)keyEnumerator;
+- objectForKey:(NSString *)key;
+- (void)setObject:object forKey:(NSString *)key;
+- (void)removeObjectForKey:(NSString *)key;
 
 @end

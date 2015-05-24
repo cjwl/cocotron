@@ -11,16 +11,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSModalSessionX : NSObject {
     NSWindow *_window;
     NSMutableArray *_unprocessedEvents;
-    int       _stopCode;
+    int _stopCode;
 }
 
-+sessionWithWindow:(NSWindow *)window;
++ sessionWithWindow:(NSWindow *)window;
 
--(void)stopModalWithCode:(int)code;
--(NSWindow *)modalWindow;
--(int)stopCode;
+- (void)stopModalWithCode:(int)code;
+- (NSWindow *)modalWindow;
+- (int)stopCode;
 
--(void)addUnprocessedEvent:(NSEvent *)event;
--(NSArray *)unprocessedEvents;
+- (void)addUnprocessedEvent:(NSEvent *)event;
+- (NSArray *)unprocessedEvents;
 
 @end

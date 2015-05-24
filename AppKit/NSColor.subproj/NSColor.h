@@ -13,124 +13,124 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSImage;
 @class NSPasteboard;
 
-@interface NSColor : NSObject <NSCopying,NSCoding> 
+@interface NSColor : NSObject <NSCopying, NSCoding>
 
-+(NSColor *)highlightColor;
-+(NSColor *)shadowColor;
-+(NSColor *)gridColor;
++ (NSColor *)highlightColor;
++ (NSColor *)shadowColor;
++ (NSColor *)gridColor;
 
-+(NSColor *)alternateSelectedControlColor;
-+(NSColor *)alternateSelectedControlTextColor;
-+(NSColor *)controlColor;
-+(NSColor *)secondarySelectedControlColor;
-+(NSColor *)selectedControlColor;
-+(NSColor *)controlTextColor;
-+(NSColor *)selectedControlTextColor;
-+(NSColor *)disabledControlTextColor;
-+(NSColor *)controlBackgroundColor;
-+(NSColor *)controlDarkShadowColor;
-+(NSColor *)controlHighlightColor;
-+(NSColor *)controlLightHighlightColor;
-+(NSColor *)controlShadowColor;
-+(NSArray *)controlAlternatingRowBackgroundColors;
++ (NSColor *)alternateSelectedControlColor;
++ (NSColor *)alternateSelectedControlTextColor;
++ (NSColor *)controlColor;
++ (NSColor *)secondarySelectedControlColor;
++ (NSColor *)selectedControlColor;
++ (NSColor *)controlTextColor;
++ (NSColor *)selectedControlTextColor;
++ (NSColor *)disabledControlTextColor;
++ (NSColor *)controlBackgroundColor;
++ (NSColor *)controlDarkShadowColor;
++ (NSColor *)controlHighlightColor;
++ (NSColor *)controlLightHighlightColor;
++ (NSColor *)controlShadowColor;
++ (NSArray *)controlAlternatingRowBackgroundColors;
 
 + (NSColor *)keyboardFocusIndicatorColor;
 
-+(NSColor *)textColor;
-+(NSColor *)textBackgroundColor;
-+(NSColor *)selectedTextColor;
-+(NSColor *)selectedTextBackgroundColor;
++ (NSColor *)textColor;
++ (NSColor *)textBackgroundColor;
++ (NSColor *)selectedTextColor;
++ (NSColor *)selectedTextBackgroundColor;
 
-+(NSColor *)headerColor;
-+(NSColor *)headerTextColor;
++ (NSColor *)headerColor;
++ (NSColor *)headerTextColor;
 
-+(NSColor *)scrollBarColor;
-+(NSColor *)knobColor;
-+(NSColor *)selectedKnobColor;
++ (NSColor *)scrollBarColor;
++ (NSColor *)knobColor;
++ (NSColor *)selectedKnobColor;
 
-+(NSColor *)windowBackgroundColor;
-+(NSColor *)windowFrameColor;
++ (NSColor *)windowBackgroundColor;
++ (NSColor *)windowFrameColor;
 
 + (NSColor *)selectedMenuItemColor;
 + (NSColor *)selectedMenuItemTextColor;
 
 // private
-+(NSColor *)mainMenuBarColor;
-+(NSColor *)menuBackgroundColor;
-+(NSColor *)menuItemTextColor;
++ (NSColor *)mainMenuBarColor;
++ (NSColor *)menuBackgroundColor;
++ (NSColor *)menuItemTextColor;
 
-+(NSColor *)clearColor;
++ (NSColor *)clearColor;
 
-+(NSColor *)blackColor;
-+(NSColor *)blueColor;
-+(NSColor *)brownColor;
-+(NSColor *)cyanColor;
-+(NSColor *)darkGrayColor;
-+(NSColor *)grayColor;
-+(NSColor *)greenColor;
-+(NSColor *)lightGrayColor;
-+(NSColor *)magentaColor;
-+(NSColor *)orangeColor;
-+(NSColor *)purpleColor;
-+(NSColor *)redColor;
-+(NSColor *)whiteColor;
-+(NSColor *)yellowColor;
++ (NSColor *)blackColor;
++ (NSColor *)blueColor;
++ (NSColor *)brownColor;
++ (NSColor *)cyanColor;
++ (NSColor *)darkGrayColor;
++ (NSColor *)grayColor;
++ (NSColor *)greenColor;
++ (NSColor *)lightGrayColor;
++ (NSColor *)magentaColor;
++ (NSColor *)orangeColor;
++ (NSColor *)purpleColor;
++ (NSColor *)redColor;
++ (NSColor *)whiteColor;
++ (NSColor *)yellowColor;
 
-+(NSColor *)colorWithDeviceWhite:(CGFloat)white alpha:(CGFloat)alpha;
-+(NSColor *)colorWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
-+(NSColor *)colorWithDeviceHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
-+(NSColor *)colorWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha;
++ (NSColor *)colorWithDeviceWhite:(CGFloat)white alpha:(CGFloat)alpha;
++ (NSColor *)colorWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
++ (NSColor *)colorWithDeviceHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
++ (NSColor *)colorWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha;
 
-+(NSColor *)colorWithCalibratedWhite:(CGFloat)white alpha:(CGFloat)alpha;
-+(NSColor *)colorWithCalibratedRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
-+(NSColor *)colorWithCalibratedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
++ (NSColor *)colorWithCalibratedWhite:(CGFloat)white alpha:(CGFloat)alpha;
++ (NSColor *)colorWithCalibratedRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
++ (NSColor *)colorWithCalibratedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
 
-+(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName;
++ (NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName;
 
-+(NSColor *)colorFromPasteboard:(NSPasteboard *)pasteboard;
++ (NSColor *)colorFromPasteboard:(NSPasteboard *)pasteboard;
 
-+(NSColor *)colorWithPatternImage:(NSImage *)image;
++ (NSColor *)colorWithPatternImage:(NSImage *)image;
 
--(NSString *)colorSpaceName;
+- (NSString *)colorSpaceName;
 
--(NSInteger)numberOfComponents;
--(void)getComponents:(CGFloat *)components;
+- (NSInteger)numberOfComponents;
+- (void)getComponents:(CGFloat *)components;
 
--(void)getWhite:(float *)white alpha:(float *)alpha;
--(void)getRed:(float *)red green:(float *)green blue:(float *)blue alpha:(float *)alpha;
--(void)getHue:(float *)hue saturation:(float *)saturation brightness:(float *)brightness alpha:(float *)alpha;
--(void)getCyan:(float *)cyan magenta:(float *)magenta yellow:(float *)yellow black:(float *)black alpha:(float *)alpha;
+- (void)getWhite:(float *)white alpha:(float *)alpha;
+- (void)getRed:(float *)red green:(float *)green blue:(float *)blue alpha:(float *)alpha;
+- (void)getHue:(float *)hue saturation:(float *)saturation brightness:(float *)brightness alpha:(float *)alpha;
+- (void)getCyan:(float *)cyan magenta:(float *)magenta yellow:(float *)yellow black:(float *)black alpha:(float *)alpha;
 
--(CGFloat)whiteComponent;
+- (CGFloat)whiteComponent;
 
--(CGFloat)redComponent;
--(CGFloat)greenComponent;
--(CGFloat)blueComponent;
+- (CGFloat)redComponent;
+- (CGFloat)greenComponent;
+- (CGFloat)blueComponent;
 
--(CGFloat)hueComponent;
--(CGFloat)saturationComponent;
--(CGFloat)brightnessComponent;
+- (CGFloat)hueComponent;
+- (CGFloat)saturationComponent;
+- (CGFloat)brightnessComponent;
 
--(CGFloat)cyanComponent;
--(CGFloat)magentaComponent;
--(CGFloat)yellowComponent;
--(CGFloat)blackComponent;
+- (CGFloat)cyanComponent;
+- (CGFloat)magentaComponent;
+- (CGFloat)yellowComponent;
+- (CGFloat)blackComponent;
 
--(CGFloat)alphaComponent;
+- (CGFloat)alphaComponent;
 
--(NSColor *)colorWithAlphaComponent:(CGFloat)alpha;
+- (NSColor *)colorWithAlphaComponent:(CGFloat)alpha;
 
--(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace;
--(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device;
+- (NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace;
+- (NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device;
 
--(NSColor *)blendedColorWithFraction:(CGFloat)fraction ofColor:(NSColor *)color;
+- (NSColor *)blendedColorWithFraction:(CGFloat)fraction ofColor:(NSColor *)color;
 
--(void)set;
--(void)setStroke;
--(void)setFill;
+- (void)set;
+- (void)setStroke;
+- (void)setFill;
 
--(void)drawSwatchInRect:(NSRect)rect;
+- (void)drawSwatchInRect:(NSRect)rect;
 
--(void)writeToPasteboard:(NSPasteboard *)pasteboard;
+- (void)writeToPasteboard:(NSPasteboard *)pasteboard;
 
 @end

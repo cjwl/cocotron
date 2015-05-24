@@ -12,60 +12,60 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSTimer;
 
 typedef enum {
-   NSProgressIndicatorBarStyle=0,
-   NSProgressIndicatorSpinningStyle=1,
+    NSProgressIndicatorBarStyle = 0,
+    NSProgressIndicatorSpinningStyle = 1,
 } NSProgressIndicatorStyle;
 
 @interface NSProgressIndicator : NSView {
-    double                   _minValue;
-    double                   _maxValue;
-    double                   _value;
-    NSTimeInterval           _animationDelay;
-    NSTimer                 *_animationTimer;
-    double                   _animationValue;
+    double _minValue;
+    double _maxValue;
+    double _value;
+    NSTimeInterval _animationDelay;
+    NSTimer *_animationTimer;
+    double _animationValue;
     NSProgressIndicatorStyle _style;
-    NSControlSize            _size;
-    NSControlTint            _tint;
+    NSControlSize _size;
+    NSControlTint _tint;
     BOOL _displayWhenStopped;
     BOOL _isBezeled;
     BOOL _isIndeterminate;
     BOOL _usesThreadedAnimation;
-	BOOL _endThreadedAnimation;
+    BOOL _endThreadedAnimation;
 }
 
--(NSProgressIndicatorStyle)style;
--(NSControlSize)controlSize;
--(NSControlTint)controlTint;
--(BOOL)isDisplayedWhenStopped;
--(BOOL)usesThreadedAnimation;
+- (NSProgressIndicatorStyle)style;
+- (NSControlSize)controlSize;
+- (NSControlTint)controlTint;
+- (BOOL)isDisplayedWhenStopped;
+- (BOOL)usesThreadedAnimation;
 
--(double)minValue;
--(double)maxValue;
--(double)doubleValue;
+- (double)minValue;
+- (double)maxValue;
+- (double)doubleValue;
 
--(NSTimeInterval)animationDelay;
--(BOOL)isIndeterminate;
--(BOOL)isBezeled;
+- (NSTimeInterval)animationDelay;
+- (BOOL)isIndeterminate;
+- (BOOL)isBezeled;
 
--(void)setStyle:(NSProgressIndicatorStyle)value;
--(void)setControlSize:(NSControlSize)value;
--(void)setControlTint:(NSControlTint)value;
--(void)setDisplayedWhenStopped:(BOOL)value;
--(void)setUsesThreadedAnimation:(BOOL)value;
+- (void)setStyle:(NSProgressIndicatorStyle)value;
+- (void)setControlSize:(NSControlSize)value;
+- (void)setControlTint:(NSControlTint)value;
+- (void)setDisplayedWhenStopped:(BOOL)value;
+- (void)setUsesThreadedAnimation:(BOOL)value;
 
--(void)setMinValue:(double)value;
--(void)setMaxValue:(double)value;
--(void)setDoubleValue:(double)value;
--(void)setAnimationDelay:(double)value;
--(void)setIndeterminate:(BOOL)value;
--(void)setBezeled:(BOOL)value;
+- (void)setMinValue:(double)value;
+- (void)setMaxValue:(double)value;
+- (void)setDoubleValue:(double)value;
+- (void)setAnimationDelay:(double)value;
+- (void)setIndeterminate:(BOOL)value;
+- (void)setBezeled:(BOOL)value;
 
--(void)incrementBy:(double)value;
+- (void)incrementBy:(double)value;
 
--(void)sizeToFit;
+- (void)sizeToFit;
 
--(void)startAnimation:sender;
--(void)stopAnimation:sender;
--(void)animate:sender;
+- (void)startAnimation:sender;
+- (void)stopAnimation:sender;
+- (void)animate:sender;
 
 @end

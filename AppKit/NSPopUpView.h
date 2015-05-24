@@ -9,25 +9,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 
 @interface NSPopUpView : NSView {
-   NSSize  _cellSize;
-   NSFont *_font;
-   BOOL    _pullsDown;
+    NSSize _cellSize;
+    NSFont *_font;
+    BOOL _pullsDown;
     NSInteger _selectedIndex;
     NSInteger _initialSelectedIndex;
-   int _keyboardUIState;
-	NSMutableArray* _cachedItemRects;
+    int _keyboardUIState;
+    NSMutableArray *_cachedItemRects;
 }
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--(void)setFont:(NSFont *)font;
--(BOOL)pullsDown;
--(void)setPullsDown:(BOOL)pullsDown;
--(void)selectItemAtIndex:(NSInteger)index;
+- (void)setFont:(NSFont *)font;
+- (BOOL)pullsDown;
+- (void)setPullsDown:(BOOL)pullsDown;
+- (void)selectItemAtIndex:(NSInteger)index;
 
--(NSSize)sizeForContents;
--(NSRect)rectForSelectedItem;
+- (NSSize)sizeForContents;
+- (NSRect)rectForSelectedItem;
 
--(int)runTrackingWithEvent:(NSEvent *)event;
+- (int)runTrackingWithEvent:(NSEvent *)event;
 
 @end

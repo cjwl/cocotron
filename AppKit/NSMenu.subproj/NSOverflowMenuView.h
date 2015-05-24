@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSubmenuView.h>
 
 @interface NSOverflowMenuView : NSSubmenuView {
-   unsigned _overflowIndex;
+    unsigned _overflowIndex;
 }
 
--initWithMenu:(NSMenu *)menu overflowAtIndex:(unsigned)overflowIndex;
+- initWithMenu:(NSMenu *)menu overflowAtIndex:(unsigned)overflowIndex;
 
 @end

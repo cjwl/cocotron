@@ -8,15 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 /* Private class which maintains NSURLConnection state during a synchronous request */
-@class NSMutableData,NSURLResponse,NSError;
+@class NSMutableData, NSURLResponse, NSError;
 
 @interface NSURLConnectionState : NSObject {
-   BOOL           _isRunning;
-   NSError       *_error;
+    BOOL _isRunning;
+    NSError *_error;
 }
 
--(BOOL)isRunning;
--(void)receiveAllDataInMode:(NSString *)mode;
--(NSError *)error;
+- (BOOL)isRunning;
+- (void)receiveAllDataInMode:(NSString *)mode;
+- (NSError *)error;
 
 @end

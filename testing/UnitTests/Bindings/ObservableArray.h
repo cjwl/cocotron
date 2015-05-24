@@ -9,12 +9,12 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 @interface _NSObservableArray : NSMutableArray
--(void)setROI:(id)roi;
+- (void)setROI:(id)roi;
 @end
 
 @interface ObservableArray : SenTestCase {
-   _NSObservableArray *_array;
-   id _lastObservedKey;
+    _NSObservableArray *_array;
+    id _lastObservedKey;
 }
-@property (copy) NSString* lastObservedKey;
+@property(copy) NSString *lastObservedKey;
 @end

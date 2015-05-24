@@ -11,19 +11,19 @@
 @class SecKeychainCursor;
 
 @interface SecKeychain : NSObject {
-   NSArray *_registryPath;
+    NSArray *_registryPath;
 }
 
-+(SecKeychain *)defaultUserKeychain;
++ (SecKeychain *)defaultUserKeychain;
 
--(NSString *)createGUID;
+- (NSString *)createGUID;
 
--(SecKeychainCursor *)createCursorForItemClass:(SecItemClass)itemClass;
+- (SecKeychainCursor *)createCursorForItemClass:(SecItemClass)itemClass;
 
--(SecKeychainItemRef)createNextItemAtCursor:(SecKeychainCursor *)cursor attributeList:(const SecKeychainAttributeList *)attributeList;
+- (SecKeychainItemRef)createNextItemAtCursor:(SecKeychainCursor *)cursor attributeList:(const SecKeychainAttributeList *)attributeList;
 
--(void)addKeychainItem:(SecKeychainItemRef)item;
--(void)removeKeychainItem:(SecKeychainItemRef)item;
--(void)modifyKeychainItem:(SecKeychainItemRef)item;
+- (void)addKeychainItem:(SecKeychainItemRef)item;
+- (void)removeKeychainItem:(SecKeychainItemRef)item;
+- (void)modifyKeychainItem:(SecKeychainItemRef)item;
 
 @end

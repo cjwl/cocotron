@@ -12,18 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSView;
 
 @interface NSWindowTemplate : NSObject {
-   NSSize    _maxSize;
-   NSSize    _minSize;
-   NSRect    _screenRect;
-   id        _viewClass;
-   unsigned  _wtFlags;
-   int       _windowBacking;
-   NSString *_windowClass;
-   NSRect    _windowRect;
-   int       _windowStyleMask;
-   NSString *_windowTitle;
-   NSView   *_windowView;
-   NSString* _windowAutosave;
+    NSSize _maxSize;
+    NSSize _minSize;
+    NSRect _screenRect;
+    id _viewClass;
+    unsigned _wtFlags;
+    int _windowBacking;
+    NSString *_windowClass;
+    NSRect _windowRect;
+    int _windowStyleMask;
+    NSString *_windowTitle;
+    NSView *_windowView;
+    NSString *_windowAutosave;
 }
 
 @end

@@ -13,26 +13,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct NSRangeEntries NSRangeEntries;
 
 typedef struct {
-   NSRangeEntries *self;
-   NSUInteger      index;
+    NSRangeEntries *self;
+    NSUInteger index;
 } NSRangeEnumerator;
 
 FOUNDATION_EXPORT NSRangeEntries *NSCreateRangeToOwnedPointerEntries(NSUInteger capacity);
 FOUNDATION_EXPORT NSRangeEntries *NSCreateRangeToCopiedObjectEntries(NSUInteger capacity);
 
 FOUNDATION_EXPORT void NSFreeRangeEntries(NSRangeEntries *self);
-FOUNDATION_EXPORT void  NSResetRangeEntries(NSRangeEntries *self);
+FOUNDATION_EXPORT void NSResetRangeEntries(NSRangeEntries *self);
 FOUNDATION_EXPORT NSUInteger NSCountRangeEntries(NSRangeEntries *self);
-FOUNDATION_EXPORT void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index);
+FOUNDATION_EXPORT void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self, NSUInteger index);
 
-FOUNDATION_EXPORT void  NSRangeEntryInsert(NSRangeEntries *self,NSRange range,void *value);
-FOUNDATION_EXPORT void *NSRangeEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRange *effectiveRange);
-FOUNDATION_EXPORT void *NSRangeEntryAtRange(NSRangeEntries *self,NSRange range);
+FOUNDATION_EXPORT void NSRangeEntryInsert(NSRangeEntries *self, NSRange range, void *value);
+FOUNDATION_EXPORT void *NSRangeEntryAtIndex(NSRangeEntries *self, NSUInteger index, NSRange *effectiveRange);
+FOUNDATION_EXPORT void *NSRangeEntryAtRange(NSRangeEntries *self, NSRange range);
 
 FOUNDATION_EXPORT NSRangeEnumerator NSRangeEntryEnumerator(NSRangeEntries *self);
-FOUNDATION_EXPORT BOOL NSNextRangeEnumeratorEntry(NSRangeEnumerator *state,NSRange *rangep,void **value);
+FOUNDATION_EXPORT BOOL NSNextRangeEnumeratorEntry(NSRangeEnumerator *state, NSRange *rangep, void **value);
 
-FOUNDATION_EXPORT void NSRangeEntriesExpandAndWipe(NSRangeEntries *self,NSRange range,NSInteger delta);
-FOUNDATION_EXPORT void NSRangeEntriesDivideAndConquer(NSRangeEntries *self,NSRange range);
+FOUNDATION_EXPORT void NSRangeEntriesExpandAndWipe(NSRangeEntries *self, NSRange range, NSInteger delta);
+FOUNDATION_EXPORT void NSRangeEntriesDivideAndConquer(NSRangeEntries *self, NSRange range);
 FOUNDATION_EXPORT void NSRangeEntriesDump(NSRangeEntries *self);
-FOUNDATION_EXPORT void NSRangeEntriesVerify(NSRangeEntries *self,NSUInteger length);
+FOUNDATION_EXPORT void NSRangeEntriesVerify(NSRangeEntries *self, NSUInteger length);

@@ -5,31 +5,31 @@
 
 @class CAMediaTimingFunction;
 
-CA_EXPORT NSString * const kCATransitionFade;
-CA_EXPORT NSString * const kCATransitionMoveIn;
-CA_EXPORT NSString * const kCATransitionPush;
-CA_EXPORT NSString * const kCATransitionReveal;
+CA_EXPORT NSString *const kCATransitionFade;
+CA_EXPORT NSString *const kCATransitionMoveIn;
+CA_EXPORT NSString *const kCATransitionPush;
+CA_EXPORT NSString *const kCATransitionReveal;
 
-CA_EXPORT NSString * const kCATransitionFromLeft;
-CA_EXPORT NSString * const kCATransitionFromRight;
-CA_EXPORT NSString * const kCATransitionFromTop;
-CA_EXPORT NSString * const kCATransitionFromBottom;
+CA_EXPORT NSString *const kCATransitionFromLeft;
+CA_EXPORT NSString *const kCATransitionFromRight;
+CA_EXPORT NSString *const kCATransitionFromTop;
+CA_EXPORT NSString *const kCATransitionFromBottom;
 
-@interface CAAnimation : NSObject <NSCopying,CAMediaTiming,CAAction> {
-   id   _delegate;
-   BOOL _removedOnCompletion;
-   CAMediaTimingFunction *_timingFunction;
-   BOOL _autoreverses;
-   CFTimeInterval _beginTime;
-   CFTimeInterval _duration;
-   NSString *_fillMode;
-   float _repeatCount;
-   CFTimeInterval _repeatDuration;
-   float _speed;
-   CFTimeInterval _timeOffset;
+@interface CAAnimation : NSObject <NSCopying, CAMediaTiming, CAAction> {
+    id _delegate;
+    BOOL _removedOnCompletion;
+    CAMediaTimingFunction *_timingFunction;
+    BOOL _autoreverses;
+    CFTimeInterval _beginTime;
+    CFTimeInterval _duration;
+    NSString *_fillMode;
+    float _repeatCount;
+    CFTimeInterval _repeatDuration;
+    float _speed;
+    CFTimeInterval _timeOffset;
 }
 
-+animation;
++ animation;
 
 @property(retain) id delegate;
 
@@ -40,8 +40,8 @@ CA_EXPORT NSString * const kCATransitionFromBottom;
 @end
 
 @interface NSObject (CAAnimationDelegate)
--(void)animationDidStart:(CAAnimation *)animation;
--(void)animationDidStop:(CAAnimation *)animation finished:(BOOL)finished;
+- (void)animationDidStart:(CAAnimation *)animation;
+- (void)animationDidStop:(CAAnimation *)animation finished:(BOOL)finished;
 @end
 
 #import <QuartzCore/CAPropertyAnimation.h>

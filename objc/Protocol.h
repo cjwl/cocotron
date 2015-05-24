@@ -9,13 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/Object.h>
 
 @interface Protocol : Object {
-   const char *nameCString;
-   struct objc_protocol_list *childProtocols;
-   struct OBJCMethodDescriptionList *instanceMethods;
-   struct OBJCMethodDescriptionList *classMethods;
+    const char *nameCString;
+    struct objc_protocol_list *childProtocols;
+    struct OBJCMethodDescriptionList *instanceMethods;
+    struct OBJCMethodDescriptionList *classMethods;
 }
 
--(BOOL)conformsTo:(Protocol *)other;
+- (BOOL)conformsTo:(Protocol *)other;
 
 @end
-

@@ -8,47 +8,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary,NSLock;
+@class NSArray, NSDictionary, NSLock;
 
 enum {
-   NSWindowsNTOperatingSystem=1,
-   NSWindows95OperatingSystem,
-   NSSolarisOperatingSystem,
-   NSMACHOperatingSystem,
+    NSWindowsNTOperatingSystem = 1,
+    NSWindows95OperatingSystem,
+    NSSolarisOperatingSystem,
+    NSMACHOperatingSystem,
 };
 
 @interface NSProcessInfo : NSObject {
-   NSDictionary *_environment;
-   NSArray      *_arguments;
-   NSString     *_hostName;
-   NSString     *_processName;
-   NSInteger     _counter;
-   NSLock       *_counterLock;
+    NSDictionary *_environment;
+    NSArray *_arguments;
+    NSString *_hostName;
+    NSString *_processName;
+    NSInteger _counter;
+    NSLock *_counterLock;
 }
 
-+(NSProcessInfo *)processInfo;	
++ (NSProcessInfo *)processInfo;
 
--(NSUInteger)processorCount;
--(NSUInteger)activeProcessorCount;
--(uint64_t)physicalMemory;
+- (NSUInteger)processorCount;
+- (NSUInteger)activeProcessorCount;
+- (uint64_t)physicalMemory;
 
--(NSUInteger)operatingSystem;
--(NSString *)operatingSystemName;
--(NSString *)operatingSystemVersionString;
+- (NSUInteger)operatingSystem;
+- (NSString *)operatingSystemName;
+- (NSString *)operatingSystemVersionString;
 
--(NSString *)hostName;
+- (NSString *)hostName;
 
--(NSString *)processName;
--(void)setProcessName:(NSString *)name;
+- (NSString *)processName;
+- (void)setProcessName:(NSString *)name;
 
--(int)processIdentifier;
+- (int)processIdentifier;
 
--(NSArray *)arguments;
+- (NSArray *)arguments;
 
--(NSDictionary *)environment;
+- (NSDictionary *)environment;
 
--(NSString *)globallyUniqueString;
+- (NSString *)globallyUniqueString;
 
 @end
 
-void __NSInitializeProcess(int argc,const char *argv[]);
+void __NSInitializeProcess(int argc, const char *argv[]);

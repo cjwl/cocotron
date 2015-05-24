@@ -10,73 +10,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 #import <Foundation/NSEnumerator.h>
 
-@class NSString,NSDictionary,NSPredicate,NSIndexSet,NSURL;
+@class NSString, NSDictionary, NSPredicate, NSIndexSet, NSURL;
 
-@interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding,NSFastEnumeration>
+@interface NSArray : NSObject <NSCopying, NSMutableCopying, NSCoding, NSFastEnumeration>
 
--initWithArray:(NSArray *)array;
--initWithArray:(NSArray *)array copyItems:(BOOL)copyItems;
--initWithContentsOfFile:(NSString *)path;
--initWithContentsOfURL:(NSURL *)url;
--initWithObjects:(id *)objects count:(NSUInteger)count;
--initWithObjects:object,...;
+- initWithArray:(NSArray *)array;
+- initWithArray:(NSArray *)array copyItems:(BOOL)copyItems;
+- initWithContentsOfFile:(NSString *)path;
+- initWithContentsOfURL:(NSURL *)url;
+- initWithObjects:(id *)objects count:(NSUInteger)count;
+- initWithObjects:object, ...;
 
-+array;
-+arrayWithContentsOfFile:(NSString *)path;
-+arrayWithContentsOfURL:(NSURL *)url;
-+arrayWithObject:object;
-+arrayWithObjects:object,...;
++ array;
++ arrayWithContentsOfFile:(NSString *)path;
++ arrayWithContentsOfURL:(NSURL *)url;
++ arrayWithObject:object;
++ arrayWithObjects:object, ...;
 
-+arrayWithArray:(NSArray *)array;
-+arrayWithObjects:(id *)objects count:(NSUInteger)count;
++ arrayWithArray:(NSArray *)array;
++ arrayWithObjects:(id *)objects count:(NSUInteger)count;
 
--(NSUInteger)count;
--objectAtIndex:(NSUInteger)index;
+- (NSUInteger)count;
+- objectAtIndex:(NSUInteger)index;
 
--(void)getObjects:(id *)objects;
--(void)getObjects:(id *)objects range:(NSRange)range;
+- (void)getObjects:(id *)objects;
+- (void)getObjects:(id *)objects range:(NSRange)range;
 
--(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
--(NSArray *)subarrayWithRange:(NSRange)range;
+- (NSArray *)subarrayWithRange:(NSRange)range;
 
--(BOOL)isEqualToArray:(NSArray *)array;
+- (BOOL)isEqualToArray:(NSArray *)array;
 
--(NSUInteger)indexOfObject:object;
--(NSUInteger)indexOfObject:object inRange:(NSRange)range;
+- (NSUInteger)indexOfObject:object;
+- (NSUInteger)indexOfObject:object inRange:(NSRange)range;
 
--(NSUInteger)indexOfObjectIdenticalTo:object;
--(NSUInteger)indexOfObjectIdenticalTo:object inRange:(NSRange)range;
+- (NSUInteger)indexOfObjectIdenticalTo:object;
+- (NSUInteger)indexOfObjectIdenticalTo:object inRange:(NSRange)range;
 
--(NSEnumerator *)objectEnumerator;
--(NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *)reverseObjectEnumerator;
 
--(NSArray *)arrayByAddingObject:object;
--(NSArray *)arrayByAddingObjectsFromArray:(NSArray *)array;
--(NSString *)componentsJoinedByString:(NSString *)string;
+- (NSArray *)arrayByAddingObject:object;
+- (NSArray *)arrayByAddingObjectsFromArray:(NSArray *)array;
+- (NSString *)componentsJoinedByString:(NSString *)string;
 
--(BOOL)containsObject:object;
+- (BOOL)containsObject:object;
 
--firstObjectCommonWithArray:(NSArray *)array;
+- firstObjectCommonWithArray:(NSArray *)array;
 
--firstObject;
--lastObject;
+- firstObject;
+- lastObject;
 
--(NSArray *)sortedArrayUsingSelector:(SEL)selector;
--(NSArray *)sortedArrayUsingFunction:(NSInteger (*)(id, id, void *))function
-   context:(void *)context;
+- (NSArray *)sortedArrayUsingSelector:(SEL)selector;
+- (NSArray *)sortedArrayUsingFunction:(NSInteger (*)(id, id, void *))function
+                              context:(void *)context;
 
--(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
--(BOOL)writeToURL:(NSURL *)aURL atomically:(BOOL)atomically;
+- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+- (BOOL)writeToURL:(NSURL *)aURL atomically:(BOOL)atomically;
 
--(void)makeObjectsPerformSelector:(SEL)selector;
--(void)makeObjectsPerformSelector:(SEL)selector withObject:object;
+- (void)makeObjectsPerformSelector:(SEL)selector;
+- (void)makeObjectsPerformSelector:(SEL)selector withObject:object;
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale;
--(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(NSUInteger)indent;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(NSUInteger)indent;
 
--(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
--(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;
+- (NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
+- (NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;
 @end
 
 #import <Foundation/NSMutableArray.h>

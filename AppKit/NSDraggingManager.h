@@ -13,13 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSDraggingManager : NSObject
 
-+(NSDraggingManager *)draggingManager;
++ (NSDraggingManager *)draggingManager;
 
--(void)registerWindow:(NSWindow *)window dragTypes:(NSArray *)types;
--(void)unregisterWindow:(NSWindow *)window;
+- (void)registerWindow:(NSWindow *)window dragTypes:(NSArray *)types;
+- (void)unregisterWindow:(NSWindow *)window;
 
--(id)localDraggingSource;
+- (id)localDraggingSource;
 
--(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:(id)source slideBack:(BOOL)slideBack;
+- (void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:(id)source slideBack:(BOOL)slideBack;
 
 @end

@@ -12,15 +12,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32;
 
 @interface NSTask_win32 : NSTask {
-   DWORD _exitCode;
+    DWORD _exitCode;
 
-   NSHandleMonitor_win32 *_monitor;
-   PROCESS_INFORMATION _processInfo;
+    NSHandleMonitor_win32 *_monitor;
+    PROCESS_INFORMATION _processInfo;
 }
 
--(void)launch;
--(BOOL)isRunning;
--(void)terminate;
--(int)processIdentifier;
+- (void)launch;
+- (BOOL)isRunning;
+- (void)terminate;
+- (int)processIdentifier;
 
 @end

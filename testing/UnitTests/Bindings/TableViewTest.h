@@ -10,10 +10,10 @@
 #import <AppKit/AppKit.h>
 
 @interface TableViewTest : NibBasedTest {
-   NSTableView* IBOutlet _tableView;
-   NSArrayController* IBOutlet _arrayController;
-   NSArray *_table;
+    NSTableView *IBOutlet _tableView;
+    NSArrayController *IBOutlet _arrayController;
+    NSArray *_table;
 }
-@property (copy) NSArray *table;
+@property(copy) NSArray *table;
 
 @end

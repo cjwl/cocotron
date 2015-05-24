@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSExpression.h>
 
 @interface NSExpression_constant : NSExpression {
-   id _value;
+    id _value;
 }
 
--initWithValue:value;
+- initWithValue:value;
 
 @end

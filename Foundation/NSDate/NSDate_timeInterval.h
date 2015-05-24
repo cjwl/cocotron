@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 
 @interface NSDate_timeInterval : NSDate {
-   NSTimeInterval _timeIntervalSinceReferenceDate;
+    NSTimeInterval _timeIntervalSinceReferenceDate;
 }
 
 @end

@@ -8,37 +8,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSPanel.h>
 
-@class NSTextField,NSMatrix,NSButton,NSFont;
+@class NSTextField, NSMatrix, NSButton, NSFont;
 
 @interface NSFontPanel : NSPanel {
-   NSTextField *_sampleTextField;
-   NSMatrix    *_familyMatrix;
-   NSMatrix    *_typefaceMatrix;
-   NSTextField *_sizeTextField;
-   NSMatrix    *_sizeMatrix;
+    NSTextField *_sampleTextField;
+    NSMatrix *_familyMatrix;
+    NSMatrix *_typefaceMatrix;
+    NSTextField *_sizeTextField;
+    NSMatrix *_sizeMatrix;
 
-   NSButton    *_setButton;
-   NSButton    *_revertButton;
-   NSView      *_accessoryView;
+    NSButton *_setButton;
+    NSButton *_revertButton;
+    NSView *_accessoryView;
 }
 
-+(BOOL)sharedFontPanelExists;
-+(NSFontPanel *)sharedFontPanel;
++ (BOOL)sharedFontPanelExists;
++ (NSFontPanel *)sharedFontPanel;
 
+- (BOOL)isEnabled;
+- (NSView *)accessoryView;
 
--(BOOL)isEnabled;
--(NSView *)accessoryView;
+- (void)setEnabled:(BOOL)value;
+- (void)setAccessoryView:(NSView *)view;
 
--(void)setEnabled:(BOOL)value;
--(void)setAccessoryView:(NSView *)view;
+- (BOOL)worksWhenModal;
+- (void)reloadDefaultFontFamilies;
 
--(BOOL)worksWhenModal;
--(void)reloadDefaultFontFamilies;
+- (void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple;
+- (NSFont *)panelConvertFont:(NSFont *)font;
 
--(void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple;
--(NSFont *)panelConvertFont:(NSFont *)font;
-
--(void)set:sender;
--(void)revert:sender;
+- (void)set:sender;
+- (void)revert:sender;
 
 @end

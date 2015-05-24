@@ -9,11 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCharacterSet.h>
 
 @interface NSCharacterSet_string : NSCharacterSet {
-   NSUInteger _length;
-   unichar *_buffer;
-   BOOL     _inverted;
+    NSUInteger _length;
+    unichar *_buffer;
+    BOOL _inverted;
 }
 
--initWithString:(NSString *)string inverted:(BOOL)inverted;
+- initWithString:(NSString *)string inverted:(BOOL)inverted;
 
 @end

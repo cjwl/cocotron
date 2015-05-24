@@ -10,97 +10,97 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSDictionary,NSMutableDictionary,NSPrinter;
+@class NSDictionary, NSMutableDictionary, NSPrinter;
 
 typedef int NSPrintingPaginationMode;
 
 typedef enum {
-   NSPortraitOrientation,
-   NSLandscapeOrientation,
+    NSPortraitOrientation,
+    NSLandscapeOrientation,
 } NSPrintingOrientation;
 
-APPKIT_EXPORT NSString * const NSPrintPrinter;	
-APPKIT_EXPORT NSString * const NSPrintPrinterName; 
-APPKIT_EXPORT NSString * const NSPrintJobDisposition; 
-APPKIT_EXPORT NSString * const NSPrintDetailedErrorReporting; 
+APPKIT_EXPORT NSString *const NSPrintPrinter;
+APPKIT_EXPORT NSString *const NSPrintPrinterName;
+APPKIT_EXPORT NSString *const NSPrintJobDisposition;
+APPKIT_EXPORT NSString *const NSPrintDetailedErrorReporting;
 
-APPKIT_EXPORT NSString * const NSPrintSpoolJob;
-APPKIT_EXPORT NSString * const NSPrintPreviewJob;
-APPKIT_EXPORT NSString * const NSPrintSaveJob;
-APPKIT_EXPORT NSString * const NSPrintCancelJob;
+APPKIT_EXPORT NSString *const NSPrintSpoolJob;
+APPKIT_EXPORT NSString *const NSPrintPreviewJob;
+APPKIT_EXPORT NSString *const NSPrintSaveJob;
+APPKIT_EXPORT NSString *const NSPrintCancelJob;
 
-APPKIT_EXPORT NSString * const NSPrintSavePath;
+APPKIT_EXPORT NSString *const NSPrintSavePath;
 
-APPKIT_EXPORT NSString * const NSPrintCopies; 
-APPKIT_EXPORT NSString * const NSPrintAllPages; 
-APPKIT_EXPORT NSString * const NSPrintFirstPage; 
-APPKIT_EXPORT NSString * const NSPrintLastPage; 
+APPKIT_EXPORT NSString *const NSPrintCopies;
+APPKIT_EXPORT NSString *const NSPrintAllPages;
+APPKIT_EXPORT NSString *const NSPrintFirstPage;
+APPKIT_EXPORT NSString *const NSPrintLastPage;
 
-APPKIT_EXPORT NSString * const NSPrintPaperName; 
-APPKIT_EXPORT NSString * const NSPrintPaperSize; 
-APPKIT_EXPORT NSString * const NSPrintOrientation; 
+APPKIT_EXPORT NSString *const NSPrintPaperName;
+APPKIT_EXPORT NSString *const NSPrintPaperSize;
+APPKIT_EXPORT NSString *const NSPrintOrientation;
 
-APPKIT_EXPORT NSString * const NSPrintHorizontalPagination; 
-APPKIT_EXPORT NSString * const NSPrintVerticalPagination; 
+APPKIT_EXPORT NSString *const NSPrintHorizontalPagination;
+APPKIT_EXPORT NSString *const NSPrintVerticalPagination;
 
-APPKIT_EXPORT NSString * const NSPrintTopMargin; 
-APPKIT_EXPORT NSString * const NSPrintBottomMargin; 
-APPKIT_EXPORT NSString * const NSPrintLeftMargin; 
-APPKIT_EXPORT NSString * const NSPrintRightMargin; 
-APPKIT_EXPORT NSString * const NSPrintHorizontallyCentered; 
-APPKIT_EXPORT NSString * const NSPrintVerticallyCentered; 
+APPKIT_EXPORT NSString *const NSPrintTopMargin;
+APPKIT_EXPORT NSString *const NSPrintBottomMargin;
+APPKIT_EXPORT NSString *const NSPrintLeftMargin;
+APPKIT_EXPORT NSString *const NSPrintRightMargin;
+APPKIT_EXPORT NSString *const NSPrintHorizontallyCentered;
+APPKIT_EXPORT NSString *const NSPrintVerticallyCentered;
 
 APPKIT_EXPORT NSString *const NSPrintHeaderAndFooter;
 
 @interface NSPrintInfo : NSObject <NSCopying> {
-   NSMutableDictionary *_attributes;
+    NSMutableDictionary *_attributes;
 }
 
-+(NSPrintInfo *)sharedPrintInfo;
++ (NSPrintInfo *)sharedPrintInfo;
 
--initWithDictionary:(NSDictionary *)dictionary;
+- initWithDictionary:(NSDictionary *)dictionary;
 
--(NSMutableDictionary *)dictionary;
+- (NSMutableDictionary *)dictionary;
 
--(NSPrinter *)printer;
--(NSString *)jobDisposition;
+- (NSPrinter *)printer;
+- (NSString *)jobDisposition;
 
--(NSString *)paperName;
--(NSSize)paperSize;
--(NSPrintingOrientation)orientation;
+- (NSString *)paperName;
+- (NSSize)paperSize;
+- (NSPrintingOrientation)orientation;
 
--(NSPrintingPaginationMode)horizontalPagination;
--(NSPrintingPaginationMode)verticalPagination;
+- (NSPrintingPaginationMode)horizontalPagination;
+- (NSPrintingPaginationMode)verticalPagination;
 
--(float)topMargin;
--(float)bottomMargin;
--(float)leftMargin;
--(float)rightMargin;
+- (float)topMargin;
+- (float)bottomMargin;
+- (float)leftMargin;
+- (float)rightMargin;
 
--(BOOL)isHorizontallyCentered;
--(BOOL)isVerticallyCentered;
+- (BOOL)isHorizontallyCentered;
+- (BOOL)isVerticallyCentered;
 
--(NSString *)localizedPaperName;
--(NSRect)imageablePageBounds;
+- (NSString *)localizedPaperName;
+- (NSRect)imageablePageBounds;
 
--(void)setPrinter:(NSPrinter *)printer;
--(void)setJobDisposition:(NSString *)value;
+- (void)setPrinter:(NSPrinter *)printer;
+- (void)setJobDisposition:(NSString *)value;
 
--(void)setPaperName:(NSString *)value;
--(void)setPaperSize:(NSSize)value;
--(void)setOrientation:(NSPrintingOrientation)value;
+- (void)setPaperName:(NSString *)value;
+- (void)setPaperSize:(NSSize)value;
+- (void)setOrientation:(NSPrintingOrientation)value;
 
--(void)setHorizontalPagination:(NSPrintingPaginationMode)value;
--(void)setVerticalPagination:(NSPrintingPaginationMode)value;
+- (void)setHorizontalPagination:(NSPrintingPaginationMode)value;
+- (void)setVerticalPagination:(NSPrintingPaginationMode)value;
 
--(void)setTopMargin:(float)value;
--(void)setBottomMargin:(float)value;
--(void)setLeftMargin:(float)value;
--(void)setRightMargin:(float)value;
+- (void)setTopMargin:(float)value;
+- (void)setBottomMargin:(float)value;
+- (void)setLeftMargin:(float)value;
+- (void)setRightMargin:(float)value;
 
--(void)setHorizontallyCentered:(BOOL)value;
--(void)setVerticallyCentered:(BOOL)value;
+- (void)setHorizontallyCentered:(BOOL)value;
+- (void)setVerticallyCentered:(BOOL)value;
 
--(void)setUpPrintOperationDefaultValues;
+- (void)setUpPrintOperationDefaultValues;
 
 @end

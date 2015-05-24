@@ -9,21 +9,20 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 
-
 @interface NSSpellEngine_hunspellDictionary : NSObject {
-   NSString *_path;
-   void     *_hunspell;
+    NSString *_path;
+    void *_hunspell;
 }
 
 // Path to .aff file, there must be a .dic file in the same directory
 
--initWithContentsOfFile:(NSString *)path;
+- initWithContentsOfFile:(NSString *)path;
 
--(NSString *)localeIdentifier;
--(NSString *)language;
+- (NSString *)localeIdentifier;
+- (NSString *)language;
 
--(NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length;
+- (NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length;
 
--(NSArray *)suggestGuessesForWord:(NSString *)word;
+- (NSArray *)suggestGuessesForWord:(NSString *)word;
 
 @end

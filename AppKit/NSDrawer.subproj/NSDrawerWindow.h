@@ -12,8 +12,7 @@ enum {
     NSDrawerWindowMask = 1 << 15
 };
 
-@interface NSDrawerWindow : NSPanel 
-{
+@interface NSDrawerWindow : NSPanel {
     NSDrawer *_drawer;
 }
 

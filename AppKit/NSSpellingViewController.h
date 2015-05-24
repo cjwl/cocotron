@@ -8,30 +8,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSViewController.h>
 #import <AppKit/NSNibLoading.h>
 
-@class NSTextField,NSButton,NSPopUpButton,NSTableView;
+@class NSTextField, NSButton, NSPopUpButton, NSTableView;
 
 @interface NSSpellingViewController : NSViewController {
-   IBOutlet NSTextField *_currentWord;
-   IBOutlet NSTextField *_infoLabel;
-   IBOutlet NSButton *_changeButton;
-   IBOutlet NSButton *_findNextButton;
-   
-   IBOutlet NSTableView *_suggestionTable;
-   IBOutlet NSButton *_ignoreButton;
-   IBOutlet NSButton *_learnButton;
-   IBOutlet NSButton *_defineButton;
-   IBOutlet NSButton *_guessButton;
-   IBOutlet NSPopUpButton *_languagesPopUp;
-	NSString		*_misspelledWord;
-	IBOutlet NSTextField *_spellingHint;
+    IBOutlet NSTextField *_currentWord;
+    IBOutlet NSTextField *_infoLabel;
+    IBOutlet NSButton *_changeButton;
+    IBOutlet NSButton *_findNextButton;
+
+    IBOutlet NSTableView *_suggestionTable;
+    IBOutlet NSButton *_ignoreButton;
+    IBOutlet NSButton *_learnButton;
+    IBOutlet NSButton *_defineButton;
+    IBOutlet NSButton *_guessButton;
+    IBOutlet NSPopUpButton *_languagesPopUp;
+    NSString *_misspelledWord;
+    IBOutlet NSTextField *_spellingHint;
 }
 
--(void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
+- (void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
 
--(void)change:sender;
--(void)findNext:sender;
--(void)ignore:sender;
--(void)learn:sender;
--(void)guess:sender;
+- (void)change:sender;
+- (void)findNext:sender;
+- (void)ignore:sender;
+- (void)learn:sender;
+- (void)guess:sender;
 
 @end

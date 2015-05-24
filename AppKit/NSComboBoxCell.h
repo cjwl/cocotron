@@ -11,66 +11,66 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSButtonCell;
 
 @interface NSComboBoxCell : NSTextFieldCell <NSCoding> {
-   id              _dataSource;
-   NSSize          _intercellSpacing;
-   float           _itemHeight;
-   int             _numberOfVisibleItems;
+    id _dataSource;
+    NSSize _intercellSpacing;
+    float _itemHeight;
+    int _numberOfVisibleItems;
 
-   BOOL            _usesDataSource;
-   BOOL            _hasVerticalScroller;
-   BOOL            _completes;
-   BOOL            _isButtonBordered;
-   BOOL            _buttonEnabled;
-   BOOL            _buttonPressed;
-   
-   NSMutableArray *_objectValues;
+    BOOL _usesDataSource;
+    BOOL _hasVerticalScroller;
+    BOOL _completes;
+    BOOL _isButtonBordered;
+    BOOL _buttonEnabled;
+    BOOL _buttonPressed;
+
+    NSMutableArray *_objectValues;
 }
 
--dataSource;
--(BOOL)usesDataSource;
--(BOOL)isButtonBordered;
--(float)itemHeight;
--(BOOL)hasVerticalScroller;
--(NSSize)intercellSpacing;
--(BOOL)completes;
--(int)numberOfVisibleItems;
+- dataSource;
+- (BOOL)usesDataSource;
+- (BOOL)isButtonBordered;
+- (float)itemHeight;
+- (BOOL)hasVerticalScroller;
+- (NSSize)intercellSpacing;
+- (BOOL)completes;
+- (int)numberOfVisibleItems;
 
--(void)setDataSource:value;
--(void)setUsesDataSource:(BOOL)value;
--(void)setButtonBordered:(BOOL)value;
--(void)setItemHeight:(float)value;
--(void)setHasVerticalScroller:(BOOL)value;
--(void)setIntercellSpacing:(NSSize)value;
--(void)setCompletes:(BOOL)completes;
--(void)setNumberOfVisibleItems:(int)value;
+- (void)setDataSource:value;
+- (void)setUsesDataSource:(BOOL)value;
+- (void)setButtonBordered:(BOOL)value;
+- (void)setItemHeight:(float)value;
+- (void)setHasVerticalScroller:(BOOL)value;
+- (void)setIntercellSpacing:(NSSize)value;
+- (void)setCompletes:(BOOL)completes;
+- (void)setNumberOfVisibleItems:(int)value;
 
--(int)numberOfItems;
--(NSArray *)objectValues;
--itemObjectValueAtIndex:(int)index;
--(int)indexOfItemWithObjectValue:object;
--(void)addItemWithObjectValue:object;
--(void)addItemsWithObjectValues:(NSArray *)objects;
--(void)removeAllItems;
--(void)removeItemAtIndex:(int)index;
--(void)removeItemWithObjectValue:value;
--(void)insertItemWithObjectValue:value atIndex:(int)index;
+- (int)numberOfItems;
+- (NSArray *)objectValues;
+- itemObjectValueAtIndex:(int)index;
+- (int)indexOfItemWithObjectValue:object;
+- (void)addItemWithObjectValue:object;
+- (void)addItemsWithObjectValues:(NSArray *)objects;
+- (void)removeAllItems;
+- (void)removeItemAtIndex:(int)index;
+- (void)removeItemWithObjectValue:value;
+- (void)insertItemWithObjectValue:value atIndex:(int)index;
 
--(int)indexOfSelectedItem;
--objectValueOfSelectedItem;
--(void)selectItemAtIndex:(int)index;
--(void)selectItemWithObjectValue:value;
--(void)deselectItemAtIndex:(int)index;
+- (int)indexOfSelectedItem;
+- objectValueOfSelectedItem;
+- (void)selectItemAtIndex:(int)index;
+- (void)selectItemWithObjectValue:value;
+- (void)deselectItemAtIndex:(int)index;
 
--(void)scrollItemAtIndexToTop:(int)index;
--(void)scrollItemAtIndexToVisible:(int)index;
+- (void)scrollItemAtIndexToTop:(int)index;
+- (void)scrollItemAtIndexToVisible:(int)index;
 
--(void)noteNumberOfItemsChanged;
--(void)reloadData;
+- (void)noteNumberOfItemsChanged;
+- (void)reloadData;
 
--(NSString *)completedString:(NSString *)string;
+- (NSString *)completedString:(NSString *)string;
 
 @end
 
-@interface NSObject(NSComboBoxCell_dataSource)
--(NSString *)comboBoxCell:(NSComboBoxCell *)cell completedString:(NSString *)string;
+@interface NSObject (NSComboBoxCell_dataSource)
+- (NSString *)comboBoxCell:(NSComboBoxCell *)cell completedString:(NSString *)string;
 @end

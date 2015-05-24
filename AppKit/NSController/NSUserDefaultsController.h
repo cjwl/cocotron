@@ -7,32 +7,32 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <AppKit/NSController.h>
 
-@class NSUserDefaults,NSDictionary;
+@class NSUserDefaults, NSDictionary;
 
 @interface NSUserDefaultsController : NSController {
-   NSUserDefaults *_defaults;
-   NSDictionary   *_initialValues;
-   BOOL            _appliesImmediately;
-   id              _valueProxy;
+    NSUserDefaults *_defaults;
+    NSDictionary *_initialValues;
+    BOOL _appliesImmediately;
+    id _valueProxy;
 }
 
-+sharedUserDefaultsController;
++ sharedUserDefaultsController;
 
--initWithDefaults:(NSUserDefaults *)defaults initialValues:(NSDictionary *)values;
+- initWithDefaults:(NSUserDefaults *)defaults initialValues:(NSDictionary *)values;
 
--(NSUserDefaults *)defaults;
--(NSDictionary *)initialValues;
--(BOOL)appliesImmediately;
+- (NSUserDefaults *)defaults;
+- (NSDictionary *)initialValues;
+- (BOOL)appliesImmediately;
 
--(void)setInitialValues:(NSDictionary *)values;
--(void)setAppliesImmediately:(BOOL)flag;
+- (void)setInitialValues:(NSDictionary *)values;
+- (void)setAppliesImmediately:(BOOL)flag;
 
--values;
+- values;
 
--(BOOL)hasUnappliedChanges;
+- (BOOL)hasUnappliedChanges;
 
--(void)save:sender;
--(void)revert:sender;
--(void)revertToInitialValues:sender;
+- (void)save:sender;
+- (void)revert:sender;
+- (void)revertToInitialValues:sender;
 
 @end

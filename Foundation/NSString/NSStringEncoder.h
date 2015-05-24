@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // returns a buffer with a Unicode representation of string made from the bytes using the given encoding
 // the caller is responsible to free the returned buffer when done
 // *resultLength will contain the number of unichar of the result
-unichar *NSBytesToUnicode(const unsigned char *bytes,NSUInteger length,NSStringEncoding encoding, NSUInteger *resultLength,NSZone *zone);
+unichar *NSBytesToUnicode(const unsigned char *bytes, NSUInteger length, NSStringEncoding encoding, NSUInteger *resultLength, NSZone *zone);
 
 // returns a buffer with a char representation of string made from the unichar using the given encoding
 // the caller is responsible to free the returned buffer when done
 // *resultLength will contain the number of unichar of the result
-unsigned char *NSBytesFromUnicode(const unichar *characters,NSUInteger length,NSStringEncoding encoding, BOOL lossy, NSUInteger *resultLength,NSZone *zone);
+unsigned char *NSBytesFromUnicode(const unichar *characters, NSUInteger length, NSStringEncoding encoding, BOOL lossy, NSUInteger *resultLength, NSZone *zone);

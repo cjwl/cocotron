@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 
 @interface NSMenuView : NSView {
-   unsigned _selectedItemIndex;
-   NSMutableArray * _visibleArray;
+    unsigned _selectedItemIndex;
+    NSMutableArray *_visibleArray;
 }
 
--(unsigned)itemIndexAtPoint:(NSPoint)point;
--(unsigned)selectedItemIndex;
--(void)setSelectedItemIndex:(unsigned)itemIndex;
+- (unsigned)itemIndexAtPoint:(NSPoint)point;
+- (unsigned)selectedItemIndex;
+- (void)setSelectedItemIndex:(unsigned)itemIndex;
 
--(NSArray *)visibleItemArray;
--(NSMenuItem *)itemAtSelectedIndex;
+- (NSArray *)visibleItemArray;
+- (NSMenuItem *)itemAtSelectedIndex;
 
--(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen;
+- (NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen;
 
--(NSMenuItem *)trackForEvent:(NSEvent *)event;
+- (NSMenuItem *)trackForEvent:(NSEvent *)event;
 
 @end

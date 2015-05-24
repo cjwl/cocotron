@@ -23,9 +23,7 @@
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSPlatform_posix.h>
 
-@interface NSPlatform_bsd : NSPlatform_posix
-{
+@interface NSPlatform_bsd : NSPlatform_posix {
 }
 
 @end
-

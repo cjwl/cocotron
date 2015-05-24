@@ -11,19 +11,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class Win32Window, Win32DragSession;
 
 @interface Win32IDropTargetServer : Win32IUnknownServer {
-   Win32Window       *_window;
-   Win32DragSession  *_session;
+    Win32Window *_window;
+    Win32DragSession *_session;
 }
 
--initWithWindow:(Win32Window *)window;
+- initWithWindow:(Win32Window *)window;
 
--(Win32Window *)window;
+- (Win32Window *)window;
 
--(void)invalidate;
+- (void)invalidate;
 
--(HRESULT)DragEnter:(IDataObject *)pDataObj :(DWORD)grfKeyState :(POINTL)pt :(DWORD *)pdwEffect;
--(HRESULT)DragOver:(DWORD)grfKeyState:(POINTL)pt :(DWORD *)pdwEffect;
--(HRESULT)DragLeave;
--(HRESULT)Drop:(IDataObject *)pDataObj :(DWORD)grfKeyState:(POINTL)pt :(DWORD *)pdwEffect;
+- (HRESULT)DragEnter:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+- (HRESULT)DragOver:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+- (HRESULT)DragLeave;
+- (HRESULT)Drop:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
 
 @end

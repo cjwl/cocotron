@@ -10,71 +10,71 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <Foundation/NSRange.h>
 
-@class NSColor,NSMutableArray,NSTextContainer,NSView,NSLayoutManager;
+@class NSColor, NSMutableArray, NSTextContainer, NSView, NSLayoutManager;
 
 typedef enum {
-   NSTextBlockTopAlignment,
-   NSTextBlockMiddleAlignment,
-   NSTextBlockBottomAlignment,
-   NSTextBlockBaselineAlignment
+    NSTextBlockTopAlignment,
+    NSTextBlockMiddleAlignment,
+    NSTextBlockBottomAlignment,
+    NSTextBlockBaselineAlignment
 } NSTextBlockVerticalAlignment;
 
 typedef enum {
-   NSTextBlockAbsoluteValueType,
-   NSTextBlockPercentageValueType,
+    NSTextBlockAbsoluteValueType,
+    NSTextBlockPercentageValueType,
 } NSTextBlockValueType;
 
 typedef enum {
-   NSTextBlockWidth,
-   NSTextBlockMinimumWidth,
-   NSTextBlockMaximumWidth,
-   NSTextBlockHeight,
-   NSTextBlockMinimumHeight,
-   NSTextBlockMaximumHeight,
+    NSTextBlockWidth,
+    NSTextBlockMinimumWidth,
+    NSTextBlockMaximumWidth,
+    NSTextBlockHeight,
+    NSTextBlockMinimumHeight,
+    NSTextBlockMaximumHeight,
 } NSTextBlockDimension;
 
 typedef enum {
-   NSTextBlockPadding,
-   NSTextBlockBorder,
-   NSTextBlockMargin,
+    NSTextBlockPadding,
+    NSTextBlockBorder,
+    NSTextBlockMargin,
 } NSTextBlockLayer;
 
 @interface NSTextBlock : NSObject {
-   NSColor *_backgroundColor;
-   NSMutableArray *_borderColors;
-   NSTextBlockVerticalAlignment _verticalAlignment;
-   float _contentWidth;
-   NSTextBlockValueType _contentWidthValueType;
-   float _dimensionValues[NSTextBlockMaximumHeight+1];
-   float _dimensionValueTypes[NSTextBlockMaximumHeight+1];
-   float _layerWidths[NSTextBlockMargin+1][NSMaxYEdge+1];
-   float _layerValueTypes[NSTextBlockMargin+1][NSMaxYEdge+1];
- }
+    NSColor *_backgroundColor;
+    NSMutableArray *_borderColors;
+    NSTextBlockVerticalAlignment _verticalAlignment;
+    float _contentWidth;
+    NSTextBlockValueType _contentWidthValueType;
+    float _dimensionValues[NSTextBlockMaximumHeight + 1];
+    float _dimensionValueTypes[NSTextBlockMaximumHeight + 1];
+    float _layerWidths[NSTextBlockMargin + 1][NSMaxYEdge + 1];
+    float _layerValueTypes[NSTextBlockMargin + 1][NSMaxYEdge + 1];
+}
 
--init;
+- init;
 
--(NSColor *)backgroundColor;
--(NSColor *)borderColorForEdge:(NSRectEdge)edge;
--(NSTextBlockVerticalAlignment)verticalAlignment;
--(float)contentWidth;
--(NSTextBlockValueType)contentWidthValueType;
--(float)valueForDimension:(NSTextBlockDimension)dimension;
--(NSTextBlockValueType)valueTypeForDimension:(NSTextBlockDimension)dimension;
--(float)widthForLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
--(NSTextBlockValueType)widthValueTypeForLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
+- (NSColor *)backgroundColor;
+- (NSColor *)borderColorForEdge:(NSRectEdge)edge;
+- (NSTextBlockVerticalAlignment)verticalAlignment;
+- (float)contentWidth;
+- (NSTextBlockValueType)contentWidthValueType;
+- (float)valueForDimension:(NSTextBlockDimension)dimension;
+- (NSTextBlockValueType)valueTypeForDimension:(NSTextBlockDimension)dimension;
+- (float)widthForLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
+- (NSTextBlockValueType)widthValueTypeForLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
 
--(void)setBackgroundColor:(NSColor *)color;
--(void)setBorderColor:(NSColor *)color;
--(void)setBorderColor:(NSColor *)color forEdge:(NSRectEdge)edge;
--(void)setVerticalAlignment:(NSTextBlockVerticalAlignment)alignment;
--(void)setContentWidth:(float)width type:(NSTextBlockValueType)type;
--(void)setValue:(float)value type:(NSTextBlockValueType)type forDimension:(NSTextBlockDimension)dimension;
--(void)setWidth:(float)value type:(NSTextBlockValueType)type forLayer:(NSTextBlockLayer)layer;
--(void)setWidth:(float)value type:(NSTextBlockValueType)type forLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
+- (void)setBackgroundColor:(NSColor *)color;
+- (void)setBorderColor:(NSColor *)color;
+- (void)setBorderColor:(NSColor *)color forEdge:(NSRectEdge)edge;
+- (void)setVerticalAlignment:(NSTextBlockVerticalAlignment)alignment;
+- (void)setContentWidth:(float)width type:(NSTextBlockValueType)type;
+- (void)setValue:(float)value type:(NSTextBlockValueType)type forDimension:(NSTextBlockDimension)dimension;
+- (void)setWidth:(float)value type:(NSTextBlockValueType)type forLayer:(NSTextBlockLayer)layer;
+- (void)setWidth:(float)value type:(NSTextBlockValueType)type forLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge;
 
--(NSRect)rectForLayoutAtPoint:(NSPoint)point inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)range;
--(NSRect)boundsRectForContentRect:(NSRect)contentRect inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)range;
+- (NSRect)rectForLayoutAtPoint:(NSPoint)point inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)range;
+- (NSRect)boundsRectForContentRect:(NSRect)contentRect inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)range;
 
--(void)drawBackgroundWithFrame:(NSRect)frame inView:(NSView *)view characterRange:(NSRange)range layoutManager:(NSLayoutManager *)layoutManager;
+- (void)drawBackgroundWithFrame:(NSRect)frame inView:(NSView *)view characterRange:(NSRange)range layoutManager:(NSLayoutManager *)layoutManager;
 
 @end

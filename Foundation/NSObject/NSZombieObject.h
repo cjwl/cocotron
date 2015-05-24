@@ -8,10 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-NS_ROOT_CLASS @interface NSZombieObject  {
-   Class isa;
+NS_ROOT_CLASS @interface NSZombieObject {
+    Class isa;
 }
 
 @end
 
-void NSRegisterZombie(NSObject *object);
+    void
+    NSRegisterZombie(NSObject *object);

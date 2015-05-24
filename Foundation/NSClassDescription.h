@@ -9,29 +9,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-FOUNDATION_EXPORT NSString * const NSClassDescriptionNeededForClassNotification;
+FOUNDATION_EXPORT NSString *const NSClassDescriptionNeededForClassNotification;
 
 @interface NSClassDescription : NSObject {
-
 }
 
-+(NSClassDescription *)classDescriptionForClass:(Class)aClass;
-+(void)invalidateClassDescriptionCache;
-+(void)registerClassDescription:(NSClassDescription *)description forClass:(Class)aClass;
++ (NSClassDescription *)classDescriptionForClass:(Class)aClass;
++ (void)invalidateClassDescriptionCache;
++ (void)registerClassDescription:(NSClassDescription *)description forClass:(Class)aClass;
 
--(NSArray *)attributeKeys;
--(NSString *)inverseForRelationshipKey:(NSString *)key;
--(NSArray *)toManyRelationshipKeys;
--(NSArray *)toOneRelationshipKeys;
+- (NSArray *)attributeKeys;
+- (NSString *)inverseForRelationshipKey:(NSString *)key;
+- (NSArray *)toManyRelationshipKeys;
+- (NSArray *)toOneRelationshipKeys;
 
 @end
 
-@interface NSObject(NSClassDescription)
+@interface NSObject (NSClassDescription)
 
--(NSClassDescription *)classDescription;
+- (NSClassDescription *)classDescription;
 
--(NSArray *)attributeKeys;
--(NSString *)inverseForRelationshipKey:(NSString *)key;
--(NSArray *)toOneRelationshipKeys;
--(NSArray *)toManyRelationshipKeys;
+- (NSArray *)attributeKeys;
+- (NSString *)inverseForRelationshipKey:(NSString *)key;
+- (NSArray *)toOneRelationshipKeys;
+- (NSArray *)toManyRelationshipKeys;
 @end

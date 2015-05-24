@@ -8,12 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <CoreFoundation/CFBase.h>
-#define    NSVariableStatusItemLength    (-1)
-#define    NSSquareStatusItemLength      (-2)
+#define NSVariableStatusItemLength (-1)
+#define NSSquareStatusItemLength (-2)
 
 @class NSStatusItem, Win32Window;
 
-@interface NSStatusBar : NSObject{
+@interface NSStatusBar : NSObject {
     NSMutableArray *_statusItems;
 #ifdef WIN32
     Win32Window *_fakeWindow;

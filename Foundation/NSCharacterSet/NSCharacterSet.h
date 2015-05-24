@@ -10,33 +10,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData;
 
-@interface NSCharacterSet : NSObject <NSCopying,NSMutableCopying,NSCoding>
+@interface NSCharacterSet : NSObject <NSCopying, NSMutableCopying, NSCoding>
 
-+characterSetWithBitmapRepresentation:(NSData *)data;
-+characterSetWithCharactersInString:(NSString *)string;
-+characterSetWithContentsOfFile:(NSString *)path;
-+characterSetWithRange:(NSRange)range;
++ characterSetWithBitmapRepresentation:(NSData *)data;
++ characterSetWithCharactersInString:(NSString *)string;
++ characterSetWithContentsOfFile:(NSString *)path;
++ characterSetWithRange:(NSRange)range;
 
-+alphanumericCharacterSet;
-+controlCharacterSet;
-+decimalDigitCharacterSet;
-+decomposableCharacterSet;
-+illegalCharacterSet;
-+letterCharacterSet;
-+lowercaseLetterCharacterSet;
-+newlineCharacterSet;
-+nonBaseCharacterSet;
-+punctuationCharacterSet;
-+uppercaseLetterCharacterSet;
-+whitespaceAndNewlineCharacterSet;
-+whitespaceCharacterSet;
++ alphanumericCharacterSet;
++ controlCharacterSet;
++ decimalDigitCharacterSet;
++ decomposableCharacterSet;
++ illegalCharacterSet;
++ letterCharacterSet;
++ lowercaseLetterCharacterSet;
++ newlineCharacterSet;
++ nonBaseCharacterSet;
++ punctuationCharacterSet;
++ uppercaseLetterCharacterSet;
++ whitespaceAndNewlineCharacterSet;
++ whitespaceCharacterSet;
 
--(BOOL)characterIsMember:(unichar)character;
--(NSCharacterSet *)invertedSet;
+- (BOOL)characterIsMember:(unichar)character;
+- (NSCharacterSet *)invertedSet;
 
--(NSData *)bitmapRepresentation;
+- (NSData *)bitmapRepresentation;
 
--(BOOL)isSupersetOfSet:(NSCharacterSet *)other;
+- (BOOL)isSupersetOfSet:(NSCharacterSet *)other;
 
 @end
 

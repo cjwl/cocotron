@@ -12,29 +12,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // djb2
 
-static inline NSUInteger NSStringHashUnicode(const unichar *buffer,NSUInteger length){
-   NSUInteger i,result=5381;
+static inline NSUInteger NSStringHashUnicode(const unichar *buffer, NSUInteger length) {
+    NSUInteger i, result = 5381;
 
-   for(i=0;i<length;i++)
-    result=((result<<5)+result)+buffer[i]; // hash*33+c
+    for(i = 0; i < length; i++)
+        result = ((result << 5) + result) + buffer[i]; // hash*33+c
 
-   return result;
+    return result;
 }
 
-static inline NSUInteger NSStringHashASCII(const char *buffer,NSUInteger length){
-   NSUInteger i,result=5381;
+static inline NSUInteger NSStringHashASCII(const char *buffer, NSUInteger length) {
+    NSUInteger i, result = 5381;
 
-   for(i=0;i<length;i++)
-    result=((result<<5)+result)+(NSUInteger)(buffer[i]); // hash*33+c
+    for(i = 0; i < length; i++)
+        result = ((result << 5) + result) + (NSUInteger)(buffer[i]); // hash*33+c
 
-   return result;
+    return result;
 }
 
-static inline NSUInteger NSStringHashZeroTerminatedASCII(const char *buffer){
-   NSUInteger i,result=5381;
+static inline NSUInteger NSStringHashZeroTerminatedASCII(const char *buffer) {
+    NSUInteger i, result = 5381;
 
-   for(i=0;buffer[i]!='\0';i++)
-    result=((result<<5)+result)+(NSUInteger)(buffer[i]); // hash*33+c
+    for(i = 0; buffer[i] != '\0'; i++)
+        result = ((result << 5) + result) + (NSUInteger)(buffer[i]); // hash*33+c
 
-   return result;
+    return result;
 }

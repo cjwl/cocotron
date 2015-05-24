@@ -1,32 +1,32 @@
 #import <Foundation/NSObject.h>
 
-@class NSKeyPathObserver,NSArray;
+@class NSKeyPathObserver, NSArray;
 
 @interface NSKeyObserver : NSObject {
-   id                 _object;
-   NSString          *_key;
-   NSKeyPathObserver *_keyPathObserver;
-   NSString          *_branchPath;
-   NSKeyObserver     *_branchObserver;
-   NSArray           *_dependantKeyObservers;
-   BOOL               _isValid;
+    id _object;
+    NSString *_key;
+    NSKeyPathObserver *_keyPathObserver;
+    NSString *_branchPath;
+    NSKeyObserver *_branchObserver;
+    NSArray *_dependantKeyObservers;
+    BOOL _isValid;
 }
 
--initWithObject:object key:(NSString *)key keyPathObserver:(NSKeyPathObserver *)keyPathObserver restOfPath:(NSString *)restOfPath;
+- initWithObject:object key:(NSString *)key keyPathObserver:(NSKeyPathObserver *)keyPathObserver restOfPath:(NSString *)restOfPath;
 
--(BOOL)isValid;
--(void)invalidate;
+- (BOOL)isValid;
+- (void)invalidate;
 
--object;
--(NSString *)key;
--(NSKeyPathObserver *)keyPathObserver;
+- object;
+- (NSString *)key;
+- (NSKeyPathObserver *)keyPathObserver;
 
--(NSString *)restOfPath;
+- (NSString *)restOfPath;
 
--(NSKeyObserver *)restOfPathObserver;
--(void)setRestOfPathObserver:(NSKeyObserver *)keyObserver;
+- (NSKeyObserver *)restOfPathObserver;
+- (void)setRestOfPathObserver:(NSKeyObserver *)keyObserver;
 
--(NSArray *)dependantKeyObservers;
--(void)setDependantKeyObservers:(NSArray *)keyObservers;
+- (NSArray *)dependantKeyObservers;
+- (void)setDependantKeyObservers:(NSArray *)keyObservers;
 
 @end

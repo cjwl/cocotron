@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_CF.h>
 
 @interface NSNumber_float : NSNumber_CF {
-   float _value;
+    float _value;
 }
 @end
 
-NSNumber *NSNumber_floatNew(NSZone *zone,float value);
+NSNumber *NSNumber_floatNew(NSZone *zone, float value);

@@ -28,10 +28,10 @@
 #import <Onyx2D/O2Paint_ramp.h>
 
 @interface O2Paint_radialGradient : O2Paint_ramp {
-   O2Float _startRadius;
-   O2Float _endRadius;
+    O2Float _startRadius;
+    O2Float _endRadius;
 }
 
--initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
+- initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
 
 @end

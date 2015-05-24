@@ -9,20 +9,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 
 @interface NSComboBoxView : NSView {
-   NSSize   _cellSize;
-   NSArray *_objects;
-   NSFont  *_font;
-   int      _selectedIndex;
-   int      _keyboardUIState;
+    NSSize _cellSize;
+    NSArray *_objects;
+    NSFont *_font;
+    int _selectedIndex;
+    int _keyboardUIState;
 }
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--(void)setObjectArray:(NSArray *)objects;
--(void)setFont:(NSFont *)font;
+- (void)setObjectArray:(NSArray *)objects;
+- (void)setFont:(NSFont *)font;
 
--(NSSize)sizeForContents;
+- (NSSize)sizeForContents;
 
--(int)runTrackingWithEvent:(NSEvent *)event;
+- (int)runTrackingWithEvent:(NSEvent *)event;
 
 @end

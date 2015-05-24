@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor.h>
 
 @interface NSColor_catalog : NSColor {
-   NSString *_catalogName;
-   NSString *_colorName;
-   NSColor  *_color;
+    NSString *_catalogName;
+    NSString *_colorName;
+    NSColor *_color;
 }
 
-+(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName;
-+(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName color:(NSColor *)color;
++ (NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName;
++ (NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName color:(NSColor *)color;
 
 @end

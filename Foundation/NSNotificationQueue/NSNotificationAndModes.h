@@ -8,16 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSNotification;
+@class NSArray, NSNotification;
 
 @interface NSNotificationAndModes : NSObject {
-   NSNotification *_notification;
-   NSArray        *_modes;
+    NSNotification *_notification;
+    NSArray *_modes;
 }
 
--(NSArray *)modes;
--(NSNotification *)notification;
+- (NSArray *)modes;
+- (NSNotification *)notification;
 
-+queuedWithNotification:(NSNotification *)note modes:(NSArray *)modes;
++ queuedWithNotification:(NSNotification *)note modes:(NSArray *)modes;
 
 @end

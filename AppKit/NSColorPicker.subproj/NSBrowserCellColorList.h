@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSBrowserCell.h>
 
-@interface NSBrowserCellColorList : NSBrowserCell
-{
+@interface NSBrowserCellColorList : NSBrowserCell {
     NSColor *_color;
 }
 

@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFileHandle;
 
 @interface NSInputStream_file : NSInputStream {
-   id             _delegate;
-   NSError       *_error;
-   NSStreamStatus _status;
-   NSString      *_path;
-   NSFileHandle  *_fileHandle;
+    id _delegate;
+    NSError *_error;
+    NSStreamStatus _status;
+    NSString *_path;
+    NSFileHandle *_fileHandle;
 }
 
 @end

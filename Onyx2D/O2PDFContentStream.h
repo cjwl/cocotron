@@ -8,20 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class O2PDFPage,O2PDFStream,O2PDFDictionary,O2PDFArray,NSArray,O2PDFObject;
+@class O2PDFPage, O2PDFStream, O2PDFDictionary, O2PDFArray, NSArray, O2PDFObject;
 
 @interface O2PDFContentStream : NSObject {
-   NSArray            *_streams;
-   O2PDFDictionary    *_resources;
-   O2PDFContentStream *_parent;
+    NSArray *_streams;
+    O2PDFDictionary *_resources;
+    O2PDFContentStream *_parent;
 }
 
--initWithPage:(O2PDFPage *)page;
--initWithStream:(O2PDFStream *)stream resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent;
+- initWithPage:(O2PDFPage *)page;
+- initWithStream:(O2PDFStream *)stream resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent;
 
--(NSArray *)streams;
--(id)resourceForCategory:(const char *)category name:(const char *)name;
+- (NSArray *)streams;
+- (id)resourceForCategory:(const char *)category name:(const char *)name;
 
--(void)replaceResource:(O2PDFObject *)object forCategory:(const char *)category name:(const char *)name withObject:(id)replacement;
+- (void)replaceResource:(O2PDFObject *)object forCategory:(const char *)category name:(const char *)name withObject:(id)replacement;
 
 @end

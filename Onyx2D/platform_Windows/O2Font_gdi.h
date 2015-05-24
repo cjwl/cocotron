@@ -8,23 +8,21 @@
 //#define SUPPORT_FONT_DPI_SCALING
 
 #ifdef SUPPORT_FONT_DPI_SCALING
-#define  FONT_DPI(dc) (GetDeviceCaps(dc, LOGPIXELSY))
+#define FONT_DPI(dc) (GetDeviceCaps(dc, LOGPIXELSY))
 #else
-#define  FONT_DPI(dc) (96.)
+#define FONT_DPI(dc) (96.)
 #endif
 
-
-
 @interface O2Font_gdi : O2Font {
-   BOOL     _useMacMetrics;
-   unichar *_glyphsToCharacters;
-   HANDLE   _fontMemResource;
-   O2Encoding *_macRomanEncoding;
-   O2Encoding *_macExpertEncoding;
-   O2Encoding *_winAnsiEncoding;
+    BOOL _useMacMetrics;
+    unichar *_glyphsToCharacters;
+    HANDLE _fontMemResource;
+    O2Encoding *_macRomanEncoding;
+    O2Encoding *_macExpertEncoding;
+    O2Encoding *_winAnsiEncoding;
 }
 
--(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize;
--(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle;
+- (Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize;
+- (Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle;
 
 @end

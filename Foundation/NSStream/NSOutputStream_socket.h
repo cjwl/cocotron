@@ -12,18 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSSocket, NSSelectInputSource;
 
 @interface NSOutputStream_socket : NSOutputStream {
-   CFOptionFlags        _events;
-   CFWriteStreamClientCallBack _callBack;
-   CFStreamClientContext _context;
-   id                   _delegate;
-   NSError             *_error;
-   NSStreamStatus       _status;
-   NSSocket            *_socket;
-   NSSelectInputSource *_inputSource;
+    CFOptionFlags _events;
+    CFWriteStreamClientCallBack _callBack;
+    CFStreamClientContext _context;
+    id _delegate;
+    NSError *_error;
+    NSStreamStatus _status;
+    NSSocket *_socket;
+    NSSelectInputSource *_inputSource;
 }
 
--initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
+- initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
 
--(void)setClientEvents:(CFOptionFlags)events callBack:(CFWriteStreamClientCallBack)callBack context:(CFStreamClientContext *)context;
+- (void)setClientEvents:(CFOptionFlags)events callBack:(CFWriteStreamClientCallBack)callBack context:(CFStreamClientContext *)context;
 
 @end

@@ -12,19 +12,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32;
 
 @interface Win32RunningCopyPipe : NSObject {
-   HANDLE              _pipe;
-   HANDLE              _event;
-   NSHandleMonitor_win32 *_eventMonitor;
-   enum {
-    STATE_CONNECTING,
-    STATE_READING,
-   } _state;
-   OVERLAPPED          _readOverlap;
-   DWORD               _readCount;
-   char                _readBuffer[65536];
+    HANDLE _pipe;
+    HANDLE _event;
+    NSHandleMonitor_win32 *_eventMonitor;
+    enum {
+        STATE_CONNECTING,
+        STATE_READING,
+    } _state;
+    OVERLAPPED _readOverlap;
+    DWORD _readCount;
+    char _readBuffer[65536];
 }
 
-+(void)invalidateRunningCopyPipe;
-+(void)startRunningCopyPipe;
++ (void)invalidateRunningCopyPipe;
++ (void)startRunningCopyPipe;
 
 @end

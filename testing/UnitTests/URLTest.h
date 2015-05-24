@@ -11,7 +11,7 @@
 @class NSURL;
 
 @interface URLTest : SenTestCase {
-	NSURL *baseUrl;
+    NSURL *baseUrl;
 }
 
 @end

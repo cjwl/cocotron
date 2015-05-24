@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface NSEnumerator_array : NSEnumerator {
-   NSUInteger _index;
-   NSArray *_array;
+    NSUInteger _index;
+    NSArray *_array;
 }
 
 @end

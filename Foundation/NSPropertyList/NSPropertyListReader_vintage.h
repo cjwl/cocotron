@@ -12,31 +12,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSData, NSDictionary, NSArray;
 
 @interface NSPropertyListReader_vintage : NSObject {
-   NSData               *_data;
-   NSUInteger              _length;
-   const uint8_t  *_bytes;
+    NSData *_data;
+    NSUInteger _length;
+    const uint8_t *_bytes;
 
-   NSUInteger _stackCapacity;
-   NSInteger      _stackSize;
-   id      *_stack;
+    NSUInteger _stackCapacity;
+    NSInteger _stackSize;
+    id *_stack;
 
-   NSUInteger  _bufferCapacity;
-   NSUInteger  _bufferSize;
-   unichar  *_buffer;
+    NSUInteger _bufferCapacity;
+    NSUInteger _bufferSize;
+    unichar *_buffer;
 
-   NSUInteger  _dataBufferCapacity;
-   NSUInteger  _dataBufferSize;
-   uint8_t    *_dataBuffer;
+    NSUInteger _dataBufferCapacity;
+    NSUInteger _dataBufferSize;
+    uint8_t *_dataBuffer;
 
+    NSUInteger _index;
+    NSUInteger _lineNumber;
 
-   NSUInteger _index;
-   NSUInteger _lineNumber;
-   
-   Class _stringClass;
-   Class _dictionaryClass;
-   Class _arrayClass;
+    Class _stringClass;
+    Class _dictionaryClass;
+    Class _arrayClass;
 }
 
-+(NSObject *)propertyListFromData:(NSData *)data;
++ (NSObject *)propertyListFromData:(NSData *)data;
 
 @end

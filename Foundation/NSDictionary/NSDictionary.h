@@ -9,50 +9,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSEnumerator.h>
 
-@class NSArray,NSURL;
+@class NSArray, NSURL;
 
-@interface NSDictionary : NSObject <NSCoding,NSCopying,NSMutableCopying,NSFastEnumeration>
+@interface NSDictionary : NSObject <NSCoding, NSCopying, NSMutableCopying, NSFastEnumeration>
 
--initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count;
--initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys;
--initWithDictionary:(NSDictionary *)dictionary;
--initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems;
--initWithObjectsAndKeys:object,...;
--initWithContentsOfFile:(NSString *)path;
--initWithContentsOfURL:(NSURL *)url;
+- initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count;
+- initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys;
+- initWithDictionary:(NSDictionary *)dictionary;
+- initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems;
+- initWithObjectsAndKeys:object, ...;
+- initWithContentsOfFile:(NSString *)path;
+- initWithContentsOfURL:(NSURL *)url;
 
-+dictionary;
-+dictionaryWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count;
-+dictionaryWithObjects:(NSArray *)objects forKeys:(NSArray *)keys;
-+dictionaryWithDictionary:(NSDictionary *)other;
-+dictionaryWithObjectsAndKeys:first,...;
-+dictionaryWithObject:object forKey:key;
-+dictionaryWithContentsOfFile:(NSString *)path;
-+dictionaryWithContentsOfURL:(NSURL *)url;
++ dictionary;
++ dictionaryWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count;
++ dictionaryWithObjects:(NSArray *)objects forKeys:(NSArray *)keys;
++ dictionaryWithDictionary:(NSDictionary *)other;
++ dictionaryWithObjectsAndKeys:first, ...;
++ dictionaryWithObject:object forKey:key;
++ dictionaryWithContentsOfFile:(NSString *)path;
++ dictionaryWithContentsOfURL:(NSURL *)url;
 
--objectForKey:key;
--(NSUInteger)count;
--(NSEnumerator *)keyEnumerator;
--(NSEnumerator *)objectEnumerator;
+- objectForKey:key;
+- (NSUInteger)count;
+- (NSEnumerator *)keyEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
--(void)getObjects:(id *)objects andKeys:(id *)keys;
+- (void)getObjects:(id *)objects andKeys:(id *)keys;
 
--(BOOL)isEqualToDictionary:(NSDictionary *)dictionary;
+- (BOOL)isEqualToDictionary:(NSDictionary *)dictionary;
 
--(NSArray *)allKeys;
--(NSArray *)allKeysForObject:object;    
--(NSArray *)keysSortedByValueUsingSelector:(SEL)selector;
+- (NSArray *)allKeys;
+- (NSArray *)allKeysForObject:object;
+- (NSArray *)keysSortedByValueUsingSelector:(SEL)selector;
 
--(NSArray *)allValues;
--(NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:marker;
+- (NSArray *)allValues;
+- (NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:marker;
 
--(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
--(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically;
+- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+- (BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically;
 
--(NSString *)description;
--(NSString *)descriptionInStringsFileFormat;
--(NSString *)descriptionWithLocale:locale;
--(NSString *)descriptionWithLocale:locale indent:(NSUInteger)indent;
+- (NSString *)description;
+- (NSString *)descriptionInStringsFileFormat;
+- (NSString *)descriptionWithLocale:locale;
+- (NSString *)descriptionWithLocale:locale indent:(NSUInteger)indent;
 
 @end
 

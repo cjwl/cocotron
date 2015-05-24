@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableSet.h>
 
 @interface NSCountedSet : NSMutableSet {
-   void *_table;
+    void *_table;
 }
 
--(NSUInteger)countForObject:object;
+- (NSUInteger)countForObject:object;
 
 @end

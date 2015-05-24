@@ -11,10 +11,9 @@
 // NSInitializeProcess assigns this to __CFConstantStringClassReference.
 // The flags specify the encoding etc., but we ignore them for now.
 
-@interface NSDarwinString : NSString
-{
-   NSUInteger _flags;
-   char    *_bytes;
-   unsigned _length;
+@interface NSDarwinString : NSString {
+    NSUInteger _flags;
+    char *_bytes;
+    unsigned _length;
 }
 @end

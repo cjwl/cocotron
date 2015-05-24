@@ -11,62 +11,62 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSTableView, NSCell;
 
 enum {
-   NSTableColumnNoResizing      = 0x00,
-   NSTableColumnAutoresizingMask= 0x01,
-   NSTableColumnUserResizingMask= 0x02,
+    NSTableColumnNoResizing = 0x00,
+    NSTableColumnAutoresizingMask = 0x01,
+    NSTableColumnUserResizingMask = 0x02,
 };
 
 @interface NSTableColumn : NSObject {
-   id           _identifier;
-   NSTableView *_tableView;
-   NSCell      *_headerCell;
-   NSCell      *_dataCell;
-   NSString    *_headerToolTip;
-   float        _width;
-   float        _minWidth;
-   float        _maxWidth;
-   BOOL         _isResizable;
-   BOOL         _isEditable;
-   NSUInteger   _resizingMask;
-   NSSortDescriptor *_sortDescriptorPrototype;
+    id _identifier;
+    NSTableView *_tableView;
+    NSCell *_headerCell;
+    NSCell *_dataCell;
+    NSString *_headerToolTip;
+    float _width;
+    float _minWidth;
+    float _maxWidth;
+    BOOL _isResizable;
+    BOOL _isEditable;
+    NSUInteger _resizingMask;
+    NSSortDescriptor *_sortDescriptorPrototype;
 }
 
--initWithIdentifier:identifier;
+- initWithIdentifier:identifier;
 
--identifier;
--(NSTableView *)tableView;
--(id)headerCell;
--(id)dataCell;
--(NSString *)headerToolTip;
+- identifier;
+- (NSTableView *)tableView;
+- (id)headerCell;
+- (id)dataCell;
+- (NSString *)headerToolTip;
 
--(float)width;
--(float)minWidth;
--(float)maxWidth;
--(BOOL)isResizable;
--(BOOL)isEditable;
--(NSUInteger)resizingMask;
+- (float)width;
+- (float)minWidth;
+- (float)maxWidth;
+- (BOOL)isResizable;
+- (BOOL)isEditable;
+- (NSUInteger)resizingMask;
 
--(void)setIdentifier:identifier;
--(void)setTableView:(NSTableView *)tableView;
--(void)setHeaderCell:(NSCell *)cell;
--(void)setDataCell:(NSCell *)cell;
--(void)setHeaderToolTip:(NSString *)value;
+- (void)setIdentifier:identifier;
+- (void)setTableView:(NSTableView *)tableView;
+- (void)setHeaderCell:(NSCell *)cell;
+- (void)setDataCell:(NSCell *)cell;
+- (void)setHeaderToolTip:(NSString *)value;
 
--(void)setWidth:(float)width;
--(void)setMinWidth:(float)width;
--(void)setMaxWidth:(float)width;
--(void)setResizable:(BOOL)flag;
--(void)setEditable:(BOOL)flag;
--(void)setResizingMask:(NSUInteger)value;
+- (void)setWidth:(float)width;
+- (void)setMinWidth:(float)width;
+- (void)setMaxWidth:(float)width;
+- (void)setResizable:(BOOL)flag;
+- (void)setEditable:(BOOL)flag;
+- (void)setResizingMask:(NSUInteger)value;
 
--(NSCell *)dataCellForRow:(int)row;
+- (NSCell *)dataCellForRow:(int)row;
 
 - (NSSortDescriptor *)sortDescriptorPrototype;
 - (void)setSortDescriptorPrototype:(NSSortDescriptor *)value;
 
 // internal
--(void)prepareCell:(id)cell inRow:(int)row;
--(void)_boundValuesChanged;
--(void)_sort;
+- (void)prepareCell:(id)cell inRow:(int)row;
+- (void)_boundValuesChanged;
+- (void)_sort;
 
 @end

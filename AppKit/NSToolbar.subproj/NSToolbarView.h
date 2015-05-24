@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableArray;
 @class NSToolbar, NSToolbarItem;
 
-@interface NSToolbarView : NSView  {
+@interface NSToolbarView : NSView {
     NSToolbar *_toolbar;
     float _minXMargin;
     float _minYMargin;
@@ -25,10 +25,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSArray *)visibleItems;
 
--(void)_insertItem:(NSToolbarItem *)item atIndex:(NSInteger)index;
--(void)_removeItemAtIndex:(NSInteger)index;
+- (void)_insertItem:(NSToolbarItem *)item atIndex:(NSInteger)index;
+- (void)_removeItemAtIndex:(NSInteger)index;
 
--(void)layoutViewsWithWidth:(CGFloat)width setFrame:(BOOL)setFrame;
--(void)layoutViews;
+- (void)layoutViewsWithWidth:(CGFloat)width setFrame:(BOOL)setFrame;
+- (void)layoutViews;
 
 @end

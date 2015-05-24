@@ -17,26 +17,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMutableDictionary *_configurations;
 }
 
-+(NSManagedObjectModel *)modelByMergingModels:(NSArray *)models;
++ (NSManagedObjectModel *)modelByMergingModels:(NSArray *)models;
 
-+(NSManagedObjectModel *)mergedModelFromBundles:(NSArray *)bundles;
++ (NSManagedObjectModel *)mergedModelFromBundles:(NSArray *)bundles;
 
--initWithContentsOfURL:(NSURL *)url;
+- initWithContentsOfURL:(NSURL *)url;
 
--(NSArray *)entities;
--(NSDictionary *)entitiesByName;
--(NSDictionary *)localizationDictionary;
+- (NSArray *)entities;
+- (NSDictionary *)entitiesByName;
+- (NSDictionary *)localizationDictionary;
 
--(void)setEntities:(NSArray *)entities;
--(void)setLocalizationDictionary:(NSDictionary *)dictionary;
+- (void)setEntities:(NSArray *)entities;
+- (void)setLocalizationDictionary:(NSDictionary *)dictionary;
 
--(NSArray *)configurations;
--(NSArray *)entitiesForConfiguration:(NSString *)configuration;
--(void)setEntities:(NSArray *)entities forConfiguration:(NSString *)configuration;
+- (NSArray *)configurations;
+- (NSArray *)entitiesForConfiguration:(NSString *)configuration;
+- (void)setEntities:(NSArray *)entities forConfiguration:(NSString *)configuration;
 
--(NSFetchRequest *)fetchRequestTemplateForName:(NSString *)name;
--(NSFetchRequest *)fetchRequestFromTemplateWithName:(NSString *)name substitutionVariables:(NSDictionary *)variables;
+- (NSFetchRequest *)fetchRequestTemplateForName:(NSString *)name;
+- (NSFetchRequest *)fetchRequestFromTemplateWithName:(NSString *)name substitutionVariables:(NSDictionary *)variables;
 
--(void)setFetchRequestTemplate:(NSFetchRequest *)fetchRequest forName:(NSString *)name;
+- (void)setFetchRequestTemplate:(NSFetchRequest *)fetchRequest forName:(NSString *)name;
 
 @end

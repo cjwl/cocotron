@@ -168,15 +168,15 @@
 
 #define CGBitmapContextCreate O2BitmapContextCreate
 #define CGBitmapContextGetData CGBitmapContextGetData
-#define  CGBitmapContextGetWidth CGBitmapContextGetWidth
-#define  CGBitmapContextGetHeight CGBitmapContextGetHeight
-#define  CGBitmapContextGetBitsPerComponent CGBitmapContextGetBitsPerComponent 
-#define  CGBitmapContextGetBytesPerRow CGBitmapContextGetBytesPerRow
-#define  CGBitmapContextGetColorSpace CGBitmapContextGetColorSpace
-#define  CGBitmapContextGetBitmapInfo CGBitmapContextGetBitmapInfo
-#define  CGBitmapContextGetBitsPerPixel CGBitmapContextGetBitsPerPixel
-#define  CGBitmapContextGetAlphaInfo CGBitmapContextGetAlphaInfo
-#define  CGBitmapContextCreateImage CGBitmapContextCreateImage
+#define CGBitmapContextGetWidth CGBitmapContextGetWidth
+#define CGBitmapContextGetHeight CGBitmapContextGetHeight
+#define CGBitmapContextGetBitsPerComponent CGBitmapContextGetBitsPerComponent
+#define CGBitmapContextGetBytesPerRow CGBitmapContextGetBytesPerRow
+#define CGBitmapContextGetColorSpace CGBitmapContextGetColorSpace
+#define CGBitmapContextGetBitmapInfo CGBitmapContextGetBitmapInfo
+#define CGBitmapContextGetBitsPerPixel CGBitmapContextGetBitsPerPixel
+#define CGBitmapContextGetAlphaInfo CGBitmapContextGetAlphaInfo
+#define CGBitmapContextCreateImage CGBitmapContextCreateImage
 
 // CGPath
 #define CGPathRelease O2PathRelease
@@ -231,10 +231,9 @@
 #define CGPatternRetain O2PatternRetain
 #define CGPatternRelease O2PatternRelease
 
-
 // CGColorSpace
 
-#define CGColorSpaceCreateDeviceRGB  O2ColorSpaceCreateDeviceRGB
+#define CGColorSpaceCreateDeviceRGB O2ColorSpaceCreateDeviceRGB
 #define CGColorSpaceCreateDeviceGray O2ColorSpaceCreateDeviceGray
 #define CGColorSpaceCreateDeviceCMYK O2ColorSpaceCreateDeviceCMYK
 #define CGColorSpaceCreatePattern O2ColorSpaceCreatePattern
@@ -242,17 +241,17 @@
 
 // CGImage
 
-#define  CGImageRetain O2ImageRetain
-#define  CGImageRelease O2ImageRelease
-#define  CGImageCreate O2ImageCreate 
-#define  CGImageMaskCreate O2ImageMaskCreate
-#define  CGImageCreateCopy O2ImageCreateCopy
-#define  CGImageCreateCopyWithColorSpace O2ImageCreateCopyWithColorSpace
-#define  CGImageCreateWithImageInRect O2ImageCreateWithImageInRect
-#define  CGImageCreateWithJPEGDataProvider O2ImageCreateWithJPEGDataProvider
-#define  CGImageCreateWithPNGDataProvider O2ImageCreateWithPNGDataProvider
-#define  CGImageCreateWithMask O2ImageCreateWithMask
-#define  CGImageCreateWithMaskingColors O2ImageCreateWithMaskingColors
+#define CGImageRetain O2ImageRetain
+#define CGImageRelease O2ImageRelease
+#define CGImageCreate O2ImageCreate
+#define CGImageMaskCreate O2ImageMaskCreate
+#define CGImageCreateCopy O2ImageCreateCopy
+#define CGImageCreateCopyWithColorSpace O2ImageCreateCopyWithColorSpace
+#define CGImageCreateWithImageInRect O2ImageCreateWithImageInRect
+#define CGImageCreateWithJPEGDataProvider O2ImageCreateWithJPEGDataProvider
+#define CGImageCreateWithPNGDataProvider O2ImageCreateWithPNGDataProvider
+#define CGImageCreateWithMask O2ImageCreateWithMask
+#define CGImageCreateWithMaskingColors O2ImageCreateWithMaskingColors
 
 #define CGImageGetWidth O2ImageGetWidth
 #define CGImageGetHeight O2ImageGetHeight
@@ -270,7 +269,7 @@
 
 // data provider
 
-#define CGDataProviderCreateWithData O2DataProviderCreateWithData 
+#define CGDataProviderCreateWithData O2DataProviderCreateWithData
 #define CGDataProviderCreateWithCFData O2DataProviderCreateWithCFData
 #define CGDataProviderCreateWithURL O2DataProviderCreateWithURL
 
@@ -281,37 +280,36 @@
 
 // image source
 
-#define CGImageSourceCreateWithData(data,opts) \
-   [O2ImageSource newImageSourceWithData:data options:opts]
+#define CGImageSourceCreateWithData(data, opts) \
+    [O2ImageSource newImageSourceWithData:data options:opts]
 
-#define CGImageSourceCreateImageAtIndex(self,index,opts) \
-   [self createImageAtIndex:index options:opts]
-
+#define CGImageSourceCreateImageAtIndex(self, index, opts) \
+    [self createImageAtIndex:index options:opts]
 
 // pdf document
 
 #define CGPDFDocumentRetain(self) \
-   [self retain]
+    [self retain]
 
 #define CGPDFDocumentRelease(self) \
-   [self release]
+    [self release]
 
 #define CGPDFDocumentCreateWithProvider(provider) \
-   [[O2PDFDocument alloc] initWithDataProvider:provider]
+    [[O2PDFDocument alloc] initWithDataProvider:provider]
 
 #define CGPDFDocumentGetNumberOfPages(self) \
-   [self pageCount]
+    [self pageCount]
 
-#define CGPDFDocumentGetPage(self,pageNumber) \
-   [self pageAtNumber:pageNumber]
+#define CGPDFDocumentGetPage(self, pageNumber) \
+    [self pageAtNumber:pageNumber]
 
 // pdf page
 
 #define CGPDFPageRetain(self) \
-   [self retain]
+    [self retain]
 
 #define CGPDFPageRelease(self) \
-   [self release]
+    [self release]
 
 // shadings
 #define CGFunctionCreate O2FunctionCreate

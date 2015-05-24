@@ -9,57 +9,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <OpenGL/gl.h>
 
-@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView;
+@class NSOpenGLPixelFormat, NSOpenGLPixelBuffer, NSView;
 
 typedef enum {
-   NSOpenGLCPSwapRectangle      =200,
-   NSOpenGLCPSwapRectangleEnable=201,
-   NSOpenGLCPRasterizationEnable=221,
-   NSOpenGLCPSwapInterval       =222,
-   NSOpenGLCPSurfaceOrder       =235,
-   NSOpenGLCPSurfaceOpacity     =236,
-   NSOpenGLCPStateValidation    =301,
+    NSOpenGLCPSwapRectangle = 200,
+    NSOpenGLCPSwapRectangleEnable = 201,
+    NSOpenGLCPRasterizationEnable = 221,
+    NSOpenGLCPSwapInterval = 222,
+    NSOpenGLCPSurfaceOrder = 235,
+    NSOpenGLCPSurfaceOpacity = 236,
+    NSOpenGLCPStateValidation = 301,
 } NSOpenGLContextParameter;
 
 @interface NSOpenGLContext : NSObject {
-   NSOpenGLPixelFormat *_pixelFormat;
-   NSView              *_view;
-   void                *_glContext;
-   id __remove;
-   BOOL                 _hasPrepared;
+    NSOpenGLPixelFormat *_pixelFormat;
+    NSView *_view;
+    void *_glContext;
+    id __remove;
+    BOOL _hasPrepared;
 }
 
-+(NSOpenGLContext *)currentContext;
-+(void)clearCurrentContext;
++ (NSOpenGLContext *)currentContext;
++ (void)clearCurrentContext;
 
--initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext;
+- initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext;
 
--(NSView *)view;
--(NSOpenGLPixelBuffer *)pixelBuffer;
--(unsigned long)pixelBufferCubeMapFace;
--(long)pixelBufferMipMapLevel;
--(void *)CGLContextObj;
+- (NSView *)view;
+- (NSOpenGLPixelBuffer *)pixelBuffer;
+- (unsigned long)pixelBufferCubeMapFace;
+- (long)pixelBufferMipMapLevel;
+- (void *)CGLContextObj;
 
--(void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
--(void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
--(void)setView:(NSView *)view;
+- (void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
+- (void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
+- (void)setView:(NSView *)view;
 
--(void)makeCurrentContext;
+- (void)makeCurrentContext;
 
--(int)currentVirtualScreen;
--(void)setCurrentVirtualScreen:(int)screen;
--(void)setFullScreen;
--(void)setOffscreen:(void *)bytes width:(long)width height:(long)height rowbytes:(long)rowbytes;
--(void)setPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer cubeMapFace:(unsigned long)cubeMapFace mipMapLeve:(long)mipMapLevel currentVirtualScreen:(int)screen;
--(void)setTextureImageToPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer colorBuffer:(unsigned long)source;
+- (int)currentVirtualScreen;
+- (void)setCurrentVirtualScreen:(int)screen;
+- (void)setFullScreen;
+- (void)setOffscreen:(void *)bytes width:(long)width height:(long)height rowbytes:(long)rowbytes;
+- (void)setPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer cubeMapFace:(unsigned long)cubeMapFace mipMapLeve:(long)mipMapLevel currentVirtualScreen:(int)screen;
+- (void)setTextureImageToPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer colorBuffer:(unsigned long)source;
 
--(void)update;
+- (void)update;
 
--(void)clearDrawable;
+- (void)clearDrawable;
 
--(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask;
--(void)createTexture:(unsigned long)identifier fromView:(NSView *)view internalFormat:(unsigned long)internalFormat;
+- (void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask;
+- (void)createTexture:(unsigned long)identifier fromView:(NSView *)view internalFormat:(unsigned long)internalFormat;
 
--(void)flushBuffer;
+- (void)flushBuffer;
 
 @end

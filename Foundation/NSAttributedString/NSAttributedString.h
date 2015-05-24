@@ -10,23 +10,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary;
 
-@interface NSAttributedString : NSObject <NSCopying,NSCoding,NSMutableCopying>
+@interface NSAttributedString : NSObject <NSCopying, NSCoding, NSMutableCopying>
 
--initWithString:(NSString *)string;
--initWithString:(NSString *)string attributes:(NSDictionary *)attributes;
--initWithAttributedString:(NSAttributedString *)other;
+- initWithString:(NSString *)string;
+- initWithString:(NSString *)string attributes:(NSDictionary *)attributes;
+- initWithAttributedString:(NSAttributedString *)other;
 
--(BOOL)isEqualToAttributedString:(NSAttributedString *)other;
+- (BOOL)isEqualToAttributedString:(NSAttributedString *)other;
 
--(NSUInteger)length;
--(NSString *)string;
+- (NSUInteger)length;
+- (NSString *)string;
 
--(NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
--(NSDictionary *)attributesAtIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
+- (NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
+- (NSDictionary *)attributesAtIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
--attribute:(NSString *)name atIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
--attribute:(NSString *)name atIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
+- attribute:(NSString *)name atIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
+- attribute:(NSString *)name atIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
--(NSAttributedString *)attributedSubstringFromRange:(NSRange)range;
+- (NSAttributedString *)attributedSubstringFromRange:(NSRange)range;
 
 @end

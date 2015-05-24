@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSRangeArray : NSObject {
-   unsigned  _count,_capacity;
-   NSRange  *_ranges;
+    unsigned _count, _capacity;
+    NSRange *_ranges;
 }
 
--init;
+- init;
 
--(unsigned)count;
--(NSRange)rangeAtIndex:(unsigned)index;
--(void)removeRangeAtIndex:(unsigned)index;
--(void)addRange:(NSRange)range;
--(void)removeAllRanges;
+- (unsigned)count;
+- (NSRange)rangeAtIndex:(unsigned)index;
+- (void)removeRangeAtIndex:(unsigned)index;
+- (void)addRange:(NSRange)range;
+- (void)removeAllRanges;
 
 @end

@@ -11,20 +11,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 typedef struct
-	{
-		unsigned long state;
-		id *itemsPtr;
-		unsigned long *mutationsPtr;
-		unsigned long extra[5];
-	} NSFastEnumerationState;
+    {
+    unsigned long state;
+    id *itemsPtr;
+    unsigned long *mutationsPtr;
+    unsigned long extra[5];
+} NSFastEnumerationState;
 
 @protocol NSFastEnumeration
--(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 @end
 
-@interface NSEnumerator:NSObject <NSFastEnumeration>
+@interface NSEnumerator : NSObject <NSFastEnumeration>
 
--nextObject;
--(NSArray *)allObjects;
+- nextObject;
+- (NSArray *)allObjects;
 
 @end

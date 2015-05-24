@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2Geometry.h>
-@class O2Context,NSDictionary,O2Layer,O2Surface;
+@class O2Context, NSDictionary, O2Layer, O2Surface;
 
 typedef O2Layer *O2LayerRef;
 
@@ -16,18 +16,18 @@ typedef O2Layer *O2LayerRef;
 #import <Onyx2D/O2Image.h>
 
 @interface O2Layer : NSObject {
-   O2ContextRef  _context;
-   O2Size        _size;
-   NSDictionary *_unused;
-   O2Surface    *_surface;
+    O2ContextRef _context;
+    O2Size _size;
+    NSDictionary *_unused;
+    O2Surface *_surface;
 }
 
 O2Surface *O2LayerGetSurface(O2LayerRef self);
 
-O2LayerRef   O2LayerCreateWithContext(O2ContextRef context,O2Size size,NSDictionary *unused);
-O2LayerRef   O2LayerRetain(O2LayerRef self);
-void         O2LayerRelease(O2LayerRef self);
-O2Size       O2LayerGetSize(O2LayerRef self);
+O2LayerRef O2LayerCreateWithContext(O2ContextRef context, O2Size size, NSDictionary *unused);
+O2LayerRef O2LayerRetain(O2LayerRef self);
+void O2LayerRelease(O2LayerRef self);
+O2Size O2LayerGetSize(O2LayerRef self);
 O2ContextRef O2LayerGetContext(O2LayerRef self);
 
 @end

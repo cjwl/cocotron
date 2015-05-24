@@ -14,24 +14,23 @@ typedef struct O2Color *CGColorRef;
 #import "CGColorSpace.h"
 #import "CGPattern.h"
 
-
 COREGRAPHICS_EXPORT CGColorRef CGColorRetain(CGColorRef self);
-COREGRAPHICS_EXPORT void       CGColorRelease(CGColorRef self);
+COREGRAPHICS_EXPORT void CGColorRelease(CGColorRef self);
 
-COREGRAPHICS_EXPORT CGColorRef CGColorCreate(CGColorSpaceRef colorSpace,const CGFloat *components);
-COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericGray(CGFloat gray,CGFloat a);
-COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a);
-COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a);
-COREGRAPHICS_EXPORT CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreate(CGColorSpaceRef colorSpace, const CGFloat *components);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericGray(CGFloat gray, CGFloat a);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericRGB(CGFloat r, CGFloat g, CGFloat b, CGFloat a);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreateGenericCMYK(CGFloat c, CGFloat m, CGFloat y, CGFloat k, CGFloat a);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpace, CGPatternRef pattern, const CGFloat *components);
 
 COREGRAPHICS_EXPORT CGColorRef CGColorCreateCopy(CGColorRef self);
-COREGRAPHICS_EXPORT CGColorRef CGColorCreateCopyWithAlpha(CGColorRef self,CGFloat a);
+COREGRAPHICS_EXPORT CGColorRef CGColorCreateCopyWithAlpha(CGColorRef self, CGFloat a);
 
-COREGRAPHICS_EXPORT bool       CGColorEqualToColor(CGColorRef self,CGColorRef other);
+COREGRAPHICS_EXPORT bool CGColorEqualToColor(CGColorRef self, CGColorRef other);
 
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorGetColorSpace(CGColorRef self);
-COREGRAPHICS_EXPORT size_t          CGColorGetNumberOfComponents(CGColorRef self);
-COREGRAPHICS_EXPORT const CGFloat  *CGColorGetComponents(CGColorRef self);
-COREGRAPHICS_EXPORT CGFloat         CGColorGetAlpha(CGColorRef self);
+COREGRAPHICS_EXPORT size_t CGColorGetNumberOfComponents(CGColorRef self);
+COREGRAPHICS_EXPORT const CGFloat *CGColorGetComponents(CGColorRef self);
+COREGRAPHICS_EXPORT CGFloat CGColorGetAlpha(CGColorRef self);
 
-COREGRAPHICS_EXPORT CGPatternRef    CGColorGetPattern(CGColorRef self);
+COREGRAPHICS_EXPORT CGPatternRef CGColorGetPattern(CGColorRef self);

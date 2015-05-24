@@ -12,74 +12,74 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2Decoder_TIFF;
 
 @interface O2TIFFImageDirectory : NSObject {
-  NSString            *_artist;
-  unsigned             _sizeOfBitsPerSample;
-  unsigned            *_bitsPerSample;
-  unsigned             _cellLength;
-  unsigned             _cellWidth;
-  unsigned             _sizeOfColorMap;
-  unsigned            *_colorMap;
-  unsigned             _compression;
-  NSString            *_copyright;
-  NSString            *_dateTime;
-  NSString            *_documentName;
-  unsigned             _sizeOfExtraSamples;
-  unsigned            *_extraSamples;
-  unsigned             _fillOrder;
-  unsigned             _freeByteCounts;
-  unsigned             _freeOffsets;
-  unsigned             _sizeOfGrayResponseCurve;
-  unsigned            *_grayResponseCurve;
-  unsigned             _grayResponseUnit;
-  NSString            *_hostComputer;
-  NSString            *_imageDescription;
-  unsigned             _imageLength;
-  unsigned             _imageWidth;
-  NSString            *_make;
-  unsigned             _sizeOfMaxSampleValue;
-  unsigned            *_maxSampleValue;
-  unsigned             _sizeOfMinSampleValue;
-  unsigned            *_minSampleValue;
-  NSString            *_model;
-  unsigned             _newSubfileType;
-  unsigned             _orientation;
-  
-  NSString            *_pageName;
-  unsigned             _sizeOfPageNumbers;
-  unsigned            *_pageNumbers;
-  unsigned             _photometricInterpretation;
-  unsigned             _planarConfiguration;
-  unsigned             _resolutionUnit;
-  unsigned             _rowsPerStrip;
-  unsigned             _sizeOfSampleFormats;
-  unsigned            *_sampleFormats;
-  unsigned             _samplesPerPixel;
-  NSString            *_software;
-  unsigned             _sizeOfStripByteCounts;
-  unsigned            *_stripByteCounts;
-  unsigned             _sizeOfStripOffsets;
-  unsigned            *_stripOffsets;
-  unsigned             _subfileType;
-  unsigned             _threshholding;
-  unsigned             _sizeOfXMP;
-  unsigned char       *_xmp;
-  double               _xPosition;
-  double               _xResolution;
-  double               _yPosition;
-  double               _yResolution;
-  unsigned             _predictor;
+    NSString *_artist;
+    unsigned _sizeOfBitsPerSample;
+    unsigned *_bitsPerSample;
+    unsigned _cellLength;
+    unsigned _cellWidth;
+    unsigned _sizeOfColorMap;
+    unsigned *_colorMap;
+    unsigned _compression;
+    NSString *_copyright;
+    NSString *_dateTime;
+    NSString *_documentName;
+    unsigned _sizeOfExtraSamples;
+    unsigned *_extraSamples;
+    unsigned _fillOrder;
+    unsigned _freeByteCounts;
+    unsigned _freeOffsets;
+    unsigned _sizeOfGrayResponseCurve;
+    unsigned *_grayResponseCurve;
+    unsigned _grayResponseUnit;
+    NSString *_hostComputer;
+    NSString *_imageDescription;
+    unsigned _imageLength;
+    unsigned _imageWidth;
+    NSString *_make;
+    unsigned _sizeOfMaxSampleValue;
+    unsigned *_maxSampleValue;
+    unsigned _sizeOfMinSampleValue;
+    unsigned *_minSampleValue;
+    NSString *_model;
+    unsigned _newSubfileType;
+    unsigned _orientation;
+
+    NSString *_pageName;
+    unsigned _sizeOfPageNumbers;
+    unsigned *_pageNumbers;
+    unsigned _photometricInterpretation;
+    unsigned _planarConfiguration;
+    unsigned _resolutionUnit;
+    unsigned _rowsPerStrip;
+    unsigned _sizeOfSampleFormats;
+    unsigned *_sampleFormats;
+    unsigned _samplesPerPixel;
+    NSString *_software;
+    unsigned _sizeOfStripByteCounts;
+    unsigned *_stripByteCounts;
+    unsigned _sizeOfStripOffsets;
+    unsigned *_stripOffsets;
+    unsigned _subfileType;
+    unsigned _threshholding;
+    unsigned _sizeOfXMP;
+    unsigned char *_xmp;
+    double _xPosition;
+    double _xResolution;
+    double _yPosition;
+    double _yResolution;
+    unsigned _predictor;
 #if LIBTIFF_PRESENT
-	int _idx;
+    int _idx;
 #endif
 }
 
--initWithTIFFReader:(O2Decoder_TIFF *)reader;
+- initWithTIFFReader:(O2Decoder_TIFF *)reader;
 
--(int)imageLength;
--(int)imageWidth;
+- (int)imageLength;
+- (int)imageWidth;
 
--(BOOL)getRGBAImageBytes:(unsigned char *)bytes data:(NSData *)data;
+- (BOOL)getRGBAImageBytes:(unsigned char *)bytes data:(NSData *)data;
 
--(NSDictionary *)properties;
+- (NSDictionary *)properties;
 
 @end

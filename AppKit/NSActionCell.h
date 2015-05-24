@@ -9,19 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 
 @interface NSActionCell : NSCell {
-   NSView   *_controlView;
-   id        _target;
-   SEL       _action;
-   int       _tag;
+    NSView *_controlView;
+    id _target;
+    SEL _action;
+    int _tag;
 }
 
--target;
--(SEL)action;
--(int)tag;
+- target;
+- (SEL)action;
+- (int)tag;
 
--(void)setTarget:target;
--(void)setAction:(SEL)action;
--(void)setTag:(int)tag;
-
+- (void)setTarget:target;
+- (void)setAction:(SEL)action;
+- (void)setTag:(int)tag;
 
 @end

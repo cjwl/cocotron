@@ -11,33 +11,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSTextFieldCell;
 
 @interface NSFormCell : NSActionCell {
-   float _titleWidth;
-   NSTextFieldCell *_titleCell;
-   id _placeholder;
+    float _titleWidth;
+    NSTextFieldCell *_titleCell;
+    id _placeholder;
 }
 
--initTextCell:(NSString *)value;
+- initTextCell:(NSString *)value;
 
--(BOOL)isOpaque;
--(float)titleWidth;
--(float)titleWidth:(NSSize)size;
--(NSString *)title;
--(NSAttributedString *)attributedTitle;
--(NSFont *)titleFont;
--(NSTextAlignment)titleAlignment;
--(NSWritingDirection)titleBaseWritingDirection;
--(NSString *)placeholderString;
--(NSAttributedString *)placeholderAttributedString;
+- (BOOL)isOpaque;
+- (float)titleWidth;
+- (float)titleWidth:(NSSize)size;
+- (NSString *)title;
+- (NSAttributedString *)attributedTitle;
+- (NSFont *)titleFont;
+- (NSTextAlignment)titleAlignment;
+- (NSWritingDirection)titleBaseWritingDirection;
+- (NSString *)placeholderString;
+- (NSAttributedString *)placeholderAttributedString;
 
--(void)setTitleWidth:(float)value;
--(void)setTitle:(NSString *)value;
--(void)setAttributedTitle:(NSAttributedString *)value;
--(void)setTitleWithMnemonic:(NSString *)value;
--(void)setTitleFont:(NSFont *)value;
--(void)setTitleAlignment:(NSTextAlignment)value;
--(void)setTitleBaseWritingDirection:(NSWritingDirection)value;
--(void)setPlaceholderString:(NSString *)value;
--(void)setPlaceholderAttributedString:(NSAttributedString *)value;
--(void)setTitleWithMnemonic:(NSString *)value;
+- (void)setTitleWidth:(float)value;
+- (void)setTitle:(NSString *)value;
+- (void)setAttributedTitle:(NSAttributedString *)value;
+- (void)setTitleWithMnemonic:(NSString *)value;
+- (void)setTitleFont:(NSFont *)value;
+- (void)setTitleAlignment:(NSTextAlignment)value;
+- (void)setTitleBaseWritingDirection:(NSWritingDirection)value;
+- (void)setPlaceholderString:(NSString *)value;
+- (void)setPlaceholderAttributedString:(NSAttributedString *)value;
+- (void)setTitleWithMnemonic:(NSString *)value;
 
 @end

@@ -16,14 +16,13 @@ APPKIT_EXPORT id NSNotApplicableMarker;
 APPKIT_EXPORT BOOL NSIsControllerMarker(id object);
 
 @interface NSController : NSObject <NSCoding> {
-  NSMutableArray *_editors;
+    NSMutableArray *_editors;
 }
 
--(BOOL)commitEditing;
--(void)discardEditing;
--(BOOL)isEditing;
--(void)objectDidBeginEditing:editor;
--(void)objectDidEndEditing:editor;
-
+- (BOOL)commitEditing;
+- (void)discardEditing;
+- (BOOL)isEditing;
+- (void)objectDidBeginEditing:editor;
+- (void)objectDidEndEditing:editor;
 
 @end

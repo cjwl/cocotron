@@ -14,63 +14,62 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSView;
 
 enum {
-   NSTrackingMouseEnteredAndExited   =(1<<0),
-   NSTrackingMouseMoved              =(1<<1),
-   NSTrackingCursorUpdate            =(1<<2),
-   
-   NSTrackingActiveWhenFirstResponder=(1<<4),
-   NSTrackingActiveInKeyWindow       =(1<<5),
-   NSTrackingActiveInActiveApp       =(1<<6),
-   NSTrackingActiveAlways            =(1<<7),
-   
-   NSTrackingAssumeInside            =(1<<8),
-   NSTrackingInVisibleRect           =(1<<9),
-   NSTrackingEnabledDuringMouseDrag  =(1<<10),
+    NSTrackingMouseEnteredAndExited = (1 << 0),
+    NSTrackingMouseMoved = (1 << 1),
+    NSTrackingCursorUpdate = (1 << 2),
+
+    NSTrackingActiveWhenFirstResponder = (1 << 4),
+    NSTrackingActiveInKeyWindow = (1 << 5),
+    NSTrackingActiveInActiveApp = (1 << 6),
+    NSTrackingActiveAlways = (1 << 7),
+
+    NSTrackingAssumeInside = (1 << 8),
+    NSTrackingInVisibleRect = (1 << 9),
+    NSTrackingEnabledDuringMouseDrag = (1 << 10),
 };
 
 typedef NSUInteger NSTrackingAreaOptions;
 
 @interface NSTrackingArea : NSObject {
-   NSRect                 _rect;
-   NSTrackingAreaOptions  _options;
-   id                     _owner;
-   void                  *_userData;
-   BOOL                   _retainUserData;
+    NSRect _rect;
+    NSTrackingAreaOptions _options;
+    id _owner;
+    void *_userData;
+    BOOL _retainUserData;
 
-   // NSWindow needs this. It's maintained when areas are collected for the window.
-   NSView                *_view;
-   // NSWindow needs this. It's maintained when areas are collected for the window.
-   NSRect                 _rectInWindow;
-   // _mouseInside is a marker handled by NSWindow.
-   BOOL                   _mouseInside;
-   // Instead of sending events, show the NSToolTipWindow.
-   // The text for the tooltip is fetched from owner.
-   BOOL                   _isToolTip;
-   // Needed for compatibility with legacy cursorRects. If YES, this area will be
-   // discarded by -[NSView discardCursorRects] (and -[NSWindow discardCursorRects]).
-   BOOL                   _legacy;
+    // NSWindow needs this. It's maintained when areas are collected for the window.
+    NSView *_view;
+    // NSWindow needs this. It's maintained when areas are collected for the window.
+    NSRect _rectInWindow;
+    // _mouseInside is a marker handled by NSWindow.
+    BOOL _mouseInside;
+    // Instead of sending events, show the NSToolTipWindow.
+    // The text for the tooltip is fetched from owner.
+    BOOL _isToolTip;
+    // Needed for compatibility with legacy cursorRects. If YES, this area will be
+    // discarded by -[NSView discardCursorRects] (and -[NSWindow discardCursorRects]).
+    BOOL _legacy;
 }
 
 // Apple documented
--(id)initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userInfo:(NSDictionary *)userInfo;
+- (id)initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userInfo:(NSDictionary *)userInfo;
 
--(NSRect)rect;
--(NSTrackingAreaOptions)options;
--(id)owner;
--(NSDictionary *)userInfo;
-
+- (NSRect)rect;
+- (NSTrackingAreaOptions)options;
+- (id)owner;
+- (NSDictionary *)userInfo;
 
 // undocumented
--(id)_initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userData:(void *)userData retainUserData:(BOOL)retainUserData isToolTip:(BOOL)isToolTip isLegacy:(BOOL)legacy;
+- (id)_initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userData:(void *)userData retainUserData:(BOOL)retainUserData isToolTip:(BOOL)isToolTip isLegacy:(BOOL)legacy;
 
 //-(void)_setRect:(NSRect)rect;
--(NSRect)_rectInWindow;
--(void)_setRectInWindow:(NSRect)rectInWindow;
--(NSView *)_view;
--(void)_setView:(NSView *)newView;
--(BOOL)_isToolTip;
--(BOOL)_isLegacy;
--(BOOL)_mouseInside;
--(void)_setMouseInside:(BOOL)mouseInside;
+- (NSRect)_rectInWindow;
+- (void)_setRectInWindow:(NSRect)rectInWindow;
+- (NSView *)_view;
+- (void)_setView:(NSView *)newView;
+- (BOOL)_isToolTip;
+- (BOOL)_isLegacy;
+- (BOOL)_mouseInside;
+- (void)_setMouseInside:(BOOL)mouseInside;
 
 @end

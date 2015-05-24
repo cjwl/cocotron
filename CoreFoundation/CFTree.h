@@ -9,38 +9,38 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct CFTree *CFTreeRef;
 
-typedef CFAllocatorRetainCallBack          CFTreeRetainCallBack;
-typedef CFAllocatorReleaseCallBack         CFTreeReleaseCallBack;
+typedef CFAllocatorRetainCallBack CFTreeRetainCallBack;
+typedef CFAllocatorReleaseCallBack CFTreeReleaseCallBack;
 typedef CFAllocatorCopyDescriptionCallBack CFTreeCopyDescriptionCallBack;
 
 typedef struct {
-   CFIndex                       version;
-   void                         *info;
-   CFTreeRetainCallBack          retain;
-   CFTreeReleaseCallBack         release;
-   CFTreeCopyDescriptionCallBack copyDescription;
+    CFIndex version;
+    void *info;
+    CFTreeRetainCallBack retain;
+    CFTreeReleaseCallBack release;
+    CFTreeCopyDescriptionCallBack copyDescription;
 } CFTreeContext;
 
-typedef void (*CFTreeApplierFunction)(const void *value,void *context);
+typedef void (*CFTreeApplierFunction)(const void *value, void *context);
 
-COREFOUNDATION_EXPORT CFTypeID  CFTreeGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFTreeGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFTreeRef CFTreeCreate(CFAllocatorRef allocator,const CFTreeContext *context);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeCreate(CFAllocatorRef allocator, const CFTreeContext *context);
 
-COREFOUNDATION_EXPORT void      CFTreeGetContext(CFTreeRef self,CFTreeContext *context);
+COREFOUNDATION_EXPORT void CFTreeGetContext(CFTreeRef self, CFTreeContext *context);
 
-COREFOUNDATION_EXPORT void      CFTreeAppendChild(CFTreeRef self,CFTreeRef child);
-COREFOUNDATION_EXPORT void      CFTreeApplyFunctionToChildren(CFTreeRef self,CFTreeApplierFunction function,void *context);
+COREFOUNDATION_EXPORT void CFTreeAppendChild(CFTreeRef self, CFTreeRef child);
+COREFOUNDATION_EXPORT void CFTreeApplyFunctionToChildren(CFTreeRef self, CFTreeApplierFunction function, void *context);
 COREFOUNDATION_EXPORT CFTreeRef CFTreeFindRoot(CFTreeRef self);
-COREFOUNDATION_EXPORT CFTreeRef CFTreeGetChildAtIndex(CFTreeRef self,CFIndex index);
-COREFOUNDATION_EXPORT CFIndex   CFTreeGetChildCount(CFTreeRef self);
-COREFOUNDATION_EXPORT void      CFTreeGetChildren(CFTreeRef self,CFTreeRef *children);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeGetChildAtIndex(CFTreeRef self, CFIndex index);
+COREFOUNDATION_EXPORT CFIndex CFTreeGetChildCount(CFTreeRef self);
+COREFOUNDATION_EXPORT void CFTreeGetChildren(CFTreeRef self, CFTreeRef *children);
 COREFOUNDATION_EXPORT CFTreeRef CFTreeGetFirstChild(CFTreeRef self);
 COREFOUNDATION_EXPORT CFTreeRef CFTreeGetNextSibling(CFTreeRef self);
 COREFOUNDATION_EXPORT CFTreeRef CFTreeGetParent(CFTreeRef self);
-COREFOUNDATION_EXPORT void      CFTreeInsertSibling(CFTreeRef self,CFTreeRef sibling);
-COREFOUNDATION_EXPORT void      CFTreePrependChild(CFTreeRef self,CFTreeRef child);
-COREFOUNDATION_EXPORT void      CFTreeRemove(CFTreeRef self);
-COREFOUNDATION_EXPORT void      CFTreeRemoveAllChildren(CFTreeRef self);
-COREFOUNDATION_EXPORT void      CFTreeSetContext(CFTreeRef self,const CFTreeContext *context);
-COREFOUNDATION_EXPORT void      CFTreeSortChildren(CFTreeRef self,CFComparatorFunction function,void *context);
+COREFOUNDATION_EXPORT void CFTreeInsertSibling(CFTreeRef self, CFTreeRef sibling);
+COREFOUNDATION_EXPORT void CFTreePrependChild(CFTreeRef self, CFTreeRef child);
+COREFOUNDATION_EXPORT void CFTreeRemove(CFTreeRef self);
+COREFOUNDATION_EXPORT void CFTreeRemoveAllChildren(CFTreeRef self);
+COREFOUNDATION_EXPORT void CFTreeSetContext(CFTreeRef self, const CFTreeContext *context);
+COREFOUNDATION_EXPORT void CFTreeSortChildren(CFTreeRef self, CFComparatorFunction function, void *context);

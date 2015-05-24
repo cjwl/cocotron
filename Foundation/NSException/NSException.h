@@ -9,39 +9,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #include <setjmp.h>
 
-@class NSDictionary,NSArray;
+@class NSDictionary, NSArray;
 
-FOUNDATION_EXPORT NSString * const NSGenericException;
-FOUNDATION_EXPORT NSString * const NSInvalidArgumentException;
-FOUNDATION_EXPORT NSString * const NSRangeException;
+FOUNDATION_EXPORT NSString *const NSGenericException;
+FOUNDATION_EXPORT NSString *const NSInvalidArgumentException;
+FOUNDATION_EXPORT NSString *const NSRangeException;
 
-FOUNDATION_EXPORT NSString * const NSInternalInconsistencyException;
-FOUNDATION_EXPORT NSString * const NSMallocException;
+FOUNDATION_EXPORT NSString *const NSInternalInconsistencyException;
+FOUNDATION_EXPORT NSString *const NSMallocException;
 
-FOUNDATION_EXPORT NSString * const NSParseErrorException;
-FOUNDATION_EXPORT NSString * const NSInconsistentArchiveException;
+FOUNDATION_EXPORT NSString *const NSParseErrorException;
+FOUNDATION_EXPORT NSString *const NSInconsistentArchiveException;
 
-@interface NSException:NSObject <NSCoding,NSCopying> {
-    NSString		*_name;
-    NSString		*_reason;
-    NSDictionary	*_userInfo;
-    NSArray         *_callStack;
+@interface NSException : NSObject <NSCoding, NSCopying> {
+    NSString *_name;
+    NSString *_reason;
+    NSDictionary *_userInfo;
+    NSArray *_callStack;
 }
 
-+(void)raise:(NSString *)name format:(NSString *)format,...;
-+(void)raise:(NSString *)name format:(NSString *)format arguments:(va_list)arguments;
++ (void)raise:(NSString *)name format:(NSString *)format, ...;
++ (void)raise:(NSString *)name format:(NSString *)format arguments:(va_list)arguments;
 
--initWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
+- initWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
 
-+(NSException *)exceptionWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
++ (NSException *)exceptionWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
 
--(void)raise;
+- (void)raise;
 
--(NSString *)name;
--(NSString *)reason;
--(NSDictionary *)userInfo;
+- (NSString *)name;
+- (NSString *)reason;
+- (NSDictionary *)userInfo;
 
--(NSArray *)callStackReturnAddresses;
+- (NSArray *)callStackReturnAddresses;
 
 @end
 
@@ -51,38 +51,42 @@ FOUNDATION_EXPORT NSUncaughtExceptionHandler *NSGetUncaughtExceptionHandler(void
 FOUNDATION_EXPORT void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *);
 
 typedef struct NSExceptionFrame {
-   jmp_buf                  state;
-   struct NSExceptionFrame *parent;
-   NSException             *exception;
+    jmp_buf state;
+    struct NSExceptionFrame *parent;
+    NSException *exception;
 } NSExceptionFrame;
 
 FOUNDATION_EXPORT void __NSPushExceptionFrame(NSExceptionFrame *frame);
 FOUNDATION_EXPORT void __NSPopExceptionFrame(NSExceptionFrame *frame);
 
-#define NS_DURING \
-  { \
-   NSExceptionFrame __exceptionFrame; \
-   __NSPushExceptionFrame(&__exceptionFrame); \
-   if(setjmp(__exceptionFrame.state)==0){
+#define NS_DURING                                  \
+    {                                              \
+        NSExceptionFrame __exceptionFrame;         \
+        __NSPushExceptionFrame(&__exceptionFrame); \
+        if(setjmp(__exceptionFrame.state) == 0) {
 
-#define NS_HANDLER \
-    __NSPopExceptionFrame(&__exceptionFrame); \
-   } \
-   else{ \
-    NSException *localException=__exceptionFrame.exception;\
-    if (localException) { /* caller does not have to read localException */ }
+#define NS_HANDLER                                                             \
+    __NSPopExceptionFrame(&__exceptionFrame);                                  \
+    }                                                                          \
+    else {                                                                     \
+        NSException *localException = __exceptionFrame.exception;              \
+        if(localException) { /* caller does not have to read localException */ \
+        }
 
 #define NS_ENDHANDLER \
-   } \
-  }
+    }                 \
+    }
 
-#define NS_VALUERETURN(val,type) \
-  { __NSPopExceptionFrame(&__exceptionFrame); return val; }
+#define NS_VALUERETURN(val, type)                 \
+    {                                             \
+        __NSPopExceptionFrame(&__exceptionFrame); \
+        return val;                               \
+    }
 
-#define NS_VOIDRETURN \
-  { __NSPopExceptionFrame(&__exceptionFrame); return; }
-
+#define NS_VOIDRETURN                             \
+    {                                             \
+        __NSPopExceptionFrame(&__exceptionFrame); \
+        return;                                   \
+    }
 
 #import <Foundation/NSAssertionHandler.h>
-
-

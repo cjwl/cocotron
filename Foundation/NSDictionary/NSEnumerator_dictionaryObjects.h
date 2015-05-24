@@ -11,11 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary;
 
 @interface NSEnumerator_dictionaryObjects : NSEnumerator {
-   NSEnumerator *_keyEnumerator;
-   NSDictionary *_dictionary;
+    NSEnumerator *_keyEnumerator;
+    NSDictionary *_dictionary;
 }
 
--initWithDictionary:(NSDictionary *)dictionary;
--nextObject;
+- initWithDictionary:(NSDictionary *)dictionary;
+- nextObject;
 
 @end

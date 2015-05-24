@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSLayoutManager.h>
 
 @interface NSSecureLayoutManager : NSLayoutManager {
-   BOOL _echosBullets;
+    BOOL _echosBullets;
 }
 
--(void)setEchosBullets:(BOOL)yorn;
+- (void)setEchosBullets:(BOOL)yorn;
 
 @end

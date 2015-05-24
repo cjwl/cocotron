@@ -13,6 +13,6 @@ typedef struct O2PDFContext *CGPDFContextRef;
 
 COREGRAPHICS_EXPORT const CFStringRef kCGPDFContextTitle;
 
-COREGRAPHICS_EXPORT CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer,const CGRect *mediaBox,CFDictionaryRef auxiliaryInfo);
+COREGRAPHICS_EXPORT CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer, const CGRect *mediaBox, CFDictionaryRef auxiliaryInfo);
 
 COREGRAPHICS_EXPORT void CGPDFContextClose(CGContextRef self);

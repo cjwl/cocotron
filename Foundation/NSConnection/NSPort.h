@@ -8,37 +8,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSPortMessage,NSRunLoop,NSConnection,NSDate,NSMutableArray,NSData;
+@class NSPortMessage, NSRunLoop, NSConnection, NSDate, NSMutableArray, NSData;
 
-FOUNDATION_EXPORT NSString * const NSPortDidBecomeInvalidNotification;
+FOUNDATION_EXPORT NSString *const NSPortDidBecomeInvalidNotification;
 
 @interface NSPort : NSObject
 
-+(NSPort *)port;
++ (NSPort *)port;
 
--(id)delegate;
--(void)setDelegate:delegate;
+- (id)delegate;
+- (void)setDelegate:delegate;
 
--(void)invalidate;
--(BOOL)isValid;
+- (void)invalidate;
+- (BOOL)isValid;
 
--(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
--(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
--(void)addConnection:(NSConnection *)connection toRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
--(void)removeConnection:(NSConnection *)connection fromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)addConnection:(NSConnection *)connection toRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)removeConnection:(NSConnection *)connection fromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
--(NSUInteger)reservedSpaceLength;
+- (NSUInteger)reservedSpaceLength;
 
--(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
+- (BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
--(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(NSUInteger)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
+- (BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(NSUInteger)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
 @end
 
-@interface NSObject(NSPortDelegate)
--(void)handlePortMessage:(NSPortMessage *)portMessage;
+@interface NSObject (NSPortDelegate)
+- (void)handlePortMessage:(NSPortMessage *)portMessage;
 @end
-
 
 #import <Foundation/NSSocketPort.h>

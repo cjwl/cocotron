@@ -10,15 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSDistributedLock : NSObject {
 }
 
-+(NSDistributedLock *)lockWithPath:(NSString *)path;
++ (NSDistributedLock *)lockWithPath:(NSString *)path;
 
--initWithPath:(NSString *)path;
+- initWithPath:(NSString *)path;
 
--(NSDate *)lockDate;
+- (NSDate *)lockDate;
 
--(BOOL)tryLock;
--(void)unlock;
+- (BOOL)tryLock;
+- (void)unlock;
 
--(void)breakLock;
+- (void)breakLock;
 
 @end

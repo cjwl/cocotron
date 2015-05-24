@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 
 @interface NSMutableArray_concrete : NSMutableArray {
-   NSUInteger _count;
-   NSUInteger _capacity;
-   id      *_objects;
+    NSUInteger _count;
+    NSUInteger _capacity;
+    id *_objects;
 }
 
 @end
 
-NSArray *NSMutableArray_concreteNew(NSZone *zone,id *objects,NSUInteger count);
-NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity);
+NSArray *NSMutableArray_concreteNew(NSZone *zone, id *objects, NSUInteger count);
+NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone, NSUInteger capacity);

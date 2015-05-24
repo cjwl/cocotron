@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/Foundation.h>
 
-@class NSManagedObject,NSManagedObjectContext,NSManagedObjectModel,NSPropertyDescription,NSAttributeDescription;
+@class NSManagedObject, NSManagedObjectContext, NSManagedObjectModel, NSPropertyDescription, NSAttributeDescription;
 
 @interface NSEntityDescription : NSObject {
     NSString *_className;
@@ -23,34 +23,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     BOOL _hasBeenInstantiated;
 }
 
-- (BOOL) _hasBeenInstantiated;
+- (BOOL)_hasBeenInstantiated;
 
-+(NSEntityDescription *)entityForName:(NSString *) entityName inManagedObjectContext: (NSManagedObjectContext *) moc;
-        
-+insertNewObjectForEntityForName: (NSString *) entityName inManagedObjectContext: (NSManagedObjectContext *) moc;
++ (NSEntityDescription *)entityForName:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
 
-- (NSManagedObjectModel *) managedObjectModel;
++ insertNewObjectForEntityForName:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
 
-- (NSString *) name;
-- (BOOL) isAbstract;
-- (NSString *) managedObjectClassName;
-- (NSArray *) properties;
-- (NSArray *) subentities;
-- (NSDictionary *) userInfo;
+- (NSManagedObjectModel *)managedObjectModel;
 
-- (void) setName: (NSString *) value;
-- (void) setAbstract: (BOOL) value;
-- (void) setManagedObjectClassName: (NSString *) value;
-- (void) setProperties: (NSArray *) value;
-- (void) setSubentities: (NSArray *) value;
-- (void) setUserInfo: (NSDictionary *) value;
+- (NSString *)name;
+- (BOOL)isAbstract;
+- (NSString *)managedObjectClassName;
+- (NSArray *)properties;
+- (NSArray *)subentities;
+- (NSDictionary *)userInfo;
 
-- (NSEntityDescription *) superentity;
-- (NSDictionary *) subentitiesByName;
-- (NSDictionary *) attributesByName;
-- (NSDictionary *) propertiesByName;
-- (NSDictionary *) relationshipsByName;
-- (NSArray *) relationshipsWithDestinationEntity: (NSEntityDescription *) entity;
+- (void)setName:(NSString *)value;
+- (void)setAbstract:(BOOL)value;
+- (void)setManagedObjectClassName:(NSString *)value;
+- (void)setProperties:(NSArray *)value;
+- (void)setSubentities:(NSArray *)value;
+- (void)setUserInfo:(NSDictionary *)value;
+
+- (NSEntityDescription *)superentity;
+- (NSDictionary *)subentitiesByName;
+- (NSDictionary *)attributesByName;
+- (NSDictionary *)propertiesByName;
+- (NSDictionary *)relationshipsByName;
+- (NSArray *)relationshipsWithDestinationEntity:(NSEntityDescription *)entity;
 
 @end
-

@@ -12,37 +12,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Color.h>
 #import <windows.h>
 
-@class Win32DeviceContextWindow,O2Path;
+@class Win32DeviceContextWindow, O2Path;
 
 @interface O2DeviceContext_gdi : NSObject {
-   HDC _dc;
+    HDC _dc;
 }
 
--initWithDC:(HDC)dc;
+- initWithDC:(HDC)dc;
 
--(HDC)dc;
+- (HDC)dc;
 
--(Win32DeviceContextWindow *)windowDeviceContext;
+- (Win32DeviceContextWindow *)windowDeviceContext;
 
-void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTransform xform);
+void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc, O2Path *path, O2AffineTransform xform);
 void O2DeviceContextClipReset_gdi(HDC dc);
-void O2DeviceContextClipToNonZeroPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM);
-void O2DeviceContextClipToEvenOddPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM);
+void O2DeviceContextClipToNonZeroPath_gdi(HDC dc, O2Path *path, O2AffineTransform xform, O2AffineTransform deviceXFORM);
+void O2DeviceContextClipToEvenOddPath_gdi(HDC dc, O2Path *path, O2AffineTransform xform, O2AffineTransform deviceXFORM);
 
--(void)beginPrintingWithDocumentName:(NSString *)name;
--(void)endPrinting;
+- (void)beginPrintingWithDocumentName:(NSString *)name;
+- (void)endPrinting;
 
--(void)beginPage;
--(void)endPage;
+- (void)beginPage;
+- (void)endPage;
 
--(unsigned)bitsPerPixel;
--(NSSize)pixelsPerInch;
--(NSSize)pixelSize;
--(NSSize)pointSize;
--(NSRect)paperRect;
--(NSRect)imageableRect;
+- (unsigned)bitsPerPixel;
+- (NSSize)pixelsPerInch;
+- (NSSize)pixelSize;
+- (NSSize)pointSize;
+- (NSRect)paperRect;
+- (NSRect)imageableRect;
 
 @end
 
 COLORREF COLORREFFromColor(O2Color *color);
-

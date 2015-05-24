@@ -9,41 +9,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 
 enum {
-   NSUtilityWindowMask=0x10,
-   NSDocModalWindowMask=0x40,
+    NSUtilityWindowMask = 0x10,
+    NSDocModalWindowMask = 0x40,
 };
 
 @interface NSPanel : NSWindow {
-   BOOL _worksWhenModal;
-   BOOL _becomesKeyOnlyIfNeeded;
-   BOOL _isFloatingPanel;
+    BOOL _worksWhenModal;
+    BOOL _becomesKeyOnlyIfNeeded;
+    BOOL _isFloatingPanel;
 }
 
--(BOOL)worksWhenModal;
--(BOOL)becomesKeyOnlyIfNeeded;
--(BOOL)isFloatingPanel;
+- (BOOL)worksWhenModal;
+- (BOOL)becomesKeyOnlyIfNeeded;
+- (BOOL)isFloatingPanel;
 
--(void)setWorksWhenModal:(BOOL)flag;
--(void)setFloatingPanel:(BOOL)flag;
--(void)setBecomesKeyOnlyIfNeeded:(BOOL)flag;
+- (void)setWorksWhenModal:(BOOL)flag;
+- (void)setFloatingPanel:(BOOL)flag;
+- (void)setBecomesKeyOnlyIfNeeded:(BOOL)flag;
 
 @end
 
 enum {
-   NSAlertErrorReturn=-2,
-   NSAlertOtherReturn=-1,
-   NSAlertAlternateReturn=0,
-   NSAlertDefaultReturn=1
+    NSAlertErrorReturn = -2,
+    NSAlertOtherReturn = -1,
+    NSAlertAlternateReturn = 0,
+    NSAlertDefaultReturn = 1
 };
 
 enum {
-   NSCancelButton,
-   NSOKButton
+    NSCancelButton,
+    NSOKButton
 };
 
-APPKIT_EXPORT int NSRunAlertPanel(NSString *title,NSString *message,NSString *defaultButton,NSString *alternateButton,NSString *otherButton, ...);
+APPKIT_EXPORT int NSRunAlertPanel(NSString *title, NSString *message, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...);
 APPKIT_EXPORT int NSRunInformationalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...);
 APPKIT_EXPORT int NSRunCriticalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...);
-APPKIT_EXPORT void NSBeginAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);
-APPKIT_EXPORT void NSBeginCriticalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);
-APPKIT_EXPORT void NSBeginInformationalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);
+APPKIT_EXPORT void NSBeginAlertSheet(NSString *title, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, NSWindow *documentWindow, id modalDelegate, SEL didEndSelector, SEL didDismissSelector, void *contextInfo, NSString *message, ...);
+APPKIT_EXPORT void NSBeginCriticalAlertSheet(NSString *title, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, NSWindow *documentWindow, id modalDelegate, SEL didEndSelector, SEL didDismissSelector, void *contextInfo, NSString *message, ...);
+APPKIT_EXPORT void NSBeginInformationalAlertSheet(NSString *title, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, NSWindow *documentWindow, id modalDelegate, SEL didEndSelector, SEL didDismissSelector, void *contextInfo, NSString *message, ...);

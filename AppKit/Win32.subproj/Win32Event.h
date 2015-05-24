@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 
 @interface Win32Event : CGEvent {
-   MSG _msg;
+    MSG _msg;
 }
 
-+(Win32Event *)eventWithMSG:(MSG)msg;
++ (Win32Event *)eventWithMSG:(MSG)msg;
 
--(MSG)msg;
+- (MSG)msg;
 
 @end

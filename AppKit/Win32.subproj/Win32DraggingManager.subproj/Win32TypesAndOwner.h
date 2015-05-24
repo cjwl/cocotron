@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface Win32TypesAndOwner : NSObject {
-   NSArray *_types;
-   id       _owner;
+    NSArray *_types;
+    id _owner;
 }
 
-+(Win32TypesAndOwner *)typesAndOwnerWithTypes:(NSArray *)types owner:(id)owner;
++ (Win32TypesAndOwner *)typesAndOwnerWithTypes:(NSArray *)types owner:(id)owner;
 
--(NSArray *)types;
--(id)owner;
+- (NSArray *)types;
+- (id)owner;
 
 @end

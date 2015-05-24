@@ -10,31 +10,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGGeometry.h>
 
 typedef struct {
-   CGFloat a;
-   CGFloat b;
-   CGFloat c;
-   CGFloat d;
-   CGFloat tx;
-   CGFloat ty;
+    CGFloat a;
+    CGFloat b;
+    CGFloat c;
+    CGFloat d;
+    CGFloat tx;
+    CGFloat ty;
 } CGAffineTransform;
 
 COREGRAPHICS_EXPORT const CGAffineTransform CGAffineTransformIdentity;
 
 COREGRAPHICS_EXPORT bool CGAffineTransformIsIdentity(CGAffineTransform xform);
 
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMake(CGFloat a,CGFloat b,CGFloat c,CGFloat d,CGFloat tx,CGFloat ty);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMake(CGFloat a, CGFloat b, CGFloat c, CGFloat d, CGFloat tx, CGFloat ty);
 COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMakeRotation(CGFloat radians);
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMakeScale(CGFloat scalex,CGFloat scaley);
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMakeTranslation(CGFloat tx,CGFloat ty);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMakeScale(CGFloat scalex, CGFloat scaley);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformMakeTranslation(CGFloat tx, CGFloat ty);
 
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformConcat(CGAffineTransform xform,CGAffineTransform append);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformConcat(CGAffineTransform xform, CGAffineTransform append);
 COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformInvert(CGAffineTransform xform);
 
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformRotate(CGAffineTransform xform,CGFloat radians);
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformScale(CGAffineTransform xform,CGFloat scalex,CGFloat scaley);
-COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformTranslate(CGAffineTransform xform,CGFloat tx,CGFloat ty);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformRotate(CGAffineTransform xform, CGFloat radians);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformScale(CGAffineTransform xform, CGFloat scalex, CGFloat scaley);
+COREGRAPHICS_EXPORT CGAffineTransform CGAffineTransformTranslate(CGAffineTransform xform, CGFloat tx, CGFloat ty);
 
 COREGRAPHICS_EXPORT CGPoint CGPointApplyAffineTransform(CGPoint point, CGAffineTransform xform);
 COREGRAPHICS_EXPORT CGSize CGSizeApplyAffineTransform(CGSize size, CGAffineTransform xform);
-
-

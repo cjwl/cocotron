@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32IDataObjectServer.h>
 
 @interface Win32IEnumFORMATETCServer : Win32IUnknownServer {
-   NSArray *_formatEtcs;
-   unsigned _index;
+    NSArray *_formatEtcs;
+    unsigned _index;
 }
 
--(void)setFormatEtcs:(NSArray *)formatEtcs;
--(void)setIndex:(unsigned)index;
+- (void)setFormatEtcs:(NSArray *)formatEtcs;
+- (void)setIndex:(unsigned)index;
 
 @end

@@ -11,38 +11,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSView, NSColor, NSTabView;
 
 typedef enum {
- NSSelectedTab,
- NSBackgroundTab,
- NSPressedTab
+    NSSelectedTab,
+    NSBackgroundTab,
+    NSPressedTab
 } NSTabState;
 
 @interface NSTabViewItem : NSObject {
-   id         _identifier;
-   NSString  *_label;
-   NSView    *_view;
-   NSColor   *_color;
-   NSTabView *_tabView;
-   id         _initialFirstResponder;
-   NSTabState _state;
-   NSRect     _lastRect;
+    id _identifier;
+    NSString *_label;
+    NSView *_view;
+    NSColor *_color;
+    NSTabView *_tabView;
+    id _initialFirstResponder;
+    NSTabState _state;
+    NSRect _lastRect;
 }
 
--initWithIdentifier:identifier;
+- initWithIdentifier:identifier;
 
--identifier;
--(NSString *)label;
--view;
--(NSColor *)color;
--(NSTabView *)tabView;
--(NSTabState)tabState;
--initialFirstResponder;
+- identifier;
+- (NSString *)label;
+- view;
+- (NSColor *)color;
+- (NSTabView *)tabView;
+- (NSTabState)tabState;
+- initialFirstResponder;
 
--(void)setLabel:(NSString *)label;
--(void)setView:(NSView *)view;
--(void)setColor:(NSColor *)color;
--(void)setInitialFirstResponder:responder;
+- (void)setLabel:(NSString *)label;
+- (void)setView:(NSView *)view;
+- (void)setColor:(NSColor *)color;
+- (void)setInitialFirstResponder:responder;
 
--(void)drawLabel:(BOOL)truncateLabel inRect:(NSRect)rect;
--(NSSize)sizeOfLabel:(BOOL)truncateLabel;
+- (void)drawLabel:(BOOL)truncateLabel inRect:(NSRect)rect;
+- (NSSize)sizeOfLabel:(BOOL)truncateLabel;
 
 @end

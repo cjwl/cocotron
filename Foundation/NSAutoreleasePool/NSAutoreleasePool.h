@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSAutoreleasePool : NSObject {
-   NSAutoreleasePool *_parent;
-   NSUInteger         _pageCount;
-   id               **_pages;
-   NSUInteger         _nextSlot;
-   NSAutoreleasePool *_childPool;
+    NSAutoreleasePool *_parent;
+    NSUInteger _pageCount;
+    id **_pages;
+    NSUInteger _nextSlot;
+    NSAutoreleasePool *_childPool;
 }
 
-+(void)addObject:object;
++ (void)addObject:object;
 
--(void)addObject:object;
+- (void)addObject:object;
 
--(void)drain;
+- (void)drain;
 @end

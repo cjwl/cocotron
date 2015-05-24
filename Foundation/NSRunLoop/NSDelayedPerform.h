@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSDelayedPerform : NSObject {
-   id  _object;
-   SEL _selector;
-   id  _argument;
+    id _object;
+    SEL _selector;
+    id _argument;
 }
 
-+(NSDelayedPerform *)delayedPerformWithObject:object selector:(SEL)selector argument:argument;
++ (NSDelayedPerform *)delayedPerformWithObject:object selector:(SEL)selector argument:argument;
 
--(BOOL)isEqualToPerform:(NSDelayedPerform *)other;
+- (BOOL)isEqualToPerform:(NSDelayedPerform *)other;
 
--(void)perform;
+- (void)perform;
 
 @end

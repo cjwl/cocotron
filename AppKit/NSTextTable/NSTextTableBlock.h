@@ -11,21 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSTextTable;
 
 @interface NSTextTableBlock : NSTextBlock {
-   NSTextTable *_table;
-   int          _startingRow;
-   int          _rowSpan;
-   int          _startingColumn;
-   int          _columnSpan;
+    NSTextTable *_table;
+    int _startingRow;
+    int _rowSpan;
+    int _startingColumn;
+    int _columnSpan;
 }
 
--initWithTable:(NSTextTable *)table startingRow:(int)startingRow rowSpan:(int)rowSpan startingColumn:(int)startingColumn columnSpan:(int)columnSpan;
+- initWithTable:(NSTextTable *)table startingRow:(int)startingRow rowSpan:(int)rowSpan startingColumn:(int)startingColumn columnSpan:(int)columnSpan;
 
--(NSTextTable *)table;
+- (NSTextTable *)table;
 
--(int)startingRow;
--(int)rowSpan;
+- (int)startingRow;
+- (int)rowSpan;
 
--(int)startingColumn;
--(int)columnSpan;
+- (int)startingColumn;
+- (int)columnSpan;
 
 @end

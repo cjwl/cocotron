@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 
 @interface Win32Pasteboard : NSPasteboard {
-   int                     _changeCount;
-   int                     _serverCount;
-   NSMutableArray         *_typesAndOwners; 
-   NSMutableDictionary    *_typeToData;
+    int _changeCount;
+    int _serverCount;
+    NSMutableArray *_typesAndOwners;
+    NSMutableDictionary *_typeToData;
 }
 
--(void)incrementChangeCount;
+- (void)incrementChangeCount;
 
--(void)incrementServerCount;
--(void)decrementServerCount;
--(BOOL)isClient;
+- (void)incrementServerCount;
+- (void)decrementServerCount;
+- (BOOL)isClient;
 
 @end

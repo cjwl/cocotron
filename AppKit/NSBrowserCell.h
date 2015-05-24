@@ -9,28 +9,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 
 @interface NSBrowserCell : NSCell {
-   NSImage *_alternateImage;
-   BOOL _isLeaf;
-   BOOL _isLoaded;
+    NSImage *_alternateImage;
+    BOOL _isLeaf;
+    BOOL _isLoaded;
 }
 
-+(NSImage *)branchImage;
-+(NSImage *)highlightedBranchImage;
++ (NSImage *)branchImage;
++ (NSImage *)highlightedBranchImage;
 
--(BOOL)isLeaf;
--(BOOL)isLoaded;
--(NSImage *)alternateImage;
+- (BOOL)isLeaf;
+- (BOOL)isLoaded;
+- (NSImage *)alternateImage;
 
--(void)setLeaf:(BOOL)value;
--(void)setLoaded:(BOOL)value;
--(void)setImage:(NSImage *)value;
--(void)setAlternateImage:(NSImage *)value;
+- (void)setLeaf:(BOOL)value;
+- (void)setLoaded:(BOOL)value;
+- (void)setImage:(NSImage *)value;
+- (void)setAlternateImage:(NSImage *)value;
 
--(void)set;
--(void)reset;
+- (void)set;
+- (void)reset;
 
--(NSColor *)highlightColorInView:(NSView *)view;
+- (NSColor *)highlightColorInView:(NSView *)view;
 
--(NSColor *)highlightColorWithFrame:(NSRect)frame inView:(NSView *)view;
+- (NSColor *)highlightColorWithFrame:(NSRect)frame inView:(NSView *)view;
 
 @end

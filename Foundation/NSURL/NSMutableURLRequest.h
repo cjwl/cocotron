@@ -9,21 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableURLRequest : NSURLRequest
 
--(void)setURL:(NSURL *)value;
--(void)setCachePolicy:(NSURLRequestCachePolicy)value;
--(void)setTimeoutInterval:(NSTimeInterval)value;
+- (void)setURL:(NSURL *)value;
+- (void)setCachePolicy:(NSURLRequestCachePolicy)value;
+- (void)setTimeoutInterval:(NSTimeInterval)value;
 
--(void)setHTTPMethod:(NSString *)value;
+- (void)setHTTPMethod:(NSString *)value;
 
--(void)setHTTPBody:(NSData *)value;
--(void)setHTTPBodyStream:(NSInputStream *)value;
+- (void)setHTTPBody:(NSData *)value;
+- (void)setHTTPBodyStream:(NSInputStream *)value;
 
--(void)setAllHTTPHeaderFields:(NSDictionary *)allValues;
--(void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
--(void)addValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
+- (void)setAllHTTPHeaderFields:(NSDictionary *)allValues;
+- (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
+- (void)addValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
 
--(void)setHTTPShouldHandleCookies:(BOOL)value;
+- (void)setHTTPShouldHandleCookies:(BOOL)value;
 
--(void)setMainDocumentURL:(NSURL *)value;
+- (void)setMainDocumentURL:(NSURL *)value;
 
 @end

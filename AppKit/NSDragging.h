@@ -8,51 +8,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSPasteboard,NSWindow,NSImage;
+@class NSPasteboard, NSWindow, NSImage;
 
 typedef unsigned NSDragOperation;
 
 enum {
-   NSDragOperationNone=0x00,
-   NSDragOperationCopy=0x01,
-   NSDragOperationLink=0x02,
-   NSDragOperationGeneric=0x04,
-   NSDragOperationPrivate=0x08, 
-   NSDragOperationMove=0x10,
-   NSDragOperationDelete=0x20,
-   NSDragOperationEvery=UINT_MAX
+    NSDragOperationNone = 0x00,
+    NSDragOperationCopy = 0x01,
+    NSDragOperationLink = 0x02,
+    NSDragOperationGeneric = 0x04,
+    NSDragOperationPrivate = 0x08,
+    NSDragOperationMove = 0x10,
+    NSDragOperationDelete = 0x20,
+    NSDragOperationEvery = UINT_MAX
 };
 
 @protocol NSDraggingInfo
--(NSPasteboard *)draggingPasteboard;
--(NSDragOperation)draggingSourceOperationMask;
--(NSPoint)draggingLocation;
--(NSImage *)draggedImage;
--(NSPoint)draggedImageLocation;
--(NSWindow *)draggingDestinationWindow;
--(id)draggingSource;
--(void)slideDraggedImageTo:(NSPoint)point;
--(int)draggingSequenceNumber;
--(NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
+- (NSPasteboard *)draggingPasteboard;
+- (NSDragOperation)draggingSourceOperationMask;
+- (NSPoint)draggingLocation;
+- (NSImage *)draggedImage;
+- (NSPoint)draggedImageLocation;
+- (NSWindow *)draggingDestinationWindow;
+- (id)draggingSource;
+- (void)slideDraggedImageTo:(NSPoint)point;
+- (int)draggingSequenceNumber;
+- (NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
 @end
 
-@interface NSObject(NSDragging_destination)
--(BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender;
--(BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
--(void)concludeDragOperation:(id <NSDraggingInfo>)sender;
+@interface NSObject (NSDragging_destination)
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender;
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender;
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender;
 
--(NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
--(void)draggingExited:(id <NSDraggingInfo>)sender;
--(NSDragOperation)draggingUpdated:(id <NSDraggingInfo>)sender;
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender;
+- (void)draggingExited:(id<NSDraggingInfo>)sender;
+- (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender;
 
--(BOOL)wantsPeriodicDraggingUpdates;
+- (BOOL)wantsPeriodicDraggingUpdates;
 @end
 
-@interface NSObject(NSDragging_source)
--(BOOL)ignoreModifierKeysWhileDragging;
--(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)flag;
--(void)draggedImage:(NSImage *)image beganAt:(NSPoint)point;
--(void)draggedImage:(NSImage *)image movedTo:(NSPoint)point;
--(void)draggedImage:(NSImage *)image endedAt:(NSPoint)point operation:(NSDragOperation)operation;
--(NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
+@interface NSObject (NSDragging_source)
+- (BOOL)ignoreModifierKeysWhileDragging;
+- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)flag;
+- (void)draggedImage:(NSImage *)image beganAt:(NSPoint)point;
+- (void)draggedImage:(NSImage *)image movedTo:(NSPoint)point;
+- (void)draggedImage:(NSImage *)image endedAt:(NSPoint)point operation:(NSDragOperation)operation;
+- (NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
 @end

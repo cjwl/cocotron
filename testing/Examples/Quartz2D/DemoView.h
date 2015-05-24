@@ -11,9 +11,9 @@
 @class Demo;
 
 @interface DemoView : NSView {
-   Demo *_demo;
+    Demo *_demo;
 }
 
--(void)setDemo:(Demo *)value;
+- (void)setDemo:(Demo *)value;
 
 @end

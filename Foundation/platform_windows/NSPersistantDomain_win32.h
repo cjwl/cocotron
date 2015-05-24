@@ -13,17 +13,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray, NSDictionary;
 
 @interface NSPersistantDomain_win32 : NSPersistantDomain {
-   NSArray             *_path;
-   HKEY                 _handle;
-   NSMutableDictionary *_cache;
+    NSArray *_path;
+    HKEY _handle;
+    NSMutableDictionary *_cache;
 }
 
-+(NSPersistantDomain_win32 *)persistantDomainWithName:(NSString *)name;
++ (NSPersistantDomain_win32 *)persistantDomainWithName:(NSString *)name;
 
--(NSArray *)allKeys;
--(NSEnumerator *)keyEnumerator;
--objectForKey:(NSString *)key;
--(void)setObject:object forKey:(NSString *)key;
--(void)removeObjectForKey:(NSString *)key;
+- (NSArray *)allKeys;
+- (NSEnumerator *)keyEnumerator;
+- objectForKey:(NSString *)key;
+- (void)setObject:object forKey:(NSString *)key;
+- (void)removeObjectForKey:(NSString *)key;
 
 @end

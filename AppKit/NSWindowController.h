@@ -8,54 +8,54 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSResponder.h>
 
-@class NSWindow,NSDocument;
+@class NSWindow, NSDocument;
 
 @interface NSWindowController : NSResponder {
-   NSWindow   *_window;
-   NSString   *_nibName;
-   NSString   *_nibPath;
-   id          _owner;
-   NSDocument *_document;
-   BOOL        _shouldCloseDocument;
-   BOOL        _shouldCascadeWindows;
-   NSString   *_windowFrameAutosaveName;
-   NSArray    *_topLevelObjects;
+    NSWindow *_window;
+    NSString *_nibName;
+    NSString *_nibPath;
+    id _owner;
+    NSDocument *_document;
+    BOOL _shouldCloseDocument;
+    BOOL _shouldCascadeWindows;
+    NSString *_windowFrameAutosaveName;
+    NSArray *_topLevelObjects;
 }
 
--initWithWindow:(NSWindow *)window;
--initWithWindowNibName:(NSString *)nibName;
--initWithWindowNibName:(NSString *)nibName owner:owner;
--initWithWindowNibPath:(NSString *)nibPath owner:owner;
+- initWithWindow:(NSWindow *)window;
+- initWithWindowNibName:(NSString *)nibName;
+- initWithWindowNibName:(NSString *)nibName owner:owner;
+- initWithWindowNibPath:(NSString *)nibPath owner:owner;
 
--(NSWindow *)window;
--(void)setWindow:(NSWindow *)window;
+- (NSWindow *)window;
+- (void)setWindow:(NSWindow *)window;
 
--(BOOL)isWindowLoaded;
--(void)loadWindow;
--(void)windowWillLoad;
--(void)windowDidLoad;
+- (BOOL)isWindowLoaded;
+- (void)loadWindow;
+- (void)windowWillLoad;
+- (void)windowDidLoad;
 
--(void)showWindow:sender;
+- (void)showWindow:sender;
 
--(void)setDocument:(NSDocument *)document;
--document;
--(void)setDocumentEdited:(BOOL)flag;
+- (void)setDocument:(NSDocument *)document;
+- document;
+- (void)setDocumentEdited:(BOOL)flag;
 
--(void)close;
--(BOOL)shouldCloseDocument;
--(void)setShouldCloseDocument:(BOOL)flag;
+- (void)close;
+- (BOOL)shouldCloseDocument;
+- (void)setShouldCloseDocument:(BOOL)flag;
 
--owner;
--(NSString *)windowNibName;
--(NSString *)windowNibPath;
+- owner;
+- (NSString *)windowNibName;
+- (NSString *)windowNibPath;
 
--(void)setShouldCascadeWindows:(BOOL)flag;
--(BOOL)shouldCascadeWindows;
+- (void)setShouldCascadeWindows:(BOOL)flag;
+- (BOOL)shouldCascadeWindows;
 
--(void)setWindowFrameAutosaveName:(NSString *)name;
--(NSString *)windowFrameAutosaveName;
+- (void)setWindowFrameAutosaveName:(NSString *)name;
+- (NSString *)windowFrameAutosaveName;
 
--(void)synchronizeWindowTitleWithDocumentName;
--(NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName;
+- (void)synchronizeWindowTitleWithDocumentName;
+- (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName;
 
 @end

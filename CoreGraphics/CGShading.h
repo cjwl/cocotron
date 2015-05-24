@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct O2Shading *CGShadingRef;
 
 COREGRAPHICS_EXPORT CGShadingRef CGShadingRetain(CGShadingRef self);
-COREGRAPHICS_EXPORT void         CGShadingRelease(CGShadingRef self);
+COREGRAPHICS_EXPORT void CGShadingRelease(CGShadingRef self);
 
-COREGRAPHICS_EXPORT CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,bool extendStart,bool extendEnd);
-COREGRAPHICS_EXPORT CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace,CGPoint startPoint,float startRadius,CGPoint endPoint,float endRadius,CGFunctionRef function,bool extendStart,bool extendEnd);
+COREGRAPHICS_EXPORT CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace, CGPoint startPoint, CGPoint endPoint, CGFunctionRef function, bool extendStart, bool extendEnd);
+COREGRAPHICS_EXPORT CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace, CGPoint startPoint, float startRadius, CGPoint endPoint, float endRadius, CGFunctionRef function, bool extendStart, bool extendEnd);

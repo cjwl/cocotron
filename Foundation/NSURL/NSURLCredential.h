@@ -10,19 +10,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef int NSURLCredentialPersistence;
 
 @interface NSURLCredential : NSObject <NSCopying> {
-   NSString *_user;
-   NSString *_password;
-   NSURLCredentialPersistence _persistence;
+    NSString *_user;
+    NSString *_password;
+    NSURLCredentialPersistence _persistence;
 }
 
-+(NSURLCredential *)credentialWithUser:(NSString *)user password:(NSString *)password persistence:(NSURLCredentialPersistence)persistence;
++ (NSURLCredential *)credentialWithUser:(NSString *)user password:(NSString *)password persistence:(NSURLCredentialPersistence)persistence;
 
--initWithUser:(NSString *)user password:(NSString *)password persistence:(NSURLCredentialPersistence)persistence;
+- initWithUser:(NSString *)user password:(NSString *)password persistence:(NSURLCredentialPersistence)persistence;
 
--(NSString *)user;
--(NSString *)password;
--(NSURLCredentialPersistence)persistence;
+- (NSString *)user;
+- (NSString *)password;
+- (NSURLCredentialPersistence)persistence;
 
--(BOOL)hasPassword;
+- (BOOL)hasPassword;
 
 @end

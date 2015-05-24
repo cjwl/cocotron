@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFObject.h>
 
 @interface O2PDFObject_Name : O2PDFObject {
-  unsigned _length;
-  char    *_bytes;
+    unsigned _length;
+    char *_bytes;
 }
 
-+pdfObjectWithBytes:(const char *)bytes length:(unsigned)length;
-+pdfObjectWithCString:(const char *)cString;
++ pdfObjectWithBytes:(const char *)bytes length:(unsigned)length;
++ pdfObjectWithCString:(const char *)cString;
 
--(const char *)name;
+- (const char *)name;
 
 @end

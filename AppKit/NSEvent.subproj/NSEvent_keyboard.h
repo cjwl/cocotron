@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 
 @interface NSEvent_keyboard : NSEvent {
-   NSString      *_characters;
-   NSString      *_charactersIgnoringModifiers;
-   BOOL           _isARepeat;
-   unsigned short _keyCode;
+    NSString *_characters;
+    NSString *_charactersIgnoringModifiers;
+    BOOL _isARepeat;
+    unsigned short _keyCode;
 }
 
--initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)flags window:(NSWindow *)window characters:(NSString *)characters charactersIgnoringModifiers:(NSString *)charactersIgnoringModifiers isARepeat:(BOOL)isARepeat keyCode:(unsigned short)keyCode;
+- initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)flags window:(NSWindow *)window characters:(NSString *)characters charactersIgnoringModifiers:(NSString *)charactersIgnoringModifiers isARepeat:(BOOL)isARepeat keyCode:(unsigned short)keyCode;
 
 @end

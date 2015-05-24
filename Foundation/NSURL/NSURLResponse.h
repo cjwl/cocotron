@@ -9,8 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURL;
 
-@interface NSURLResponse : NSObject <NSCoding,NSCopying>
-{
+@interface NSURLResponse : NSObject <NSCoding, NSCopying> {
     NSURL *_url;
     NSString *_mimeType;
     NSInteger _expectedContentLength;

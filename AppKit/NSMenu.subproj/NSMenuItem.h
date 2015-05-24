@@ -9,81 +9,81 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/NSUserInterfaceValidation.h>
 
-@class NSMenu, NSImage,NSAttributedString;
+@class NSMenu, NSImage, NSAttributedString;
 
 @interface NSMenuItem : NSObject <NSCopying, NSValidatedUserInterfaceItem> {
-   NSMenu   *_menu;
-   NSString *_title;
-   NSAttributedString *_atitle;
-   id        _target;
-   SEL       _action;
-   NSString *_keyEquivalent;
-   unsigned  _keyEquivalentModifierMask;
-   NSString *_mnemonic;
-   unsigned  _mnemonicLocation;
-   NSMenu   *_submenu;
-   int       _tag;
-   NSInteger _indentationLevel;
-   BOOL      _enabled;
-   BOOL		 _hidden;
-   int	     _state;
-   id        _representedObject;
-   NSImage  *_image;
-   NSImage  *_onStateImage;
-   NSImage  *_offStateImage;
-   NSImage  *_mixedStateImage;
+    NSMenu *_menu;
+    NSString *_title;
+    NSAttributedString *_atitle;
+    id _target;
+    SEL _action;
+    NSString *_keyEquivalent;
+    unsigned _keyEquivalentModifierMask;
+    NSString *_mnemonic;
+    unsigned _mnemonicLocation;
+    NSMenu *_submenu;
+    int _tag;
+    NSInteger _indentationLevel;
+    BOOL _enabled;
+    BOOL _hidden;
+    int _state;
+    id _representedObject;
+    NSImage *_image;
+    NSImage *_onStateImage;
+    NSImage *_offStateImage;
+    NSImage *_mixedStateImage;
 }
 
-+(NSMenuItem *)separatorItem;
++ (NSMenuItem *)separatorItem;
 
--initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
+- initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
 
--(NSMenu *)menu;
--(NSString *)title;
--(NSAttributedString *)attributedTitle;
--(NSString *)mnemonic;
--(unsigned)mnemonicLocation;
--target;
--(SEL)action;
--(NSInteger)indentationLevel;
--(int)tag;
--(int)state;
--(NSString *)keyEquivalent;
--(unsigned)keyEquivalentModifierMask;
--(NSImage *)image;
--(NSImage *)onStateImage;
--(NSImage *)offStateImage;
--(NSImage *)mixedStateImage;
+- (NSMenu *)menu;
+- (NSString *)title;
+- (NSAttributedString *)attributedTitle;
+- (NSString *)mnemonic;
+- (unsigned)mnemonicLocation;
+- target;
+- (SEL)action;
+- (NSInteger)indentationLevel;
+- (int)tag;
+- (int)state;
+- (NSString *)keyEquivalent;
+- (unsigned)keyEquivalentModifierMask;
+- (NSImage *)image;
+- (NSImage *)onStateImage;
+- (NSImage *)offStateImage;
+- (NSImage *)mixedStateImage;
 
--representedObject;
+- representedObject;
 
--(BOOL)hasSubmenu;
--(NSMenu *)submenu;
+- (BOOL)hasSubmenu;
+- (NSMenu *)submenu;
 
--(BOOL)isSeparatorItem;
--(BOOL)isEnabled;
--(BOOL)isHidden;
+- (BOOL)isSeparatorItem;
+- (BOOL)isEnabled;
+- (BOOL)isHidden;
 
--(void)setTitle:(NSString *)title;
--(void)setAttributedTitle:(NSAttributedString *)title;
--(void)setTitleWithMnemonic:(NSString *)mnemonic;
--(void)setMnemonicLocation:(unsigned)location;
--(void)setTarget:target;
--(void)setAction:(SEL)action;
--(void)setIndentationLevel:(NSInteger)indentationLevel;
--(void)setTag:(int)tag;
--(void)setState:(int)state;
--(void)setKeyEquivalent:(NSString *)keyEquivalent;
--(void)setKeyEquivalentModifierMask:(unsigned)mask;
--(void)setImage:(NSImage *)image;
--(void)setOnStateImage:(NSImage *)image;
--(void)setOffStateImage:(NSImage *)image;
--(void)setMixedStateImage:(NSImage *)image;
--(void)setRepresentedObject:object;
--(void)setSubmenu:(NSMenu *)submenu;
--(void)setEnabled:(BOOL)flag;
--(void)setHidden:(BOOL)flag;
+- (void)setTitle:(NSString *)title;
+- (void)setAttributedTitle:(NSAttributedString *)title;
+- (void)setTitleWithMnemonic:(NSString *)mnemonic;
+- (void)setMnemonicLocation:(unsigned)location;
+- (void)setTarget:target;
+- (void)setAction:(SEL)action;
+- (void)setIndentationLevel:(NSInteger)indentationLevel;
+- (void)setTag:(int)tag;
+- (void)setState:(int)state;
+- (void)setKeyEquivalent:(NSString *)keyEquivalent;
+- (void)setKeyEquivalentModifierMask:(unsigned)mask;
+- (void)setImage:(NSImage *)image;
+- (void)setOnStateImage:(NSImage *)image;
+- (void)setOffStateImage:(NSImage *)image;
+- (void)setMixedStateImage:(NSImage *)image;
+- (void)setRepresentedObject:object;
+- (void)setSubmenu:(NSMenu *)submenu;
+- (void)setEnabled:(BOOL)flag;
+- (void)setHidden:(BOOL)flag;
 
--(NSString *)_keyEquivalentDescription;
+- (NSString *)_keyEquivalentDescription;
 
 @end

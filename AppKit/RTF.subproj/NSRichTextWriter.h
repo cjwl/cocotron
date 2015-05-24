@@ -9,17 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSRichTextWriter : NSObject {
-   NSAttributedString *_attributedString;
-   NSString           *_string;
-   NSRange             _range;
+    NSAttributedString *_attributedString;
+    NSString *_string;
+    NSRange _range;
 
-   NSMutableData *_data;
+    NSMutableData *_data;
 }
 
--initWithAttributedString:(NSAttributedString *)attributedString range:(NSRange)range;
+- initWithAttributedString:(NSAttributedString *)attributedString range:(NSRange)range;
 
-+(NSData *)dataWithAttributedString:(NSAttributedString *)attributedString range:(NSRange)range;
++ (NSData *)dataWithAttributedString:(NSAttributedString *)attributedString range:(NSRange)range;
 
--(NSData *)generateData;
+- (NSData *)generateData;
 
 @end

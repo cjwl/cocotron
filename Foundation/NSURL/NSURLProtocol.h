@@ -8,43 +8,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSURLCache.h>
 
-@class NSURLProtocol,NSURLRequest,NSURLResponse,NSURLAuthenticationChallenge,NSCachedURLResponse,NSData,NSError,NSMutableURLRequest;
+@class NSURLProtocol, NSURLRequest, NSURLResponse, NSURLAuthenticationChallenge, NSCachedURLResponse, NSData, NSError, NSMutableURLRequest;
 
 @protocol NSURLProtocolClient
--(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data;
--(void)URLProtocol:(NSURLProtocol *)urlProtocol didFailWithError:(NSError *)error;
--(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data;
+- (void)URLProtocol:(NSURLProtocol *)urlProtocol didFailWithError:(NSError *)error;
+- (void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol;
 @end
 
 @interface NSURLProtocol : NSObject {
-   NSURLRequest            *_request;
-   NSCachedURLResponse     *_cachedResponse;
-   id <NSURLProtocolClient> _client;
+    NSURLRequest *_request;
+    NSCachedURLResponse *_cachedResponse;
+    id<NSURLProtocolClient> _client;
 }
 
-+(BOOL)registerClass:(Class)cls;
-+(void)unregisterClass:(Class)cls;
++ (BOOL)registerClass:(Class)cls;
++ (void)unregisterClass:(Class)cls;
 
-+propertyForKey:(NSString *)key inRequest:(NSURLRequest *)request;
-+(void)removePropertyForKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
-+(void)setProperty:value forKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
++ propertyForKey:(NSString *)key inRequest:(NSURLRequest *)request;
++ (void)removePropertyForKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
++ (void)setProperty:value forKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
 
-+(BOOL)canInitWithRequest:(NSURLRequest *)request;
-+(NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request;
-+(BOOL)requestIsCacheEquivalent:(NSURLRequest *)request toRequest:(NSURLRequest *)other;
++ (BOOL)canInitWithRequest:(NSURLRequest *)request;
++ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request;
++ (BOOL)requestIsCacheEquivalent:(NSURLRequest *)request toRequest:(NSURLRequest *)other;
 
--initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id <NSURLProtocolClient>)client;
+- initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id<NSURLProtocolClient>)client;
 
--(NSURLRequest *)request;
--(NSCachedURLResponse *)cachedResponse;
--(id <NSURLProtocolClient>)client;
+- (NSURLRequest *)request;
+- (NSCachedURLResponse *)cachedResponse;
+- (id<NSURLProtocolClient>)client;
 
--(void)startLoading;
--(void)stopLoading;
+- (void)startLoading;
+- (void)stopLoading;
 
 @end

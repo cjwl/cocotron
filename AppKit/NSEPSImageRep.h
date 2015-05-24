@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 
 @interface NSEPSImageRep : NSImageRep {
-   NSData *_data;
+    NSData *_data;
 }
 
-+(NSArray *)imageRepsWithData:(NSData *)data;
-+imageRepWithData:(NSData *)data;
++ (NSArray *)imageRepsWithData:(NSData *)data;
++ imageRepWithData:(NSData *)data;
 
--initWithData:(NSData *)data;
+- initWithData:(NSData *)data;
 
--(NSData *)EPSRepresentation;
+- (NSData *)EPSRepresentation;
 
--(NSRect)boundingBox;
+- (NSRect)boundingBox;
 
--(void)prepareGState;
+- (void)prepareGState;
 
 @end

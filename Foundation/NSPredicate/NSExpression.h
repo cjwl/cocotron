@@ -7,40 +7,40 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSMutableDictionary,NSDictionary;
+@class NSArray, NSMutableDictionary, NSDictionary;
 
 typedef enum {
-   NSConstantValueExpressionType,
-   NSEvaluatedObjectExpressionType,
-   NSVariableExpressionType,
-   NSKeyPathExpressionType,
-   NSFunctionExpressionType
+    NSConstantValueExpressionType,
+    NSEvaluatedObjectExpressionType,
+    NSVariableExpressionType,
+    NSKeyPathExpressionType,
+    NSFunctionExpressionType
 } NSExpressionType;
 
-@interface NSExpression : NSObject <NSCoding,NSCopying> {
-   NSExpressionType _type;
+@interface NSExpression : NSObject <NSCoding, NSCopying> {
+    NSExpressionType _type;
 }
 
--initWithExpressionType:(NSExpressionType)type;
+- initWithExpressionType:(NSExpressionType)type;
 
-+(NSExpression *)expressionForConstantValue:value;
-+(NSExpression *)expressionForEvaluatedObject;
-+(NSExpression *)expressionForVariable:(NSString *)string;
-+(NSExpression *)expressionForKeyPath:(NSString *)keyPath;
-+(NSExpression *)expressionForFunction:(NSString *)name arguments:(NSArray *)arguments;
++ (NSExpression *)expressionForConstantValue:value;
++ (NSExpression *)expressionForEvaluatedObject;
++ (NSExpression *)expressionForVariable:(NSString *)string;
++ (NSExpression *)expressionForKeyPath:(NSString *)keyPath;
++ (NSExpression *)expressionForFunction:(NSString *)name arguments:(NSArray *)arguments;
 
--(NSExpressionType)expressionType;
+- (NSExpressionType)expressionType;
 
--constantValue;
--(NSString *)variable;
--(NSString *)keyPath;
--(NSString *)function;
--(NSArray *)arguments;
--(NSExpression *)operand;
+- constantValue;
+- (NSString *)variable;
+- (NSString *)keyPath;
+- (NSString *)function;
+- (NSArray *)arguments;
+- (NSExpression *)operand;
 
--expressionValueWithObject:object context:(NSMutableDictionary *)context;
+- expressionValueWithObject:object context:(NSMutableDictionary *)context;
 
 // private
--(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables;
+- (NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables;
 
 @end

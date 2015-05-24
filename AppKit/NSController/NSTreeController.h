@@ -9,8 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSIndexPath;
 
-@interface NSTreeController : NSObjectController <NSCoding,NSCopying> {
-
+@interface NSTreeController : NSObjectController <NSCoding, NSCopying> {
 }
 
 #if 0

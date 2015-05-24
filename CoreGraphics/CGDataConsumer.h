@@ -12,13 +12,13 @@
 
 typedef struct O2DataConsumer *CGDataConsumerRef;
 
-typedef size_t (*CGDataConsumerPutBytesCallback) (void *info, const void *buffer, size_t count);
+typedef size_t (*CGDataConsumerPutBytesCallback)(void *info, const void *buffer, size_t count);
 
-typedef void (*CGDataConsumerReleaseInfoCallback) (void *info);
+typedef void (*CGDataConsumerReleaseInfoCallback)(void *info);
 
 typedef struct CGDataConsumerCallbacks {
-	CGDataConsumerPutBytesCallback putBytes;
-	CGDataConsumerReleaseInfoCallback releaseConsumer;
+    CGDataConsumerPutBytesCallback putBytes;
+    CGDataConsumerReleaseInfoCallback releaseConsumer;
 } CGDataConsumerCallbacks;
 
 COREGRAPHICS_EXPORT CGDataConsumerRef CGDataConsumerCreateWithCFData(CFMutableDataRef data);

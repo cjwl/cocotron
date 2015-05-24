@@ -10,14 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableCharacterSet : NSCharacterSet
 
--(void)addCharactersInString:(NSString *)string;
--(void)addCharactersInRange:(NSRange)range;
--(void)formUnionWithCharacterSet:(NSCharacterSet *)set;
+- (void)addCharactersInString:(NSString *)string;
+- (void)addCharactersInRange:(NSRange)range;
+- (void)formUnionWithCharacterSet:(NSCharacterSet *)set;
 
--(void)removeCharactersInString:(NSString *)string;
--(void)removeCharactersInRange:(NSRange)range;
--(void)formIntersectionWithCharacterSet:(NSCharacterSet *)set;
+- (void)removeCharactersInString:(NSString *)string;
+- (void)removeCharactersInRange:(NSRange)range;
+- (void)formIntersectionWithCharacterSet:(NSCharacterSet *)set;
 
--(void)invert;
+- (void)invert;
 
 @end

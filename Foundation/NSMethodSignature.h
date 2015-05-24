@@ -8,29 +8,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSString,NSMutableArray;
+@class NSString, NSMutableArray;
 
 @interface NSMethodSignature : NSObject {
-   char       *_typesCString;
-   char  *_returnType;
-   NSUInteger   _numberOfArguments;
-   char **_types;
+    char *_typesCString;
+    char *_returnType;
+    NSUInteger _numberOfArguments;
+    char **_types;
 
-	void* _closure;
-	void* _closureInfo;
+    void *_closure;
+    void *_closureInfo;
 }
 
-+(NSMethodSignature *)signatureWithObjCTypes:(const char *)types;
++ (NSMethodSignature *)signatureWithObjCTypes:(const char *)types;
 
--(BOOL)isOneway;
--(NSUInteger)frameLength;
--(NSUInteger)methodReturnLength;
+- (BOOL)isOneway;
+- (NSUInteger)frameLength;
+- (NSUInteger)methodReturnLength;
 
--(const char *)methodReturnType;
+- (const char *)methodReturnType;
 
--(NSUInteger)numberOfArguments;
+- (NSUInteger)numberOfArguments;
 
--(const char *)getArgumentTypeAtIndex:(NSUInteger)index;
-
+- (const char *)getArgumentTypeAtIndex:(NSUInteger)index;
 
 @end

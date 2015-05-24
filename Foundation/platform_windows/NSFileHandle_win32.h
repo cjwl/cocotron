@@ -10,14 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <windows.h>
 
 @interface NSFileHandle_win32 : NSFileHandle {
-   HANDLE _handle;
-   BOOL   _closeOnDealloc;
+    HANDLE _handle;
+    BOOL _closeOnDealloc;
 
-   id _background;
+    id _background;
 }
 
--initWithHandle:(HANDLE)handle closeOnDealloc:(BOOL)closeOnDealloc;
+- initWithHandle:(HANDLE)handle closeOnDealloc:(BOOL)closeOnDealloc;
 
--(HANDLE)fileHandle;
+- (HANDLE)fileHandle;
 
 @end

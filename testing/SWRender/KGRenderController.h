@@ -14,49 +14,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGImageView;
 
 @interface KGRenderController : NSObject {
-   NSDictionary           *_tests;
-   IBOutlet NSOutlineView *_outlineView;
-   
-   IBOutlet NSPopUpButton *_testPopUp;
-   
-   DemoContext *_cgContext;
-   DemoContext *_kgContext;
-   
-   IBOutlet NSTextField *_cgTime;
-   IBOutlet NSTextField *_kgTime;
-   
-   IBOutlet KGImageView *_cgView;
-   IBOutlet KGImageView *_kgView;
-   IBOutlet KGImageView *_diffView;
+    NSDictionary *_tests;
+    IBOutlet NSOutlineView *_outlineView;
+
+    IBOutlet NSPopUpButton *_testPopUp;
+
+    DemoContext *_cgContext;
+    DemoContext *_kgContext;
+
+    IBOutlet NSTextField *_cgTime;
+    IBOutlet NSTextField *_kgTime;
+
+    IBOutlet KGImageView *_cgView;
+    IBOutlet KGImageView *_kgView;
+    IBOutlet KGImageView *_diffView;
 }
 
--(void)selectTest:sender;
+- (void)selectTest:sender;
 
--(void)selectFillColor:sender;
--(void)setectSourceColor:sender;
--(void)selectBlendMode:sender;
+- (void)selectFillColor:sender;
+- (void)setectSourceColor:sender;
+- (void)selectBlendMode:sender;
 
--(void)selectShadowColor:sender;
--(void)selectShadowBlur:sender;
--(void)selectShadowOffsetX:sender;
--(void)selectShadowOffsetY:sender;
+- (void)selectShadowColor:sender;
+- (void)selectShadowBlur:sender;
+- (void)selectShadowOffsetX:sender;
+- (void)selectShadowOffsetY:sender;
 
--(void)selectPathDrawingMode:sender;
--(void)selectLineWidth:sender;
--(void)selectDashPhase:sender;
--(void)selectDashLength:sender;
--(void)selectFlatness:sender;
+- (void)selectPathDrawingMode:sender;
+- (void)selectLineWidth:sender;
+- (void)selectDashPhase:sender;
+- (void)selectDashLength:sender;
+- (void)selectFlatness:sender;
 
--(void)selectScaleX:sender;
--(void)selectScaleY:sender;
--(void)selectRotation:sender;
--(void)selectAntialias:sender;
--(void)selectInterpolationQuality:sender;
+- (void)selectScaleX:sender;
+- (void)selectScaleY:sender;
+- (void)selectRotation:sender;
+- (void)selectAntialias:sender;
+- (void)selectInterpolationQuality:sender;
 
--(void)selectImagePath:sender;
--(void)selectPDFPath:sender;
+- (void)selectImagePath:sender;
+- (void)selectPDFPath:sender;
 
--(void)selectFillColor:sender;
--(void)selectShadowColor:sender;
+- (void)selectFillColor:sender;
+- (void)selectShadowColor:sender;
 
 @end

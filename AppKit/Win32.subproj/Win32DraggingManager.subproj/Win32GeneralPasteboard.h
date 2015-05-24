@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/Win32Pasteboard.h>
 
-@class Win32IDataObjectClient,Win32IDataObjectServer;
+@class Win32IDataObjectClient, Win32IDataObjectServer;
 
 @interface Win32GeneralPasteboard : Win32Pasteboard
 

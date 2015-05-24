@@ -4,13 +4,13 @@
 @class PDFPage;
 
 @interface PDFSelectedRange : NSObject <NSCopying> {
-   PDFPage  *_page;
-   NSRange   _range;
+    PDFPage *_page;
+    NSRange _range;
 }
 
--initWithPage:(PDFPage *)page range:(NSRange)range;
+- initWithPage:(PDFPage *)page range:(NSRange)range;
 
--(PDFPage *)page;
--(NSRange)range;
+- (PDFPage *)page;
+- (NSRange)range;
 
 @end

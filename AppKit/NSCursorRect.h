@@ -12,13 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSCursor;
 
 @interface NSCursorRect : NSObject {
-   NSCursor *_cursor;
+    NSCursor *_cursor;
 }
 
-+(NSCursorRect *)cursorRectWithCursor:(NSCursor *)cursor;
++ (NSCursorRect *)cursorRectWithCursor:(NSCursor *)cursor;
 
--initWithCursor:(NSCursor *)cursor;
+- initWithCursor:(NSCursor *)cursor;
 
--(NSCursor *)cursor;
+- (NSCursor *)cursor;
 
 @end

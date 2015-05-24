@@ -8,59 +8,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSLayoutManager,NSTextView;
+@class NSLayoutManager, NSTextView;
 
 typedef enum {
-   NSLineSweepUp,
-   NSLineSweepDown,
-   NSLineSweepLeft,
-   NSLineSweepRight,
+    NSLineSweepUp,
+    NSLineSweepDown,
+    NSLineSweepLeft,
+    NSLineSweepRight,
 } NSLineSweepDirection;
 
 typedef enum {
-   NSLineDoesntMove, 
-   NSLineMovesUp,
-   NSLineMovesDown,
-   NSLineMovesLeft,
-   NSLineMovesRight,
+    NSLineDoesntMove,
+    NSLineMovesUp,
+    NSLineMovesDown,
+    NSLineMovesLeft,
+    NSLineMovesRight,
 } NSLineMovementDirection;
 
-@interface NSTextContainer : NSObject {    
-   NSSize           _size;
-   NSTextView      *_textView;
-   NSLayoutManager *_layoutManager;
-   float            _lineFragmentPadding;
-   BOOL             _widthTracksTextView;
-   BOOL             _heightTracksTextView;
+@interface NSTextContainer : NSObject {
+    NSSize _size;
+    NSTextView *_textView;
+    NSLayoutManager *_layoutManager;
+    float _lineFragmentPadding;
+    BOOL _widthTracksTextView;
+    BOOL _heightTracksTextView;
 }
 
--initWithContainerSize:(NSSize)size;
+- initWithContainerSize:(NSSize)size;
 
--(NSSize)containerSize;
+- (NSSize)containerSize;
 
--(NSTextView *)textView;
--(BOOL)widthTracksTextView;
--(BOOL)heightTracksTextView;
+- (NSTextView *)textView;
+- (BOOL)widthTracksTextView;
+- (BOOL)heightTracksTextView;
 
--(NSLayoutManager *)layoutManager;
+- (NSLayoutManager *)layoutManager;
 
--(float)lineFragmentPadding;
+- (float)lineFragmentPadding;
 
--(void)setContainerSize:(NSSize)size;
+- (void)setContainerSize:(NSSize)size;
 
--(void)setTextView:(NSTextView *)textView;
--(void)setWidthTracksTextView:(BOOL)flag;
--(void)setHeightTracksTextView:(BOOL)flag;
+- (void)setTextView:(NSTextView *)textView;
+- (void)setWidthTracksTextView:(BOOL)flag;
+- (void)setHeightTracksTextView:(BOOL)flag;
 
--(void)setLayoutManager:(NSLayoutManager *)layoutManager;
--(void)replaceLayoutManager:(NSLayoutManager *)layoutManager;
+- (void)setLayoutManager:(NSLayoutManager *)layoutManager;
+- (void)replaceLayoutManager:(NSLayoutManager *)layoutManager;
 
--(void)setLineFragmentPadding:(float)padding;
+- (void)setLineFragmentPadding:(float)padding;
 
--(BOOL)isSimpleRectangularTextContainer;
+- (BOOL)isSimpleRectangularTextContainer;
 
--(BOOL)containsPoint:(NSPoint)point;
+- (BOOL)containsPoint:(NSPoint)point;
 
--(NSRect)lineFragmentRectForProposedRect:(NSRect)proposed sweepDirection:(NSLineSweepDirection)sweep movementDirection:(NSLineMovementDirection)movement remainingRect:(NSRectPointer)remaining;
+- (NSRect)lineFragmentRectForProposedRect:(NSRect)proposed sweepDirection:(NSLineSweepDirection)sweep movementDirection:(NSLineMovementDirection)movement remainingRect:(NSRectPointer)remaining;
 
 @end

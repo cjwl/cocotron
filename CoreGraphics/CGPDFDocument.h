@@ -14,9 +14,9 @@ typedef struct O2PDFDocument *CGPDFDocumentRef;
 #import <CoreGraphics/CGDataProvider.h>
 
 COREGRAPHICS_EXPORT CGPDFDocumentRef CGPDFDocumentRetain(CGPDFDocumentRef self);
-COREGRAPHICS_EXPORT void             CGPDFDocumentRelease(CGPDFDocumentRef self);
+COREGRAPHICS_EXPORT void CGPDFDocumentRelease(CGPDFDocumentRef self);
 
 COREGRAPHICS_EXPORT CGPDFDocumentRef CGPDFDocumentCreateWithProvider(CGDataProviderRef provider);
 
-COREGRAPHICS_EXPORT size_t           CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef self);
-COREGRAPHICS_EXPORT CGPDFPageRef     CGPDFDocumentGetPage(CGPDFDocumentRef self,size_t pageNumber);
+COREGRAPHICS_EXPORT size_t CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef self);
+COREGRAPHICS_EXPORT CGPDFPageRef CGPDFDocumentGetPage(CGPDFDocumentRef self, size_t pageNumber);

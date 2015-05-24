@@ -11,99 +11,98 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLock.h>
 #import <CoreData/CoreDataExports.h>
 
-@class NSSet,NSMutableSet,NSNotification,NSUndoManager,NSMapTable;
-@class NSManagedObject,NSManagedObjectID,NSFetchRequest,NSPersistentStore,NSPersistentStoreCoordinator;
+@class NSSet, NSMutableSet, NSNotification, NSUndoManager, NSMapTable;
+@class NSManagedObject, NSManagedObjectID, NSFetchRequest, NSPersistentStore, NSPersistentStoreCoordinator;
 
-COREDATA_EXPORT NSString * const NSManagedObjectContextWillSaveNotification;
-COREDATA_EXPORT NSString * const NSManagedObjectContextDidSaveNotification;
+COREDATA_EXPORT NSString *const NSManagedObjectContextWillSaveNotification;
+COREDATA_EXPORT NSString *const NSManagedObjectContextDidSaveNotification;
 
-COREDATA_EXPORT NSString * const NSInsertedObjectsKey;
-COREDATA_EXPORT NSString * const NSUpdatedObjectsKey;
-COREDATA_EXPORT NSString * const NSDeletedObjectsKey;
-COREDATA_EXPORT NSString * const NSRefreshedObjectsKey;
-COREDATA_EXPORT NSString * const NSInvalidatedObjectsKey;
-COREDATA_EXPORT NSString * const NSInvalidatedAllObjectsKey;
+COREDATA_EXPORT NSString *const NSInsertedObjectsKey;
+COREDATA_EXPORT NSString *const NSUpdatedObjectsKey;
+COREDATA_EXPORT NSString *const NSDeletedObjectsKey;
+COREDATA_EXPORT NSString *const NSRefreshedObjectsKey;
+COREDATA_EXPORT NSString *const NSInvalidatedObjectsKey;
+COREDATA_EXPORT NSString *const NSInvalidatedAllObjectsKey;
 
 @interface NSManagedObjectContext : NSObject <NSLocking> {
-   NSLock *_lock;
-   NSPersistentStoreCoordinator *_storeCoordinator;
-   NSUndoManager *_undoManager;
-   BOOL _retainsRegisteredObjects;
-   BOOL _propagatesDeletesAtEndOfEvent;
-   NSTimeInterval _stalenessInterval;
-   id _mergePolicy;
-   
-   NSMutableSet *_registeredObjects;
-   
-   NSMutableSet *_insertedObjects;
-   NSMutableSet *_updatedObjects;
-   NSMutableSet *_deletedObjects;
-    
-   NSMapTable   *_objectIdToObject;
-   
-   BOOL _hasChanges;
-   
+    NSLock *_lock;
+    NSPersistentStoreCoordinator *_storeCoordinator;
+    NSUndoManager *_undoManager;
+    BOOL _retainsRegisteredObjects;
+    BOOL _propagatesDeletesAtEndOfEvent;
+    NSTimeInterval _stalenessInterval;
+    id _mergePolicy;
+
+    NSMutableSet *_registeredObjects;
+
+    NSMutableSet *_insertedObjects;
+    NSMutableSet *_updatedObjects;
+    NSMutableSet *_deletedObjects;
+
+    NSMapTable *_objectIdToObject;
+
+    BOOL _hasChanges;
+
     //
-  BOOL _requestedProcessPendingChanges;
+    BOOL _requestedProcessPendingChanges;
 }
 
--(NSPersistentStoreCoordinator *)persistentStoreCoordinator;
--(NSUndoManager *)undoManager;
--(BOOL)retainsRegisteredObjects;
--(BOOL)propagatesDeletesAtEndOfEvent;
--(NSTimeInterval)stalenessInterval;
--(id)mergePolicy;
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
+- (NSUndoManager *)undoManager;
+- (BOOL)retainsRegisteredObjects;
+- (BOOL)propagatesDeletesAtEndOfEvent;
+- (NSTimeInterval)stalenessInterval;
+- (id)mergePolicy;
 
--(void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)value;
--(void)setUndoManager:(NSUndoManager *)value;
--(void)setRetainsRegisteredObjects:(BOOL)value;
--(void)setPropagatesDeletesAtEndOfEvent:(BOOL)value;
--(void)setStalenessInterval:(NSTimeInterval)value;
--(void)setMergePolicy:(id)value;
+- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)value;
+- (void)setUndoManager:(NSUndoManager *)value;
+- (void)setRetainsRegisteredObjects:(BOOL)value;
+- (void)setPropagatesDeletesAtEndOfEvent:(BOOL)value;
+- (void)setStalenessInterval:(NSTimeInterval)value;
+- (void)setMergePolicy:(id)value;
 
--(NSSet *)registeredObjects;
--(NSSet *)insertedObjects;
--(NSSet *)updatedObjects;
--(NSSet *)deletedObjects;
+- (NSSet *)registeredObjects;
+- (NSSet *)insertedObjects;
+- (NSSet *)updatedObjects;
+- (NSSet *)deletedObjects;
 
--(BOOL)hasChanges;
+- (BOOL)hasChanges;
 
--(void)lock;
--(void)unlock;
--(BOOL)tryLock;
+- (void)lock;
+- (void)unlock;
+- (BOOL)tryLock;
 
--(void)undo;
--(void)redo;
--(void)reset;
--(void)rollback;
+- (void)undo;
+- (void)redo;
+- (void)reset;
+- (void)rollback;
 
--(NSManagedObject *)objectRegisteredForID:(NSManagedObjectID *)objectID;
+- (NSManagedObject *)objectRegisteredForID:(NSManagedObjectID *)objectID;
 
--(NSManagedObject *)objectWithID:(NSManagedObjectID *)objectID;
+- (NSManagedObject *)objectWithID:(NSManagedObjectID *)objectID;
 
--(NSArray *)executeFetchRequest:(NSFetchRequest *)request error:(NSError **)error;
--(NSUInteger)countForFetchRequest:(NSFetchRequest *)request error:(NSError **)error;
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)request error:(NSError **)error;
+- (NSUInteger)countForFetchRequest:(NSFetchRequest *)request error:(NSError **)error;
 
--(void)insertObject:(NSManagedObject *)object;
--(void)deleteObject:(NSManagedObject *)object;
+- (void)insertObject:(NSManagedObject *)object;
+- (void)deleteObject:(NSManagedObject *)object;
 
--(void)assignObject:object toPersistentStore:(NSPersistentStore *)store;
+- (void)assignObject:object toPersistentStore:(NSPersistentStore *)store;
 
--(void)detectConflictsForObject:(NSManagedObject *)object;
+- (void)detectConflictsForObject:(NSManagedObject *)object;
 
--(void)refreshObject:(NSManagedObject *)object mergeChanges:(BOOL)flag;
+- (void)refreshObject:(NSManagedObject *)object mergeChanges:(BOOL)flag;
 
--(void)processPendingChanges;
+- (void)processPendingChanges;
 
--(BOOL)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error;
--(BOOL)save:(NSError **)error;
--(void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification;
+- (BOOL)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error;
+- (BOOL)save:(NSError **)error;
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification;
 
--(BOOL)commitEditing;
--(void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)didCommitSelector contextInfo:(void *)contextInfo;
--(void)discardEditing;
--(void)objectDidBeginEditing:(id)editor;
--(void)objectDidEndEditing:(id)editor;
+- (BOOL)commitEditing;
+- (void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)didCommitSelector contextInfo:(void *)contextInfo;
+- (void)discardEditing;
+- (void)objectDidBeginEditing:(id)editor;
+- (void)objectDidEndEditing:(id)editor;
 
 @end
-

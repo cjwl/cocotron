@@ -9,23 +9,23 @@
 #import <Foundation/NSString.h>
 
 @interface NSString_win1252 : NSString {
-	NSUInteger  _length;
-	unsigned char _bytes[1];
+    NSUInteger _length;
+    unsigned char _bytes[1];
 }
 
 @end
 
-unichar *NSWin1252ToUnicode(const char *cString,NSUInteger length,
-							NSUInteger *resultLength,NSZone *zone);
+unichar *NSWin1252ToUnicode(const char *cString, NSUInteger length,
+    NSUInteger *resultLength, NSZone *zone);
 
-char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
-						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+char *NSUnicodeToWin1252(const unichar *characters, NSUInteger length,
+    BOOL lossy, NSUInteger *resultLength, NSZone *zone, BOOL zeroTerminate);
 
 NSString *NSString_win1252NewWithBytes(NSZone *zone,
-									   const char *bytes,NSUInteger length);
+    const char *bytes, NSUInteger length);
 
 NSString *NSWin1252CStringNewWithCharacters(NSZone *zone,
-                                            const unichar *characters,NSUInteger length,BOOL lossy);
+    const unichar *characters, NSUInteger length, BOOL lossy);
 
-NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger length,
-                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters, NSUInteger length,
+    NSUInteger *location, char *cString, NSUInteger maxLength, BOOL lossy);

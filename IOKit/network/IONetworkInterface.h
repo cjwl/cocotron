@@ -1,2 +1,2 @@
 
-#define kIOPrimaryInterface       "IOPrimaryInterface"
+#define kIOPrimaryInterface "IOPrimaryInterface"

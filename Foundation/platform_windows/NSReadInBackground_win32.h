@@ -12,19 +12,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32, NSFileHandle, NSArray;
 
 @interface NSReadInBackground_win32 : NSObject {
-   NSFileHandle *_fileHandle;
-   HANDLE        _readHandle;
-   NSUInteger      _bufferCapacity;
-   NSUInteger      _bufferSize;
-   void         *_buffer;
+    NSFileHandle *_fileHandle;
+    HANDLE _readHandle;
+    NSUInteger _bufferCapacity;
+    NSUInteger _bufferSize;
+    void *_buffer;
 
-   NSArray            *_modes;
-   HANDLE              _threadHandle;
-   NSHandleMonitor_win32 *_threadMonitor;
+    NSArray *_modes;
+    HANDLE _threadHandle;
+    NSHandleMonitor_win32 *_threadMonitor;
 }
 
-+readInBackgroundWithFileHandle:(NSFileHandle *)fileHandle modes:(NSArray *)modes;
++ readInBackgroundWithFileHandle:(NSFileHandle *)fileHandle modes:(NSArray *)modes;
 
--(void)detach;
+- (void)detach;
 
 @end

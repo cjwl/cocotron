@@ -11,104 +11,104 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 
 typedef enum {
-   NSTIFFFileType,
-   NSBMPFileType,
-   NSGIFFileType,
-   NSJPEGFileType,
-   NSPNGFileType,
-   NSJPEG2000FileType,
+    NSTIFFFileType,
+    NSBMPFileType,
+    NSGIFFileType,
+    NSJPEGFileType,
+    NSPNGFileType,
+    NSJPEG2000FileType,
 } NSBitmapImageFileType;
 
 typedef enum {
-   NSTIFFCompressionNone=1,
-   NSTIFFCompressionCCITTFAX3=3,
-   NSTIFFCompressionCCITTFAX4=4,
-   NSTIFFCompressionLZW=5,
-   NSTIFFCompressionJPEG=6,
-   NSTIFFCompressionNEXT=32766,
-   NSTIFFCompressionPackBits=32773,
-   NSTIFFCompressionOldJPEG=32865,
+    NSTIFFCompressionNone = 1,
+    NSTIFFCompressionCCITTFAX3 = 3,
+    NSTIFFCompressionCCITTFAX4 = 4,
+    NSTIFFCompressionLZW = 5,
+    NSTIFFCompressionJPEG = 6,
+    NSTIFFCompressionNEXT = 32766,
+    NSTIFFCompressionPackBits = 32773,
+    NSTIFFCompressionOldJPEG = 32865,
 } NSTIFFCompression;
 
 typedef enum {
-   NSAlphaFirstBitmapFormat=0x01,
-   NSAlphaNonpremultipliedBitmapFormat=0x02,
-   NSFloatingPointSamplesBitmapFormat=0x04,
+    NSAlphaFirstBitmapFormat = 0x01,
+    NSAlphaNonpremultipliedBitmapFormat = 0x02,
+    NSFloatingPointSamplesBitmapFormat = 0x04,
 } NSBitmapFormat;
 
-APPKIT_EXPORT NSString* NSImageCompressionFactor;
+APPKIT_EXPORT NSString *NSImageCompressionFactor;
 
 @interface NSBitmapImageRep : NSImageRep {
-   int _samplesPerPixel;
-   int _bitsPerPixel;
-   int _bytesPerRow;
-   int _bytesPerPlane;
-   NSBitmapFormat  _bitmapFormat;
-   BOOL            _freeWhenDone;
-   BOOL            _isPlanar;
-   unsigned char **_bitmapPlanes;
-   NSMutableDictionary *_properties;
-   
-   CGImageRef _cgImage;
+    int _samplesPerPixel;
+    int _bitsPerPixel;
+    int _bytesPerRow;
+    int _bytesPerPlane;
+    NSBitmapFormat _bitmapFormat;
+    BOOL _freeWhenDone;
+    BOOL _isPlanar;
+    unsigned char **_bitmapPlanes;
+    NSMutableDictionary *_properties;
+
+    CGImageRef _cgImage;
 }
 
-+(void)getTIFFCompressionTypes:(const NSTIFFCompression **)types count:(int *)count;
-+(NSString *)localizedNameForTIFFCompressionType:(NSTIFFCompression)type;
-+(NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array;
-+(NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array usingCompression:(NSTIFFCompression)compression factor:(float)factor;
++ (void)getTIFFCompressionTypes:(const NSTIFFCompression **)types count:(int *)count;
++ (NSString *)localizedNameForTIFFCompressionType:(NSTIFFCompression)type;
++ (NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array;
++ (NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array usingCompression:(NSTIFFCompression)compression factor:(float)factor;
 
-+(NSData *)representationOfImageRepsInArray:(NSArray *)array usingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties;
++ (NSData *)representationOfImageRepsInArray:(NSArray *)array usingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties;
 
-+(NSArray *)imageRepsWithData:(NSData *)data;
-+imageRepWithData:(NSData *)data;
++ (NSArray *)imageRepsWithData:(NSData *)data;
++ imageRepWithData:(NSData *)data;
 
--initWithBitmapDataPlanes:(unsigned char **)planes pixelsWide:(int)width pixelsHigh:(int)height bitsPerSample:(int)bitsPerSample samplesPerPixel:(int)samplesPerPixel hasAlpha:(BOOL)hasAlpha isPlanar:(BOOL)isPlanar colorSpaceName:(NSString *)colorSpaceName bitmapFormat:(NSBitmapFormat)bitmapFormat bytesPerRow:(int)bytesPerRow bitsPerPixel:(int)bitsPerPixel;
+- initWithBitmapDataPlanes:(unsigned char **)planes pixelsWide:(int)width pixelsHigh:(int)height bitsPerSample:(int)bitsPerSample samplesPerPixel:(int)samplesPerPixel hasAlpha:(BOOL)hasAlpha isPlanar:(BOOL)isPlanar colorSpaceName:(NSString *)colorSpaceName bitmapFormat:(NSBitmapFormat)bitmapFormat bytesPerRow:(int)bytesPerRow bitsPerPixel:(int)bitsPerPixel;
 
--initWithBitmapDataPlanes:(unsigned char **)planes pixelsWide:(int)width pixelsHigh:(int)height bitsPerSample:(int)bitsPerSample samplesPerPixel:(int)samplesPerPixel hasAlpha:(BOOL)hasAlpha isPlanar:(BOOL)isPlanar colorSpaceName:(NSString *)colorSpaceName bytesPerRow:(int)bytesPerRow bitsPerPixel:(int)bitsPerPixel;
+- initWithBitmapDataPlanes:(unsigned char **)planes pixelsWide:(int)width pixelsHigh:(int)height bitsPerSample:(int)bitsPerSample samplesPerPixel:(int)samplesPerPixel hasAlpha:(BOOL)hasAlpha isPlanar:(BOOL)isPlanar colorSpaceName:(NSString *)colorSpaceName bytesPerRow:(int)bytesPerRow bitsPerPixel:(int)bitsPerPixel;
 
--initForIncrementalLoad;
+- initForIncrementalLoad;
 
--initWithFocusedViewRect:(NSRect)rect;
+- initWithFocusedViewRect:(NSRect)rect;
 
--initWithData:(NSData *)data;
--initWithContentsOfFile:(NSString *)path;
--initWithCGImage:(CGImageRef)cgImage;
+- initWithData:(NSData *)data;
+- initWithContentsOfFile:(NSString *)path;
+- initWithCGImage:(CGImageRef)cgImage;
 
--(int)incrementalLoadFromData:(NSData *)data complete:(BOOL)complete;
+- (int)incrementalLoadFromData:(NSData *)data complete:(BOOL)complete;
 
--(int)bitsPerPixel;
--(int)samplesPerPixel;
--(int)bytesPerRow;
--(BOOL)isPlanar;
--(int)numberOfPlanes;
--(int)bytesPerPlane;
+- (int)bitsPerPixel;
+- (int)samplesPerPixel;
+- (int)bytesPerRow;
+- (BOOL)isPlanar;
+- (int)numberOfPlanes;
+- (int)bytesPerPlane;
 
--(NSBitmapFormat)bitmapFormat;
--(unsigned char *)bitmapData;
+- (NSBitmapFormat)bitmapFormat;
+- (unsigned char *)bitmapData;
 
--(void)getBitmapDataPlanes:(unsigned char **)planes;
+- (void)getBitmapDataPlanes:(unsigned char **)planes;
 
--(void)getPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
--(void)setPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
+- (void)getPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
+- (void)setPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
 
--(NSColor *)colorAtX:(NSInteger)x y:(NSInteger)y;
--(void)setColor:(NSColor *)color atX:(NSInteger)x y:(NSInteger)y;
+- (NSColor *)colorAtX:(NSInteger)x y:(NSInteger)y;
+- (void)setColor:(NSColor *)color atX:(NSInteger)x y:(NSInteger)y;
 
--valueForProperty:(NSString *)property;
--(void)setProperty:(NSString *)property withValue:value;
+- valueForProperty:(NSString *)property;
+- (void)setProperty:(NSString *)property withValue:value;
 
--(void)colorizeByMappingGray:(float)gray toColor:(NSColor *)color blackMapping:(NSColor *)blackMapping whiteMapping:(NSColor *)whiteMapping;
+- (void)colorizeByMappingGray:(float)gray toColor:(NSColor *)color blackMapping:(NSColor *)blackMapping whiteMapping:(NSColor *)whiteMapping;
 
--(void)getCompression:(NSTIFFCompression *)compression factor:(float *)factor;
--(void)setCompression:(NSTIFFCompression)compression factor:(float)factor;
+- (void)getCompression:(NSTIFFCompression *)compression factor:(float *)factor;
+- (void)setCompression:(NSTIFFCompression)compression factor:(float)factor;
 
--(BOOL)canBeCompressedUsing:(NSTIFFCompression)compression;
+- (BOOL)canBeCompressedUsing:(NSTIFFCompression)compression;
 
--(NSData *)representationUsingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties;
+- (NSData *)representationUsingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties;
 
--(NSData *)TIFFRepresentation;
--(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor;
+- (NSData *)TIFFRepresentation;
+- (NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor;
 
--(CGImageRef)CGImage;
+- (CGImageRef)CGImage;
 
 @end

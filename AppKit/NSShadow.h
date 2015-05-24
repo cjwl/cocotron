@@ -11,20 +11,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSColor;
 
-@interface NSShadow : NSObject <NSCoding,NSCopying> {
-   NSSize   _offset;
-   NSColor *_color;
-   float    _blurRadius;
+@interface NSShadow : NSObject <NSCoding, NSCopying> {
+    NSSize _offset;
+    NSColor *_color;
+    float _blurRadius;
 }
 
--(NSSize)shadowOffset;
--(NSColor *)shadowColor;
--(float)shadowBlurRadius;
+- (NSSize)shadowOffset;
+- (NSColor *)shadowColor;
+- (float)shadowBlurRadius;
 
--(void)setShadowOffset:(NSSize)offset;
--(void)setShadowColor:(NSColor *)color;
--(void)setShadowBlurRadius:(float)radius;
+- (void)setShadowOffset:(NSSize)offset;
+- (void)setShadowColor:(NSColor *)color;
+- (void)setShadowBlurRadius:(float)radius;
 
--(void)set;
+- (void)set;
 
 @end

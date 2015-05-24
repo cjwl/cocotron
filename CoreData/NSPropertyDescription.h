@@ -7,26 +7,26 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSEntityDescription,NSArray,NSDictionary;
+@class NSEntityDescription, NSArray, NSDictionary;
 
-@interface NSPropertyDescription : NSObject <NSCoding,NSCopying> {
+@interface NSPropertyDescription : NSObject <NSCoding, NSCopying> {
     NSEntityDescription *_entity;
     NSString *_propertyName;
 }
 
--(NSEntityDescription *)entity;
+- (NSEntityDescription *)entity;
 
-- (NSString *) name;
-- (BOOL) isOptional;
-- (BOOL) isTransient;
-- (NSDictionary *) userInfo;
-- (NSArray *) validationPredicates;
-- (NSArray *) validationWarnings;
+- (NSString *)name;
+- (BOOL)isOptional;
+- (BOOL)isTransient;
+- (NSDictionary *)userInfo;
+- (NSArray *)validationPredicates;
+- (NSArray *)validationWarnings;
 
-- (void) setName: (NSString *) value;
-- (void) setOptional: (BOOL) value;
-- (void) setTransient: (BOOL) value;
-- (void) setUserInfo: (NSDictionary *) value;
-- (void) setValidationPredicates: (NSArray *) predicates withValidationWarnings: (NSArray *) warnings;
+- (void)setName:(NSString *)value;
+- (void)setOptional:(BOOL)value;
+- (void)setTransient:(BOOL)value;
+- (void)setUserInfo:(NSDictionary *)value;
+- (void)setValidationPredicates:(NSArray *)predicates withValidationWarnings:(NSArray *)warnings;
 
 @end

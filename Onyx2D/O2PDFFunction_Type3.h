@@ -12,14 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface O2PDFFunction_Type3 : O2Function {
-   unsigned        _functionCount;
-   O2Function **_functions;
-   unsigned        _boundsCount;
-   O2PDFReal      *_bounds;
-   unsigned        _encodeCount;
-   O2PDFReal      *_encode;
+    unsigned _functionCount;
+    O2Function **_functions;
+    unsigned _boundsCount;
+    O2PDFReal *_bounds;
+    unsigned _encodeCount;
+    O2PDFReal *_encode;
 }
 
--initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range functions:(NSArray *)functions bounds:(O2PDFArray *)bounds encode:(O2PDFArray *)encode;
+- initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range functions:(NSArray *)functions bounds:(O2PDFArray *)bounds encode:(O2PDFArray *)encode;
 
 @end

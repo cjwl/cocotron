@@ -8,23 +8,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSMutableArray,NSInvocation;
+@class NSArray, NSMutableArray, NSInvocation;
 
 enum {
- NSUndoCloseGroupingRunLoopOrdering=350000,
+    NSUndoCloseGroupingRunLoopOrdering = 350000,
 };
 
-FOUNDATION_EXPORT NSString * const NSUndoManagerCheckpointNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerCheckpointNotification;
 
-FOUNDATION_EXPORT NSString * const NSUndoManagerDidOpenUndoGroupNotification;
-FOUNDATION_EXPORT NSString * const NSUndoManagerWillCloseUndoGroupNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerDidOpenUndoGroupNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerWillCloseUndoGroupNotification;
 
-FOUNDATION_EXPORT NSString * const NSUndoManagerWillUndoChangeNotification;
-FOUNDATION_EXPORT NSString * const NSUndoManagerDidUndoChangeNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerWillUndoChangeNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerDidUndoChangeNotification;
 
-FOUNDATION_EXPORT NSString * const NSUndoManagerWillRedoChangeNotification;
-FOUNDATION_EXPORT NSString * const NSUndoManagerDidRedoChangeNotification;
-
+FOUNDATION_EXPORT NSString *const NSUndoManagerWillRedoChangeNotification;
+FOUNDATION_EXPORT NSString *const NSUndoManagerDidRedoChangeNotification;
 
 @interface NSUndoManager : NSObject {
     NSMutableArray *_undoStack;
@@ -40,49 +39,48 @@ FOUNDATION_EXPORT NSString * const NSUndoManagerDidRedoChangeNotification;
     BOOL _performRegistered;
 }
 
--(NSArray *)runLoopModes;
--(NSUInteger)levelsOfUndo;
--(BOOL)groupsByEvent;
+- (NSArray *)runLoopModes;
+- (NSUInteger)levelsOfUndo;
+- (BOOL)groupsByEvent;
 
--(void)setRunLoopModes:(NSArray *)modes;
--(void)setLevelsOfUndo:(NSUInteger)levels;
--(void)setGroupsByEvent:(BOOL)flag;
+- (void)setRunLoopModes:(NSArray *)modes;
+- (void)setLevelsOfUndo:(NSUInteger)levels;
+- (void)setGroupsByEvent:(BOOL)flag;
 
--(BOOL)isUndoRegistrationEnabled;
--(void)disableUndoRegistration;
--(void)enableUndoRegistration;
+- (BOOL)isUndoRegistrationEnabled;
+- (void)disableUndoRegistration;
+- (void)enableUndoRegistration;
 
--(void)beginUndoGrouping;
--(void)endUndoGrouping;
+- (void)beginUndoGrouping;
+- (void)endUndoGrouping;
 
--(NSInteger)groupingLevel;
+- (NSInteger)groupingLevel;
 
--(BOOL)canUndo;
--(void)undo;
--(void)undoNestedGroup;
--(BOOL)isUndoing;
+- (BOOL)canUndo;
+- (void)undo;
+- (void)undoNestedGroup;
+- (BOOL)isUndoing;
 
--(BOOL)canRedo;
--(void)redo;
--(BOOL)isRedoing;
+- (BOOL)canRedo;
+- (void)redo;
+- (BOOL)isRedoing;
 
--(void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object;
+- (void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object;
 
--(void)removeAllActions;
--(void)removeAllActionsWithTarget:(id)target;
+- (void)removeAllActions;
+- (void)removeAllActionsWithTarget:(id)target;
 
--(id)prepareWithInvocationTarget:(id)target;
--(void)forwardInvocation:(NSInvocation *)invocation;
+- (id)prepareWithInvocationTarget:(id)target;
+- (void)forwardInvocation:(NSInvocation *)invocation;
 
--(NSString *)undoActionName;
--(NSString *)undoMenuItemTitle;
--(NSString *)undoMenuTitleForUndoActionName:(NSString *)name;
--(void)setActionName:(NSString *)name;
+- (NSString *)undoActionName;
+- (NSString *)undoMenuItemTitle;
+- (NSString *)undoMenuTitleForUndoActionName:(NSString *)name;
+- (void)setActionName:(NSString *)name;
 
--(NSString *)redoActionName;
--(NSString *)redoMenuItemTitle;
--(NSString *)redoMenuTitleForUndoActionName:(NSString *)name;
+- (NSString *)redoActionName;
+- (NSString *)redoMenuItemTitle;
+- (NSString *)redoMenuTitleForUndoActionName:(NSString *)name;
 
 - (void)clearRedoStackIfStateIsNormal;
 @end
-

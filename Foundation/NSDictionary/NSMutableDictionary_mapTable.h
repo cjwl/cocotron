@@ -6,23 +6,22 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 #import <Foundation/NSDictionary.h>
 #import <CoreFoundation/CFDictionary.h>
 
 @interface NSMutableDictionary_CF : NSMutableDictionary {
-   CFDictionaryKeyCallBacks   _keyCallBacks;
-   CFDictionaryValueCallBacks _valueCallBacks;
-   NSUInteger                 _count;
-   NSUInteger                 _nBuckets;
-   struct _NSDictNode       **_buckets;
+    CFDictionaryKeyCallBacks _keyCallBacks;
+    CFDictionaryValueCallBacks _valueCallBacks;
+    NSUInteger _count;
+    NSUInteger _nBuckets;
+    struct _NSDictNode **_buckets;
 }
 
--initWithKeys:(const void **)keys values:(const void **)values count:(NSUInteger)count keyCallBacks:(const CFDictionaryKeyCallBacks *)keyCallBacks valueCallBacks:(const CFDictionaryValueCallBacks *)valueCallBacks;
+- initWithKeys:(const void **)keys values:(const void **)values count:(NSUInteger)count keyCallBacks:(const CFDictionaryKeyCallBacks *)keyCallBacks valueCallBacks:(const CFDictionaryValueCallBacks *)valueCallBacks;
 
--(NSUInteger)count;
--objectForKey:key;
--(NSEnumerator *)keyEnumerator;
+- (NSUInteger)count;
+- objectForKey:key;
+- (NSEnumerator *)keyEnumerator;
 
 @end
 

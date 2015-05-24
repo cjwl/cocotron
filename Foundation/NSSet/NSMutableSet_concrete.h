@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInlineSetTable.h>
 
 @interface NSMutableSet_concrete : NSMutableSet {
-   NSSetTable _table;
+    NSSetTable _table;
 }
 @end
 
-NSSet *NSMutableSet_concreteNew(NSZone *zone,NSUInteger capacity);
-NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone,id *objects,NSUInteger count);
-NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array);
+NSSet *NSMutableSet_concreteNew(NSZone *zone, NSUInteger capacity);
+NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone, id *objects, NSUInteger count);
+NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone, NSArray *array);

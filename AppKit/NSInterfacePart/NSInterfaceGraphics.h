@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-void NSInterfaceDrawButton(NSRect rect,NSRect clipRect);
-void NSInterfaceDrawHighlightedButton(NSRect rect,NSRect clipRect);
-void NSInterfaceDrawDepressedButton(NSRect rect,NSRect clipRect);
-void NSInterfaceDrawDepressedHighlightedButton(NSRect rect,NSRect clipRect);
+void NSInterfaceDrawButton(NSRect rect, NSRect clipRect);
+void NSInterfaceDrawHighlightedButton(NSRect rect, NSRect clipRect);
+void NSInterfaceDrawDepressedButton(NSRect rect, NSRect clipRect);
+void NSInterfaceDrawDepressedHighlightedButton(NSRect rect, NSRect clipRect);
 
-void NSInterfaceDrawScrollerButton(NSRect rect,NSRect clipRect);
-void NSInterfaceDrawDepressedScrollerButton(NSRect rect,NSRect clipRect);
+void NSInterfaceDrawScrollerButton(NSRect rect, NSRect clipRect);
+void NSInterfaceDrawDepressedScrollerButton(NSRect rect, NSRect clipRect);
 
-void NSInterfaceDrawBrowserHeader(NSRect rect,NSRect clipRect);
-void NSInterfaceDrawProgressIndicatorBezel(NSRect rect,NSRect clipRect);
+void NSInterfaceDrawBrowserHeader(NSRect rect, NSRect clipRect);
+void NSInterfaceDrawProgressIndicatorBezel(NSRect rect, NSRect clipRect);
 
-void NSInterfaceDrawOutlineGrid(NSRect rect,CGContextRef context);
+void NSInterfaceDrawOutlineGrid(NSRect rect, CGContextRef context);

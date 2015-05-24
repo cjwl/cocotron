@@ -6,7 +6,6 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 #import <Onyx2D/O2Context.h>
 #import <cairo.h>
 #import <X11/Xlib.h>
@@ -14,11 +13,11 @@
 #import <AppKit/X11Window.h>
 
 @interface O2Context_cairo : O2Context {
-   cairo_t *_context;
-   cairo_surface_t *_surface;
+    cairo_t *_context;
+    cairo_surface_t *_surface;
 }
 
--(NSSize)size;
+- (NSSize)size;
 
--(void)drawBackingContext:(O2Context *)other size:(NSSize)size;
+- (void)drawBackingContext:(O2Context *)other size:(NSSize)size;
 @end

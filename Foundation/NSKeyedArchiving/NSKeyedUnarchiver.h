@@ -9,55 +9,54 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSMapTable.h>
 
-@class NSDictionary,NSMutableArray,NSMutableDictionary;
+@class NSDictionary, NSMutableArray, NSMutableDictionary;
 
-FOUNDATION_EXPORT NSString* NSInvalidUnarchiveOperationException;
+FOUNDATION_EXPORT NSString *NSInvalidUnarchiveOperationException;
 
 @interface NSKeyedUnarchiver : NSCoder {
-   id                   _delegate;
-   NSMutableDictionary *_nameToReplacementClass;
-   NSDictionary        *_propertyList;
-   NSArray             *_objects;
-   NSMutableArray      *_plistStack;
-   NSMapTable          *_uidToObject;
-   NSMapTable          *_objectToUid;
-   NSMapTable          *_classVersions;
-    
-   int                  _unnamedKeyIndex;
+    id _delegate;
+    NSMutableDictionary *_nameToReplacementClass;
+    NSDictionary *_propertyList;
+    NSArray *_objects;
+    NSMutableArray *_plistStack;
+    NSMapTable *_uidToObject;
+    NSMapTable *_objectToUid;
+    NSMapTable *_classVersions;
+
+    int _unnamedKeyIndex;
 }
 
--initForReadingWithData:(NSData *)data;
+- initForReadingWithData:(NSData *)data;
 
-+unarchiveObjectWithData:(NSData *)data;
-+unarchiveObjectWithFile:(NSString *)path;
++ unarchiveObjectWithData:(NSData *)data;
++ unarchiveObjectWithFile:(NSString *)path;
 
--(BOOL)containsValueForKey:(NSString *)key;
+- (BOOL)containsValueForKey:(NSString *)key;
 
--(const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
--(BOOL)decodeBoolForKey:(NSString *)key;
--(double)decodeDoubleForKey:(NSString *)key;
--(float)decodeFloatForKey:(NSString *)key;
--(int)decodeIntForKey:(NSString *)key;
--(int32_t)decodeInt32ForKey:(NSString *)key;
--(int64_t)decodeInt64ForKey:(NSString *)key;
--decodeObjectForKey:(NSString *)key;
+- (const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
+- (BOOL)decodeBoolForKey:(NSString *)key;
+- (double)decodeDoubleForKey:(NSString *)key;
+- (float)decodeFloatForKey:(NSString *)key;
+- (int)decodeIntForKey:(NSString *)key;
+- (int32_t)decodeInt32ForKey:(NSString *)key;
+- (int64_t)decodeInt64ForKey:(NSString *)key;
+- decodeObjectForKey:(NSString *)key;
 
--(void)finishDecoding;
+- (void)finishDecoding;
 
--delegate;
--(void)setDelegate:delegate;
+- delegate;
+- (void)setDelegate:delegate;
 
-+(void)setClass:(Class)aClass forClassName:(NSString *)className;
-+(Class)classForClassName:(NSString *)className;
++ (void)setClass:(Class)aClass forClassName:(NSString *)className;
++ (Class)classForClassName:(NSString *)className;
 
--(void)setClass:(Class)aClass forClassName:(NSString *)className;
--(Class)classForClassName:(NSString *)className;
+- (void)setClass:(Class)aClass forClassName:(NSString *)className;
+- (Class)classForClassName:(NSString *)className;
 
 @end
 
-@interface NSObject(NSKeyedUnarchiverDelegate)
--unarchiver:(NSKeyedUnarchiver *)unarchiver didDecodeObject:object;
--(void)unarchiver:(NSKeyedUnarchiver *)unarchiver willReplaceObject:object withObject:replacement;
--(Class)unarchiver:(NSKeyedUnarchiver *)unarchiver cannotDecodeObjectOfClassName:(NSString *)className originalClasses:(NSArray *)classHierarchy;
+@interface NSObject (NSKeyedUnarchiverDelegate)
+- unarchiver:(NSKeyedUnarchiver *)unarchiver didDecodeObject:object;
+- (void)unarchiver:(NSKeyedUnarchiver *)unarchiver willReplaceObject:object withObject:replacement;
+- (Class)unarchiver:(NSKeyedUnarchiver *)unarchiver cannotDecodeObjectOfClassName:(NSString *)className originalClasses:(NSArray *)classHierarchy;
 @end
-

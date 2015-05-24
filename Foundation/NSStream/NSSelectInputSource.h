@@ -11,34 +11,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket.h>
 
 enum {
-   NSSelectReadEvent=0x01,
-   NSSelectWriteEvent=0x02,
-   NSSelectExceptEvent=0x04
+    NSSelectReadEvent = 0x01,
+    NSSelectWriteEvent = 0x02,
+    NSSelectExceptEvent = 0x04
 };
 
 @interface NSSelectInputSource : NSInputSource {
-   NSSocket *_socket;
-   id        _delegate;
-   NSUInteger  _eventMask;
-   BOOL      _isValid;
+    NSSocket *_socket;
+    id _delegate;
+    NSUInteger _eventMask;
+    BOOL _isValid;
 }
 
--initWithSocket:(NSSocket *)socket;
+- initWithSocket:(NSSocket *)socket;
 
-+(id)socketInputSourceWithSocket:(NSSocket *)socket;
++ (id)socketInputSourceWithSocket:(NSSocket *)socket;
 
--(NSSocket *)socket;
--delegate;
+- (NSSocket *)socket;
+- delegate;
 
--(void)setDelegate:object;
+- (void)setDelegate:object;
 
--(NSUInteger)selectEventMask;
--(void)setSelectEventMask:(NSUInteger)mask;
+- (NSUInteger)selectEventMask;
+- (void)setSelectEventMask:(NSUInteger)mask;
 
--(NSUInteger)processImmediateEvents:(NSUInteger)selectEvent;
+- (NSUInteger)processImmediateEvents:(NSUInteger)selectEvent;
 
 @end
 
-@interface NSObject(NSSelectInputSourceDelegate)
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent;
+@interface NSObject (NSSelectInputSourceDelegate)
+- (void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent;
 @end

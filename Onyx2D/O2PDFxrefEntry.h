@@ -9,17 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFObject.h>
 
 @interface O2PDFxrefEntry : NSObject {
-   O2PDFInteger _position;
-   O2PDFInteger _number;
-   O2PDFInteger _generation;
+    O2PDFInteger _position;
+    O2PDFInteger _number;
+    O2PDFInteger _generation;
 }
 
-+(O2PDFxrefEntry *)xrefEntryWithPosition:(O2PDFInteger)position number:(O2PDFInteger)number generation:(O2PDFInteger)generation;
++ (O2PDFxrefEntry *)xrefEntryWithPosition:(O2PDFInteger)position number:(O2PDFInteger)number generation:(O2PDFInteger)generation;
 
--(O2PDFInteger)position;
--(O2PDFInteger)number;
--(O2PDFInteger)generation;
+- (O2PDFInteger)position;
+- (O2PDFInteger)number;
+- (O2PDFInteger)generation;
 
--(void)setPosition:(O2PDFInteger)value;
+- (void)setPosition:(O2PDFInteger)value;
 
 @end

@@ -11,11 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2Context_cairo;
 
 @interface O2Surface_cairo : O2Surface {
-   cairo_surface_t *_cairo_surface;
+    cairo_surface_t *_cairo_surface;
 }
 
--initWithWidth:(size_t)width height:(size_t)height compatibleWithContext:(O2Context_cairo *)compatible;
+- initWithWidth:(size_t)width height:(size_t)height compatibleWithContext:(O2Context_cairo *)compatible;
 
--(cairo_surface_t *)cairo_surface;
+- (cairo_surface_t *)cairo_surface;
 
 @end

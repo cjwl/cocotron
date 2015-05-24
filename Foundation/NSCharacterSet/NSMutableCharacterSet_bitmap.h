@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/bitmapRepresentation.h>
 
 @interface NSMutableCharacterSet_bitmap : NSMutableCharacterSet {
-   uint8_t _bitmap[NSBitmapCharacterSetSize];
+    uint8_t _bitmap[NSBitmapCharacterSetSize];
 }
 
--initWithCharacterSet:(NSCharacterSet *)set;
--initWithData:(NSData *)data;
--initWithString:(NSString *)string;
--initWithRange:(NSRange)range;
+- initWithCharacterSet:(NSCharacterSet *)set;
+- initWithData:(NSData *)data;
+- initWithString:(NSString *)string;
+- initWithRange:(NSRange)range;
 
 @end

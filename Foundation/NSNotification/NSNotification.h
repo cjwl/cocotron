@@ -10,16 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary;
 
-@interface NSNotification : NSObject <NSCopying,NSCoding>
+@interface NSNotification : NSObject <NSCopying, NSCoding>
 
-+(NSNotification *)notificationWithName:(NSString *)name object:object
-  userInfo:(NSDictionary *)userInfo;
++ (NSNotification *)notificationWithName:(NSString *)name object:object
+                                userInfo:(NSDictionary *)userInfo;
 
-+(NSNotification *)notificationWithName:(NSString *)name object:object;
++ (NSNotification *)notificationWithName:(NSString *)name object:object;
 
--(NSString *)name;
--object;
--(NSDictionary *)userInfo;
+- (NSString *)name;
+- object;
+- (NSDictionary *)userInfo;
 
 @end
 

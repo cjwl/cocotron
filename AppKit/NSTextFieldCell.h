@@ -9,32 +9,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSActionCell.h>
 
 typedef enum {
-   NSTextFieldSquareBezel=0,
-   NSTextFieldRoundedBezel=1,
+    NSTextFieldSquareBezel = 0,
+    NSTextFieldRoundedBezel = 1,
 } NSTextFieldBezelStyle;
 
 @interface NSTextFieldCell : NSActionCell {
-   NSColor *_backgroundColor;
-   NSColor *_textColor;
-   BOOL     _drawsBackground;
-   NSTextFieldBezelStyle _bezelStyle;
-   id       _placeholder;
+    NSColor *_backgroundColor;
+    NSColor *_textColor;
+    BOOL _drawsBackground;
+    NSTextFieldBezelStyle _bezelStyle;
+    id _placeholder;
 }
 
--(NSColor *)backgroundColor;
--(NSColor *)textColor;
--(BOOL)drawsBackground;
--(NSTextFieldBezelStyle)bezelStyle;
+- (NSColor *)backgroundColor;
+- (NSColor *)textColor;
+- (BOOL)drawsBackground;
+- (NSTextFieldBezelStyle)bezelStyle;
 
--(NSString *)placeholderString;
--(NSAttributedString *)placeholderAttributedString;
+- (NSString *)placeholderString;
+- (NSAttributedString *)placeholderAttributedString;
 
--(void)setBackgroundColor:(NSColor *)color;
--(void)setTextColor:(NSColor *)color;
--(void)setDrawsBackground:(BOOL)flag;
--(void)setBezelStyle:(NSTextFieldBezelStyle)value;
+- (void)setBackgroundColor:(NSColor *)color;
+- (void)setTextColor:(NSColor *)color;
+- (void)setDrawsBackground:(BOOL)flag;
+- (void)setBezelStyle:(NSTextFieldBezelStyle)value;
 
--(void)setPlaceholderString:(NSString *)value;
--(void)setPlaceholderAttributedString:(NSAttributedString *)value;
+- (void)setPlaceholderString:(NSString *)value;
+- (void)setPlaceholderAttributedString:(NSAttributedString *)value;
 
 @end

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSKeyValueObserving.h>
 
-@class NSIndexSet,NSFetchRequest,NSTableColumn;
+@class NSIndexSet, NSFetchRequest, NSTableColumn;
 
 @interface _NSManagedProxy_observerInfo : NSObject {
     NSObject *observer;
@@ -18,13 +18,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSKeyValueObservingOptions options;
     void *context;
 }
-@property (assign) NSObject *observer;
-@property (retain) NSIndexSet *indexSet;
-@property (retain) NSString *keyPath;
-@property (assign) NSKeyValueObservingOptions options;
-@property (assign) void *context;
+@property(assign) NSObject *observer;
+@property(retain) NSIndexSet *indexSet;
+@property(retain) NSString *keyPath;
+@property(assign) NSKeyValueObservingOptions options;
+@property(assign) void *context;
 @end
-
 
 @class NSPredicate;
 @class NSEntityDescription;
@@ -39,26 +38,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMutableArray *_observers;
 }
 
-- (id) initWithCoder: (NSCoder *) coder;
-- (id) initWithParent: (_NSManagedProxy *) parent object: (NSManagedObject *) object;
-- (id) representedObject;
-- (NSString *) entityName;
-- (NSEntityDescription *) entity;
-- (NSManagedObjectContext *) managedObjectContext;
-- (void) setManagedObjectContext: (NSManagedObjectContext *) context;
-- (id) valueForKey: (NSString *) key;
-- (id) objectAtIndex: (NSUInteger) index;
-- (NSUInteger) count;
-- (void) addObserver: (NSObject *) observer
-  toObjectsAtIndexes: (NSIndexSet *) indexes
-	  forKeyPath: (NSString *) keyPath
-	     options: (NSKeyValueObservingOptions) options
-	     context: (void *) context;
-- (void) removeObserver: (NSObject *) observer
-   fromObjectsAtIndexes: (NSIndexSet *) indexes
-	     forKeyPath: (NSString *) keyPath;
-- (void) notifyObserver: (_NSManagedProxy_observerInfo *) observerInfo;
-- (void) _refresh;
-- (id) objectValueForTableColumn: (NSTableColumn *) column;
+- (id)initWithCoder:(NSCoder *)coder;
+- (id)initWithParent:(_NSManagedProxy *)parent object:(NSManagedObject *)object;
+- (id)representedObject;
+- (NSString *)entityName;
+- (NSEntityDescription *)entity;
+- (NSManagedObjectContext *)managedObjectContext;
+- (void)setManagedObjectContext:(NSManagedObjectContext *)context;
+- (id)valueForKey:(NSString *)key;
+- (id)objectAtIndex:(NSUInteger)index;
+- (NSUInteger)count;
+- (void)addObserver:(NSObject *)observer
+    toObjectsAtIndexes:(NSIndexSet *)indexes
+            forKeyPath:(NSString *)keyPath
+               options:(NSKeyValueObservingOptions)options
+               context:(void *)context;
+- (void)removeObserver:(NSObject *)observer
+    fromObjectsAtIndexes:(NSIndexSet *)indexes
+              forKeyPath:(NSString *)keyPath;
+- (void)notifyObserver:(_NSManagedProxy_observerInfo *)observerInfo;
+- (void)_refresh;
+- (id)objectValueForTableColumn:(NSTableColumn *)column;
 
 @end

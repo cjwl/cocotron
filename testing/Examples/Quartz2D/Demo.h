@@ -8,17 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 // all demos draw in a 1x1 box.
 
 @interface Demo : NSObject {
-
 }
 
--(CGImageRef)createImageWithName:(NSString *)name;
+- (CGImageRef)createImageWithName:(NSString *)name;
 
--(void)renderInContext:(CGContextRef)context;
+- (void)renderInContext:(CGContextRef)context;
 
--(NSString *)title;
+- (NSString *)title;
 
 @end

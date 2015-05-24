@@ -10,8 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 
 @interface Win32EventInputSource : NSInputSource {
-// move eventMask and eventQueue here?
+    // move eventMask and eventQueue here?
 }
 
 @end
-

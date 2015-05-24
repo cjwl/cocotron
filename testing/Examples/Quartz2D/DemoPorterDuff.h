@@ -8,9 +8,7 @@
 
 #import "Demo.h"
 
-
 @interface DemoPorterDuff : Demo {
-
 }
 
 @end

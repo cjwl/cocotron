@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenuView.h>
 
 @interface NSMainMenuView : NSMenuView {
-   NSFont  *_font;
+    NSFont *_font;
 }
 
-+(float)menuHeight;
++ (float)menuHeight;
 
--initWithFrame:(NSRect)frame menu:(NSMenu *)menu;
+- initWithFrame:(NSRect)frame menu:(NSMenu *)menu;
 
--(void)sizeToFit;
+- (void)sizeToFit;
 
 @end

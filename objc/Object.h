@@ -17,10 +17,10 @@ __attribute__((objc_root_class))
     Class isa;
 }
 
-+(void)initialize;
++ (void)initialize;
 
--(void)doesNotRecognizeSelector:(SEL)selector;
+- (void)doesNotRecognizeSelector:(SEL)selector;
 
--(id)forwardSelector:(SEL)selector arguments:(void *)arguments;
+- (id)forwardSelector:(SEL)selector arguments:(void *)arguments;
 
 @end

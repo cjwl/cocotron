@@ -10,16 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData;
 
-@interface NSInputStream : NSStream 
+@interface NSInputStream : NSStream
 
--initWithData:(NSData *)data;
--initWithFileAtPath:(NSString *)path;
+- initWithData:(NSData *)data;
+- initWithFileAtPath:(NSString *)path;
 
-+inputStreamWithData:(NSData *)data;
-+inputStreamWithFileAtPath:(NSString *)path;
++ inputStreamWithData:(NSData *)data;
++ inputStreamWithFileAtPath:(NSString *)path;
 
--(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length;
--(BOOL)hasBytesAvailable;
--(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
+- (BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length;
+- (BOOL)hasBytesAvailable;
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
 
 @end

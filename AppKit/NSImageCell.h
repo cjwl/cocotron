@@ -9,38 +9,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 
 typedef enum {
-   NSImageAlignCenter,
-   NSImageAlignTop,
-   NSImageAlignTopLeft,
-   NSImageAlignTopRight,
-   NSImageAlignLeft,
-   NSImageAlignBottom,
-   NSImageAlignBottomLeft,
-   NSImageAlignBottomRight,
-   NSImageAlignRight
+    NSImageAlignCenter,
+    NSImageAlignTop,
+    NSImageAlignTopLeft,
+    NSImageAlignTopRight,
+    NSImageAlignLeft,
+    NSImageAlignBottom,
+    NSImageAlignBottomLeft,
+    NSImageAlignBottomRight,
+    NSImageAlignRight
 } NSImageAlignment;
 
 typedef enum {
-   NSImageFrameNone,
-   NSImageFramePhoto,
-   NSImageFrameGrayBezel,
-   NSImageFrameGroove,
-   NSImageFrameButton
+    NSImageFrameNone,
+    NSImageFramePhoto,
+    NSImageFrameGrayBezel,
+    NSImageFrameGroove,
+    NSImageFrameButton
 } NSImageFrameStyle;
 
 @interface NSImageCell : NSCell {
-   BOOL              _animates; 
-   NSImageAlignment  _imageAlignment;
-   NSImageScaling    _imageScaling;
-   NSImageFrameStyle _frameStyle;
+    BOOL _animates;
+    NSImageAlignment _imageAlignment;
+    NSImageScaling _imageScaling;
+    NSImageFrameStyle _frameStyle;
 }
 
--(NSImageAlignment)imageAlignment;
--(NSImageFrameStyle)imageFrameStyle;
--(NSImageScaling)imageScaling;
+- (NSImageAlignment)imageAlignment;
+- (NSImageFrameStyle)imageFrameStyle;
+- (NSImageScaling)imageScaling;
 
--(void)setImageAlignment:(NSImageAlignment)alignment;
--(void)setImageFrameStyle:(NSImageFrameStyle)frameStyle;
--(void)setImageScaling:(NSImageScaling)imageScaling;
+- (void)setImageAlignment:(NSImageAlignment)alignment;
+- (void)setImageFrameStyle:(NSImageFrameStyle)frameStyle;
+- (void)setImageScaling:(NSImageScaling)imageScaling;
 
 @end

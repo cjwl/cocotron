@@ -12,24 +12,24 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct CFUserNotification *CFUserNotificationRef;
 
-typedef void (*CFUserNotificationCallBack)(CFUserNotificationRef userNotification,CFOptionFlags responseFlags);
+typedef void (*CFUserNotificationCallBack)(CFUserNotificationRef userNotification, CFOptionFlags responseFlags);
 enum {
-   kCFUserNotificationStopAlertLevel    = 0,
-   kCFUserNotificationNoteAlertLevel    = 1,
-   kCFUserNotificationCautionAlertLevel = 2,
-   kCFUserNotificationPlainAlertLevel   = 3,
+    kCFUserNotificationStopAlertLevel = 0,
+    kCFUserNotificationNoteAlertLevel = 1,
+    kCFUserNotificationCautionAlertLevel = 2,
+    kCFUserNotificationPlainAlertLevel = 3,
 };
 
 enum {
-   kCFUserNotificationDefaultResponse  = 0,
-   kCFUserNotificationAlternateResponse= 1,
-   kCFUserNotificationOtherResponse    = 2,
-   kCFUserNotificationCancelResponse   = 3,
+    kCFUserNotificationDefaultResponse = 0,
+    kCFUserNotificationAlternateResponse = 1,
+    kCFUserNotificationOtherResponse = 2,
+    kCFUserNotificationCancelResponse = 3,
 };
 
 enum {
-   kCFUserNotificationNoDefaultButtonFlag = (1<<5),
-   kCFUserNotificationUseRadioButtonsFlag = (1<<6),
+    kCFUserNotificationNoDefaultButtonFlag = (1 << 5),
+    kCFUserNotificationUseRadioButtonsFlag = (1 << 6),
 };
 
 COREFOUNDATION_EXPORT const CFStringRef kCFUserNotificationIconURLKey;
@@ -53,14 +53,14 @@ COREFOUNDATION_EXPORT CFOptionFlags CFUserNotificationCheckBoxChecked(CFIndex i)
 COREFOUNDATION_EXPORT CFOptionFlags CFUserNotificationPopUpSelection(CFIndex n);
 COREFOUNDATION_EXPORT CFOptionFlags CFUserNotificationSecureTextField(CFIndex i);
 
-COREFOUNDATION_EXPORT CFInteger CFUserNotificationDisplayAlert(CFTimeInterval timeout,CFOptionFlags flags,CFURLRef iconURL,CFURLRef soundURL,CFURLRef localizationURL,CFStringRef alertHeader,CFStringRef alertMessage,CFStringRef defaultButtonTitle,CFStringRef alternateButtonTitle,CFStringRef otherButtonTitle,CFOptionFlags *responseFlags);
-COREFOUNDATION_EXPORT CFInteger CFUserNotificationDisplayNotice(CFTimeInterval timeout,CFOptionFlags flags,CFURLRef iconURL,CFURLRef soundURL,CFURLRef localizationURL,CFStringRef alertHeader,CFStringRef alertMessage,CFStringRef defaultButtonTitle);
+COREFOUNDATION_EXPORT CFInteger CFUserNotificationDisplayAlert(CFTimeInterval timeout, CFOptionFlags flags, CFURLRef iconURL, CFURLRef soundURL, CFURLRef localizationURL, CFStringRef alertHeader, CFStringRef alertMessage, CFStringRef defaultButtonTitle, CFStringRef alternateButtonTitle, CFStringRef otherButtonTitle, CFOptionFlags *responseFlags);
+COREFOUNDATION_EXPORT CFInteger CFUserNotificationDisplayNotice(CFTimeInterval timeout, CFOptionFlags flags, CFURLRef iconURL, CFURLRef soundURL, CFURLRef localizationURL, CFStringRef alertHeader, CFStringRef alertMessage, CFStringRef defaultButtonTitle);
 
-COREFOUNDATION_EXPORT CFUserNotificationRef CFUserNotificationCreate(CFAllocatorRef allocator,CFTimeInterval timeout,CFOptionFlags flags,CFInteger *error,CFDictionaryRef dictionary);
+COREFOUNDATION_EXPORT CFUserNotificationRef CFUserNotificationCreate(CFAllocatorRef allocator, CFTimeInterval timeout, CFOptionFlags flags, CFInteger *error, CFDictionaryRef dictionary);
 
-COREFOUNDATION_EXPORT CFInteger             CFUserNotificationCancel(CFUserNotificationRef self);
-COREFOUNDATION_EXPORT CFRunLoopSourceRef    CFUserNotificationCreateRunLoopSource(CFAllocatorRef allocator,CFUserNotificationRef self,CFUserNotificationCallBack callback,CFIndex order);
-COREFOUNDATION_EXPORT CFDictionaryRef       CFUserNotificationGetResponseDictionary(CFUserNotificationRef self);
-COREFOUNDATION_EXPORT CFStringRef           CFUserNotificationGetResponseValue(CFUserNotificationRef self,CFStringRef key,CFIndex index);
-COREFOUNDATION_EXPORT CFInteger             CFUserNotificationReceiveResponse(CFUserNotificationRef self,CFTimeInterval timeout,CFOptionFlags *responseFlags);
-COREFOUNDATION_EXPORT CFInteger             CFUserNotificationUpdate(CFUserNotificationRef self,CFTimeInterval timeout,CFOptionFlags flags,CFDictionaryRef dictionary);
+COREFOUNDATION_EXPORT CFInteger CFUserNotificationCancel(CFUserNotificationRef self);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef CFUserNotificationCreateRunLoopSource(CFAllocatorRef allocator, CFUserNotificationRef self, CFUserNotificationCallBack callback, CFIndex order);
+COREFOUNDATION_EXPORT CFDictionaryRef CFUserNotificationGetResponseDictionary(CFUserNotificationRef self);
+COREFOUNDATION_EXPORT CFStringRef CFUserNotificationGetResponseValue(CFUserNotificationRef self, CFStringRef key, CFIndex index);
+COREFOUNDATION_EXPORT CFInteger CFUserNotificationReceiveResponse(CFUserNotificationRef self, CFTimeInterval timeout, CFOptionFlags *responseFlags);
+COREFOUNDATION_EXPORT CFInteger CFUserNotificationUpdate(CFUserNotificationRef self, CFTimeInterval timeout, CFOptionFlags flags, CFDictionaryRef dictionary);

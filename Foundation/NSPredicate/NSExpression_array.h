@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSExpression.h>
 
 @interface NSExpression_array : NSExpression {
-   NSArray *_array;
+    NSArray *_array;
 }
 
-+(NSExpression *)expressionForArray:(NSArray *)array;
++ (NSExpression *)expressionForArray:(NSArray *)array;
 
 @end

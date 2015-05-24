@@ -11,60 +11,60 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 
 @class CIContext;
-@class NSWindow,NSBitmapImageRep;
+@class NSWindow, NSBitmapImageRep;
 
 typedef enum {
-   NSImageInterpolationDefault=kCGInterpolationDefault,
-   NSImageInterpolationNone=kCGInterpolationNone,
-   NSImageInterpolationLow=kCGInterpolationLow,
-   NSImageInterpolationHigh=kCGInterpolationHigh,
+    NSImageInterpolationDefault = kCGInterpolationDefault,
+    NSImageInterpolationNone = kCGInterpolationNone,
+    NSImageInterpolationLow = kCGInterpolationLow,
+    NSImageInterpolationHigh = kCGInterpolationHigh,
 } NSImageInterpolation;
 
 typedef enum {
-   NSColorRenderingIntentDefault=kCGRenderingIntentDefault,
-   NSColorRenderingIntentAbsoluteColorimetric=kCGRenderingIntentAbsoluteColorimetric,
-   NSColorRenderingIntentRelativeColorimetric=kCGRenderingIntentRelativeColorimetric,
-   NSColorRenderingIntentPerceptual=kCGRenderingIntentPerceptual,
-   NSColorRenderingIntentSaturation=kCGRenderingIntentSaturation,
+    NSColorRenderingIntentDefault = kCGRenderingIntentDefault,
+    NSColorRenderingIntentAbsoluteColorimetric = kCGRenderingIntentAbsoluteColorimetric,
+    NSColorRenderingIntentRelativeColorimetric = kCGRenderingIntentRelativeColorimetric,
+    NSColorRenderingIntentPerceptual = kCGRenderingIntentPerceptual,
+    NSColorRenderingIntentSaturation = kCGRenderingIntentSaturation,
 } NSColorRenderingIntent;
 
 @interface NSGraphicsContext : NSObject {
-   CGContextRef    _graphicsPort;
-   CIContext      *_ciContext;
-   NSMutableArray *_focusStack;
-   BOOL            _isDrawingToScreen;
-   BOOL            _isFlipped;
-   NSDictionary   *_deviceDescription;
-   
-   BOOL _shouldAntialias;
-   NSColorRenderingIntent _renderingIntent;
-   NSCompositingOperation _compOperation;
-   NSPoint _patternPhase;
+    CGContextRef _graphicsPort;
+    CIContext *_ciContext;
+    NSMutableArray *_focusStack;
+    BOOL _isDrawingToScreen;
+    BOOL _isFlipped;
+    NSDictionary *_deviceDescription;
+
+    BOOL _shouldAntialias;
+    NSColorRenderingIntent _renderingIntent;
+    NSCompositingOperation _compOperation;
+    NSPoint _patternPhase;
 }
 
-+(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
-+(NSGraphicsContext *)graphicsContextWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped;
-+(NSGraphicsContext *)graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)imageRep;
++ (NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
++ (NSGraphicsContext *)graphicsContextWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped;
++ (NSGraphicsContext *)graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)imageRep;
 
-+(NSGraphicsContext *)currentContext;
-+(void)setCurrentContext:(NSGraphicsContext *)context;
++ (NSGraphicsContext *)currentContext;
++ (void)setCurrentContext:(NSGraphicsContext *)context;
 
-+(void)saveGraphicsState;
-+(void)restoreGraphicsState;
++ (void)saveGraphicsState;
++ (void)restoreGraphicsState;
 
-+(BOOL)currentContextDrawingToScreen;
++ (BOOL)currentContextDrawingToScreen;
 
--(CGContextRef)graphicsPort;
--(NSMutableArray *)focusStack;
+- (CGContextRef)graphicsPort;
+- (NSMutableArray *)focusStack;
 
--(BOOL)isDrawingToScreen;
--(BOOL)isFlipped;
+- (BOOL)isDrawingToScreen;
+- (BOOL)isFlipped;
 
--(void)setShouldAntialias:(BOOL)value;
--(void)setImageInterpolation:(NSImageInterpolation)value;
--(void)setColorRenderingIntent:(NSColorRenderingIntent)value;
--(void)setCompositingOperation:(NSCompositingOperation)value;
--(void)setPatternPhase:(NSPoint)phase;
+- (void)setShouldAntialias:(BOOL)value;
+- (void)setImageInterpolation:(NSImageInterpolation)value;
+- (void)setColorRenderingIntent:(NSColorRenderingIntent)value;
+- (void)setCompositingOperation:(NSCompositingOperation)value;
+- (void)setPatternPhase:(NSPoint)phase;
 
 - (BOOL)shouldAntialias;
 - (NSImageInterpolation)imageInterpolation;
@@ -72,12 +72,12 @@ typedef enum {
 - (NSCompositingOperation)compositingOperation;
 - (NSPoint)patternPhase;
 
--(CIContext *)CIContext;
+- (CIContext *)CIContext;
 
--(void)saveGraphicsState;
--(void)restoreGraphicsState;
+- (void)saveGraphicsState;
+- (void)restoreGraphicsState;
 
--(void)flushGraphics;
+- (void)flushGraphics;
 
 @end
 

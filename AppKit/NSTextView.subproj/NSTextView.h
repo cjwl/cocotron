@@ -13,7 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * So you need to call breakUndoCoalescing before registering any other undo operations. *
  *****************************************************************************************/
 
-
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextInput.h>
 #import <AppKit/NSDragging.h>
@@ -24,217 +23,216 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSRulerView, NSRulerMarker;
 
 typedef enum {
-   NSSelectByCharacter,
-   NSSelectByWord,
-   NSSelectByParagraph
+    NSSelectByCharacter,
+    NSSelectByWord,
+    NSSelectByParagraph
 } NSSelectionGranularity;
 
 typedef enum {
-   NSSelectionAffinityUpstream,
-   NSSelectionAffinityDownstream,
+    NSSelectionAffinityUpstream,
+    NSSelectionAffinityDownstream,
 } NSSelectionAffinity;
 
 typedef enum {
-   NSFindPanelActionShowFindPanel=1,
-   NSFindPanelActionNext,
-   NSFindPanelActionPrevious,
-   NSFindPanelActionReplaceAll,
-   NSFindPanelActionReplace,
-   NSFindPanelActionReplaceAndFind,
-   NSFindPanelActionSetFindString,
-   NSFindPanelActionReplaceAllInSelection,
-   NSFindPanelActionSelectAll,
-   NSFindPanelActionSelectAllInSelection
+    NSFindPanelActionShowFindPanel = 1,
+    NSFindPanelActionNext,
+    NSFindPanelActionPrevious,
+    NSFindPanelActionReplaceAll,
+    NSFindPanelActionReplace,
+    NSFindPanelActionReplaceAndFind,
+    NSFindPanelActionSetFindString,
+    NSFindPanelActionReplaceAllInSelection,
+    NSFindPanelActionSelectAll,
+    NSFindPanelActionSelectAllInSelection
 } NSFindPanelAction;
 
-APPKIT_EXPORT NSString * const NSTextViewDidChangeSelectionNotification;
-APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
+APPKIT_EXPORT NSString *const NSTextViewDidChangeSelectionNotification;
+APPKIT_EXPORT NSString *const NSOldSelectedCharacterRange;
 
 @class NSUndoTyping;
 
 @interface NSTextView : NSText <NSTextInput> {
-   NSTextStorage   *_textStorage;
-   NSTextContainer *_textContainer;
-   NSSize           _textContainerInset;
-   BOOL             _ownsTextStorage;
-   NSDictionary*    _typingAttributes;
+    NSTextStorage *_textStorage;
+    NSTextContainer *_textContainer;
+    NSSize _textContainerInset;
+    BOOL _ownsTextStorage;
+    NSDictionary *_typingAttributes;
 
-   id               _delegate;
-   BOOL             _isEditable;
-   BOOL             _isSelectable;
-   BOOL             _isRichText;
-   NSColor         *_backgroundColor;
-   BOOL             _drawsBackground;
-   NSFont          *_font;
-   NSColor         *_textColor;
-   NSTextAlignment  _textAlignment;
+    id _delegate;
+    BOOL _isEditable;
+    BOOL _isSelectable;
+    BOOL _isRichText;
+    NSColor *_backgroundColor;
+    BOOL _drawsBackground;
+    NSFont *_font;
+    NSColor *_textColor;
+    NSTextAlignment _textAlignment;
 
-   NSColor         *_insertionPointColor;
-   NSRect           _insertionPointRect;
-   BOOL             _insertionPointOn;
-   NSTimer         *_insertionPointTimer;
+    NSColor *_insertionPointColor;
+    NSRect _insertionPointRect;
+    BOOL _insertionPointOn;
+    NSTimer *_insertionPointTimer;
 
-   BOOL             _isFieldEditor;
-   NSSize           _maxSize;
-   NSSize           _minSize;
-   BOOL             _isHorizontallyResizable;
-   BOOL             _isVerticallyResizable;
-   BOOL             _usesRuler;
-   BOOL             _rulerVisible;
-   BOOL				_usesFontPanel;
-   BOOL             _allowsUndo;
+    BOOL _isFieldEditor;
+    NSSize _maxSize;
+    NSSize _minSize;
+    BOOL _isHorizontallyResizable;
+    BOOL _isVerticallyResizable;
+    BOOL _usesRuler;
+    BOOL _rulerVisible;
+    BOOL _usesFontPanel;
+    BOOL _allowsUndo;
 
-   NSMutableArray        *_selectedRanges;
-   NSArray				 *_initialRanges; // selected ranges at the start of a selection change
-   NSSelectionAffinity    _selectionAffinity;
-   NSSelectionGranularity _selectionGranularity;
-   NSDictionary          *_selectedTextAttributes;
-    NSParagraphStyle      *_defaultParagraphStyle;
-    
-   BOOL                   _didSendTextDidEndNotification;
-   unsigned               _selectionOrigin;		// for keyboard selection sanity.
-   id                     _killBuffer;			// NSString for Emacs-style, NSMutableString for additive
-   BOOL                   _killBufferIsAdditive;	// .. additive == pine/pico style, but possible memory hog
+    NSMutableArray *_selectedRanges;
+    NSArray *_initialRanges; // selected ranges at the start of a selection change
+    NSSelectionAffinity _selectionAffinity;
+    NSSelectionGranularity _selectionGranularity;
+    NSDictionary *_selectedTextAttributes;
+    NSParagraphStyle *_defaultParagraphStyle;
 
-   NSRange                _rangeForUserCompletion;	// range of original user completion text.
-   NSString              *_userCompletionHint;		// original "hint" text which started completion
-   NSArray               *_userCompletions;             // current list of completions. shouldn't change while modal
-   int                    _userCompletionSelectedItem;	// index within completion array
-  
-   NSUndoManager         *_fieldEditorUndoManager;
-   BOOL                   _processingKeyEvent;
-   BOOL                   _firstResponderButNotEditingYet;
-   
-   NSInteger _spellCheckerDocumentTag;
-   BOOL _isContinuousSpellCheckingEnabled;
-   BOOL _isAutomaticSpellingCorrectionEnabled;
-   NSTextCheckingTypes _enabledTextCheckingTypes;
-    
+    BOOL _didSendTextDidEndNotification;
+    unsigned _selectionOrigin; // for keyboard selection sanity.
+    id _killBuffer; // NSString for Emacs-style, NSMutableString for additive
+    BOOL _killBufferIsAdditive; // .. additive == pine/pico style, but possible memory hog
+
+    NSRange _rangeForUserCompletion; // range of original user completion text.
+    NSString *_userCompletionHint; // original "hint" text which started completion
+    NSArray *_userCompletions; // current list of completions. shouldn't change while modal
+    int _userCompletionSelectedItem; // index within completion array
+
+    NSUndoManager *_fieldEditorUndoManager;
+    BOOL _processingKeyEvent;
+    BOOL _firstResponderButNotEditingYet;
+
+    NSInteger _spellCheckerDocumentTag;
+    BOOL _isContinuousSpellCheckingEnabled;
+    BOOL _isAutomaticSpellingCorrectionEnabled;
+    NSTextCheckingTypes _enabledTextCheckingTypes;
+
     NSUndoTyping *_undoTyping;
 }
 
--initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;
+- initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--(NSTextContainer *)textContainer;
+- (NSTextContainer *)textContainer;
 
--(NSSize)textContainerInset;
--(NSPoint)textContainerOrigin;
+- (NSSize)textContainerInset;
+- (NSPoint)textContainerOrigin;
 
--(NSLayoutManager *)layoutManager;
--(NSTextStorage *)textStorage;
+- (NSLayoutManager *)layoutManager;
+- (NSTextStorage *)textStorage;
 
--(void)insertText:(id)string;
+- (void)insertText:(id)string;
 
--(BOOL)usesRuler;
--(BOOL)isRulerVisible;
--(BOOL)allowsUndo;
--(NSColor *)insertionPointColor;
--(NSDictionary *)typingAttributes;
--(NSDictionary *)selectedTextAttributes;
--(NSArray *)selectedRanges;
--(NSParagraphStyle *)defaultParagraphStyle;
+- (BOOL)usesRuler;
+- (BOOL)isRulerVisible;
+- (BOOL)allowsUndo;
+- (NSColor *)insertionPointColor;
+- (NSDictionary *)typingAttributes;
+- (NSDictionary *)selectedTextAttributes;
+- (NSArray *)selectedRanges;
+- (NSParagraphStyle *)defaultParagraphStyle;
 
--(void)setTextContainer:(NSTextContainer *)container;
--(void)setTextContainerInset:(NSSize)size;
+- (void)setTextContainer:(NSTextContainer *)container;
+- (void)setTextContainerInset:(NSSize)size;
 
--(void)setUsesRuler:(BOOL)flag;
--(void)setRulerVisible:(BOOL)flag;
--(void)setAllowsUndo:(BOOL)flag;
--(void)setInsertionPointColor:(NSColor *)color;
--(void)setTypingAttributes:(NSDictionary *)attributes;
--(void)setSelectedTextAttributes:(NSDictionary *)attributes;
--(void)setDefaultParagraphStyle:(NSParagraphStyle *)paragraphStyle;
+- (void)setUsesRuler:(BOOL)flag;
+- (void)setRulerVisible:(BOOL)flag;
+- (void)setAllowsUndo:(BOOL)flag;
+- (void)setInsertionPointColor:(NSColor *)color;
+- (void)setTypingAttributes:(NSDictionary *)attributes;
+- (void)setSelectedTextAttributes:(NSDictionary *)attributes;
+- (void)setDefaultParagraphStyle:(NSParagraphStyle *)paragraphStyle;
 
--(NSRange)selectionRangeForProposedRange:(NSRange)range granularity:(NSSelectionGranularity)granularity;
+- (NSRange)selectionRangeForProposedRange:(NSRange)range granularity:(NSSelectionGranularity)granularity;
 
--(void)setSelectedRange:(NSRange)range affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
--(void)setSelectedRanges:(NSArray *)ranges affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
+- (void)setSelectedRange:(NSRange)range affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
+- (void)setSelectedRanges:(NSArray *)ranges affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
 
--(void)setSelectedRanges:(NSArray *)value;
+- (void)setSelectedRanges:(NSArray *)value;
 
--(NSRange)rangeForUserCompletion;
--(NSArray *)completionsForPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
--(void)insertCompletion:(NSString *)string forPartialWordRange:(NSRange)range movement:(int)movement isFinal:(BOOL)isFinal;
+- (NSRange)rangeForUserCompletion;
+- (NSArray *)completionsForPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
+- (void)insertCompletion:(NSString *)string forPartialWordRange:(NSRange)range movement:(int)movement isFinal:(BOOL)isFinal;
 
--(NSArray *)writablePasteboardTypes;
--(BOOL)writeSelectionToPasteboard:(NSPasteboard *)pasteboard type:(NSString *)type;
--(BOOL)writeSelectionToPasteboard:(NSPasteboard *)pasteboard types:(NSArray *)types;
+- (NSArray *)writablePasteboardTypes;
+- (BOOL)writeSelectionToPasteboard:(NSPasteboard *)pasteboard type:(NSString *)type;
+- (BOOL)writeSelectionToPasteboard:(NSPasteboard *)pasteboard types:(NSArray *)types;
 
--(NSRange)rangeForUserTextChange;
--(NSRange)rangeForUserCharacterAttributeChange;
--(NSRange)rangeForUserParagraphAttributeChange;
+- (NSRange)rangeForUserTextChange;
+- (NSRange)rangeForUserCharacterAttributeChange;
+- (NSRange)rangeForUserParagraphAttributeChange;
 
--(BOOL)shouldChangeTextInRange:(NSRange)changeInRange replacementString:(NSString *)replacementString;
--(void)didChangeText;
+- (BOOL)shouldChangeTextInRange:(NSRange)changeInRange replacementString:(NSString *)replacementString;
+- (void)didChangeText;
 
--(BOOL)shouldDrawInsertionPoint;
--(void)drawInsertionPointInRect:(NSRect)rect color:(NSColor *)color turnedOn:(BOOL)turnedOn;
--(void)updateInsertionPointStateAndRestartTimer:(BOOL)restart;
+- (BOOL)shouldDrawInsertionPoint;
+- (void)drawInsertionPointInRect:(NSRect)rect color:(NSColor *)color turnedOn:(BOOL)turnedOn;
+- (void)updateInsertionPointStateAndRestartTimer:(BOOL)restart;
 
--(void)updateRuler;
+- (void)updateRuler;
 
--(void)alignJustified:sender;
+- (void)alignJustified:sender;
 
--(void)cut:sender;
--(void)copy:sender;
--(void)paste:sender;
--(void)selectAll:sender;
+- (void)cut:sender;
+- (void)copy:sender;
+- (void)paste:sender;
+- (void)selectAll:sender;
 
--(void)moveLeft:sender;
--(void)moveRight:sender;
--(void)moveForward:sender;
--(void)moveBackward:sender;
--(void)moveToBeginningOfLine:sender;
--(void)moveToEndOfLine:sender;
+- (void)moveLeft:sender;
+- (void)moveRight:sender;
+- (void)moveForward:sender;
+- (void)moveBackward:sender;
+- (void)moveToBeginningOfLine:sender;
+- (void)moveToEndOfLine:sender;
 
--(void)deleteForward:sender;
--(void)deleteBackward:sender;
+- (void)deleteForward:sender;
+- (void)deleteBackward:sender;
 
--(void)pageUp:sender;
--(void)pageDown:sender;
+- (void)pageUp:sender;
+- (void)pageDown:sender;
 
--(NSDragOperation)dragOperationForDraggingInfo:(id <NSDraggingInfo>)info type:(NSString *)type;
--(void)cleanUpAfterDragOperation;
+- (NSDragOperation)dragOperationForDraggingInfo:(id<NSDraggingInfo>)info type:(NSString *)type;
+- (void)cleanUpAfterDragOperation;
 
--(void)_setFieldEditorUndoManager:(NSUndoManager *)undoManager;
--(void)breakUndoCoalescing;
+- (void)_setFieldEditorUndoManager:(NSUndoManager *)undoManager;
+- (void)breakUndoCoalescing;
 
--(NSInteger)spellCheckerDocumentTag;
+- (NSInteger)spellCheckerDocumentTag;
 
--(BOOL)isContinuousSpellCheckingEnabled;
--(void)setContinuousSpellCheckingEnabled:(BOOL)value;
--(void)toggleContinuousSpellChecking:sender;
+- (BOOL)isContinuousSpellCheckingEnabled;
+- (void)setContinuousSpellCheckingEnabled:(BOOL)value;
+- (void)toggleContinuousSpellChecking:sender;
 
--(BOOL)isAutomaticSpellingCorrectionEnabled;
--(void)setAutomaticSpellingCorrectionEnabled:(BOOL)value;
--(void)toggleAutomaticSpellingCorrection:sender;
+- (BOOL)isAutomaticSpellingCorrectionEnabled;
+- (void)setAutomaticSpellingCorrectionEnabled:(BOOL)value;
+- (void)toggleAutomaticSpellingCorrection:sender;
 
--(NSTextCheckingTypes)enabledTextCheckingTypes;
--(void)setEnabledTextCheckingTypes:(NSTextCheckingTypes)checkingTypes;
+- (NSTextCheckingTypes)enabledTextCheckingTypes;
+- (void)setEnabledTextCheckingTypes:(NSTextCheckingTypes)checkingTypes;
 
--(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange;
+- (void)setSpellingState:(NSInteger)value range:(NSRange)characterRange;
 
 @end
 
-@interface NSObject(NSTextView_undoManager)
--(NSUndoManager *)undoManagerForTextView:(NSTextView *)textView;
+@interface NSObject (NSTextView_undoManager)
+- (NSUndoManager *)undoManagerForTextView:(NSTextView *)textView;
 @end
 
-@interface NSObject(NSTextView_delegate)
+@interface NSObject (NSTextView_delegate)
 
--(BOOL)textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
--(NSArray *)textView:(NSTextView *)textView completions:(NSArray *)words forPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
+- (BOOL)textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
+- (NSArray *)textView:(NSTextView *)textView completions:(NSArray *)words forPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
 
--(void)textViewDidChangeSelection:(NSNotification *)note;
+- (void)textViewDidChangeSelection:(NSNotification *)note;
 
--(NSRange)textView:(NSTextView *)textView willChangeSelectionFromCharacterRange:(NSRange)oldSelectedCharRange toCharacterRange:(NSRange)newSelectedCharRange;
--(NSArray *)textView:(NSTextView *)textView willChangeSelectionFromCharacterRanges:(NSArray *)oldSelectedCharRanges toCharacterRanges:(NSArray *)newSelectedCharRanges;
+- (NSRange)textView:(NSTextView *)textView willChangeSelectionFromCharacterRange:(NSRange)oldSelectedCharRange toCharacterRange:(NSRange)newSelectedCharRange;
+- (NSArray *)textView:(NSTextView *)textView willChangeSelectionFromCharacterRanges:(NSArray *)oldSelectedCharRanges toCharacterRanges:(NSArray *)newSelectedCharRanges;
 
-
-- (BOOL)       textView: (NSTextView *) textView
-shouldChangeTextInRange: (NSRange)      affectedCharRange
-      replacementString: (NSString *)   replacementString;
+- (BOOL)textView:(NSTextView *)textView
+    shouldChangeTextInRange:(NSRange)affectedCharRange
+          replacementString:(NSString *)replacementString;
 
 @end

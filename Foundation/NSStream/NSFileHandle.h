@@ -8,61 +8,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSData,NSArray;
+@class NSData, NSArray;
 
-FOUNDATION_EXPORT NSString * const NSFileHandleConnectionAcceptedNotification;
-FOUNDATION_EXPORT NSString * const NSFileHandleDataAvailableNotification;
-FOUNDATION_EXPORT NSString * const NSFileHandleReadCompletionNotification;
-FOUNDATION_EXPORT NSString * const NSFileHandleReadToEndOfFileCompletionNotification;
+FOUNDATION_EXPORT NSString *const NSFileHandleConnectionAcceptedNotification;
+FOUNDATION_EXPORT NSString *const NSFileHandleDataAvailableNotification;
+FOUNDATION_EXPORT NSString *const NSFileHandleReadCompletionNotification;
+FOUNDATION_EXPORT NSString *const NSFileHandleReadToEndOfFileCompletionNotification;
 
-FOUNDATION_EXPORT NSString * const NSFileHandleNotificationDataItem;
-FOUNDATION_EXPORT NSString * const NSFileHandleNotificationFileHandleItem;
+FOUNDATION_EXPORT NSString *const NSFileHandleNotificationDataItem;
+FOUNDATION_EXPORT NSString *const NSFileHandleNotificationFileHandleItem;
 
-FOUNDATION_EXPORT NSString * const NSFileHandleNotificationMonitorModes;
+FOUNDATION_EXPORT NSString *const NSFileHandleNotificationMonitorModes;
 
-FOUNDATION_EXPORT NSString * const NSFileHandleOperationException;
+FOUNDATION_EXPORT NSString *const NSFileHandleOperationException;
 
 @interface NSFileHandle : NSObject
 
-+fileHandleForReadingAtPath:(NSString *)path;
-+fileHandleForWritingAtPath:(NSString *)path;
-+fileHandleForUpdatingAtPath:(NSString *)path;
++ fileHandleForReadingAtPath:(NSString *)path;
++ fileHandleForWritingAtPath:(NSString *)path;
++ fileHandleForUpdatingAtPath:(NSString *)path;
 
-+fileHandleWithNullDevice;
-+fileHandleWithStandardInput;
-+fileHandleWithStandardOutput;
-+fileHandleWithStandardError;
++ fileHandleWithNullDevice;
++ fileHandleWithStandardInput;
++ fileHandleWithStandardOutput;
++ fileHandleWithStandardError;
 
--initWithFileDescriptor:(int)descriptor;
--initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc;
+- initWithFileDescriptor:(int)descriptor;
+- initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc;
 
--(int)fileDescriptor;
+- (int)fileDescriptor;
 
--(void)closeFile;
--(void)synchronizeFile;
+- (void)closeFile;
+- (void)synchronizeFile;
 
--(uint64_t)offsetInFile;
--(void)seekToFileOffset:(uint64_t)offset;
--(uint64_t)seekToEndOfFile;
+- (uint64_t)offsetInFile;
+- (void)seekToFileOffset:(uint64_t)offset;
+- (uint64_t)seekToEndOfFile;
 
--(NSData *)readDataOfLength:(NSUInteger)length;
--(NSData *)readDataToEndOfFile;
--(NSData *)availableData;
+- (NSData *)readDataOfLength:(NSUInteger)length;
+- (NSData *)readDataToEndOfFile;
+- (NSData *)availableData;
 
--(void)writeData:(NSData *)data;
+- (void)writeData:(NSData *)data;
 
--(void)truncateFileAtOffset:(uint64_t)offset;
+- (void)truncateFileAtOffset:(uint64_t)offset;
 
--(void)readInBackgroundAndNotifyForModes:(NSArray *)modes;
--(void)readInBackgroundAndNotify;
+- (void)readInBackgroundAndNotifyForModes:(NSArray *)modes;
+- (void)readInBackgroundAndNotify;
 
--(void)readToEndOfFileInBackgroundAndNotifyForModes:(NSArray *)modes;
--(void)readToEndOfFileInBackgroundAndNotify;
+- (void)readToEndOfFileInBackgroundAndNotifyForModes:(NSArray *)modes;
+- (void)readToEndOfFileInBackgroundAndNotify;
 
--(void)acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes;
--(void)acceptConnectionInBackgroundAndNotify;
+- (void)acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes;
+- (void)acceptConnectionInBackgroundAndNotify;
 
--(void)waitForDataInBackgroundAndNotifyForModes:(NSArray *)modes;
--(void)waitForDataInBackgroundAndNotify;
+- (void)waitForDataInBackgroundAndNotifyForModes:(NSArray *)modes;
+- (void)waitForDataInBackgroundAndNotify;
 
 @end

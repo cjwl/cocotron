@@ -8,9 +8,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-
 @interface ObjCXXExceptions : SenTestCase {
-
 }
 
 @end

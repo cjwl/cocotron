@@ -10,33 +10,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSTimer : NSObject
 
--initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats;
+- initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats;
 
-+(NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
-  invocation:(NSInvocation *)invocation repeats:(BOOL)repeats;
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
+                        invocation:(NSInvocation *)invocation
+                           repeats:(BOOL)repeats;
 
-+(NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
-  target:target selector:(SEL)selector
-  userInfo:userInfo repeats:(BOOL)repeats;
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
+                            target:target
+                          selector:(SEL)selector
+                          userInfo:userInfo
+                           repeats:(BOOL)repeats;
 
-+(NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval
-  invocation:(NSInvocation *)invocation repeats:(BOOL)repeats;
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval
+                                 invocation:(NSInvocation *)invocation
+                                    repeats:(BOOL)repeats;
 
-+(NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval
-  target:target selector:(SEL)selector
-  userInfo:userInfo repeats:(BOOL)repeats;
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval
+                                     target:target
+                                   selector:(SEL)selector
+                                   userInfo:userInfo
+                                    repeats:(BOOL)repeats;
 
--(NSDate *)fireDate;
+- (NSDate *)fireDate;
 
--(NSTimeInterval)timeInterval;
+- (NSTimeInterval)timeInterval;
 
--userInfo;
+- userInfo;
 
--(void)setFireDate:(NSDate *)date;
+- (void)setFireDate:(NSDate *)date;
 
--(void)fire;
+- (void)fire;
 
--(void)invalidate;
--(BOOL)isValid;
+- (void)invalidate;
+- (BOOL)isValid;
 
 @end

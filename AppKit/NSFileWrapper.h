@@ -11,46 +11,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSImage;
 
 @interface NSFileWrapper : NSObject {
-@protected
-    NSString*            _path;
-	NSMutableDictionary* _fileAttributes;
-    NSString*            _filename;
-    NSString*            _preferredFilename;
-    NSImage *            _icon;
+  @protected
+    NSString *_path;
+    NSMutableDictionary *_fileAttributes;
+    NSString *_filename;
+    NSString *_preferredFilename;
+    NSImage *_icon;
 }
 
-
 - (id)initDirectoryWithFileWrappers:(NSDictionary *)docs;
-    // Designated initializer. Inits new directory type instances.
+// Designated initializer. Inits new directory type instances.
 
 - (id)initRegularFileWithContents:(NSData *)data;
-    // Designated initializer. Inits new regular file type instances.
+// Designated initializer. Inits new regular file type instances.
 
 - (id)initSymbolicLinkWithDestination:(NSString *)path;
-    // Designated initializer. Inits new symbolic link type instances.
+// Designated initializer. Inits new symbolic link type instances.
 
 - (id)initWithPath:(NSString *)path;
-    // Designated initializer. 
+// Designated initializer.
 
-- (NSDictionary*) fileWrappers;
+- (NSDictionary *)fileWrappers;
 - (NSString *)addFileWrapper:(NSFileWrapper *)wrapper;
 
-
 - (NSString *)filename;
--(void)setFilename:(NSString *)filename;
+- (void)setFilename:(NSString *)filename;
 
 - (NSString *)preferredFilename;
--(void)setPreferredFilename:(NSString *)filename;
+- (void)setPreferredFilename:(NSString *)filename;
 
-- (void) setFileAttributes: (NSDictionary *)attributes;
-- (NSDictionary*) fileAttributes;
+- (void)setFileAttributes:(NSDictionary *)attributes;
+- (NSDictionary *)fileAttributes;
 
-- (BOOL) isRegularFile;
-- (BOOL) isDirectory;
-- (BOOL) isSymbolicLink;
+- (BOOL)isRegularFile;
+- (BOOL)isDirectory;
+- (BOOL)isSymbolicLink;
 
-- (NSData*) regularFileContents;
-- (NSString*) symbolicLinkDestination;
+- (NSData *)regularFileContents;
+- (NSString *)symbolicLinkDestination;
 
 - (NSImage *)icon;
 - (void)setIcon:(NSImage *)anImage;

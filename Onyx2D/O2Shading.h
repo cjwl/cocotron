@@ -11,45 +11,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Function.h>
 
-@class O2ColorSpace,O2Function,O2Shading;
+@class O2ColorSpace, O2Function, O2Shading;
 
 typedef O2Shading *O2ShadingRef;
 
 @interface O2Shading : NSObject {
-   O2ColorSpaceRef _colorSpace;
-   O2Point       _startPoint;
-   O2Point       _endPoint;
-   O2Function   *_function;
-   BOOL          _extendStart;
-   BOOL          _extendEnd;
-   BOOL          _isRadial;
-   float         _startRadius;
-   float         _endRadius;
-   float         _domain[2];
+    O2ColorSpaceRef _colorSpace;
+    O2Point _startPoint;
+    O2Point _endPoint;
+    O2Function *_function;
+    BOOL _extendStart;
+    BOOL _extendEnd;
+    BOOL _isRadial;
+    float _startRadius;
+    float _endRadius;
+    float _domain[2];
 }
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint endPoint:(O2Point)endPoint function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+- initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint endPoint:(O2Point)endPoint function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint startRadius:(float)startRadius endPoint:(O2Point)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+- initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint startRadius:(float)startRadius endPoint:(O2Point)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
 O2ColorSpaceRef O2ShadingColorSpace(O2Shading *self);
 
--(O2Point)startPoint;
--(O2Point)endPoint;
+- (O2Point)startPoint;
+- (O2Point)endPoint;
 
--(float)startRadius;
--(float)endRadius;
+- (float)startRadius;
+- (float)endRadius;
 
--(BOOL)extendStart;
--(BOOL)extendEnd;
+- (BOOL)extendStart;
+- (BOOL)extendEnd;
 
--(O2Function *)function;
+- (O2Function *)function;
 
--(BOOL)isAxial;
+- (BOOL)isAxial;
 
-O2ShadingRef O2ShadingCreateAxial(O2ColorSpaceRef colorSpace,O2Point start,O2Point end,O2FunctionRef function,BOOL extendStart,BOOL extendEnd);
-O2ShadingRef O2ShadingCreateRadial(O2ColorSpaceRef colorSpace,O2Point start,O2Float startRadius,O2Point end,O2Float endRadius,O2FunctionRef function,BOOL extendStart,BOOL extendEnd);
+O2ShadingRef O2ShadingCreateAxial(O2ColorSpaceRef colorSpace, O2Point start, O2Point end, O2FunctionRef function, BOOL extendStart, BOOL extendEnd);
+O2ShadingRef O2ShadingCreateRadial(O2ColorSpaceRef colorSpace, O2Point start, O2Float startRadius, O2Point end, O2Float endRadius, O2FunctionRef function, BOOL extendStart, BOOL extendEnd);
 O2ShadingRef O2ShadingRetain(O2ShadingRef self);
-void         O2ShadingRelease(O2ShadingRef self);
+void O2ShadingRelease(O2ShadingRef self);
 
 @end

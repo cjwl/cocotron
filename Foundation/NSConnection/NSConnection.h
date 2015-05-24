@@ -9,81 +9,81 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <Foundation/NSMapTable.h>
 
-@class NSPortNameServer,NSPort,NSRunLoop,NSDistantObject,NSMutableArray,NSMutableDictionary;
+@class NSPortNameServer, NSPort, NSRunLoop, NSDistantObject, NSMutableArray, NSMutableDictionary;
 
-FOUNDATION_EXPORT NSString * const NSConnectionReplyMode;
+FOUNDATION_EXPORT NSString *const NSConnectionReplyMode;
 
 @interface NSConnection : NSObject {
-   NSPort *_receivePort;
-   NSPort *_sendPort;
-   id      _delegate;
-   BOOL _isValid;
-   BOOL _independentConversationQueueing;
-   BOOL _multipleThreadsEnabled;
-   NSTimeInterval _replyTimeout;
-   NSTimeInterval _requestTimeout;
-   NSMutableArray *_requestModes;
-   NSMutableDictionary *_statistics;
+    NSPort *_receivePort;
+    NSPort *_sendPort;
+    id _delegate;
+    BOOL _isValid;
+    BOOL _independentConversationQueueing;
+    BOOL _multipleThreadsEnabled;
+    NSTimeInterval _replyTimeout;
+    NSTimeInterval _requestTimeout;
+    NSMutableArray *_requestModes;
+    NSMutableDictionary *_statistics;
 }
 
-+(NSArray *)allConnections;
++ (NSArray *)allConnections;
 
-+(NSConnection *)defaultConnection;
++ (NSConnection *)defaultConnection;
 
--initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort;
+- initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort;
 
-+(NSConnection *)connectionWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort;
++ (NSConnection *)connectionWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort;
 
-+(NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer;
-+(NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName;
++ (NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer;
++ (NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName;
 
-+(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer;
-+(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName;
++ (NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer;
++ (NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName;
 
-+currentConversation;
++ currentConversation;
 
--delegate;
--(BOOL)isValid;
--(BOOL)independentConversationQueueing;
--(BOOL)multipleThreadsEnabled;
+- delegate;
+- (BOOL)isValid;
+- (BOOL)independentConversationQueueing;
+- (BOOL)multipleThreadsEnabled;
 
--(NSTimeInterval)replyTimeout;
--(NSTimeInterval)requestTimeout;
+- (NSTimeInterval)replyTimeout;
+- (NSTimeInterval)requestTimeout;
 
--(NSPort *)sendPort;
--(NSPort *)receivePort;
+- (NSPort *)sendPort;
+- (NSPort *)receivePort;
 
--(NSArray *)requestModes;
+- (NSArray *)requestModes;
 
--rootObject;
--(NSDistantObject *)rootProxy;
+- rootObject;
+- (NSDistantObject *)rootProxy;
 
--(NSArray *)localObjects;
--(NSArray *)remoteObjects;
+- (NSArray *)localObjects;
+- (NSArray *)remoteObjects;
 
--(void)setDelegate:delegate;
+- (void)setDelegate:delegate;
 
--(void)invalidate;
+- (void)invalidate;
 
--(void)setIndependentConversationQueueing:(BOOL)flag;
--(void)enableMultipleThreads;
--(void)setReplyTimeout:(NSTimeInterval)seconds;
+- (void)setIndependentConversationQueueing:(BOOL)flag;
+- (void)enableMultipleThreads;
+- (void)setReplyTimeout:(NSTimeInterval)seconds;
 
--(void)setRequestTimeout:(NSTimeInterval)seconds;
+- (void)setRequestTimeout:(NSTimeInterval)seconds;
 
--(void)addRequestMode:(NSString *)mode;
--(void)removeRequestMode:(NSString *)mode;
+- (void)addRequestMode:(NSString *)mode;
+- (void)removeRequestMode:(NSString *)mode;
 
--(void)setRootObject:rootObject;
+- (void)setRootObject:rootObject;
 
--(void)runInNewThread;
+- (void)runInNewThread;
 
--(void)addRunLoop:(NSRunLoop *)runLoop;
--(void)removeRunLoop:(NSRunLoop *)runLoop;
+- (void)addRunLoop:(NSRunLoop *)runLoop;
+- (void)removeRunLoop:(NSRunLoop *)runLoop;
 
--(BOOL)registerName:(NSString *)name withNameServer:(NSPortNameServer *)nameServer;
--(BOOL)registerName:(NSString *)name;
+- (BOOL)registerName:(NSString *)name withNameServer:(NSPortNameServer *)nameServer;
+- (BOOL)registerName:(NSString *)name;
 
--(NSDictionary *)statistics;
+- (NSDictionary *)statistics;
 
 @end

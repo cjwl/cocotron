@@ -13,31 +13,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/message.h>
 
 enum {
-   CLASS_INFO_CLASS=0x001,
-   CLS_CLASS=CLASS_INFO_CLASS,
-   CLASS_INFO_META=0x002,
-   CLS_META=CLASS_INFO_META,
-   CLASS_INFO_INITIALIZED=0x004,
-   CLASS_INFO_POSING=0x008,
-   CLASS_INFO_LINKED=0x100,
-   CLASS_HAS_CXX_STRUCTORS=0x2000,
-   CLASS_NO_METHOD_ARRAY=0x4000
+    CLASS_INFO_CLASS = 0x001,
+    CLS_CLASS = CLASS_INFO_CLASS,
+    CLASS_INFO_META = 0x002,
+    CLS_META = CLASS_INFO_META,
+    CLASS_INFO_INITIALIZED = 0x004,
+    CLASS_INFO_POSING = 0x008,
+    CLASS_INFO_LINKED = 0x100,
+    CLASS_HAS_CXX_STRUCTORS = 0x2000,
+    CLASS_NO_METHOD_ARRAY = 0x4000
 };
 
 typedef struct OBJCMethodDescriptionList {
-   int                    count;
-   struct objc_method_description list[1];
+    int count;
+    struct objc_method_description list[1];
 } OBJCMethodDescriptionList;
 
 OBJC_EXPORT void OBJCRegisterClass(Class class);
-OBJC_EXPORT void OBJCRegisterCategoryInClass(Category category,Class class);
+OBJC_EXPORT void OBJCRegisterCategoryInClass(Category category, Class class);
 
-struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);
-OBJC_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL message);
-OBJC_EXPORT IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector);
+struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class, SEL uniqueId);
+OBJC_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object, SEL message);
+OBJC_EXPORT IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super, SEL selector);
 
 OBJC_EXPORT void OBJCLinkClassTable(void);
 
 BOOL object_cxxConstruct(id self, Class c);
 BOOL object_cxxDestruct(id self, Class c);
-

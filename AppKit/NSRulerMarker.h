@@ -12,43 +12,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSRulerView, NSImage, NSEvent;
 
 @interface NSRulerMarker : NSObject <NSCopying> //, NSCoding>
-{
+                           {
     NSRulerView *_ruler;
-    float        _markerLocation;
-    NSImage     *_image;
-    NSPoint      _imageOrigin;
-    id           _representedObject;
-    BOOL         _isRemovable;
-    BOOL         _isMovable;
-    BOOL         _isDragging;
-    BOOL         _isPinned;
+    float _markerLocation;
+    NSImage *_image;
+    NSPoint _imageOrigin;
+    id _representedObject;
+    BOOL _isRemovable;
+    BOOL _isMovable;
+    BOOL _isDragging;
+    BOOL _isPinned;
 }
 
 + (NSImage *)defaultMarkerImage;
 
--initWithRulerView:(NSRulerView *)ruler markerLocation:(float)location image:(NSImage *)image imageOrigin:(NSPoint)point;
+- initWithRulerView:(NSRulerView *)ruler markerLocation:(float)location image:(NSImage *)image imageOrigin:(NSPoint)point;
 
--(NSRulerView *)ruler;
--(float)markerLocation;
--(NSImage *)image;
--(NSPoint)imageOrigin;
+- (NSRulerView *)ruler;
+- (float)markerLocation;
+- (NSImage *)image;
+- (NSPoint)imageOrigin;
 
--(id <NSCopying>)representedObject;
--(BOOL)isRemovable;
--(BOOL)isMovable;
+- (id<NSCopying>)representedObject;
+- (BOOL)isRemovable;
+- (BOOL)isMovable;
 
--(void)setMarkerLocation:(float)location;
--(void)setImage:(NSImage *)image;
--(void)setImageOrigin:(NSPoint)point;
+- (void)setMarkerLocation:(float)location;
+- (void)setImage:(NSImage *)image;
+- (void)setImageOrigin:(NSPoint)point;
 
--(void)setRepresentedObject:(id <NSCopying>)object;
--(void)setRemovable:(BOOL)flag;
--(void)setMovable:(BOOL)flag;
+- (void)setRepresentedObject:(id<NSCopying>)object;
+- (void)setRemovable:(BOOL)flag;
+- (void)setMovable:(BOOL)flag;
 
--(float)thicknessRequiredInRuler;
--(NSRect)imageRectInRuler;
--(void)drawRect:(NSRect)rect;
--(BOOL)isDragging;
--(BOOL)trackMouse:(NSEvent *)event adding:(BOOL)adding;
+- (float)thicknessRequiredInRuler;
+- (NSRect)imageRectInRuler;
+- (void)drawRect:(NSRect)rect;
+- (BOOL)isDragging;
+- (BOOL)trackMouse:(NSEvent *)event adding:(BOOL)adding;
 
 @end

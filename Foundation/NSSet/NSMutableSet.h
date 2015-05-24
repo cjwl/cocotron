@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSet.h>
 
 @interface NSMutableSet : NSSet
--initWithCapacity:(NSUInteger)capacity;
+- initWithCapacity:(NSUInteger)capacity;
 
-+setWithCapacity:(NSUInteger)capacity;
++ setWithCapacity:(NSUInteger)capacity;
 
--(void)addObject:object;
--(void)addObjectsFromArray:(NSArray *)array;
--(void)setSet:(NSSet *)other;
--(void)unionSet:(NSSet *)other;
+- (void)addObject:object;
+- (void)addObjectsFromArray:(NSArray *)array;
+- (void)setSet:(NSSet *)other;
+- (void)unionSet:(NSSet *)other;
 
--(void)removeObject:object;
--(void)removeAllObjects;
--(void)minusSet:(NSSet *)other;
--(void)intersectSet:(NSSet *)other;
+- (void)removeObject:object;
+- (void)removeAllObjects;
+- (void)minusSet:(NSSet *)other;
+- (void)intersectSet:(NSSet *)other;
 
 @end
 

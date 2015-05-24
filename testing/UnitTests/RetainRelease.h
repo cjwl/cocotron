@@ -8,11 +8,10 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-
 @interface RetainRelease : SenTestCase {
-   BOOL deallocCalled;
+    BOOL deallocCalled;
 }
--(void)testRetainRelease;
--(void)testAutoreleasePool;
--(void)didCallDealloc;
+- (void)testRetainRelease;
+- (void)testAutoreleasePool;
+- (void)didCallDealloc;
 @end

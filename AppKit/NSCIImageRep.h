@@ -3,6 +3,6 @@
 
 @class NSBitmapImageRep;
 
-@interface CIImage(CIImageRepAdditions)
--initWithBitmapImageRep:(NSBitmapImageRep *)bitmapImageRep;
+@interface CIImage (CIImageRepAdditions)
+- initWithBitmapImageRep:(NSBitmapImageRep *)bitmapImageRep;
 @end

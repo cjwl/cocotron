@@ -11,11 +11,11 @@
 #import <stdint.h>
 
 typedef struct O2JPGEncoder {
-   O2DataConsumerRef _consumer;
-} *O2JPGEncoderRef;
+    O2DataConsumerRef _consumer;
+} * O2JPGEncoderRef;
 
 O2JPGEncoderRef O2JPGEncoderCreate(O2DataConsumerRef consumer);
 void O2JPGEncoderDealloc(O2JPGEncoderRef self);
 
-void O2JPGEncoderWriteImage(O2JPGEncoderRef self,O2ImageRef image,CFDictionaryRef properties);
+void O2JPGEncoderWriteImage(O2JPGEncoderRef self, O2ImageRef image, CFDictionaryRef properties);
 #endif

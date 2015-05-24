@@ -10,18 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 
-
-@interface NSControllerSelectionProxy : NSObject
-{
-	id _controller;
-	NSMutableDictionary *_cachedValues;
-   id _observableSelection;
-   NSMutableArray *_observationProxies;
-   id _cachedKeysForKVO;
-	NSUInteger _respondingToSelectionChanges; // use to make sure we don't keep talking to the controller while it's making changes
+@interface NSControllerSelectionProxy : NSObject {
+    id _controller;
+    NSMutableDictionary *_cachedValues;
+    id _observableSelection;
+    NSMutableArray *_observationProxies;
+    id _cachedKeysForKVO;
+    NSUInteger _respondingToSelectionChanges; // use to make sure we don't keep talking to the controller while it's making changes
 }
--(id)initWithController:(id)cont;
--(void)controllerWillChange;
+- (id)initWithController:(id)cont;
+- (void)controllerWillChange;
 
--(void)controllerDidChange;
+- (void)controllerDidChange;
 @end

@@ -11,11 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2PDFxref;
 
 @interface O2PDFObject_R : O2PDFObject {
-   O2PDFInteger _number;
-   O2PDFInteger _generation;
-   O2PDFxref   *_xref;
+    O2PDFInteger _number;
+    O2PDFInteger _generation;
+    O2PDFxref *_xref;
 }
 
-+pdfObjectWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation xref:(O2PDFxref *)xref;
++ pdfObjectWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation xref:(O2PDFxref *)xref;
 
 @end

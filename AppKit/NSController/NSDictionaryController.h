@@ -11,16 +11,16 @@
 @class NSDictionary;
 
 @interface NSDictionaryController : NSArrayController {
-   NSDictionary* _contentDictionary;
-   id _includedKeys;
-   id _excludedKeys;
-   NSString *_initialKey;
-   id        _initialValue;
+    NSDictionary *_contentDictionary;
+    id _includedKeys;
+    id _excludedKeys;
+    NSString *_initialKey;
+    id _initialValue;
 }
 
--(NSString *)initialKey;
--(id)initialValue;
--(void)setInitialKey:(NSString *)key;
--(void)setInitialValue:value;
+- (NSString *)initialKey;
+- (id)initialValue;
+- (void)setInitialKey:(NSString *)key;
+- (void)setInitialValue:value;
 
 @end

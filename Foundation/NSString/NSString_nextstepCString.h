@@ -13,10 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
- const char *bytes,NSUInteger length);
+    const char *bytes, NSUInteger length);
 
 NSString *NSNEXTSTEPCStringNewWithCharacters(NSZone *zone,
- const unichar *characters,NSUInteger length,BOOL lossy);
+    const unichar *characters, NSUInteger length, BOOL lossy);
 
 NSString *NSNEXTSTEPCStringNewWithCapacity(NSZone *zone,
-  NSUInteger capacity,char **ptr);
+    NSUInteger capacity, char **ptr);

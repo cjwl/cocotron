@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@interface NSThread(NSThread_private) 
+@interface NSThread (NSThread_private)
 
 NSAutoreleasePool *NSThreadCurrentPool(void);
 void NSThreadSetCurrentPool(NSAutoreleasePool *pool);
@@ -19,9 +19,8 @@ void NSThreadSetCurrentHandler(NSExceptionFrame *handler);
 NSUncaughtExceptionHandler *NSThreadUncaughtExceptionHandler(void);
 void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function);
 
--sharedObjectForClassName:(NSString *)className;
+- sharedObjectForClassName:(NSString *)className;
 
-
--(void)setExecuting:(BOOL)executing;
--(void)setFinished:(BOOL)finished;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 @end

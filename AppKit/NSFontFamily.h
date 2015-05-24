@@ -14,25 +14,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFontTypeface;
 
 @interface NSFontFamily : NSObject {
-	NSString       *_name;
-   NSMutableArray *_typefaces;
+    NSString *_name;
+    NSMutableArray *_typefaces;
 }
 
-+(NSArray *)allFontFamilyNames;
-+(NSFontFamily *)fontFamilyWithName:(NSString *)name;
-+(NSFontFamily *)fontFamilyWithTypefaceName:(NSString *)name;
-+(NSFontTypeface *)fontTypefaceWithName:(NSString *)name;
++ (NSArray *)allFontFamilyNames;
++ (NSFontFamily *)fontFamilyWithName:(NSString *)name;
++ (NSFontFamily *)fontFamilyWithTypefaceName:(NSString *)name;
++ (NSFontTypeface *)fontTypefaceWithName:(NSString *)name;
 
--initWithName:(NSString *)name;
+- initWithName:(NSString *)name;
 
--(NSString *)name;
+- (NSString *)name;
 
--(NSFontTypeface *)typefaceWithName:(NSString *)name;
--(NSFontTypeface *)typefaceWithTraits:(NSFontTraitMask)traits;
+- (NSFontTypeface *)typefaceWithName:(NSString *)name;
+- (NSFontTypeface *)typefaceWithTraits:(NSFontTraitMask)traits;
 
--(void)addTypeface:(NSFontTypeface *)typeface;
--(void)addTypefaces:(NSArray *)typefaces;
+- (void)addTypeface:(NSFontTypeface *)typeface;
+- (void)addTypefaces:(NSArray *)typefaces;
 
--(NSArray *)typefaces;
+- (NSArray *)typefaces;
 
 @end

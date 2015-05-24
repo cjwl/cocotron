@@ -20,18 +20,18 @@ typedef size_t (*O2DataConsumerPutBytesCallback)(void *info, const void *buffer,
 typedef void (*O2DataConsumerReleaseInfoCallback)(void *info);
 
 struct O2DataConsumerCallbacks {
-	O2DataConsumerPutBytesCallback putBytes;
-	O2DataConsumerReleaseInfoCallback releaseConsumer;
+    O2DataConsumerPutBytesCallback putBytes;
+    O2DataConsumerReleaseInfoCallback releaseConsumer;
 };
 
 typedef struct O2DataConsumerCallbacks O2DataConsumerCallbacks;
 
 @interface O2DataConsumer : NSObject {
-	void *_info;
-	O2DataConsumerCallbacks _callbacks;
+    void *_info;
+    O2DataConsumerCallbacks _callbacks;
 }
 
--(NSMutableData *)mutableData;
+- (NSMutableData *)mutableData;
 
 O2DataConsumerRef O2DataConsumerCreate(void *info, const O2DataConsumerCallbacks *callbacks);
 O2DataConsumerRef O2DataConsumerCreateWithCFData(CFMutableDataRef data);
@@ -40,7 +40,6 @@ O2DataConsumerRef O2DataConsumerRetain(O2DataConsumerRef self);
 void O2DataConsumerRelease(O2DataConsumerRef self);
 
 // private internal use
-size_t O2DataConsumerPutBytes(O2DataConsumerRef self,const void *buffer,size_t count);
+size_t O2DataConsumerPutBytes(O2DataConsumerRef self, const void *buffer, size_t count);
 
 @end
-

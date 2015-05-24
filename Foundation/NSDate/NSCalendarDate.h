@@ -10,56 +10,65 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSCalendarDate : NSDate {
     NSTimeInterval _timeInterval;
-    NSString      *_format;
-    NSTimeZone    *_timeZone;
+    NSString *_format;
+    NSTimeZone *_timeZone;
 }
 
-+calendarDate;
++ calendarDate;
 
--initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
-  hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
-  timeZone:(NSTimeZone *)timeZone;
-    
--initWithString:(NSString *)string calendarFormat:(NSString *)format
-  locale:(NSDictionary *)locale;
--initWithString:(NSString *)string calendarFormat:(NSString *)format;
--initWithString:(NSString *)string;
+- initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+            hour:(NSUInteger)hour
+          minute:(NSUInteger)minute
+          second:(NSUInteger)second
+        timeZone:(NSTimeZone *)timeZone;
 
-+dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
-  hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
-  timeZone:(NSTimeZone *)timeZone;
+- initWithString:(NSString *)string calendarFormat:(NSString *)format
+            locale:(NSDictionary *)locale;
+- initWithString:(NSString *)string calendarFormat:(NSString *)format;
+- initWithString:(NSString *)string;
 
-+dateWithString:(NSString *)string calendarFormat:(NSString *)format
-  locale:(NSDictionary *)locale;
++ dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+            hour:(NSUInteger)hour
+          minute:(NSUInteger)minute
+          second:(NSUInteger)second
+        timeZone:(NSTimeZone *)timeZone;
 
-+dateWithString:(NSString *)string calendarFormat:(NSString *)format;
++ dateWithString:(NSString *)string calendarFormat:(NSString *)format
+            locale:(NSDictionary *)locale;
 
--(NSString *)calendarFormat;
--(NSTimeZone *)timeZone;
++ dateWithString:(NSString *)string calendarFormat:(NSString *)format;
 
--(void)setCalendarFormat:(NSString *)format;
--(void)setTimeZone:(NSTimeZone *)timeZone;
+- (NSString *)calendarFormat;
+- (NSTimeZone *)timeZone;
 
--(NSInteger)secondOfMinute;		// 0-59
--(NSInteger)minuteOfHour;		// 0-59
--(NSInteger)hourOfDay;		// 0-23
--(NSInteger)dayOfWeek;		// 0 through 6. how consistent
--(NSInteger)dayOfMonth;		// 1 through 31
--(NSInteger)dayOfYear;		// 1 through 366. also consistent
--(NSInteger)monthOfYear;		// 1 through 12 says spec
--(NSInteger)yearOfCommonEra;		// 1 through armageddon
--(NSInteger)dayOfCommonEra;
+- (void)setCalendarFormat:(NSString *)format;
+- (void)setTimeZone:(NSTimeZone *)timeZone;
 
--(void)years:(NSInteger *)yearsp months:(NSInteger *)monthsp days:(NSInteger *)daysp
-  hours:(NSInteger *)hoursp minutes:(NSInteger *)minutesp seconds:(NSInteger *)secondsp
-  sinceDate:(NSCalendarDate *)date;
+- (NSInteger)secondOfMinute; // 0-59
+- (NSInteger)minuteOfHour; // 0-59
+- (NSInteger)hourOfDay; // 0-23
+- (NSInteger)dayOfWeek; // 0 through 6. how consistent
+- (NSInteger)dayOfMonth; // 1 through 31
+- (NSInteger)dayOfYear; // 1 through 366. also consistent
+- (NSInteger)monthOfYear; // 1 through 12 says spec
+- (NSInteger)yearOfCommonEra; // 1 through armageddon
+- (NSInteger)dayOfCommonEra;
 
--(NSCalendarDate *)dateByAddingYears:(NSInteger)years months:(NSInteger)months
-  days:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds;
+- (void)years:(NSInteger *)yearsp months:(NSInteger *)monthsp days:(NSInteger *)daysp
+        hours:(NSInteger *)hoursp
+      minutes:(NSInteger *)minutesp
+      seconds:(NSInteger *)secondsp
+    sinceDate:(NSCalendarDate *)date;
 
--(NSString *)descriptionWithCalendarFormat:(NSString *)format
-  locale:(NSDictionary *)locale;
--(NSString *)descriptionWithCalendarFormat:(NSString *)format;
--(NSString *)descriptionWithLocale:(NSDictionary *)locale;
+- (NSCalendarDate *)dateByAddingYears:(NSInteger)years months:(NSInteger)months
+                                 days:(NSInteger)days
+                                hours:(NSInteger)hours
+                              minutes:(NSInteger)minutes
+                              seconds:(NSInteger)seconds;
+
+- (NSString *)descriptionWithCalendarFormat:(NSString *)format
+                                     locale:(NSDictionary *)locale;
+- (NSString *)descriptionWithCalendarFormat:(NSString *)format;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale;
 
 @end

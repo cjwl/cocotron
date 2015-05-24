@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDelayedPerform;
 
-@interface NSRunLoop(private)
+@interface NSRunLoop (private)
 
--(void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed;
+- (void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed;
 
 @end

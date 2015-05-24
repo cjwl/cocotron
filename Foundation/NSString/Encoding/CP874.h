@@ -232,4 +232,4 @@ static uint16_t cp874[] = {
 };
 // clang-format on
 
-NSEncodingRegistration(cp874,kCFStringEncodingDOSThai);
+NSEncodingRegistration(cp874, kCFStringEncodingDOSThai);

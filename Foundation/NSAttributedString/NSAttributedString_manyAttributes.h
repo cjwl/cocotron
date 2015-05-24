@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRangeEntries.h>
 
 @interface NSAttributedString_manyAttributes : NSAttributedString {
-   NSString       *_string;
-   NSRangeEntries *_rangeToAttributes;
+    NSString *_string;
+    NSRangeEntries *_rangeToAttributes;
 }
 
 @end

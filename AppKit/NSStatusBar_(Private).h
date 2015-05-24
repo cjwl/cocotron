@@ -13,8 +13,8 @@
 #import <AppKit.h/Win32Window.h>
 #endif
 
-#define    NSVariableStatusItemLength    (-1)
-#define    NSSquareStatusItemLength      (-2)
+#define NSVariableStatusItemLength (-1)
+#define NSSquareStatusItemLength (-2)
 
 #import <AppKit/NSStatusBar.h>
 

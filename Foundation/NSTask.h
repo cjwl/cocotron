@@ -8,56 +8,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary;
+@class NSArray, NSDictionary;
 
-FOUNDATION_EXPORT NSString * const NSTaskDidTerminateNotification;
+FOUNDATION_EXPORT NSString *const NSTaskDidTerminateNotification;
 
 @interface NSTask : NSObject {
-  NSString *launchPath;
-  NSArray  *arguments;
-  NSString *currentDirectoryPath;
-  NSDictionary *environment;
+    NSString *launchPath;
+    NSArray *arguments;
+    NSString *currentDirectoryPath;
+    NSDictionary *environment;
 
-  id standardInput;
-  id standardOutput;
-  id standardError;
-}  
+    id standardInput;
+    id standardOutput;
+    id standardError;
+}
 
-+(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
++ (NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
 
--init;
+- init;
 
--(NSString *)currentDirectoryPath;
--(NSString *)launchPath;
--(NSArray *)arguments;
--(NSDictionary *)environment;
+- (NSString *)currentDirectoryPath;
+- (NSString *)launchPath;
+- (NSArray *)arguments;
+- (NSDictionary *)environment;
 
--(id)standardError;
--(id)standardInput;
--(id)standardOutput;
+- (id)standardError;
+- (id)standardInput;
+- (id)standardOutput;
 
--(void)setCurrentDirectoryPath:(NSString *)path;
--(void)setLaunchPath:(NSString *)path;
--(void)setArguments:(NSArray *)arguments;
--(void)setEnvironment:(NSDictionary *)values;
+- (void)setCurrentDirectoryPath:(NSString *)path;
+- (void)setLaunchPath:(NSString *)path;
+- (void)setArguments:(NSArray *)arguments;
+- (void)setEnvironment:(NSDictionary *)values;
 
--(void)setStandardInput:(id)input;
--(void)setStandardOutput:(id)output;
--(void)setStandardError:(id)error;
+- (void)setStandardInput:(id)input;
+- (void)setStandardOutput:(id)output;
+- (void)setStandardError:(id)error;
 
--(void)launch;
--(BOOL)isRunning;
+- (void)launch;
+- (BOOL)isRunning;
 
--(void)interrupt;
+- (void)interrupt;
 
--(BOOL)suspend;
--(BOOL)resume;
+- (BOOL)suspend;
+- (BOOL)resume;
 
--(void)terminate;
--(int)terminationStatus;
+- (void)terminate;
+- (int)terminationStatus;
 
--(void)waitUntilExit;
+- (void)waitUntilExit;
 
--(int)processIdentifier;
+- (int)processIdentifier;
 
 @end

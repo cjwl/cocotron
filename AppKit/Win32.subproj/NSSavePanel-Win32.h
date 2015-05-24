@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 #import <commdlg.h>
 
-@interface NSSavePanel(Win32)
+@interface NSSavePanel (Win32)
 
--(int)_GetOpenFileName;
+- (int)_GetOpenFileName;
 
 @end

@@ -10,42 +10,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreText/CTFont.h>
 
 enum {
-   CGNullGlyph=0x0
+    CGNullGlyph = 0x0
 };
 
 @interface KTFont : NSObject {
-   CGFontRef _font;
-   CGFloat   _size;
-   CGFloat   _unitsPerEm;
-   CGGlyph **_twoLevel;
+    CGFontRef _font;
+    CGFloat _size;
+    CGFloat _unitsPerEm;
+    CGGlyph **_twoLevel;
 }
 
--initWithFont:(CGFontRef)font size:(CGFloat)size;
--initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language;
+- initWithFont:(CGFontRef)font size:(CGFloat)size;
+- initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language;
 
--(CFStringRef)copyName;
--(CGFloat)pointSize;
--(CGFloat)fontSize;
+- (CFStringRef)copyName;
+- (CGFloat)pointSize;
+- (CGFloat)fontSize;
 
--(CGRect)boundingRect;
--(CGFloat)ascender;
--(CGFloat)descender;
--(CGFloat)leading;
--(CGFloat)underlineThickness;
--(CGFloat)underlinePosition;
--(CGFloat)italicAngle;
--(CGFloat)leading;
--(CGFloat)xHeight;
--(CGFloat)capHeight;
+- (CGRect)boundingRect;
+- (CGFloat)ascender;
+- (CGFloat)descender;
+- (CGFloat)leading;
+- (CGFloat)underlineThickness;
+- (CGFloat)underlinePosition;
+- (CGFloat)italicAngle;
+- (CGFloat)leading;
+- (CGFloat)xHeight;
+- (CGFloat)capHeight;
 
--(unsigned)numberOfGlyphs;
+- (unsigned)numberOfGlyphs;
 
--(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
+- (CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
 
--(void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length;
+- (void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length;
 
--(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
+- (void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
--(CGPathRef)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform;
+- (CGPathRef)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform;
 
 @end

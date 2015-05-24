@@ -12,22 +12,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSColor, NSMutableArray, NSArray, NSColorSpace, NSBezierPath;
 
 typedef enum {
-   NSGradientDrawsBeforeStartingLocation=(1 << 0),
-   NSGradientDrawsAfterEndingLocation=(1 << 1),
+    NSGradientDrawsBeforeStartingLocation = (1 << 0),
+    NSGradientDrawsAfterEndingLocation = (1 << 1),
 } NSGradientDrawingOptions;
 
 @interface NSGradient : NSObject {
-   NSColorSpace *_colorSpace;
-   NSInteger  _numberOfColors;
-   NSInteger  _numberOfComponents;
-   CGFloat  **_components;
-   CGFloat   *_locations;
+    NSColorSpace *_colorSpace;
+    NSInteger _numberOfColors;
+    NSInteger _numberOfComponents;
+    CGFloat **_components;
+    CGFloat *_locations;
 }
 
--initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
--initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
--initWithColors:(NSArray *)colors;
--initWithColorsAndLocations:(NSColor *)firstColor,...;
+- initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
+- initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
+- initWithColors:(NSArray *)colors;
+- initWithColorsAndLocations:(NSColor *)firstColor, ...;
 
 - (void)drawFromPoint:(NSPoint)startingPoint toPoint:(NSPoint)endingPoint options:(NSGradientDrawingOptions)options;
 - (void)drawFromCenter:(NSPoint)startCenter radius:(CGFloat)startRadius toCenter:(NSPoint)endCenter radius:(CGFloat)endRadius options:(NSGradientDrawingOptions)options;

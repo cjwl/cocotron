@@ -11,148 +11,147 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMenu, NSUndoManager;
 
-@interface NSResponder : NSObject  <NSCoding> {
-   id _nextResponder;
+@interface NSResponder : NSObject <NSCoding> {
+    id _nextResponder;
 }
 
--(NSResponder *)nextResponder;
+- (NSResponder *)nextResponder;
 
--(NSMenu *)menu;
--(NSUndoManager *)undoManager;
+- (NSMenu *)menu;
+- (NSUndoManager *)undoManager;
 
--(void)setNextResponder:(NSResponder *)responder;
--(void)setMenu:(NSMenu *)menu;
+- (void)setNextResponder:(NSResponder *)responder;
+- (void)setMenu:(NSMenu *)menu;
 
--validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType;
+- validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType;
 
--(void)interpretKeyEvents:(NSArray *)events;
--(BOOL)performKeyEquivalent:(NSEvent *)event;
--(BOOL)tryToPerform:(SEL)action with:object;
--(void)noResponderFor:(SEL)action;
+- (void)interpretKeyEvents:(NSArray *)events;
+- (BOOL)performKeyEquivalent:(NSEvent *)event;
+- (BOOL)tryToPerform:(SEL)action with:object;
+- (void)noResponderFor:(SEL)action;
 
--(BOOL)acceptsFirstResponder;
--(BOOL)becomeFirstResponder;
--(BOOL)resignFirstResponder;
+- (BOOL)acceptsFirstResponder;
+- (BOOL)becomeFirstResponder;
+- (BOOL)resignFirstResponder;
 
--(void)flagsChanged:(NSEvent *)event;
+- (void)flagsChanged:(NSEvent *)event;
 
--(NSError *)willPresentError:(NSError *)error;
--(BOOL)presentError:(NSError *)error;
--(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info;	
+- (NSError *)willPresentError:(NSError *)error;
+- (BOOL)presentError:(NSError *)error;
+- (void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info;
 
--(void)keyUp:(NSEvent *)event;
--(void)keyDown:(NSEvent *)event;
+- (void)keyUp:(NSEvent *)event;
+- (void)keyDown:(NSEvent *)event;
 
--(void)cursorUpdate:(NSEvent *)event;
--(void)scrollWheel:(NSEvent *)event;
+- (void)cursorUpdate:(NSEvent *)event;
+- (void)scrollWheel:(NSEvent *)event;
 
--(void)mouseUp:(NSEvent *)event;
--(void)mouseDown:(NSEvent *)event;
--(void)mouseMoved:(NSEvent *)event;
--(void)mouseEntered:(NSEvent *)event;
--(void)mouseExited:(NSEvent *)event;
--(void)mouseDragged:(NSEvent *)event;
+- (void)mouseUp:(NSEvent *)event;
+- (void)mouseDown:(NSEvent *)event;
+- (void)mouseMoved:(NSEvent *)event;
+- (void)mouseEntered:(NSEvent *)event;
+- (void)mouseExited:(NSEvent *)event;
+- (void)mouseDragged:(NSEvent *)event;
 
--(void)rightMouseUp:(NSEvent *)event;
--(void)rightMouseDown:(NSEvent *)event;
--(void)rightMouseDragged:(NSEvent *)event;
+- (void)rightMouseUp:(NSEvent *)event;
+- (void)rightMouseDown:(NSEvent *)event;
+- (void)rightMouseDragged:(NSEvent *)event;
 
 @end
 
-@interface NSResponder(NSResponder_keyBindings)
+@interface NSResponder (NSResponder_keyBindings)
 
--(void)doCommandBySelector:(SEL)selector;
+- (void)doCommandBySelector:(SEL)selector;
 
--(void)insertText:(NSString *)text;
--(void)insertNewline:sender;
--(void)insertNewlineIgnoringFieldEditor:sender;
--(void)insertTab:sender;
--(void)insertTabIgnoringFieldEditor:sender;
--(void)insertBacktab:sender;
--(void)insertParagraphSeparator:sender;
+- (void)insertText:(NSString *)text;
+- (void)insertNewline:sender;
+- (void)insertNewlineIgnoringFieldEditor:sender;
+- (void)insertTab:sender;
+- (void)insertTabIgnoringFieldEditor:sender;
+- (void)insertBacktab:sender;
+- (void)insertParagraphSeparator:sender;
 
--(void)deleteForward:sender;
--(void)deleteBackward:sender;
--(void)deleteWordForward:sender;
--(void)deleteWordBackward:sender;
--(void)deleteToBeginningOfLine:sender;
--(void)deleteToEndOfLine:sender;
--(void)deleteToBeginningOfParagraph:sender;
--(void)deleteToEndOfParagraph:sender;
+- (void)deleteForward:sender;
+- (void)deleteBackward:sender;
+- (void)deleteWordForward:sender;
+- (void)deleteWordBackward:sender;
+- (void)deleteToBeginningOfLine:sender;
+- (void)deleteToEndOfLine:sender;
+- (void)deleteToBeginningOfParagraph:sender;
+- (void)deleteToEndOfParagraph:sender;
 
--(void)transpose:sender;
--(void)transposeWords:sender;
+- (void)transpose:sender;
+- (void)transposeWords:sender;
 
--(void)indent:sender;
--(void)complete:sender;
--(void)yank:sender;
+- (void)indent:sender;
+- (void)complete:sender;
+- (void)yank:sender;
 
--(void)cancelOperation:(id)sender;
--(void)uppercaseWord:sender;
--(void)lowercaseWord:sender;
--(void)capitalizeWord:sender;
--(void)changeCaseOfLetter:sender;
+- (void)cancelOperation:(id)sender;
+- (void)uppercaseWord:sender;
+- (void)lowercaseWord:sender;
+- (void)capitalizeWord:sender;
+- (void)changeCaseOfLetter:sender;
 
--(void)setMark:sender;
--(void)deleteToMark:sender;
--(void)selectToMark:sender;
--(void)swapWithMark:sender;
+- (void)setMark:sender;
+- (void)deleteToMark:sender;
+- (void)selectToMark:sender;
+- (void)swapWithMark:sender;
 
--(void)selectWord:sender;
--(void)selectLine:sender;
--(void)selectParagraph:sender;
--(void)selectAll:sender;
--(void)centerSelectionInVisibleArea:sender;
+- (void)selectWord:sender;
+- (void)selectLine:sender;
+- (void)selectParagraph:sender;
+- (void)selectAll:sender;
+- (void)centerSelectionInVisibleArea:sender;
 
--(void)moveUpAndModifySelection:sender;
--(void)moveDownAndModifySelection:sender;
+- (void)moveUpAndModifySelection:sender;
+- (void)moveDownAndModifySelection:sender;
 
--(void)moveForwardAndModifySelection:sender;
--(void)moveBackwardAndModifySelection:sender;
--(void)moveRightAndModifySelection:sender;
--(void)moveLeftAndModifySelection:sender;
+- (void)moveForwardAndModifySelection:sender;
+- (void)moveBackwardAndModifySelection:sender;
+- (void)moveRightAndModifySelection:sender;
+- (void)moveLeftAndModifySelection:sender;
 
--(void)moveWordForwardAndModifySelection:sender;
--(void)moveWordBackwardAndModifySelection:sender;
--(void)moveWordRightAndModifySelection:sender;
--(void)moveWordLeftAndModifySelection:sender;
+- (void)moveWordForwardAndModifySelection:sender;
+- (void)moveWordBackwardAndModifySelection:sender;
+- (void)moveWordRightAndModifySelection:sender;
+- (void)moveWordLeftAndModifySelection:sender;
 
--(void)moveUp:sender;
--(void)moveDown:sender;
--(void)moveLeft:sender;
--(void)moveRight:sender;
--(void)moveForward:sender;
--(void)moveBackward:sender;
+- (void)moveUp:sender;
+- (void)moveDown:sender;
+- (void)moveLeft:sender;
+- (void)moveRight:sender;
+- (void)moveForward:sender;
+- (void)moveBackward:sender;
 
--(void)moveWordForward:sender;
--(void)moveWordBackward:sender;
--(void)moveWordRight:sender;
--(void)moveWordLeft:sender;
+- (void)moveWordForward:sender;
+- (void)moveWordBackward:sender;
+- (void)moveWordRight:sender;
+- (void)moveWordLeft:sender;
 
+- (void)moveToBeginningOfLine:sender;
+- (void)moveToEndOfLine:sender;
 
--(void)moveToBeginningOfLine:sender;
--(void)moveToEndOfLine:sender;
+- (void)moveToBeginningOfParagraph:sender;
+- (void)moveToEndOfParagraph:sender;
 
--(void)moveToBeginningOfParagraph:sender;
--(void)moveToEndOfParagraph:sender;
+- (void)moveToBeginningOfDocument:sender;
+- (void)moveToEndOfDocument:sender;
 
--(void)moveToBeginningOfDocument:sender;
--(void)moveToEndOfDocument:sender;
+- (void)pageUp:sender;
+- (void)pageDown:sender;
 
--(void)pageUp:sender;
--(void)pageDown:sender;
-
--(void)scrollPageUp:sender;
--(void)scrollPageDown:sender;
--(void)scrollLineUp:sender;
--(void)scrollLineDown:sender;
+- (void)scrollPageUp:sender;
+- (void)scrollPageDown:sender;
+- (void)scrollLineUp:sender;
+- (void)scrollLineDown:sender;
 
 - (void)scrollToBeginningOfDocument:(id)sender;
 - (void)scrollToEndOfDocument:(id)sender;
 
--(void)noop:sender;
+- (void)noop:sender;
 
--(void)moveToEndOfDocumentAndModifySelection:sender;		// n.b.:
--(void)moveToBeginningOfDocumentAndModifySelection:sender;		// these aren't in OSX (can't hurt)
+- (void)moveToEndOfDocumentAndModifySelection:sender; // n.b.:
+- (void)moveToBeginningOfDocumentAndModifySelection:sender; // these aren't in OSX (can't hurt)
 
 @end

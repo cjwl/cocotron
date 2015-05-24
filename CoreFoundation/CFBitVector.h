@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct CFBitVector *CFBitVectorRef;
 
-typedef CFUInteger  CFBit;
+typedef CFUInteger CFBit;
 
-COREFOUNDATION_EXPORT CFTypeID       CFBitVectorGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFBitVectorGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFBitVectorRef CFBitVectorCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex count);
+COREFOUNDATION_EXPORT CFBitVectorRef CFBitVectorCreate(CFAllocatorRef allocator, const uint8_t *bytes, CFIndex count);
 
-COREFOUNDATION_EXPORT CFBitVectorRef CFBitVectorCreateCopy(CFAllocatorRef allocator,CFBitVectorRef self);
+COREFOUNDATION_EXPORT CFBitVectorRef CFBitVectorCreateCopy(CFAllocatorRef allocator, CFBitVectorRef self);
 
-COREFOUNDATION_EXPORT CFIndex        CFBitVectorGetCount(CFBitVectorRef self);
-COREFOUNDATION_EXPORT CFBit          CFBitVectorGetBitAtIndex(CFBitVectorRef self,CFIndex index);
-COREFOUNDATION_EXPORT void           CFBitVectorGetBits(CFBitVectorRef self,CFRange range,uint8_t *bytes);
+COREFOUNDATION_EXPORT CFIndex CFBitVectorGetCount(CFBitVectorRef self);
+COREFOUNDATION_EXPORT CFBit CFBitVectorGetBitAtIndex(CFBitVectorRef self, CFIndex index);
+COREFOUNDATION_EXPORT void CFBitVectorGetBits(CFBitVectorRef self, CFRange range, uint8_t *bytes);
 
-COREFOUNDATION_EXPORT Boolean        CFBitVectorContainsBit(CFBitVectorRef self,CFRange range,CFBit value);
-COREFOUNDATION_EXPORT CFIndex        CFBitVectorGetCountOfBit(CFBitVectorRef self,CFRange range,CFBit value);
-COREFOUNDATION_EXPORT CFIndex        CFBitVectorGetFirstIndexOfBit(CFBitVectorRef self,CFRange range,CFBit value);
-COREFOUNDATION_EXPORT CFIndex        CFBitVectorGetLastIndexOfBit(CFBitVectorRef self,CFRange range,CFBit value);
+COREFOUNDATION_EXPORT Boolean CFBitVectorContainsBit(CFBitVectorRef self, CFRange range, CFBit value);
+COREFOUNDATION_EXPORT CFIndex CFBitVectorGetCountOfBit(CFBitVectorRef self, CFRange range, CFBit value);
+COREFOUNDATION_EXPORT CFIndex CFBitVectorGetFirstIndexOfBit(CFBitVectorRef self, CFRange range, CFBit value);
+COREFOUNDATION_EXPORT CFIndex CFBitVectorGetLastIndexOfBit(CFBitVectorRef self, CFRange range, CFBit value);

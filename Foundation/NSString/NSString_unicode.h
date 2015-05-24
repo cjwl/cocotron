@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSString_unicode : NSString {
-   NSUInteger _length;
-   unichar  _unicode[0];
+    NSUInteger _length;
+    unichar _unicode[0];
 }
 
 @end
 
-void      NSString_unicodeInitialize(void);
+void NSString_unicodeInitialize(void);
 NSString *NSString_unicodeNew(NSZone *zone,
- const unichar *unicode,NSUInteger length);
+    const unichar *unicode, NSUInteger length);
 
-NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength);
-char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters, NSUInteger length, NSUInteger *location, char *cString, NSUInteger maxLength);
+char *NSUnicodeToUnicode(const unichar *characters, NSUInteger length, NSUInteger *resultLength, NSZone *zone, BOOL zeroTerminate);

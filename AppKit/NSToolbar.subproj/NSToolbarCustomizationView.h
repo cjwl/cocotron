@@ -10,20 +10,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSToolbar;
 
-APPKIT_EXPORT NSString * const NSToolbarItemIdentifierPboardType;
+APPKIT_EXPORT NSString *const NSToolbarItemIdentifierPboardType;
 
 @interface NSToolbarCustomizationView : NSView {
     NSToolbar *_toolbar;
     BOOL _isDefaultSetView;
 }
 
--(NSToolbar *)toolbar;
--(void)setToolbar:(NSToolbar *)toolbar;
+- (NSToolbar *)toolbar;
+- (void)setToolbar:(NSToolbar *)toolbar;
 
--(void)setDefaultSetView:(BOOL)flag;
--(BOOL)isDefaultSetView;
+- (void)setDefaultSetView:(BOOL)flag;
+- (BOOL)isDefaultSetView;
 
--(NSSize)desiredSize;
+- (NSSize)desiredSize;
 
 @end
-

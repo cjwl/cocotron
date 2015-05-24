@@ -8,10 +8,8 @@
 
 #import "Demo.h"
 
-
 @interface DemoPattern : Demo {
-   CGImageRef _image;
-
+    CGImageRef _image;
 }
 
 @end

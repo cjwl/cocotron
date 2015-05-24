@@ -14,130 +14,129 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Provides an extendable translation scheme for apps that use non-standard fonts in UI elements
 @interface NSNibFontNameTranslator : NSObject {
-	
 }
 
-- (NSString*)translateToNibFontName:(NSString*)fontName;
-- (NSString*)translateFromNibFontName:(NSString*)fontName;
+- (NSString *)translateToNibFontName:(NSString *)fontName;
+- (NSString *)translateFromNibFontName:(NSString *)fontName;
 
 @end
 
 typedef unsigned NSGlyph;
 
 enum {
-   NSNullGlyph=0,
-   NSControlGlyph=0xFFFFFF,
+    NSNullGlyph = 0,
+    NSControlGlyph = 0xFFFFFF,
 };
 
 typedef enum {
-   NSNativeShortGlyphPacking,
+    NSNativeShortGlyphPacking,
 } NSMultibyteGlyphPacking;
 
 typedef enum {
-   NSFontDefaultRenderingMode,
-   NSFontAntialiasedRenderingMode,
-   NSFontIntegerAdvancementsRenderingMode,
-   NSFontAntialiasedIntegerAdvancementsRenderingMode,
+    NSFontDefaultRenderingMode,
+    NSFontAntialiasedRenderingMode,
+    NSFontIntegerAdvancementsRenderingMode,
+    NSFontAntialiasedIntegerAdvancementsRenderingMode,
 } NSFontRenderingMode;
 
 @interface NSFont : NSObject <NSCopying> {
-   NSString        *_name;
-   float            _pointSize;
-   float            _matrix[6];
-   NSStringEncoding _encoding;
-   
-   CGFontRef        _cgFont;
-   CTFontRef        _ctFont;
+    NSString *_name;
+    float _pointSize;
+    float _matrix[6];
+    NSStringEncoding _encoding;
+
+    CGFontRef _cgFont;
+    CTFontRef _ctFont;
 }
 
-+(float)systemFontSize;
-+(float)smallSystemFontSize;
-+(float)labelFontSize;
-+(float)systemFontSizeForControlSize:(NSControlSize)size;
++ (float)systemFontSize;
++ (float)smallSystemFontSize;
++ (float)labelFontSize;
++ (float)systemFontSizeForControlSize:(NSControlSize)size;
 
-+(NSFont *)boldSystemFontOfSize:(float)size;
-+(NSFont *)controlContentFontOfSize:(float)size;
++ (NSFont *)boldSystemFontOfSize:(float)size;
++ (NSFont *)controlContentFontOfSize:(float)size;
 
-+(NSFont *)labelFontOfSize:(float)size;
-+(NSFont *)menuFontOfSize:(float)size;
-+(NSFont *)menuBarFontOfSize:(float)size;
++ (NSFont *)labelFontOfSize:(float)size;
++ (NSFont *)menuFontOfSize:(float)size;
++ (NSFont *)menuBarFontOfSize:(float)size;
 
-+(NSFont *)messageFontOfSize:(float)size;
-+(NSFont *)paletteFontOfSize:(float)size;
-+(NSFont *)systemFontOfSize:(float)size;
-+(NSFont *)titleBarFontOfSize:(float)size;
-+(NSFont *)toolTipsFontOfSize:(float)size;
-+(NSFont *)userFontOfSize:(float)size;
-+(NSFont *)userFixedPitchFontOfSize:(float)size;
++ (NSFont *)messageFontOfSize:(float)size;
++ (NSFont *)paletteFontOfSize:(float)size;
++ (NSFont *)systemFontOfSize:(float)size;
++ (NSFont *)titleBarFontOfSize:(float)size;
++ (NSFont *)toolTipsFontOfSize:(float)size;
++ (NSFont *)userFontOfSize:(float)size;
++ (NSFont *)userFixedPitchFontOfSize:(float)size;
 
-+(void)setUserFont:(NSFont *)value;
-+(void)setUserFixedPitchFont:(NSFont *)value;
++ (void)setUserFont:(NSFont *)value;
++ (void)setUserFixedPitchFont:(NSFont *)value;
 
-+(NSFont *)fontWithName:(NSString *)name size:(float)size;
-+(NSFont *)fontWithName:(NSString *)name matrix:(const float *)matrix;
-+(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size;
-+(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform;
++ (NSFont *)fontWithName:(NSString *)name size:(float)size;
++ (NSFont *)fontWithName:(NSString *)name matrix:(const float *)matrix;
++ (NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size;
++ (NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform;
 
-+(NSArray *)preferredFontNames;
-+(void)setPreferredFontNames:(NSArray *)fontNames;
++ (NSArray *)preferredFontNames;
++ (void)setPreferredFontNames:(NSArray *)fontNames;
 
--(float)pointSize;
--(NSString *)fontName;
--(const float *)matrix;
--(NSAffineTransform *)textTransform;
--(NSFontRenderingMode)renderingMode;
--(NSCharacterSet *)coveredCharacterSet;
--(NSStringEncoding)mostCompatibleStringEncoding;
--(NSString *)familyName;
--(NSString *)displayName;
--(NSFontDescriptor *)fontDescriptor;
+- (float)pointSize;
+- (NSString *)fontName;
+- (const float *)matrix;
+- (NSAffineTransform *)textTransform;
+- (NSFontRenderingMode)renderingMode;
+- (NSCharacterSet *)coveredCharacterSet;
+- (NSStringEncoding)mostCompatibleStringEncoding;
+- (NSString *)familyName;
+- (NSString *)displayName;
+- (NSFontDescriptor *)fontDescriptor;
 
--(NSFont *)printerFont;
--(NSFont *)screenFont;
--(NSFont *)screenFontWithRenderingMode:(NSFontRenderingMode)mode;
+- (NSFont *)printerFont;
+- (NSFont *)screenFont;
+- (NSFont *)screenFontWithRenderingMode:(NSFontRenderingMode)mode;
 
--(NSRect)boundingRectForFont;
--(NSRect)boundingRectForGlyph:(NSGlyph)glyph;
+- (NSRect)boundingRectForFont;
+- (NSRect)boundingRectForGlyph:(NSGlyph)glyph;
 
--(NSMultibyteGlyphPacking)glyphPacking;
--(unsigned)numberOfGlyphs;
--(NSGlyph)glyphWithName:(NSString *)name;
--(BOOL)glyphIsEncoded:(NSGlyph)glyph;
--(NSSize)advancementForGlyph:(NSGlyph)glyph;
+- (NSMultibyteGlyphPacking)glyphPacking;
+- (unsigned)numberOfGlyphs;
+- (NSGlyph)glyphWithName:(NSString *)name;
+- (BOOL)glyphIsEncoded:(NSGlyph)glyph;
+- (NSSize)advancementForGlyph:(NSGlyph)glyph;
 
--(NSSize)maximumAdvancement;
--(float)underlinePosition;
--(float)underlineThickness;
--(float)ascender;
--(float)descender;
--(float)leading;
--(float)defaultLineHeightForFont;
--(BOOL)isFixedPitch;
--(float)italicAngle;
--(float)leading;
--(float)xHeight;
--(float)capHeight;
+- (NSSize)maximumAdvancement;
+- (float)underlinePosition;
+- (float)underlineThickness;
+- (float)ascender;
+- (float)descender;
+- (float)leading;
+- (float)defaultLineHeightForFont;
+- (BOOL)isFixedPitch;
+- (float)italicAngle;
+- (float)leading;
+- (float)xHeight;
+- (float)capHeight;
 
--(void)setInContext:(NSGraphicsContext *)context;
--(void)set;
+- (void)setInContext:(NSGraphicsContext *)context;
+- (void)set;
 
--(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp;
+- (NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp;
 
--(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
--(void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length;
--(void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
+- (void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
+- (void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length;
+- (void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
 
 // private
 
--(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length;
+- (unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length;
 
 @end
 
 @interface NSFont (PortatibilityAdditions)
 
-+ (void)setNibFontTranslator:(NSNibFontNameTranslator*)fontTranslator;
-+ (NSNibFontNameTranslator*)nibFontTranslator;
++ (void)setNibFontTranslator:(NSNibFontNameTranslator *)fontTranslator;
++ (NSNibFontNameTranslator *)nibFontTranslator;
 
 @end
 
-int NSConvertGlyphsToPackedGlyphs(NSGlyph *glyphs,int length,NSMultibyteGlyphPacking packing,char *output);
+int NSConvertGlyphsToPackedGlyphs(NSGlyph *glyphs, int length, NSMultibyteGlyphPacking packing, char *output);

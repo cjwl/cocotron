@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSExpression.h>
 
 @interface NSExpression_assignment : NSExpression {
-   NSExpression *_variable;
-   NSExpression *_expression;
+    NSExpression *_variable;
+    NSExpression *_expression;
 }
 
-+(NSExpression *)expressionWithVariable:(NSExpression *)variable expression:(NSExpression *)expression;
++ (NSExpression *)expressionWithVariable:(NSExpression *)variable expression:(NSExpression *)expression;
 
 @end

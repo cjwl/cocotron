@@ -10,23 +10,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSData;
 
 typedef enum {
-   NSPropertyListImmutable,
-   NSPropertyListMutableContainers,
-   NSPropertyListMutableContainersAndLeaves,
+    NSPropertyListImmutable,
+    NSPropertyListMutableContainers,
+    NSPropertyListMutableContainersAndLeaves,
 } NSPropertyListMutabilityOptions;
 
 typedef enum {
-   NSPropertyListOpenStepFormat,
-   NSPropertyListXMLFormat_v1_0,
-   NSPropertyListBinaryFormat_v1_0,
+    NSPropertyListOpenStepFormat,
+    NSPropertyListXMLFormat_v1_0,
+    NSPropertyListBinaryFormat_v1_0,
 } NSPropertyListFormat;
 
 @interface NSPropertyListSerialization : NSObject
 
-+(BOOL)propertyList:propertyList isValidForFormat:(NSPropertyListFormat)format;
++ (BOOL)propertyList:propertyList isValidForFormat:(NSPropertyListFormat)format;
 
-+(NSData *)dataFromPropertyList:plist format:(NSPropertyListFormat)format errorDescription:(NSString **)errorDescriptionp;
++ (NSData *)dataFromPropertyList:plist format:(NSPropertyListFormat)format errorDescription:(NSString **)errorDescriptionp;
 
-+propertyListFromData:(NSData *)data mutabilityOption:(NSPropertyListMutabilityOptions)mutability format:(NSPropertyListFormat *)format errorDescription:(NSString **)errorDescriptionp;
++ propertyListFromData:(NSData *)data mutabilityOption:(NSPropertyListMutabilityOptions)mutability format:(NSPropertyListFormat *)format errorDescription:(NSString **)errorDescriptionp;
 
 @end

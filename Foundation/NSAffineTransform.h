@@ -9,39 +9,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 
 typedef struct {
-   CGFloat m11;
-   CGFloat m12;
-   CGFloat m21;
-   CGFloat m22;
-   CGFloat tX;
-   CGFloat tY;
+    CGFloat m11;
+    CGFloat m12;
+    CGFloat m21;
+    CGFloat m22;
+    CGFloat tX;
+    CGFloat tY;
 } NSAffineTransformStruct;
 
-@interface NSAffineTransform : NSObject <NSCopying,NSCoding> {
-   NSAffineTransformStruct _matrix;
+@interface NSAffineTransform : NSObject <NSCopying, NSCoding> {
+    NSAffineTransformStruct _matrix;
 }
 
--initWithTransform:(NSAffineTransform *)other;
+- initWithTransform:(NSAffineTransform *)other;
 
-+(NSAffineTransform *)transform;
++ (NSAffineTransform *)transform;
 
--(NSAffineTransformStruct)transformStruct;
--(void)setTransformStruct:(NSAffineTransformStruct)matrix;
+- (NSAffineTransformStruct)transformStruct;
+- (void)setTransformStruct:(NSAffineTransformStruct)matrix;
 
--(void)invert;
+- (void)invert;
 
--(void)appendTransform:(NSAffineTransform *)other;
--(void)prependTransform:(NSAffineTransform *)other;
+- (void)appendTransform:(NSAffineTransform *)other;
+- (void)prependTransform:(NSAffineTransform *)other;
 
--(void)translateXBy:(CGFloat)xby yBy:(CGFloat)yby;
+- (void)translateXBy:(CGFloat)xby yBy:(CGFloat)yby;
 
--(NSPoint)transformPoint:(NSPoint)point;
--(NSSize)transformSize:(NSSize)value;
+- (NSPoint)transformPoint:(NSPoint)point;
+- (NSSize)transformSize:(NSSize)value;
 
--(void)rotateByDegrees:(CGFloat)angle;
--(void)rotateByRadians:(CGFloat)radians;
+- (void)rotateByDegrees:(CGFloat)angle;
+- (void)rotateByRadians:(CGFloat)radians;
 
--(void)scaleBy:(CGFloat)value;
--(void)scaleXBy:(CGFloat)xvalue yBy:(CGFloat)yvalue;
+- (void)scaleBy:(CGFloat)value;
+- (void)scaleXBy:(CGFloat)xvalue yBy:(CGFloat)yvalue;
 
 @end

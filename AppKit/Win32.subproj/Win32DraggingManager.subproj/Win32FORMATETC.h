@@ -14,20 +14,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ole2.h>
 
 typedef struct {
-   DWORD pFiles;
-   POINT pt;
-   int   fNC;
-   int   fWide;
+    DWORD pFiles;
+    POINT pt;
+    int fNC;
+    int fWide;
 } DROPFILES;
 
 @interface Win32FORMATETC : NSObject {
-   FORMATETC _formatEtc;
+    FORMATETC _formatEtc;
 }
 
-+(Win32FORMATETC *)formatEtcWithFORMATETC:(FORMATETC)formatEtc;
++ (Win32FORMATETC *)formatEtcWithFORMATETC:(FORMATETC)formatEtc;
 
--initWithFORMATETC:(FORMATETC)formatEtc;
+- initWithFORMATETC:(FORMATETC)formatEtc;
 
--(FORMATETC)FORMATETC;
+- (FORMATETC)FORMATETC;
 
 @end

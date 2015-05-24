@@ -12,9 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSResponder;
 
 typedef enum {
-   NSNoInterfaceStyle,
-   NSWindows95InterfaceStyle,
-   NSMacintoshInterfaceStyle
+    NSNoInterfaceStyle,
+    NSWindows95InterfaceStyle,
+    NSMacintoshInterfaceStyle
 } NSInterfaceStyle;
 
-APPKIT_EXPORT NSInterfaceStyle NSInterfaceStyleForKey(NSString *key,NSResponder *responder);
+APPKIT_EXPORT NSInterfaceStyle NSInterfaceStyleForKey(NSString *key, NSResponder *responder);

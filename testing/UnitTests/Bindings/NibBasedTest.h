@@ -10,7 +10,7 @@
 #import <AppKit/AppKit.h>
 
 @interface NibBasedTest : SenTestCase {
-   NSArray* _topLevelObjects;
+    NSArray *_topLevelObjects;
 }
 
 @end

@@ -10,33 +10,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSColor;
 
-APPKIT_EXPORT NSString * const NSColorListDidChangeNotification;
+APPKIT_EXPORT NSString *const NSColorListDidChangeNotification;
 
 @interface NSColorList : NSObject {
-   NSMutableArray *_keys;
-   NSMutableArray *_colors;
-   NSString *_name;
-   NSString *_path;
+    NSMutableArray *_keys;
+    NSMutableArray *_colors;
+    NSString *_name;
+    NSString *_path;
 }
 
-+(NSArray *)availableColorLists;
++ (NSArray *)availableColorLists;
 
--initWithName:(NSString *)name fromFile:(NSString *)path;
--initWithName:(NSString *)name;
+- initWithName:(NSString *)name fromFile:(NSString *)path;
+- initWithName:(NSString *)name;
 
-+(NSColorList *)colorListNamed:(NSString *)name;
++ (NSColorList *)colorListNamed:(NSString *)name;
 
--(BOOL)isEditable;
--(NSString *)name;
--(NSArray *)allKeys;
--(NSColor *)colorWithKey:(NSString *)key;	
+- (BOOL)isEditable;
+- (NSString *)name;
+- (NSArray *)allKeys;
+- (NSColor *)colorWithKey:(NSString *)key;
 
--(void)setColor:(NSColor *)color forKey:(NSString *)key;
--(void)removeColorWithKey:(NSString *)key;	
--(void)insertColor:(NSColor *)color key:(NSString *)key atIndex:(unsigned)index;
+- (void)setColor:(NSColor *)color forKey:(NSString *)key;
+- (void)removeColorWithKey:(NSString *)key;
+- (void)insertColor:(NSColor *)color key:(NSString *)key atIndex:(unsigned)index;
 
--(void)writeToFile:(NSString *)path;
--(void)removeFile;				
-	
+- (void)writeToFile:(NSString *)path;
+- (void)removeFile;
+
 @end
-

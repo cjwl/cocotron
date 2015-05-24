@@ -8,12 +8,10 @@
 
 #import "Demo.h"
 
-
 @interface DemoSoftMask : Demo {
-  CGImageRef _image;
-  CGImageRef _mask;
-  CGImageRef _maskedImage;
-
+    CGImageRef _image;
+    CGImageRef _mask;
+    CGImageRef _maskedImage;
 }
 
 @end

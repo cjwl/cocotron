@@ -9,23 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/NSTextAttachmentCell.h>
 
-@class NSFileWrapper,NSImage;
+@class NSFileWrapper, NSImage;
 
 enum {
-   NSAttachmentCharacter=0xFFFC
+    NSAttachmentCharacter = 0xFFFC
 };
 
-@interface NSTextAttachment : NSObject  {
-   NSFileWrapper            *_fileWrapper;
-   id <NSTextAttachmentCell> _cell;
+@interface NSTextAttachment : NSObject {
+    NSFileWrapper *_fileWrapper;
+    id<NSTextAttachmentCell> _cell;
 }
 
--initWithFileWrapper:(NSFileWrapper *)fileWrapper;
+- initWithFileWrapper:(NSFileWrapper *)fileWrapper;
 
--(NSFileWrapper *)fileWrapper;
--(id <NSTextAttachmentCell>)attachmentCell;
+- (NSFileWrapper *)fileWrapper;
+- (id<NSTextAttachmentCell>)attachmentCell;
 
--(void)setFileWrapper:(NSFileWrapper *)fileWrapper;
--(void)setAttachmentCell:(id <NSTextAttachmentCell>)cell;
+- (void)setFileWrapper:(NSFileWrapper *)fileWrapper;
+- (void)setAttachmentCell:(id<NSTextAttachmentCell>)cell;
 
 @end

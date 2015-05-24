@@ -1,2 +1,2 @@
 
-#define kIOEthernetInterfaceClass     "IOEthernetInterface"
+#define kIOEthernetInterfaceClass "IOEthernetInterface"

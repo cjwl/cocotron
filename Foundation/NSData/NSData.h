@@ -9,74 +9,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@class NSURL,NSError;
+@class NSURL, NSError;
 
 enum {
-   NSDataReadingMapped  =0x01,
-   NSDataReadingUncached=0x02,
+    NSDataReadingMapped = 0x01,
+    NSDataReadingUncached = 0x02,
 
-// deprecated
-   NSMappedRead  =NSDataReadingMapped,
-   NSUncachedRead=NSDataReadingUncached,
+    // deprecated
+    NSMappedRead = NSDataReadingMapped,
+    NSUncachedRead = NSDataReadingUncached,
 };
 typedef NSUInteger NSDataReadingOptions;
 
 enum {
-   NSDataWritingAtomic=0x01,
+    NSDataWritingAtomic = 0x01,
 
-// deprecated
-   NSAtomicWrite=NSDataWritingAtomic,
+    // deprecated
+    NSAtomicWrite = NSDataWritingAtomic,
 };
 
 typedef NSUInteger NSDataWritingOptions;
 
 enum {
-   NSDataSearchBackwards=0x01,
-   NSDataSearchAnchored =0x02,
+    NSDataSearchBackwards = 0x01,
+    NSDataSearchAnchored = 0x02,
 };
 typedef NSUInteger NSDataSearchOptions;
 
-@interface NSData : NSObject <NSCopying,NSMutableCopying,NSCoding>
+@interface NSData : NSObject <NSCopying, NSMutableCopying, NSCoding>
 
--initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
--initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length;
--initWithBytes:(const void *)bytes length:(NSUInteger)length;
--initWithData:(NSData *)data;
--initWithContentsOfFile:(NSString *)path;
--initWithContentsOfMappedFile:(NSString *)path;
--initWithContentsOfURL:(NSURL *)url;
--initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
--initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
+- initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
+- initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length;
+- initWithBytes:(const void *)bytes length:(NSUInteger)length;
+- initWithData:(NSData *)data;
+- initWithContentsOfFile:(NSString *)path;
+- initWithContentsOfMappedFile:(NSString *)path;
+- initWithContentsOfURL:(NSURL *)url;
+- initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
+- initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
 
-+data;
-+dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
-+dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length;
-+dataWithBytes:(const void *)bytes length:(NSUInteger)length;
-+dataWithData:(NSData *)data;
-+dataWithContentsOfFile:(NSString *)path;
-+dataWithContentsOfMappedFile:(NSString *)path;
-+dataWithContentsOfURL:(NSURL *)url;
-+dataWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
-+dataWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
++ data;
++ dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
++ dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length;
++ dataWithBytes:(const void *)bytes length:(NSUInteger)length;
++ dataWithData:(NSData *)data;
++ dataWithContentsOfFile:(NSString *)path;
++ dataWithContentsOfMappedFile:(NSString *)path;
++ dataWithContentsOfURL:(NSURL *)url;
++ dataWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
++ dataWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
 
--(const void *)bytes;
--(NSUInteger)length;
+- (const void *)bytes;
+- (NSUInteger)length;
 
--(BOOL)isEqualToData:(NSData *)data;
+- (BOOL)isEqualToData:(NSData *)data;
 
--(void)getBytes:(void *)result range:(NSRange)range;
--(void)getBytes:(void *)result length:(NSUInteger)length;
--(void)getBytes:(void *)result;
+- (void)getBytes:(void *)result range:(NSRange)range;
+- (void)getBytes:(void *)result length:(NSUInteger)length;
+- (void)getBytes:(void *)result;
 
--(NSData *)subdataWithRange:(NSRange)range;
+- (NSData *)subdataWithRange:(NSRange)range;
 
--(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
--(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically;
--(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
--(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
+- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+- (BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically;
+- (BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp;
+- (BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp;
 
-
--(NSString *)description;
+- (NSString *)description;
 
 @end
 

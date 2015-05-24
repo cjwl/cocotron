@@ -10,34 +10,34 @@
 #import <Security/Security.h>
 
 @interface SecKeychainItem : NSObject {
-   SecItemClass              _itemClass;
-   SecKeychainAttributeList *_attributeList;
-   UInt32                    _length;
-   void                     *_bytes;
-   NSString                 *_guid;
-   SecKeychainRef            _keychain;
-   SecAccessRef              _access;
+    SecItemClass _itemClass;
+    SecKeychainAttributeList *_attributeList;
+    UInt32 _length;
+    void *_bytes;
+    NSString *_guid;
+    SecKeychainRef _keychain;
+    SecAccessRef _access;
 }
 
--initWithItemClass:(SecItemClass)itemClass attributeList:(SecKeychainAttributeList *)attributeList length:(UInt32)length bytes:(const void *)bytes;
+- initWithItemClass:(SecItemClass)itemClass attributeList:(SecKeychainAttributeList *)attributeList length:(UInt32)length bytes:(const void *)bytes;
 
--(SecItemClass)itemClass;
--(SecKeychainAttributeList *)attributeList;
--(UInt32)blobLength;
--(void *)blobBytes;
+- (SecItemClass)itemClass;
+- (SecKeychainAttributeList *)attributeList;
+- (UInt32)blobLength;
+- (void *)blobBytes;
 
--(NSString *)GUID;
--(SecKeychainRef)keychain;
--(SecAccessRef)access;
+- (NSString *)GUID;
+- (SecKeychainRef)keychain;
+- (SecAccessRef)access;
 
--(void)setGUID:(NSString *)value;
--(void)setKeychain:(SecKeychainRef)keychain;
--(void)setAccess:(SecAccessRef)access;
+- (void)setGUID:(NSString *)value;
+- (void)setKeychain:(SecKeychainRef)keychain;
+- (void)setAccess:(SecAccessRef)access;
 
--(BOOL)isMatchToAttributeList:(const SecKeychainAttributeList *)other;
+- (BOOL)isMatchToAttributeList:(const SecKeychainAttributeList *)other;
 
--(void)modifyAttributeList:(const SecKeychainAttributeList *)attributeList length:(UInt32)length bytes:(const void *)bytes;
+- (void)modifyAttributeList:(const SecKeychainAttributeList *)attributeList length:(UInt32)length bytes:(const void *)bytes;
 
--(void)copyAttributeInfo:(SecKeychainAttributeInfo *)info itemClass:(SecItemClass *)itemClass attributeList:(SecKeychainAttributeList **)attributeList length:(UInt32 *)length bytes:(void **)bytes;
+- (void)copyAttributeInfo:(SecKeychainAttributeInfo *)info itemClass:(SecItemClass *)itemClass attributeList:(SecKeychainAttributeList **)attributeList length:(UInt32 *)length bytes:(void **)bytes;
 
 @end

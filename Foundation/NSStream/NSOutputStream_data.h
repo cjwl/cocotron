@@ -11,10 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableData;
 
 @interface NSOutputStream_data : NSOutputStream {
-   id              _delegate;
-   NSError        *_error;
-   NSStreamStatus  _status;
-   NSMutableData  *_data;
+    id _delegate;
+    NSError *_error;
+    NSStreamStatus _status;
+    NSMutableData *_data;
 }
 
 @end

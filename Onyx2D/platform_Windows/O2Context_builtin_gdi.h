@@ -13,25 +13,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 extern "C" {
 #endif
 
-@class Win32Font,O2DeviceContext_gdi,O2DeviceContext_gdiDIBSection;
+@class Win32Font, O2DeviceContext_gdi, O2DeviceContext_gdiDIBSection;
 
 @interface O2Context_builtin_gdi : O2Context_builtin {
-   HDC        _dc;
-   Win32Font *_gdiFont;
-   int        _gdiDescent;
-   O2Paint   *_textFillPaint;
-   size_t             _glyphCacheCount;
-   O2GlyphStencilRef *_glyphCache;
-   
-   int _scratchWidth;
-   int _scratchHeight;
-   O2DeviceContext_gdiDIBSection *_scratchContext;
-   HDC _scratchDC;
-   uint8_t *_scratchBitmap;
-   Win32Font *_scratchFont;
+    HDC _dc;
+    Win32Font *_gdiFont;
+    int _gdiDescent;
+    O2Paint *_textFillPaint;
+    size_t _glyphCacheCount;
+    O2GlyphStencilRef *_glyphCache;
+
+    int _scratchWidth;
+    int _scratchHeight;
+    O2DeviceContext_gdiDIBSection *_scratchContext;
+    HDC _scratchDC;
+    uint8_t *_scratchBitmap;
+    Win32Font *_scratchFont;
 }
 
--(O2DeviceContext_gdi *)deviceContext;
+- (O2DeviceContext_gdi *)deviceContext;
 
 @end
 

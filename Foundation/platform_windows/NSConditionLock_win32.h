@@ -10,13 +10,13 @@
 #include <windows.h>
 
 @interface NSConditionLock_win32 : NSConditionLock {
-   BOOL       _conditionWasBroadcast;
-   NSUInteger _numberOfWaiters;
-   HANDLE     _semaphore;
-   HANDLE     _waitersDone;
-   HANDLE     _mutex;
-   CRITICAL_SECTION     _waitersNumber;
-   NSInteger  _value;   
+    BOOL _conditionWasBroadcast;
+    NSUInteger _numberOfWaiters;
+    HANDLE _semaphore;
+    HANDLE _waitersDone;
+    HANDLE _mutex;
+    CRITICAL_SECTION _waitersNumber;
+    NSInteger _value;
 }
 
 @end

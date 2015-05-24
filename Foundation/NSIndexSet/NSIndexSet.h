@@ -8,40 +8,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@interface NSIndexSet : NSObject <NSCoding,NSCopying,NSMutableCopying> {
-   NSUInteger _length;
-   NSRange *_ranges; 
+@interface NSIndexSet : NSObject <NSCoding, NSCopying, NSMutableCopying> {
+    NSUInteger _length;
+    NSRange *_ranges;
 }
 
-+indexSetWithIndexesInRange:(NSRange)range;
-+indexSetWithIndex:(NSUInteger)index;
-+indexSet;
++ indexSetWithIndexesInRange:(NSRange)range;
++ indexSetWithIndex:(NSUInteger)index;
++ indexSet;
 
--initWithIndexSet:(NSIndexSet *)other;
--initWithIndexesInRange:(NSRange)range;
--initWithIndex:(NSUInteger)index;
--init;
+- initWithIndexSet:(NSIndexSet *)other;
+- initWithIndexesInRange:(NSRange)range;
+- initWithIndex:(NSUInteger)index;
+- init;
 
--(BOOL)isEqualToIndexSet:(NSIndexSet *)other;
+- (BOOL)isEqualToIndexSet:(NSIndexSet *)other;
 
--(NSUInteger)count;
--(NSUInteger)firstIndex;
--(NSUInteger)lastIndex;
--(NSUInteger)getIndexes:(NSUInteger *)buffer maxCount:(NSUInteger)capacity inIndexRange:(NSRange *)range;
+- (NSUInteger)count;
+- (NSUInteger)firstIndex;
+- (NSUInteger)lastIndex;
+- (NSUInteger)getIndexes:(NSUInteger *)buffer maxCount:(NSUInteger)capacity inIndexRange:(NSRange *)range;
 
--(BOOL)containsIndexesInRange:(NSRange)range;
--(BOOL)containsIndexes:(NSIndexSet *)other;
--(BOOL)containsIndex:(NSUInteger)index;
+- (BOOL)containsIndexesInRange:(NSRange)range;
+- (BOOL)containsIndexes:(NSIndexSet *)other;
+- (BOOL)containsIndex:(NSUInteger)index;
 
--(NSUInteger)indexGreaterThanIndex:(NSUInteger)index;
--(NSUInteger)indexGreaterThanOrEqualToIndex:(NSUInteger)index;
--(NSUInteger)indexLessThanIndex:(NSUInteger)index;
--(NSUInteger)indexLessThanOrEqualToIndex:(NSUInteger)index;
+- (NSUInteger)indexGreaterThanIndex:(NSUInteger)index;
+- (NSUInteger)indexGreaterThanOrEqualToIndex:(NSUInteger)index;
+- (NSUInteger)indexLessThanIndex:(NSUInteger)index;
+- (NSUInteger)indexLessThanOrEqualToIndex:(NSUInteger)index;
 
--(BOOL)intersectsIndexesInRange:(NSRange)range;
+- (BOOL)intersectsIndexesInRange:(NSRange)range;
 
--(void)encodeWithCoder:(NSCoder *)encoder;
--(id)initWithCoder:(NSCoder *)decoder;
+- (void)encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
 
 @end
 

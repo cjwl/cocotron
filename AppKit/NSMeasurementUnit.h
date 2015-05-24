@@ -12,8 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Move to Foundation?
 
-@interface NSMeasurementUnit : NSObject
-{
+@interface NSMeasurementUnit : NSObject {
     NSString *_name;
     NSString *_abbreviation;
     float _pointsPerUnit;

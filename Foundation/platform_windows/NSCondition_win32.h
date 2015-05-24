@@ -10,15 +10,15 @@
 #include <windows.h>
 
 enum {
-	Event_Signal = 0,
-	Event_Broadcast = 1,
-	Event_Count = 2
+    Event_Signal = 0,
+    Event_Broadcast = 1,
+    Event_Count = 2
 };
 
 @interface NSCondition_win32 : NSCondition {
-	volatile LONG waitersCount;
-	CRITICAL_SECTION lock;
-	HANDLE events[Event_Count];
+    volatile LONG waitersCount;
+    CRITICAL_SECTION lock;
+    HANDLE events[Event_Count];
 }
 
 @end

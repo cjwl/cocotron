@@ -9,65 +9,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreFoundation/CFStream.h>
 
-@class NSError,NSHost,NSRunLoop, NSInputStream, NSOutputStream;
+@class NSError, NSHost, NSRunLoop, NSInputStream, NSOutputStream;
 
 typedef enum {
-   NSStreamStatusNotOpen,
-   NSStreamStatusOpening,
-   NSStreamStatusOpen,
-   NSStreamStatusReading,
-   NSStreamStatusWriting,
-   NSStreamStatusAtEnd,
-   NSStreamStatusClosed,
-   NSStreamStatusError
+    NSStreamStatusNotOpen,
+    NSStreamStatusOpening,
+    NSStreamStatusOpen,
+    NSStreamStatusReading,
+    NSStreamStatusWriting,
+    NSStreamStatusAtEnd,
+    NSStreamStatusClosed,
+    NSStreamStatusError
 } NSStreamStatus;
 
 // These values must match CFStream
 typedef enum {
- NSStreamEventNone,
- NSStreamEventOpenCompleted=kCFStreamEventOpenCompleted,
- NSStreamEventHasBytesAvailable=kCFStreamEventHasBytesAvailable,
- NSStreamEventHasSpaceAvailable=kCFStreamEventCanAcceptBytes,
- NSStreamEventErrorOccurred=kCFStreamEventErrorOccurred,
- NSStreamEventEndEncountered=kCFStreamEventEndEncountered,
+    NSStreamEventNone,
+    NSStreamEventOpenCompleted = kCFStreamEventOpenCompleted,
+    NSStreamEventHasBytesAvailable = kCFStreamEventHasBytesAvailable,
+    NSStreamEventHasSpaceAvailable = kCFStreamEventCanAcceptBytes,
+    NSStreamEventErrorOccurred = kCFStreamEventErrorOccurred,
+    NSStreamEventEndEncountered = kCFStreamEventEndEncountered,
 } NSStreamEvent;
 
-FOUNDATION_EXPORT NSString * const NSStreamDataWrittenToMemoryStreamKey;
-FOUNDATION_EXPORT NSString * const NSStreamFileCurrentOffsetKey;
+FOUNDATION_EXPORT NSString *const NSStreamDataWrittenToMemoryStreamKey;
+FOUNDATION_EXPORT NSString *const NSStreamFileCurrentOffsetKey;
 
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelKey;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelKey;
 
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelNone;
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelSSLv2;
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelSSLv3;
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelTLSv1;
-FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelNegotiatedSSL;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelNone;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelSSLv2;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelSSLv3;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelTLSv1;
+FOUNDATION_EXPORT NSString *const NSStreamSocketSecurityLevelNegotiatedSSL;
 
 @interface NSStream : NSObject
 
-+(void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
++ (void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 
--delegate;
--(void)setDelegate:delegate;
+- delegate;
+- (void)setDelegate:delegate;
 
--(NSError *)streamError;
--(NSStreamStatus)streamStatus;
+- (NSError *)streamError;
+- (NSStreamStatus)streamStatus;
 
--propertyForKey:(NSString *)key;
--(BOOL)setProperty:property forKey:(NSString *)key;
+- propertyForKey:(NSString *)key;
+- (BOOL)setProperty:property forKey:(NSString *)key;
 
--(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
--(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
--(void)open;
--(void)close;
+- (void)open;
+- (void)close;
 
 @end
 
-@interface NSObject(NSStream_delegate)
--(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent;
+@interface NSObject (NSStream_delegate)
+- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent;
 @end
 
 #import <Foundation/NSInputStream.h>
 #import <Foundation/NSOutputStream.h>
-

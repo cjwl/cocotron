@@ -4,16 +4,16 @@
 // using the exposed CG* PDF API's with the operator table, but it is more work
 
 @interface O2Context_distill : O2Context {
-   id _delegate;
+    id _delegate;
 }
 
--delegate;
--(void)setDelegate:delegate;
+- delegate;
+- (void)setDelegate:delegate;
 
 @end
 
-@interface NSObject(O2Context_distill)
+@interface NSObject (O2Context_distill)
 
--(void)distiller:(O2Context_distill *)distiller unicode:(unichar *)unicode rects:(O2Rect *)rect count:(NSUInteger)count;
+- (void)distiller:(O2Context_distill *)distiller unicode:(unichar *)unicode rects:(O2Rect *)rect count:(NSUInteger)count;
 
 @end

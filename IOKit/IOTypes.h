@@ -6,7 +6,7 @@
 #if defined(IOKIT_INSIDE_BUILD)
 #define IOKIT_EXPORT extern "C" __declspec(dllexport)
 #else
-#define IOKIT_EXPORT extern "C" __declspec(dllimport) 
+#define IOKIT_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define IOKIT_EXPORT extern "C"
@@ -24,13 +24,12 @@
 #define IOKIT_EXPORT extern
 #endif
 
-
 #endif // __cplusplus
 
-typedef mach_port_t	io_object_t;
+typedef mach_port_t io_object_t;
 typedef io_object_t io_service_t;
 typedef io_object_t io_registry_entry_t;
 typedef io_object_t io_iterator_t;
 typedef io_object_t io_name_t;
 
-typedef UInt32		IOOptionBits;
+typedef UInt32 IOOptionBits;

@@ -11,15 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSComboBoxView;
 
 @interface NSComboBoxWindow : NSPanel {
-   NSScrollView   *_scrollView;
-   NSComboBoxView *_view;
+    NSScrollView *_scrollView;
+    NSComboBoxView *_view;
 }
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--(void)setObjectArray:(NSArray *)objects;
--(void)setFont:(NSFont *)font;
+- (void)setObjectArray:(NSArray *)objects;
+- (void)setFont:(NSFont *)font;
 
--(int)runTrackingWithEvent:(NSEvent *)event;
+- (int)runTrackingWithEvent:(NSEvent *)event;
 
 @end

@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct O2Function *CGFunctionRef;
 
 typedef struct {
-   unsigned version;
-   void    (*evaluate)(void *,const float *,float *);
-   void    (*releaseInfo)(void *);
+    unsigned version;
+    void (*evaluate)(void *, const float *, float *);
+    void (*releaseInfo)(void *);
 } CGFunctionCallbacks;
 
 COREGRAPHICS_EXPORT CGFunctionRef CGFunctionRetain(CGFunctionRef self);
-COREGRAPHICS_EXPORT void          CGFunctionRelease(CGFunctionRef self);
+COREGRAPHICS_EXPORT void CGFunctionRelease(CGFunctionRef self);
 
-COREGRAPHICS_EXPORT CGFunctionRef CGFunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks);
+COREGRAPHICS_EXPORT CGFunctionRef CGFunctionCreate(void *info, size_t domainDimension, const CGFloat *domain, size_t rangeDimension, const CGFloat *range, const CGFunctionCallbacks *callbacks);

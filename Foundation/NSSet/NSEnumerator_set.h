@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInlineSetTable.h>
 
 @interface NSEnumerator_set : NSEnumerator {
-   id           _set;
-   NSSetTable  *_table;
-   NSUInteger   _index;
-   NSSetBucket *_bucket;
+    id _set;
+    NSSetTable *_table;
+    NSUInteger _index;
+    NSSetBucket *_bucket;
 }
 
 @end
 
-NSEnumerator_set *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table);
+NSEnumerator_set *NSEnumerator_setNew(NSZone *zone, id set, NSSetTable *table);
 id NSEnumerator_setNextObject(NSEnumerator_set *self);

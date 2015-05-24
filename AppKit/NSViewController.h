@@ -3,33 +3,33 @@
 @class NSView;
 
 @interface NSViewController : NSResponder {
-   NSString *_nibName;
-   NSBundle *_nibBundle;
-   id         _representedObject;
-   NSString *_title;
-   NSView   *_view;
+    NSString *_nibName;
+    NSBundle *_nibBundle;
+    id _representedObject;
+    NSString *_title;
+    NSView *_view;
 }
 
--initWithNibName:(NSString *)name bundle:(NSBundle *)bundle;
+- initWithNibName:(NSString *)name bundle:(NSBundle *)bundle;
 
--(NSString *)nibName;
--(NSBundle *)nibBundle;
+- (NSString *)nibName;
+- (NSBundle *)nibBundle;
 
--(NSView *)view;
--(NSString *)title;
--representedObject;
+- (NSView *)view;
+- (NSString *)title;
+- representedObject;
 
--(void)setRepresentedObject:object;
+- (void)setRepresentedObject:object;
 
--(void)setTitle:(NSString *)value;
+- (void)setTitle:(NSString *)value;
 
--(void)setView:(NSView *)value;
+- (void)setView:(NSView *)value;
 
--(void)loadView;
+- (void)loadView;
 
--(void)discardEditing;
+- (void)discardEditing;
 
--(BOOL)commitEditing;
--(void)commitEditingWithDelegate:delegate didCommitSelector:(SEL)didCommitSelector contextInfo:(void *)contextInfo;
+- (BOOL)commitEditing;
+- (void)commitEditingWithDelegate:delegate didCommitSelector:(SEL)didCommitSelector contextInfo:(void *)contextInfo;
 
 @end

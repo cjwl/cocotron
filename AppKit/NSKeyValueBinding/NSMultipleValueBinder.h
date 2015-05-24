@@ -9,24 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-@interface _NSMultipleValueBinder : _NSBinder 
-{
-	NSArray* _rowValues;
-	NSString* _arrayKeyPath;
-	NSString* _valueKeyPath;
+@interface _NSMultipleValueBinder : _NSBinder {
+    NSArray *_rowValues;
+    NSString *_arrayKeyPath;
+    NSString *_valueKeyPath;
     BOOL _isObserving;
 }
--(void)applyToCell:(id)cell inRow:(int)row;
--(void)applyFromCell:(id)cell inRow:(int)row;
--(void)updateRowValues;
--(NSArray*)rowValues;
--(BOOL)allowsEditingForRow:(int)row;
--(void)cacheArrayKeyPath;
+- (void)applyToCell:(id)cell inRow:(int)row;
+- (void)applyFromCell:(id)cell inRow:(int)row;
+- (void)updateRowValues;
+- (NSArray *)rowValues;
+- (BOOL)allowsEditingForRow:(int)row;
+- (void)cacheArrayKeyPath;
 @end
 
-
 @interface _NSTableViewContentBinder : _NSBinder {
-   BOOL _isObserving;
+    BOOL _isObserving;
 }
 
 @end

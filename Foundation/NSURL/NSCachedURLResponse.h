@@ -8,21 +8,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSURLCache.h>
 
-@class NSURLResponse,NSData,NSDictionary;
+@class NSURLResponse, NSData, NSDictionary;
 
 @interface NSCachedURLResponse : NSObject {
-   NSURLResponse  *_response;
-   NSData         *_data;
-   NSDictionary   *_userInfo;
-   NSURLCacheStoragePolicy _storagePolicy;
+    NSURLResponse *_response;
+    NSData *_data;
+    NSDictionary *_userInfo;
+    NSURLCacheStoragePolicy _storagePolicy;
 }
 
--initWithResponse:(NSURLResponse *)response data:(NSData *)data userInfo:(NSDictionary *)userInfo storagePolicy:(NSURLCacheStoragePolicy)storagePolicy;
--initWithResponse:(NSURLResponse *)response data:(NSData *)data;
+- initWithResponse:(NSURLResponse *)response data:(NSData *)data userInfo:(NSDictionary *)userInfo storagePolicy:(NSURLCacheStoragePolicy)storagePolicy;
+- initWithResponse:(NSURLResponse *)response data:(NSData *)data;
 
--(NSURLResponse *)response;
--(NSData *)data;
--(NSDictionary *)userInfo;
--(NSURLCacheStoragePolicy)storagePolicy;
+- (NSURLResponse *)response;
+- (NSData *)data;
+- (NSDictionary *)userInfo;
+- (NSURLCacheStoragePolicy)storagePolicy;
 
 @end

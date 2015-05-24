@@ -10,51 +10,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSParagraphStyle.h>
 
-@class NSTextContainer,NSRangeArray, NSParagraphStyle;
+@class NSTextContainer, NSRangeArray, NSParagraphStyle;
 
 @interface NSTypesetter_concrete : NSTypesetter {
-   IMP                 _layoutNextFragment;
+    IMP _layoutNextFragment;
 
-   unsigned            _nextGlyphLocation;
-   unsigned            _numberOfGlyphs;
-   NSRange             _glyphCacheRange;
-   unsigned            _glyphCacheCapacity;
-   NSGlyph            *_glyphCache;
-   unichar            *_characterCache;
+    unsigned _nextGlyphLocation;
+    unsigned _numberOfGlyphs;
+    NSRange _glyphCacheRange;
+    unsigned _glyphCacheCapacity;
+    NSGlyph *_glyphCache;
+    unichar *_characterCache;
 
-    
-    NSUInteger          _bidiLevelsCapacity;
-    uint8_t             *_bidiLevels;
-    uint8_t             _currentBidiLevel;
-    uint8_t             _currentParagraphBidiLevel;
-    
-	BOOL				   _paragraphBreak;
-	
-   NSTextContainer    *_container;
-   NSSize              _containerSize;
+    NSUInteger _bidiLevelsCapacity;
+    uint8_t *_bidiLevels;
+    uint8_t _currentBidiLevel;
+    uint8_t _currentParagraphBidiLevel;
 
-   NSDictionary       *_attributes;
-   NSRange             _attributesRange;
-   NSRange             _attributesGlyphRange;
-   NSFont             *_font;
-   float               _fontAscender;
-   float               _fontDefaultLineHeight;
-   NSPoint           (*_positionOfGlyph)(NSFont *,SEL,NSGlyph,NSGlyph,BOOL *);
-   NSTextAlignment     _alignment;
-   NSLineBreakMode     _lineBreakMode;
-   float               _whitespaceAdvancement;
+    BOOL _paragraphBreak;
 
-   NSRange             _lineRange;
-   NSRangeArray       *_glyphRangesInLine;
-   NSGlyph             _previousGlyph;
-	NSRect              _scanRect;
-	NSRect _wordWrapScanRect;
-	NSRect              _fullLineRect;
-   float               _maxAscender;
-	
-	NSRange				_wordWrapRange;
-	float				_wordWrapWidth;
-	NSGlyph				_wordWrapPreviousGlyph;
+    NSTextContainer *_container;
+    NSSize _containerSize;
+
+    NSDictionary *_attributes;
+    NSRange _attributesRange;
+    NSRange _attributesGlyphRange;
+    NSFont *_font;
+    float _fontAscender;
+    float _fontDefaultLineHeight;
+    NSPoint (*_positionOfGlyph)(NSFont *, SEL, NSGlyph, NSGlyph, BOOL *);
+    NSTextAlignment _alignment;
+    NSLineBreakMode _lineBreakMode;
+    float _whitespaceAdvancement;
+
+    NSRange _lineRange;
+    NSRangeArray *_glyphRangesInLine;
+    NSGlyph _previousGlyph;
+    NSRect _scanRect;
+    NSRect _wordWrapScanRect;
+    NSRect _fullLineRect;
+    float _maxAscender;
+
+    NSRange _wordWrapRange;
+    float _wordWrapWidth;
+    NSGlyph _wordWrapPreviousGlyph;
 }
 
 @end

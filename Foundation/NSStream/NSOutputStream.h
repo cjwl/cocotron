@@ -10,15 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSOutputStream : NSStream
 
--initToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity;
--initToFileAtPath:(NSString *)path append:(BOOL)append;
--initToMemory;
+- initToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity;
+- initToFileAtPath:(NSString *)path append:(BOOL)append;
+- initToMemory;
 
-+outputStreamToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity;
-+outputStreamToFileAtPath:(NSString *)path append:(BOOL)append;
-+outputStreamToMemory;
++ outputStreamToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity;
++ outputStreamToFileAtPath:(NSString *)path append:(BOOL)append;
++ outputStreamToMemory;
 
--(BOOL)hasSpaceAvailable;
--(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
+- (BOOL)hasSpaceAvailable;
+- (NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
 
 @end

@@ -8,35 +8,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSError,NSMutableSet,NSDate;
+@class NSError, NSMutableSet, NSDate;
 
-FOUNDATION_EXPORT NSString * const NSSelectSetOutputNotification;
+FOUNDATION_EXPORT NSString *const NSSelectSetOutputNotification;
 
 @interface NSSelectSet : NSObject <NSCopying> {
-   NSMutableSet *_readSet;
-   NSMutableSet *_writeSet;
-   NSMutableSet *_exceptionSet;
+    NSMutableSet *_readSet;
+    NSMutableSet *_writeSet;
+    NSMutableSet *_exceptionSet;
 }
 
--(void)addObjectForRead:object;
--(void)addObjectForWrite:object;
--(void)addObjectForException:object;
+- (void)addObjectForRead:object;
+- (void)addObjectForWrite:object;
+- (void)addObjectForException:object;
 
--(void)removeObjectForRead:object;
--(void)removeObjectForWrite:object;
--(void)removeObjectForException:object;
+- (void)removeObjectForRead:object;
+- (void)removeObjectForWrite:object;
+- (void)removeObjectForException:object;
 
--(void)removeAllObjects;
+- (void)removeAllObjects;
 
--(BOOL)isEmpty;
+- (BOOL)isEmpty;
 
--(BOOL)containsObjectForRead:object;
--(BOOL)containsObjectForWrite:object;
--(BOOL)containsObjectForException:object;
+- (BOOL)containsObjectForRead:object;
+- (BOOL)containsObjectForWrite:object;
+- (BOOL)containsObjectForException:object;
 
--(void)waitInBackgroundInMode:(NSString *)mode;
+- (void)waitInBackgroundInMode:(NSString *)mode;
 
--(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSet beforeDate:(NSDate *)beforeDate;
+- (NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSet beforeDate:(NSDate *)beforeDate;
 
 @end
 

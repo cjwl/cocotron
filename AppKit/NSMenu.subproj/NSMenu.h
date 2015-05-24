@@ -8,69 +8,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSScreen,NSMenu, NSMenuItem,NSWindow,NSEvent,NSView;
+@class NSScreen, NSMenu, NSMenuItem, NSWindow, NSEvent, NSView;
 
 @protocol NSMenuDelegate;
 
 @interface NSMenu : NSObject <NSCopying> {
-   NSMenu         *_supermenu;
-   NSString       *_title;
-   NSString       *_name;
-   NSMutableArray *_itemArray;
-   BOOL            _autoenablesItems;
-   id<NSMenuDelegate> _delegate;
+    NSMenu *_supermenu;
+    NSString *_title;
+    NSString *_name;
+    NSMutableArray *_itemArray;
+    BOOL _autoenablesItems;
+    id<NSMenuDelegate> _delegate;
 }
 
-+(void)popUpContextMenu:(NSMenu *)menu withEvent:(NSEvent *)event forView:(NSView *)view;
++ (void)popUpContextMenu:(NSMenu *)menu withEvent:(NSEvent *)event forView:(NSView *)view;
 
--initWithTitle:(NSString *)title;
+- initWithTitle:(NSString *)title;
 
--(NSMenu *)supermenu;
--(NSString *)title;
--(int)numberOfItems;
--(NSArray *)itemArray;
--(BOOL)autoenablesItems;
+- (NSMenu *)supermenu;
+- (NSString *)title;
+- (int)numberOfItems;
+- (NSArray *)itemArray;
+- (BOOL)autoenablesItems;
 
--(NSMenuItem *)itemAtIndex:(int)index;
--(NSMenuItem *)itemWithTag:(int)tag;
--(NSMenuItem *)itemWithTitle:(NSString *)title;
+- (NSMenuItem *)itemAtIndex:(int)index;
+- (NSMenuItem *)itemWithTag:(int)tag;
+- (NSMenuItem *)itemWithTitle:(NSString *)title;
 
--(int)indexOfItem:(NSMenuItem *)item;
--(int)indexOfItemWithTag:(int)tag;
--(int)indexOfItemWithTitle:(NSString *)title;
--(int)indexOfItemWithRepresentedObject:object;
--(int)indexOfItemWithTarget:(id)target andAction:(SEL)action;
--(int)indexOfItemWithSubmenu:(NSMenu *)menu;
+- (int)indexOfItem:(NSMenuItem *)item;
+- (int)indexOfItemWithTag:(int)tag;
+- (int)indexOfItemWithTitle:(NSString *)title;
+- (int)indexOfItemWithRepresentedObject:object;
+- (int)indexOfItemWithTarget:(id)target andAction:(SEL)action;
+- (int)indexOfItemWithSubmenu:(NSMenu *)menu;
 
--(void)setSupermenu:(NSMenu *)value;
--(void)setTitle:(NSString *)title;
--(void)setAutoenablesItems:(BOOL)flag;
+- (void)setSupermenu:(NSMenu *)value;
+- (void)setTitle:(NSString *)title;
+- (void)setAutoenablesItems:(BOOL)flag;
 
--(void)addItem:(NSMenuItem *)item;
--(NSMenuItem *)addItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
+- (void)addItem:(NSMenuItem *)item;
+- (NSMenuItem *)addItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
 
--(void)removeAllItems; // private, don't use outside framework
--(void)removeItem:(NSMenuItem *)item;
--(void)removeItemAtIndex:(int)index;
+- (void)removeAllItems; // private, don't use outside framework
+- (void)removeItem:(NSMenuItem *)item;
+- (void)removeItemAtIndex:(int)index;
 
--(void)insertItem:(NSMenuItem *)item atIndex:(int)index;
--(NSMenuItem *)insertItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent atIndex:(int)index;
+- (void)insertItem:(NSMenuItem *)item atIndex:(int)index;
+- (NSMenuItem *)insertItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent atIndex:(int)index;
 
--(void)setSubmenu:(NSMenu *)submenu forItem:(NSMenuItem *)item;
+- (void)setSubmenu:(NSMenu *)submenu forItem:(NSMenuItem *)item;
 
--(void)update;
+- (void)update;
 
--(void)itemChanged:(NSMenuItem *)item;
+- (void)itemChanged:(NSMenuItem *)item;
 
--(BOOL)performKeyEquivalent:(NSEvent *)event;
+- (BOOL)performKeyEquivalent:(NSEvent *)event;
 
-- (void)setDelegate:(id <NSMenuDelegate>)object;
+- (void)setDelegate:(id<NSMenuDelegate>)object;
 - (id<NSMenuDelegate>)delegate;
 
 @end
 
-@interface NSObject(NSMenu_validateItem)
--(BOOL)validateMenuItem:(NSMenuItem *)item;
+@interface NSObject (NSMenu_validateItem)
+- (BOOL)validateMenuItem:(NSMenuItem *)item;
 @end
 
 @protocol NSMenuDelegate <NSObject>
@@ -87,4 +87,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (BOOL)menu:(NSMenu *)menu updateItem:(NSMenuItem *)item atIndex:(NSInteger)index shouldCancel:(BOOL)shouldCancel;
 
 @end
-

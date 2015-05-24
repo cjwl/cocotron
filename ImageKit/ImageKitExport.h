@@ -4,7 +4,7 @@
 #if defined(IMAGEKIT_INSIDE_BUILD)
 #define IMAGEKIT_EXPORT extern "C" __declspec(dllexport)
 #else
-#define IMAGEKIT_EXPORT extern "C" __declspec(dllimport) 
+#define IMAGEKIT_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define IMAGEKIT_EXPORT extern "C"
@@ -23,4 +23,3 @@
 #endif
 
 #endif
-

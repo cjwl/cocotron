@@ -11,21 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFontMetric;
 
 @interface NSFontTypeface : NSObject {
-	NSString *_name;
-	NSString *_displayName;
-   NSString *_traitName;
-   NSFontTraitMask _traits;
-   NSMutableArray *_metrics;
+    NSString *_name;
+    NSString *_displayName;
+    NSString *_traitName;
+    NSFontTraitMask _traits;
+    NSMutableArray *_metrics;
 }
 
--initWithName:(NSString *)name traitName:(NSString *)traitName traits:(NSFontTraitMask)traits;
--initWithName:(NSString *)name displayName:(NSString *)displayName traitName:(NSString *)traitName traits:(NSFontTraitMask)traits;
+- initWithName:(NSString *)name traitName:(NSString *)traitName traits:(NSFontTraitMask)traits;
+- initWithName:(NSString *)name displayName:(NSString *)displayName traitName:(NSString *)traitName traits:(NSFontTraitMask)traits;
 
--(NSString *)name;
--(NSString *)displayName;
--(NSString *)traitName;
--(NSFontTraitMask)traits;
+- (NSString *)name;
+- (NSString *)displayName;
+- (NSString *)traitName;
+- (NSFontTraitMask)traits;
 
--(void)addMetric:(NSFontMetric *)metric;
+- (void)addMetric:(NSFontMetric *)metric;
 
 @end

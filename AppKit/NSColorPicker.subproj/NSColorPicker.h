@@ -12,43 +12,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @protocol NSColorPickingDefault
 
--initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel;
+- initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel;
 
--(void)setMode:(NSColorPanelMode)mode;
--(void)attachColorList:(NSColorList *)colorList;
--(void)detachColorList:(NSColorList *)colorList;
+- (void)setMode:(NSColorPanelMode)mode;
+- (void)attachColorList:(NSColorList *)colorList;
+- (void)detachColorList:(NSColorList *)colorList;
 
--(NSImage *)provideNewButtonImage;
+- (NSImage *)provideNewButtonImage;
 
--(void)insertNewButtonImage:(NSImage *)image in:(NSButtonCell *)buttonCell;
+- (void)insertNewButtonImage:(NSImage *)image in:(NSButtonCell *)buttonCell;
 
--(void)alphaControlAddedOrRemoved:sender;
+- (void)alphaControlAddedOrRemoved:sender;
 
--(void)viewSizeChanged:sender;
+- (void)viewSizeChanged:sender;
 
--(NSSize)minContentSize;
--(NSString *)buttonToolTip;
-
+- (NSSize)minContentSize;
+- (NSString *)buttonToolTip;
 
 @end
 
 @protocol NSColorPickingCustom
 
--(NSColorPanelMode)currentMode;
--(BOOL)supportsMode:(NSColorPanelMode)mode;
+- (NSColorPanelMode)currentMode;
+- (BOOL)supportsMode:(NSColorPanelMode)mode;
 
--(void)setColor:(NSColor *)color;
+- (void)setColor:(NSColor *)color;
 
--(NSView *)provideNewView:(BOOL)firstTime;
+- (NSView *)provideNewView:(BOOL)firstTime;
 
 @end
 
 @interface NSColorPicker : NSObject <NSColorPickingDefault> {
-   int           _mask;
-   NSColorPanel *_colorPanel;
-   NSView       *_subview;
+    int _mask;
+    NSColorPanel *_colorPanel;
+    NSView *_subview;
 }
 
--(NSColorPanel *)colorPanel;
+- (NSColorPanel *)colorPanel;
 
 @end

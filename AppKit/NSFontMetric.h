@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSFontMetric : NSObject {
-   NSSize _size;
-   float  _ascender;
-   float  _descender;
+    NSSize _size;
+    float _ascender;
+    float _descender;
 }
 
--initWithSize:(NSSize)size
-   ascender:(float)ascender
-   descender:(float)descender;
+- initWithSize:(NSSize)size
+        ascender:(float)ascender
+       descender:(float)descender;
 
 @end

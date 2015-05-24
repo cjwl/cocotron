@@ -9,37 +9,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCharacterSet.h>
 
 enum {
-   NSBitmapCharacterSetSize=8192
+    NSBitmapCharacterSetSize = 8192
 };
 
-static inline BOOL bitmapIsSet(uint8_t bitmap[8192],unichar character){
-   return bitmap[character>>3]&(1<<(character&0x07));
+static inline BOOL bitmapIsSet(uint8_t bitmap[8192], unichar character) {
+    return bitmap[character >> 3] & (1 << (character & 0x07));
 }
 
-static inline void bitmapSet(uint8_t bitmap[8192],unichar character) {
-   bitmap[character>>3]|=1<<(character&0x07);
+static inline void bitmapSet(uint8_t bitmap[8192], unichar character) {
+    bitmap[character >> 3] |= 1 << (character & 0x07);
 }
 
-static inline void bitmapClear(uint8_t bitmap[8192],unichar character) {
-   bitmap[character>>3]&=~(1<<(character&0x07));
+static inline void bitmapClear(uint8_t bitmap[8192], unichar character) {
+    bitmap[character >> 3] &= ~(1 << (character & 0x07));
 }
 
-static inline void bitmapEnable(uint8_t bitmap[8192],unichar character,BOOL yorn) {
+static inline void bitmapEnable(uint8_t bitmap[8192], unichar character, BOOL yorn) {
 
-   if(yorn)
-    bitmap[character>>3]|=1<<(character&0x07);
-   else
-    bitmap[character>>3]&=~(1<<(character&0x07));
+    if(yorn)
+        bitmap[character >> 3] |= 1 << (character & 0x07);
+    else
+        bitmap[character >> 3] &= ~(1 << (character & 0x07));
 }
 
-static inline uint8_t *bitmapBytes(NSCharacterSet *self){
-   BOOL         (*method)()=(void *)[self methodForSelector:@selector(characterIsMember:)];
-   uint8_t *bitmap=NSZoneMalloc(NULL,sizeof(uint8_t)*NSBitmapCharacterSetSize);
-   uint32_t       code;
+static inline uint8_t *bitmapBytes(NSCharacterSet *self) {
+    BOOL (*method)() = (void *)[self methodForSelector:@selector(characterIsMember:)];
+    uint8_t *bitmap = NSZoneMalloc(NULL, sizeof(uint8_t) * NSBitmapCharacterSetSize);
+    uint32_t code;
 
-   for(code=0;code<=0xFFFF;code++)
-    bitmapEnable(bitmap,code,method(self,
-        @selector(characterIsMember:),(unichar)code));
+    for(code = 0; code <= 0xFFFF; code++)
+        bitmapEnable(bitmap, code, method(self,
+                                       @selector(characterIsMember:), (unichar)code));
 
-   return bitmap;
+    return bitmap;
 }

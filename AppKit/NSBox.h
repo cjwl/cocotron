@@ -11,68 +11,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFont;
 
 typedef enum {
-   NSNoTitle,
-   NSAboveTop,
-   NSAtTop,
-   NSBelowTop,
-   NSAboveBottom,
-   NSAtBottom,
-   NSBelowBottom,
+    NSNoTitle,
+    NSAboveTop,
+    NSAtTop,
+    NSBelowTop,
+    NSAboveBottom,
+    NSAtBottom,
+    NSBelowBottom,
 } NSTitlePosition;
 
 typedef enum {
-   NSBoxPrimary,
-   NSBoxSecondary,
-   NSBoxSeparator,
-   NSBoxOldStyle,
-   NSBoxCustom
+    NSBoxPrimary,
+    NSBoxSecondary,
+    NSBoxSeparator,
+    NSBoxOldStyle,
+    NSBoxCustom
 } NSBoxType;
 
 @interface NSBox : NSView {
-   NSBoxType       _boxType;
-   NSBorderType    _borderType;
-   NSTitlePosition _titlePosition;
-   id              _titleCell;
-   NSSize          _contentViewMargins;
-   BOOL            _isTransparent;
-   id              _customData;
+    NSBoxType _boxType;
+    NSBorderType _borderType;
+    NSTitlePosition _titlePosition;
+    id _titleCell;
+    NSSize _contentViewMargins;
+    BOOL _isTransparent;
+    id _customData;
 }
 
--(NSBoxType)boxType;
--(NSBorderType)borderType;
--(NSString *)title;
--(NSFont *)titleFont;
--contentView;
--(NSSize)contentViewMargins;
--(NSTitlePosition)titlePosition;
--(BOOL)isTransparent;
+- (NSBoxType)boxType;
+- (NSBorderType)borderType;
+- (NSString *)title;
+- (NSFont *)titleFont;
+- contentView;
+- (NSSize)contentViewMargins;
+- (NSTitlePosition)titlePosition;
+- (BOOL)isTransparent;
 
--(void)setBoxType:(NSBoxType)value;
--(void)setBorderType:(NSBorderType)value;
--(void)setTitle:(NSString *)title;
--(void)setTitleFont:(NSFont *)font;
--(void)setContentView:(NSView *)view;
--(void)setContentViewMargins:(NSSize)value;
--(void)setTitlePosition:(NSTitlePosition)value;
--(void)setTransparent:(BOOL)value;
--(void)setTitleWithMnemonic:(NSString *)value;
+- (void)setBoxType:(NSBoxType)value;
+- (void)setBorderType:(NSBorderType)value;
+- (void)setTitle:(NSString *)title;
+- (void)setTitleFont:(NSFont *)font;
+- (void)setContentView:(NSView *)view;
+- (void)setContentViewMargins:(NSSize)value;
+- (void)setTitlePosition:(NSTitlePosition)value;
+- (void)setTransparent:(BOOL)value;
+- (void)setTitleWithMnemonic:(NSString *)value;
 
--(NSRect)titleRect;
--(NSRect)borderRect;
--titleCell;
+- (NSRect)titleRect;
+- (NSRect)borderRect;
+- titleCell;
 
--(void)setFrameFromContentFrame:(NSRect)content;
--(void)sizeToFit;
+- (void)setFrameFromContentFrame:(NSRect)content;
+- (void)sizeToFit;
 
--(CGFloat)borderWidth;
--(CGFloat)cornerRadius;
--(NSColor *)borderColor;
--(NSColor *)fillColor;
+- (CGFloat)borderWidth;
+- (CGFloat)cornerRadius;
+- (NSColor *)borderColor;
+- (NSColor *)fillColor;
 
--(void)setBorderWidth:(CGFloat)value;
--(void)setCornerRadius:(CGFloat)value;
--(void)setBorderColor:(NSColor *)value;
--(void)setFillColor:(NSColor *)value;
+- (void)setBorderWidth:(CGFloat)value;
+- (void)setCornerRadius:(CGFloat)value;
+- (void)setBorderColor:(NSColor *)value;
+- (void)setFillColor:(NSColor *)value;
 
 @end
-

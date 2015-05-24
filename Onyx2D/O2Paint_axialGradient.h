@@ -28,11 +28,11 @@
 #import <Onyx2D/O2Paint_ramp.h>
 
 @interface O2Paint_axialGradient : O2Paint_ramp {
-   O2Point _u;
-   O2Float _oou;
-   O2Float _rho;
+    O2Point _u;
+    O2Float _oou;
+    O2Float _rho;
 }
 
--initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
+- initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
 
 @end

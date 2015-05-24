@@ -44,20 +44,20 @@ typedef enum {
     kCTFontControlContentFontType = 26
 } CTFontUIFontType;
 
-CORETEXT_EXPORT CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTransform *xform,id attributes);
-CORETEXT_EXPORT CTFontRef CTFontCreateUIFontForLanguage(CTFontUIFontType uiFontType,CGFloat size,NSString *language);
+CORETEXT_EXPORT CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont, CGFloat size, CGAffineTransform *xform, id attributes);
+CORETEXT_EXPORT CTFontRef CTFontCreateUIFontForLanguage(CTFontUIFontType uiFontType, CGFloat size, NSString *language);
 CORETEXT_EXPORT CFStringRef CTFontCopyFullName(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetSize(CTFontRef self);
-CORETEXT_EXPORT size_t    CTFontGetGlyphCount(CTFontRef self);
-CORETEXT_EXPORT BOOL      CTFontGetGlyphsForCharacters(CTFontRef self,const unichar *characters,CGGlyph *glyphs,size_t count);
-CORETEXT_EXPORT CGRect    CTFontGetBoundingBox(CTFontRef self);
-CORETEXT_EXPORT void      CTFontGetAdvancesForGlyphs(CTFontRef self,int orientation,const CGGlyph *glyphs,CGSize *advances,size_t count);
-CORETEXT_EXPORT CGFloat   CTFontGetUnderlinePosition(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetUnderlineThickness(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetAscent(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetDescent(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetLeading(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetSlantAngle(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetXHeight(CTFontRef self);
-CORETEXT_EXPORT CGFloat   CTFontGetCapHeight(CTFontRef self);
-CORETEXT_EXPORT CGPathRef CTFontCreatePathForGlyph(CTFontRef self,CGGlyph glyph,CGAffineTransform *xform);
+CORETEXT_EXPORT CGFloat CTFontGetSize(CTFontRef self);
+CORETEXT_EXPORT size_t CTFontGetGlyphCount(CTFontRef self);
+CORETEXT_EXPORT BOOL CTFontGetGlyphsForCharacters(CTFontRef self, const unichar *characters, CGGlyph *glyphs, size_t count);
+CORETEXT_EXPORT CGRect CTFontGetBoundingBox(CTFontRef self);
+CORETEXT_EXPORT void CTFontGetAdvancesForGlyphs(CTFontRef self, int orientation, const CGGlyph *glyphs, CGSize *advances, size_t count);
+CORETEXT_EXPORT CGFloat CTFontGetUnderlinePosition(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetUnderlineThickness(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetAscent(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetDescent(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetLeading(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetSlantAngle(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetXHeight(CTFontRef self);
+CORETEXT_EXPORT CGFloat CTFontGetCapHeight(CTFontRef self);
+CORETEXT_EXPORT CGPathRef CTFontCreatePathForGlyph(CTFontRef self, CGGlyph glyph, CGAffineTransform *xform);

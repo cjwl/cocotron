@@ -9,81 +9,80 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSDate.h>
 
-@class NSDictionary,NSMutableDictionary,NSAutoreleasePool,NSLock;
+@class NSDictionary, NSMutableDictionary, NSAutoreleasePool, NSLock;
 
-FOUNDATION_EXPORT NSString * const NSDidBecomeSingleThreadedNotification;
-FOUNDATION_EXPORT NSString * const NSWillBecomeMultiThreadedNotification;
-FOUNDATION_EXPORT NSString * const NSThreadWillExitNotification;
+FOUNDATION_EXPORT NSString *const NSDidBecomeSingleThreadedNotification;
+FOUNDATION_EXPORT NSString *const NSWillBecomeMultiThreadedNotification;
+FOUNDATION_EXPORT NSString *const NSThreadWillExitNotification;
 
 @interface NSThread : NSObject {
-   NSMutableDictionary *_dictionary;
-   NSMutableDictionary *_sharedObjects;
-   NSLock *_sharedObjectLock;
-   NSAutoreleasePool   *_currentPool;
-   NSExceptionFrame    *_currentHandler;
-   NSUncaughtExceptionHandler *_uncaughtExceptionHandler;
-   NSString *_name;
-   SEL _selector;
-   id  _argument;
-   id  _target;
-	BOOL _cancelled;
-	BOOL _executing;
-	BOOL _finished;
+    NSMutableDictionary *_dictionary;
+    NSMutableDictionary *_sharedObjects;
+    NSLock *_sharedObjectLock;
+    NSAutoreleasePool *_currentPool;
+    NSExceptionFrame *_currentHandler;
+    NSUncaughtExceptionHandler *_uncaughtExceptionHandler;
+    NSString *_name;
+    SEL _selector;
+    id _argument;
+    id _target;
+    BOOL _cancelled;
+    BOOL _executing;
+    BOOL _finished;
 }
 
-+(BOOL)isMultiThreaded;
-+(BOOL)isMainThread;
++ (BOOL)isMultiThreaded;
++ (BOOL)isMainThread;
 
-+(NSThread *)mainThread;
++ (NSThread *)mainThread;
 
-+(void)detachNewThreadSelector:(SEL)selector toTarget:target
-   withObject:argument;
++ (void)detachNewThreadSelector:(SEL)selector toTarget:target
+                     withObject:argument;
 
-+(NSThread *)currentThread;
-+(NSArray *)callStackReturnAddresses;
-+(NSArray *)callStackSymbols;
++ (NSThread *)currentThread;
++ (NSArray *)callStackReturnAddresses;
++ (NSArray *)callStackSymbols;
 
-+(double)threadPriority;
-+(BOOL)setThreadPriority:(double)value;
++ (double)threadPriority;
++ (BOOL)setThreadPriority:(double)value;
 
-+(void)sleepUntilDate:(NSDate *)date;
-+(void)sleepForTimeInterval:(NSTimeInterval)value;
++ (void)sleepUntilDate:(NSDate *)date;
++ (void)sleepForTimeInterval:(NSTimeInterval)value;
 
-+(void)exit;
++ (void)exit;
 
--init;
--initWithTarget:target selector:(SEL)selector object:argument;
+- init;
+- initWithTarget:target selector:(SEL)selector object:argument;
 
--(BOOL)isMainThread;
--(BOOL)isCancelled;
--(BOOL)isExecuting;
--(BOOL)isFinished;
+- (BOOL)isMainThread;
+- (BOOL)isCancelled;
+- (BOOL)isExecuting;
+- (BOOL)isFinished;
 
--(void)start;
--(void)cancel;
--(void)main;
+- (void)start;
+- (void)cancel;
+- (void)main;
 
--(NSString *)name;
--(NSUInteger)stackSize;
+- (NSString *)name;
+- (NSUInteger)stackSize;
 
--(NSMutableDictionary *)threadDictionary;
+- (NSMutableDictionary *)threadDictionary;
 
--(void)setName:(NSString *)value;
--(void)setStackSize:(NSUInteger)value;
-
+- (void)setName:(NSString *)value;
+- (void)setStackSize:(NSUInteger)value;
 
 // private
--(NSMutableDictionary *)sharedDictionary;
--(void)setSharedObject:object forClassName:(NSString *)className;
+- (NSMutableDictionary *)sharedDictionary;
+- (void)setSharedObject:object forClassName:(NSString *)className;
 
 @end
 
-@interface NSObject(NSThread)
--(void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
--(void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone;
--(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
--(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone;
--(void)performSelectorInBackground:(SEL)selector withObject:object;
+@interface NSObject (NSThread)
+- (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
+- (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone;
+- (void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
+- (void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone;
+- (void)performSelectorInBackground:(SEL)selector withObject:object;
 @end
 
 // PRIVATE

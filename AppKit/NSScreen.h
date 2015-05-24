@@ -9,20 +9,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 @interface NSScreen : NSObject {
-   NSRect _frame;
-   NSRect _visibleFrame;
+    NSRect _frame;
+    NSRect _visibleFrame;
 }
 
-+(NSScreen *)mainScreen;
++ (NSScreen *)mainScreen;
 
-+(NSArray *)screens;
++ (NSArray *)screens;
 
--initWithFrame:(NSRect)frame visibleFrame:(NSRect)visibleFrame;
+- initWithFrame:(NSRect)frame visibleFrame:(NSRect)visibleFrame;
 
--(NSRect)frame;
+- (NSRect)frame;
 
--(NSRect)visibleFrame;
+- (NSRect)visibleFrame;
 
--(CGFloat)userSpaceScaleFactor;
+- (CGFloat)userSpaceScaleFactor;
 
 @end

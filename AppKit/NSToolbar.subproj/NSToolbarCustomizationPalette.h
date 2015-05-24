@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSPopUpButton, NSButton, NSTextField, NSToolbar;
 @class NSToolbarCustomizationView;
 
-@interface NSToolbarCustomizationPalette : NSPanel  {
+@interface NSToolbarCustomizationPalette : NSPanel {
     IBOutlet NSTextField *_allowedItemsTextField;
     IBOutlet NSToolbarCustomizationView *_allowedItemsView;
     IBOutlet NSTextField *_defaultItemsTextField;
@@ -22,14 +22,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     IBOutlet NSButton *_button;
 }
 
-+(NSToolbarCustomizationPalette *)toolbarCustomizationPalette;
++ (NSToolbarCustomizationPalette *)toolbarCustomizationPalette;
 
--(void)setToolbar:(NSToolbar *)toolbar;
--(NSToolbar *)toolbar;
+- (void)setToolbar:(NSToolbar *)toolbar;
+- (NSToolbar *)toolbar;
 
--(void)displayModeChanged:sender;
--(void)sizeModeChanged:sender;
+- (void)displayModeChanged:sender;
+- (void)sizeModeChanged:sender;
 
--(void)customizationPaletteDidFinish:sender;
+- (void)customizationPaletteDidFinish:sender;
 
 @end

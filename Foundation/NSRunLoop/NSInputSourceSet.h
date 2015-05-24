@@ -11,24 +11,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDate, NSInputSource, NSSet, NSMutableSet;
 
 @interface NSInputSourceSet : NSObject {
-   NSMutableSet *_inputSources;
+    NSMutableSet *_inputSources;
 }
 
--(NSUInteger)count;
+- (NSUInteger)count;
 
--(BOOL)recognizesInputSource:(NSInputSource *)source;
+- (BOOL)recognizesInputSource:(NSInputSource *)source;
 
--(void)addInputSource:(NSInputSource *)source;
--(void)removeInputSource:(NSInputSource *)source;
+- (void)addInputSource:(NSInputSource *)source;
+- (void)removeInputSource:(NSInputSource *)source;
 
--(NSSet *)validInputSources;
+- (NSSet *)validInputSources;
 
--(BOOL)fireSingleImmediateInputInMode:(NSString *)mode;
+- (BOOL)fireSingleImmediateInputInMode:(NSString *)mode;
 
--(void)startingInMode:(NSString *)mode;
+- (void)startingInMode:(NSString *)mode;
 
--(void)waitInBackgroundInMode:(NSString *)mode;
+- (void)waitInBackgroundInMode:(NSString *)mode;
 
--(BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date;
+- (BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date;
 
 @end

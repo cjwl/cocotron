@@ -8,10 +8,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-
-@interface SizeAndAlignment : SenTestCase 
-{
-
+@interface SizeAndAlignment : SenTestCase {
 }
 
 @end

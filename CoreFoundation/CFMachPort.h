@@ -10,28 +10,27 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct __NSMachPort *CFMachPortRef;
 
-typedef void (*CFMachPortCallBack)(CFMachPortRef self,void *msg,CFIndex size,void *info);
-typedef void (*CFMachPortInvalidationCallBack)(CFMachPortRef self,void *info);
+typedef void (*CFMachPortCallBack)(CFMachPortRef self, void *msg, CFIndex size, void *info);
+typedef void (*CFMachPortInvalidationCallBack)(CFMachPortRef self, void *info);
 
 typedef struct {
-   CFIndex                            version;
-   void                              *info;
-   CFAllocatorRetainCallBack          retain;
-   CFAllocatorReleaseCallBack         release;
-   CFAllocatorCopyDescriptionCallBack copyDescription;
+    CFIndex version;
+    void *info;
+    CFAllocatorRetainCallBack retain;
+    CFAllocatorReleaseCallBack release;
+    CFAllocatorCopyDescriptionCallBack copyDescription;
 } CFMachPortContext;
 
-COREFOUNDATION_EXPORT CFTypeID                       CFMachPortGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFMachPortGetTypeID(void);
 
-COREFOUNDATION_EXPORT CFMachPortRef                  CFMachPortCreate(CFAllocatorRef allocator,CFMachPortCallBack callback,CFMachPortContext *context,Boolean *callerFreeInfo);
-COREFOUNDATION_EXPORT CFMachPortRef                  CFMachPortCreateWithPort(CFAllocatorRef allocator,mach_port_t port,CFMachPortCallBack callback,CFMachPortContext *context,Boolean *callerFreeInfo);
+COREFOUNDATION_EXPORT CFMachPortRef CFMachPortCreate(CFAllocatorRef allocator, CFMachPortCallBack callback, CFMachPortContext *context, Boolean *callerFreeInfo);
+COREFOUNDATION_EXPORT CFMachPortRef CFMachPortCreateWithPort(CFAllocatorRef allocator, mach_port_t port, CFMachPortCallBack callback, CFMachPortContext *context, Boolean *callerFreeInfo);
 
-COREFOUNDATION_EXPORT mach_port_t                    CFMachPortGetPort(CFMachPortRef self);
-COREFOUNDATION_EXPORT void                           CFMachPortGetContext(CFMachPortRef self,CFMachPortContext *context);
+COREFOUNDATION_EXPORT mach_port_t CFMachPortGetPort(CFMachPortRef self);
+COREFOUNDATION_EXPORT void CFMachPortGetContext(CFMachPortRef self, CFMachPortContext *context);
 COREFOUNDATION_EXPORT CFMachPortInvalidationCallBack CFMachPortGetInvalidationCallBack(CFMachPortRef self);
-COREFOUNDATION_EXPORT void                           CFMachPortSetInvalidationCallBack(CFMachPortRef self,CFMachPortInvalidationCallBack callback);
+COREFOUNDATION_EXPORT void CFMachPortSetInvalidationCallBack(CFMachPortRef self, CFMachPortInvalidationCallBack callback);
 
-COREFOUNDATION_EXPORT CFRunLoopSourceRef             CFMachPortCreateRunLoopSource(CFAllocatorRef allocator,CFMachPortRef self,CFIndex order);
-COREFOUNDATION_EXPORT void                           CFMachPortInvalidate(CFMachPortRef self);
-COREFOUNDATION_EXPORT Boolean                        CFMachPortIsValid(CFMachPortRef self);
-
+COREFOUNDATION_EXPORT CFRunLoopSourceRef CFMachPortCreateRunLoopSource(CFAllocatorRef allocator, CFMachPortRef self, CFIndex order);
+COREFOUNDATION_EXPORT void CFMachPortInvalidate(CFMachPortRef self);
+COREFOUNDATION_EXPORT Boolean CFMachPortIsValid(CFMachPortRef self);

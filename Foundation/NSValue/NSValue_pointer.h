@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 
 @interface NSValue_pointer : NSValue {
-   const void *_pointer;
+    const void *_pointer;
 }
 
--initWithPointer:(const void *)pointer;
+- initWithPointer:(const void *)pointer;
 
 @end

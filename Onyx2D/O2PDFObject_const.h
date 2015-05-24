@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFObject.h>
 
 @interface O2PDFObject_const : O2PDFObject {
-   O2PDFObjectType _objectType;
+    O2PDFObjectType _objectType;
 }
 
-+pdfObjectArrayMark;
-+pdfObjectArrayMarkEnd;
-+pdfObjectDictionaryMark;
-+pdfObjectDictionaryMarkEnd;
-+pdfObjectWithNull;
++ pdfObjectArrayMark;
++ pdfObjectArrayMarkEnd;
++ pdfObjectDictionaryMark;
++ pdfObjectDictionaryMarkEnd;
++ pdfObjectWithNull;
 
-+pdfObjectProcMark;
-+pdfObjectProcMarkEnd;
++ pdfObjectProcMark;
++ pdfObjectProcMarkEnd;
 
 @end

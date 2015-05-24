@@ -1,5 +1,5 @@
 #import <AppKit/NSGraphicsStyle.h>
 
-@interface NSGraphicsStyle_uxtheme : NSGraphicsStyle 
+@interface NSGraphicsStyle_uxtheme : NSGraphicsStyle
 
 @end

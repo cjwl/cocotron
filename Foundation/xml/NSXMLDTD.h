@@ -8,35 +8,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSXMLNode.h>
 
-@class NSXMLDTDNode,NSURL,NSData,NSMutableArray;
+@class NSXMLDTDNode, NSURL, NSData, NSMutableArray;
 
 @interface NSXMLDTD : NSXMLNode {
-   NSString       *_publicID;
-   NSString       *_systemID;
+    NSString *_publicID;
+    NSString *_systemID;
 }
 
-+(NSXMLDTDNode *)predefinedEntityDeclarationForName:(NSString *)name;
++ (NSXMLDTDNode *)predefinedEntityDeclarationForName:(NSString *)name;
 
--initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
--initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
+- initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
+- initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
 
--(NSString *)publicID;
--(NSString *)systemID;
+- (NSString *)publicID;
+- (NSString *)systemID;
 
--(NSXMLDTDNode *)attributeDeclarationForName:(NSString *)attributeName elementName:(NSString *)elementName;
--(NSXMLDTDNode *)elementDeclarationForName:(NSString *)name;
--(NSXMLDTDNode *)entityDeclarationForName:(NSString *)name;
--(NSXMLDTDNode *)notationDeclarationForName:(NSString *)name;
+- (NSXMLDTDNode *)attributeDeclarationForName:(NSString *)attributeName elementName:(NSString *)elementName;
+- (NSXMLDTDNode *)elementDeclarationForName:(NSString *)name;
+- (NSXMLDTDNode *)entityDeclarationForName:(NSString *)name;
+- (NSXMLDTDNode *)notationDeclarationForName:(NSString *)name;
 
--(void)setPublicID:(NSString *)publicID;
--(void)setSystemID:(NSString *)systemID;
+- (void)setPublicID:(NSString *)publicID;
+- (void)setSystemID:(NSString *)systemID;
 
--(void)setChildren:(NSArray *)children;
+- (void)setChildren:(NSArray *)children;
 
--(void)addChild:(NSXMLNode *)node;
--(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
--(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
--(void)removeChildAtIndex:(NSUInteger)index;
--(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
+- (void)addChild:(NSXMLNode *)node;
+- (void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+- (void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+- (void)removeChildAtIndex:(NSUInteger)index;
+- (void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
 @end

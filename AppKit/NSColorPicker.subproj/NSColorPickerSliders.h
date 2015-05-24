@@ -14,8 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     IBOutlet NSBox *rgbSubview;
     IBOutlet NSBox *cmykSubview;
     IBOutlet NSBox *hsbSubview;
-	IBOutlet NSPopUpButton* typeButton;
-	
+    IBOutlet NSPopUpButton *typeButton;
+
     IBOutlet NSView *currentView;
     IBOutlet NSSlider *greyscaleSlider;
     IBOutlet NSTextField *greyscaleTextField;
@@ -41,16 +41,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)typeChanged:(id)sender;
 
--(void)greyscaleDidChange:(id)sender;
--(void)grayscaleConstant:sender;
+- (void)greyscaleDidChange:(id)sender;
+- (void)grayscaleConstant:sender;
 
--(void)rgbSliderChanged:sender;
--(void)rgbTextChanged:sender;
+- (void)rgbSliderChanged:sender;
+- (void)rgbTextChanged:sender;
 
--(void)cmykSliderChanged:sender;
--(void)cmykTextChanged:sender;
+- (void)cmykSliderChanged:sender;
+- (void)cmykTextChanged:sender;
 
--(void)hsbSliderChanged:sender;
--(void)hsbTextChanged:sender;
+- (void)hsbSliderChanged:sender;
+- (void)hsbTextChanged:sender;
 
 @end

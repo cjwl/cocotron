@@ -8,27 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSColor,NSParagraphStyle,NSDictionary;
+@class NSColor, NSParagraphStyle, NSDictionary;
 
 @interface NSTextViewSharedData : NSObject {
-   NSColor          *_backgroundColor;
-   NSParagraphStyle *_defaultParagraphStyle;
-   unsigned          _flags;
-   NSColor          *_insertionColor;
-   NSDictionary     *_linkAttributes;
-   NSDictionary     *_markedAttributes;
-   NSDictionary     *_selectedAttributes;
+    NSColor *_backgroundColor;
+    NSParagraphStyle *_defaultParagraphStyle;
+    unsigned _flags;
+    NSColor *_insertionColor;
+    NSDictionary *_linkAttributes;
+    NSDictionary *_markedAttributes;
+    NSDictionary *_selectedAttributes;
 }
 
--(NSColor *)backgroundColor;
--(NSColor *)insertionColor;
+- (NSColor *)backgroundColor;
+- (NSColor *)insertionColor;
 
--(NSParagraphStyle *)defaultParagraphStyle;
+- (NSParagraphStyle *)defaultParagraphStyle;
 
--(BOOL)drawsBackground;
--(BOOL)isEditable;
--(BOOL)isSelectable;
--(BOOL)isRichText;
--(BOOL)allowsUndo;
+- (BOOL)drawsBackground;
+- (BOOL)isEditable;
+- (BOOL)isSelectable;
+- (BOOL)isRichText;
+- (BOOL)allowsUndo;
 
 @end

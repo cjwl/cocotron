@@ -8,32 +8,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSDate,NSTimer,NSMutableArray, NSArray, NSDelayedPerform;
-@class NSInputSource,NSInputSourceSet;
+@class NSDate, NSTimer, NSMutableArray, NSArray, NSDelayedPerform;
+@class NSInputSource, NSInputSourceSet;
 
 @interface NSRunLoopState : NSObject {
-   NSInputSourceSet *_inputSourceSet;
-   NSArray          *_asyncInputSourceSets;
-   NSMutableArray   *_timers;
-   id                _cancelSource;
+    NSInputSourceSet *_inputSourceSet;
+    NSArray *_asyncInputSourceSets;
+    NSMutableArray *_timers;
+    id _cancelSource;
 }
 
--(void)addTimer:(NSTimer *)timer;
+- (void)addTimer:(NSTimer *)timer;
 
--(void)startingInMode:(NSString *)mode;
+- (void)startingInMode:(NSString *)mode;
 
--(BOOL)fireFirstTimer;
--(NSDate *)limitDateForMode:(NSString *)mode;
+- (BOOL)fireFirstTimer;
+- (NSDate *)limitDateForMode:(NSString *)mode;
 
--(void)addInputSource:(NSInputSource *)source;
--(void)removeInputSource:(NSInputSource *)source;
+- (void)addInputSource:(NSInputSource *)source;
+- (void)removeInputSource:(NSInputSource *)source;
 
--(void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed;
+- (void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed;
 
--(BOOL)waitForSingleInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
+- (BOOL)waitForSingleInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
 
--(BOOL)pollInputForMode:(NSString *)mode;
+- (BOOL)pollInputForMode:(NSString *)mode;
 
--(void)wakeUp;
+- (void)wakeUp;
 @end
-

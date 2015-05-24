@@ -10,32 +10,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <Foundation/NSRange.h>
 
-@interface NSValue : NSObject <NSCopying,NSCoding>
+@interface NSValue : NSObject <NSCopying, NSCoding>
 
--initWithBytes:(const void *)value objCType:(const char *)type;
-+(NSValue *)valueWithBytes:(const void *)value objCType:(const char *)type;
-+(NSValue *)value:(const void *)value withObjCType:(const char *)type;
+- initWithBytes:(const void *)value objCType:(const char *)type;
++ (NSValue *)valueWithBytes:(const void *)value objCType:(const char *)type;
++ (NSValue *)value:(const void *)value withObjCType:(const char *)type;
 
-+(NSValue *)valueWithNonretainedObject:object;
-+(NSValue *)valueWithPointer:(const void *)pointer;
-+(NSValue *)valueWithPoint:(NSPoint)point;
-+(NSValue *)valueWithSize:(NSSize)size;
-+(NSValue *)valueWithRect:(NSRect)rect;
-+(NSValue *)valueWithRange:(NSRange)range;
++ (NSValue *)valueWithNonretainedObject:object;
++ (NSValue *)valueWithPointer:(const void *)pointer;
++ (NSValue *)valueWithPoint:(NSPoint)point;
++ (NSValue *)valueWithSize:(NSSize)size;
++ (NSValue *)valueWithRect:(NSRect)rect;
++ (NSValue *)valueWithRange:(NSRange)range;
 
--(BOOL)isEqualToValue:(NSValue *)other;
+- (BOOL)isEqualToValue:(NSValue *)other;
 
--(void)getValue:(void *)value;
--(const char *)objCType;
+- (void)getValue:(void *)value;
+- (const char *)objCType;
 
--nonretainedObjectValue;
+- nonretainedObjectValue;
 
--(void *)pointerValue;
+- (void *)pointerValue;
 
--(NSPoint)pointValue;
--(NSSize)sizeValue;
--(NSRect)rectValue;
--(NSRange)rangeValue;
+- (NSPoint)pointValue;
+- (NSSize)sizeValue;
+- (NSRect)rectValue;
+- (NSRange)rangeValue;
 
 @end
 

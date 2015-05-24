@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 
 @interface NSValue_nonRetainedObject : NSValue {
-   id _object;
+    id _object;
 }
 
--initWithObject:object;
+- initWithObject:object;
 
 @end

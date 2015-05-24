@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFObject.h>
 
 @interface O2PDFObject_Integer : O2PDFObject {
-   O2PDFInteger _value;
+    O2PDFInteger _value;
 }
 
-+pdfObjectWithInteger:(O2PDFInteger)value;
++ pdfObjectWithInteger:(O2PDFInteger)value;
 
 @end

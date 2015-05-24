@@ -11,25 +11,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDate;
 
 @protocol NSLocking
--(void)lock;
--(void)unlock;
+- (void)lock;
+- (void)unlock;
 @end
 
-@interface NSLock : NSObject <NSLocking>
-{
+@interface NSLock : NSObject <NSLocking> {
     NSString *_name;
 }
 
--(NSString *)name;
--(void)setName:(NSString *)value;
+- (NSString *)name;
+- (void)setName:(NSString *)value;
 
--(BOOL)tryLock;
--(BOOL)lockBeforeDate:(NSDate *)value;
+- (BOOL)tryLock;
+- (BOOL)lockBeforeDate:(NSDate *)value;
 
 @end
 
 @interface NSCondition : NSObject <NSLocking> {
-	NSString *name;
+    NSString *name;
 }
 
 - (void)broadcast;

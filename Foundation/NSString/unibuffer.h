@@ -6,24 +6,22 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 typedef struct {
-   NSUInteger length;
-   unichar *characters;
+    NSUInteger length;
+    unichar *characters;
 } unibuffer;
 
-static inline unibuffer NewUnibufferWithString(NSString *string){
-   unibuffer result;
+static inline unibuffer NewUnibufferWithString(NSString *string) {
+    unibuffer result;
 
-   result.length=[string length];
-   result.characters=NSZoneMalloc(NSDefaultMallocZone(),sizeof(unichar)*result.length);
+    result.length = [string length];
+    result.characters = NSZoneMalloc(NSDefaultMallocZone(), sizeof(unichar) * result.length);
 
-   [string getCharacters:result.characters];
+    [string getCharacters:result.characters];
 
-   return result;
+    return result;
 }
 
-static inline void FreeUnibuffer(unibuffer buffer){
-   NSZoneFree(NSDefaultMallocZone(),buffer.characters);
+static inline void FreeUnibuffer(unibuffer buffer) {
+    NSZoneFree(NSDefaultMallocZone(), buffer.characters);
 }
-

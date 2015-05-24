@@ -6,7 +6,6 @@
 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 /* NS_DECLARE_CLASS_SYMBOL()
    Helper macro to declare a name that refers to the objc_class struct for a
    given class. Example of use:
@@ -35,14 +34,13 @@
 
 #if __APPLE__
 #ifdef __LP64__
-#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__("_OBJC_CLASS_$_"#className)
+#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__("_OBJC_CLASS_$_" #className)
 #else
-#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__(".objc_class_name_"#className)
+#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__(".objc_class_name_" #className)
 #endif
 #else
 #define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className)
 #endif
-
 
 /* NS_CONSTOBJ_DECL/NS_CONSTOBJ_DEF
    Appropriate linkage specifiers for constant objects.

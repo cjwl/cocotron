@@ -9,11 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner.h>
 
 @interface NSScanner_concrete : NSScanner {
-   NSString *_string;
-   NSUInteger  _location;
-   NSCharacterSet *_skipSet;
-   BOOL _isCaseSensitive;
-   NSDictionary *_locale;
+    NSString *_string;
+    NSUInteger _location;
+    NSCharacterSet *_skipSet;
+    BOOL _isCaseSensitive;
+    NSDictionary *_locale;
 }
 
 @end

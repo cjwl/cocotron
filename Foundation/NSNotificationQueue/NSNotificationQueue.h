@@ -8,39 +8,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSNotificationCenter,NSNotification,NSArray,NSMutableArray;
+@class NSNotificationCenter, NSNotification, NSArray, NSMutableArray;
 
 typedef enum {
-   NSPostWhenIdle=1,
-   NSPostASAP,
-   NSPostNow
+    NSPostWhenIdle = 1,
+    NSPostASAP,
+    NSPostNow
 } NSPostingStyle;
 
 typedef enum {
-   NSNotificationNoCoalescing=0x00,
-   NSNotificationCoalescingOnName=0x01,
-   NSNotificationCoalescingOnSender=0x02
+    NSNotificationNoCoalescing = 0x00,
+    NSNotificationCoalescingOnName = 0x01,
+    NSNotificationCoalescingOnSender = 0x02
 } NSNotificationCoalescing;
 
-@interface NSNotificationQueue:NSObject {
+@interface NSNotificationQueue : NSObject {
     NSNotificationCenter *_center;
-    NSMutableArray       *_asapQueue;
-    NSMutableArray       *_idleQueue;
+    NSMutableArray *_asapQueue;
+    NSMutableArray *_idleQueue;
 }
 
--initWithNotificationCenter:(NSNotificationCenter *)center;
+- initWithNotificationCenter:(NSNotificationCenter *)center;
 
-+(NSNotificationQueue *)defaultQueue;
++ (NSNotificationQueue *)defaultQueue;
 
--(void)enqueueNotification:(NSNotification *)note
-              postingStyle:(NSPostingStyle)style
-              coalesceMask:(NSUInteger)mask
-                  forModes:(NSArray *)modes;
+- (void)enqueueNotification:(NSNotification *)note
+               postingStyle:(NSPostingStyle)style
+               coalesceMask:(NSUInteger)mask
+                   forModes:(NSArray *)modes;
 
--(void)enqueueNotification:(NSNotification *)note
-              postingStyle:(NSPostingStyle)style;
+- (void)enqueueNotification:(NSNotification *)note
+               postingStyle:(NSPostingStyle)style;
 
--(void)dequeueNotificationsMatching:(NSNotification *)note
-                       coalesceMask:(NSUInteger)mask;
+- (void)dequeueNotificationsMatching:(NSNotification *)note
+                        coalesceMask:(NSUInteger)mask;
 
 @end

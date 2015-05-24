@@ -11,9 +11,9 @@
 @class TestOperation;
 
 @interface OperationQueueTests : SenTestCase {
-	NSOperationQueue *queue;
-	TestOperation *operation;
-	NSUInteger observationCount;
+    NSOperationQueue *queue;
+    TestOperation *operation;
+    NSUInteger observationCount;
 }
 
 @end

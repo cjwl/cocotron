@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#define LZ_MAX_CODE         4095    /* Biggest code possible in 12 bits. */
+#define LZ_MAX_CODE 4095 /* Biggest code possible in 12 bits. */
 
 typedef int LZWWord;
 typedef unsigned int LZWPrefixType;
@@ -32,25 +32,24 @@ typedef unsigned char LZWPixelType;
 typedef struct LZWFileType {
 
     int LZWError;
-    
-    LZWWord   
-      BitsPerPixel,     /* Bits per pixel (Codes uses at least this + 1). */
-      ClearCode,   /* The CLEAR LZ code. */
-      EOFCode,     /* The EOF LZ code. */
-      RunningCode, /* The next code algorithm can generate. */
-      RunningBits, /* The number of bits required to represent RunningCode. */
-      MaxCode1,    /* 1 bigger than max. possible code, in RunningBits bits. */
-      LastCode,    /* The code before the current code. */
-      CrntCode,    /* Current algorithm code. */
-      StackPtr,    /* For character stack (see below). */
-      CrntShiftState;    /* Number of bits in CrntShiftDWord. */
-    unsigned long CrntShiftDWord;   /* For bytes decomposition into codes. */
-    unsigned long PixelCount;   /* Number of pixels in image. */
+
+    LZWWord
+        BitsPerPixel, /* Bits per pixel (Codes uses at least this + 1). */
+        ClearCode, /* The CLEAR LZ code. */
+        EOFCode, /* The EOF LZ code. */
+        RunningCode, /* The next code algorithm can generate. */
+        RunningBits, /* The number of bits required to represent RunningCode. */
+        MaxCode1, /* 1 bigger than max. possible code, in RunningBits bits. */
+        LastCode, /* The code before the current code. */
+        CrntCode, /* Current algorithm code. */
+        StackPtr, /* For character stack (see below). */
+        CrntShiftState; /* Number of bits in CrntShiftDWord. */
+    unsigned long CrntShiftDWord; /* For bytes decomposition into codes. */
+    unsigned long PixelCount; /* Number of pixels in image. */
     NSInputStream *inputStream;
     uint8_t Stack[LZ_MAX_CODE]; /* Decoded pixels are stacked here. */
-    uint8_t Suffix[LZ_MAX_CODE + 1];    /* So we can trace the codes. */
+    uint8_t Suffix[LZ_MAX_CODE + 1]; /* So we can trace the codes. */
     LZWPrefixType Prefix[LZ_MAX_CODE + 1];
 } LZWFileType;
 
-
-NSData *LZWDecodeWithExpectedResultLength(NSData *data,unsigned stripLength);
+NSData *LZWDecodeWithExpectedResultLength(NSData *data, unsigned stripLength);

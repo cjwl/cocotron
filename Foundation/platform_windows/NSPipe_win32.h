@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFileHandle_win32;
 
 @interface NSPipe_win32 : NSPipe {
-   NSFileHandle_win32 *_fileHandleForReading;
-   NSFileHandle_win32 *_fileHandleForWriting;
+    NSFileHandle_win32 *_fileHandleForReading;
+    NSFileHandle_win32 *_fileHandleForWriting;
 }
 
 @end

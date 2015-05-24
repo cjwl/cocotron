@@ -11,16 +11,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSPopUpView;
 
 @interface NSPopUpWindow : NSPanel {
-   NSPopUpView *_view;
+    NSPopUpView *_view;
 }
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--(void)setMenu:(NSMenu *)menu;
--(void)setFont:(NSFont *)font;
--(void)setPullsDown:(BOOL)pullsDown;
--(void)selectItemAtIndex:(int)index;
+- (void)setMenu:(NSMenu *)menu;
+- (void)setFont:(NSFont *)font;
+- (void)setPullsDown:(BOOL)pullsDown;
+- (void)selectItemAtIndex:(int)index;
 
--(int)runTrackingWithEvent:(NSEvent *)event;
+- (int)runTrackingWithEvent:(NSEvent *)event;
 
 @end

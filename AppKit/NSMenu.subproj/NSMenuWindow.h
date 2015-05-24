@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMenuView;
 
 @interface NSMenuWindow : NSPanel {
-   NSMenuView *_view;
+    NSMenuView *_view;
 }
 
--initWithMenu:(NSMenu *)menu;
--initWithMenu:(NSMenu *)menu overflowAtIndex:(unsigned)overflowIndex;
+- initWithMenu:(NSMenu *)menu;
+- initWithMenu:(NSMenu *)menu overflowAtIndex:(unsigned)overflowIndex;
 
--(NSMenuView *)menuView;
+- (NSMenuView *)menuView;
 
 @end

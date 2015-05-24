@@ -9,29 +9,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSControl.h>
 
 @interface NSTextField : NSControl {
-   id  _delegate;
-   SEL _errorAction;
+    id _delegate;
+    SEL _errorAction;
 }
 
--delegate;
--(void)setDelegate:delegate;
+- delegate;
+- (void)setDelegate:delegate;
 
--(NSColor *)backgroundColor;
--(NSColor *)textColor;
--(BOOL)drawsBackground;
+- (NSColor *)backgroundColor;
+- (NSColor *)textColor;
+- (BOOL)drawsBackground;
 
--(void)setBackgroundColor:(NSColor *)color;
--(void)setTextColor:(NSColor *)color;
--(void)setDrawsBackground:(BOOL)flag;
+- (void)setBackgroundColor:(NSColor *)color;
+- (void)setTextColor:(NSColor *)color;
+- (void)setDrawsBackground:(BOOL)flag;
 
--(void)selectText:sender;
+- (void)selectText:sender;
 
--previousText;
--nextText;
+- previousText;
+- nextText;
 
--(void)setPreviousText:text;
--(void)setNextText:text;
+- (void)setPreviousText:text;
+- (void)setNextText:text;
 
--(void)setTitleWithMnemonic:(NSString *)value;
+- (void)setTitleWithMnemonic:(NSString *)value;
 
 @end

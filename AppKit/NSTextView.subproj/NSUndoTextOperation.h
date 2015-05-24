@@ -8,8 +8,7 @@
 
 #import <AppKit/AppKit.h>
 
-@interface _NSAttributes : NSObject
-{
+@interface _NSAttributes : NSObject {
     NSDictionary *_attributes;
     NSRange _range;
 }
@@ -18,9 +17,7 @@
 - (void)setAttributesInTextStorage:(NSTextStorage *)textStorage;
 @end
 
-
-@interface _NSAttributeRun : NSObject <NSCopying>
-{
+@interface _NSAttributeRun : NSObject <NSCopying> {
     NSRange _range;
     NSTextStorage *_textStorage;
     // Array of _NSAttributes
@@ -34,8 +31,7 @@
 
 @end
 
-@interface NSUndoTextOperation : NSObject
-{
+@interface NSUndoTextOperation : NSObject {
     NSRange _affectedRange;
     NSUndoManager *_undoManager;
     NSLayoutManager *_layoutManager;
@@ -52,8 +48,7 @@
 - (void)undoRedo:(NSTextStorage *)textStorage;
 @end
 
-@interface NSUndoTyping : NSUndoTextOperation
-{
+@interface NSUndoTyping : NSUndoTextOperation {
     NSRange _replacementRange;
     NSMutableAttributedString *_attributedString;
 }
@@ -65,8 +60,7 @@
 
 @end
 
-@interface NSUndoSetAttributes : NSUndoTextOperation
-{
+@interface NSUndoSetAttributes : NSUndoTextOperation {
     _NSAttributeRun *_attributes;
 }
 - (id)initWithAffectedRange:(NSRange)range layoutManager:(NSLayoutManager *)layoutManager undoManager:(NSUndoManager *)undoManager;
@@ -75,8 +69,7 @@
 
 @end
 
-@interface NSUndoReplaceCharacters : NSUndoTextOperation
-{
+@interface NSUndoReplaceCharacters : NSUndoTextOperation {
     NSRange _replacementRange;
     NSAttributedString *_attributedString;
 }

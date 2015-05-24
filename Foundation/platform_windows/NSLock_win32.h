@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <windows.h>
 
 @interface NSLock_win32 : NSLock {
-   HANDLE _lock;
+    HANDLE _lock;
 }
 
 @end

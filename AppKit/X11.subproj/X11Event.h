@@ -2,9 +2,9 @@
 #import <X11/Xlib.h>
 
 @interface X11Event : CGEvent {
-   XEvent _event;
+    XEvent _event;
 }
 
--initWithXEvent:(XEvent)event;
+- initWithXEvent:(XEvent)event;
 
 @end

@@ -9,9 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSPlatform_posix.h>
 
-@interface NSPlatform_darwin : NSPlatform_posix
-{
+@interface NSPlatform_darwin : NSPlatform_posix {
 }
 
 @end
-

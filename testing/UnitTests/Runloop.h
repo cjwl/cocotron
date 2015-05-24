@@ -10,9 +10,9 @@
 @class WorkerThread;
 
 @interface Runloop : SenTestCase {
-	WorkerThread *_workerThread;
-	NSMutableArray *_jobs;
-	BOOL _wrongThread;
+    WorkerThread *_workerThread;
+    NSMutableArray *_jobs;
+    BOOL _wrongThread;
 }
 
 @end

@@ -11,68 +11,68 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSImage, NSView;
 
-APPKIT_EXPORT NSString * const NSWorkspaceWillPowerOffNotification;
+APPKIT_EXPORT NSString *const NSWorkspaceWillPowerOffNotification;
 
-APPKIT_EXPORT NSString * const NSWorkspaceRecycleOperation;
+APPKIT_EXPORT NSString *const NSWorkspaceRecycleOperation;
 
 @interface NSWorkspace : NSObject {
-   NSNotificationCenter *_notificationCenter;
+    NSNotificationCenter *_notificationCenter;
 }
 
-+(NSWorkspace *)sharedWorkspace;
++ (NSWorkspace *)sharedWorkspace;
 
--(NSNotificationCenter *)notificationCenter;
+- (NSNotificationCenter *)notificationCenter;
 
--(NSImage *)iconForFile:(NSString *)path;
--(NSImage *)iconForFiles:(NSArray *)array;
--(NSImage *)iconForFileType:(NSString *)type;
--(NSString *)localizedDescriptionForType:(NSString *)type;
--(BOOL)filenameExtension:(NSString *)extension isValidForType:(NSString *)type;
--(NSString *)preferredFilenameExtensionForType:(NSString *)type;
--(BOOL)type:(NSString *)type conformsToType:(NSString *)conformsToType;
--(NSString *)typeOfFile:(NSString *)path error:(NSError **)error;
+- (NSImage *)iconForFile:(NSString *)path;
+- (NSImage *)iconForFiles:(NSArray *)array;
+- (NSImage *)iconForFileType:(NSString *)type;
+- (NSString *)localizedDescriptionForType:(NSString *)type;
+- (BOOL)filenameExtension:(NSString *)extension isValidForType:(NSString *)type;
+- (NSString *)preferredFilenameExtensionForType:(NSString *)type;
+- (BOOL)type:(NSString *)type conformsToType:(NSString *)conformsToType;
+- (NSString *)typeOfFile:(NSString *)path error:(NSError **)error;
 
--(BOOL)openFile:(NSString *)path;
--(BOOL)openFile:(NSString *)path withApplication:(NSString *)application;
--(BOOL)openTempFile:(NSString *)path;
--(BOOL)openFile:(NSString *)path fromImage:(NSImage *)image at:(NSPoint)point inView:(NSView *)view;
--(BOOL)openFile:(NSString *)path withApplication:(NSString *)application andDeactivate:(BOOL)deactivate;
--(BOOL)openURL:(NSURL *)url;
+- (BOOL)openFile:(NSString *)path;
+- (BOOL)openFile:(NSString *)path withApplication:(NSString *)application;
+- (BOOL)openTempFile:(NSString *)path;
+- (BOOL)openFile:(NSString *)path fromImage:(NSImage *)image at:(NSPoint)point inView:(NSView *)view;
+- (BOOL)openFile:(NSString *)path withApplication:(NSString *)application andDeactivate:(BOOL)deactivate;
+- (BOOL)openURL:(NSURL *)url;
 
--(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath;
--(void)slideImage:(NSImage *)image from:(NSPoint)from to:(NSPoint)to;
--(BOOL)performFileOperation:(NSString *)operation source:(NSString *)source destination:(NSString *)destination files:(NSArray *)files tag:(int *)tag;
+- (BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath;
+- (void)slideImage:(NSImage *)image from:(NSPoint)from to:(NSPoint)to;
+- (BOOL)performFileOperation:(NSString *)operation source:(NSString *)source destination:(NSString *)destination files:(NSArray *)files tag:(int *)tag;
 
--(BOOL)getFileSystemInfoForPath:(NSString *)path isRemovable:(BOOL *)isRemovable isWritable:(BOOL *)isWritable isUnmountable:(BOOL *)isUnmountable description:(NSString **)description type:(NSString **)type;
+- (BOOL)getFileSystemInfoForPath:(NSString *)path isRemovable:(BOOL *)isRemovable isWritable:(BOOL *)isWritable isUnmountable:(BOOL *)isUnmountable description:(NSString **)description type:(NSString **)type;
 
--(BOOL)getInfoForFile:(NSString *)path application:(NSString **)application type:(NSString **)type;
+- (BOOL)getInfoForFile:(NSString *)path application:(NSString **)application type:(NSString **)type;
 
--(void)checkForRemovableMedia;
--(NSArray *)mountNewRemovableMedia;
--(NSArray *)mountedRemovableMedia;
--(NSArray *)mountedLocalVolumePaths;
+- (void)checkForRemovableMedia;
+- (NSArray *)mountNewRemovableMedia;
+- (NSArray *)mountedRemovableMedia;
+- (NSArray *)mountedLocalVolumePaths;
 
--(BOOL)unmountAndEjectDeviceAtPath:(NSString *)path;
+- (BOOL)unmountAndEjectDeviceAtPath:(NSString *)path;
 
--(BOOL)fileSystemChanged;
--(BOOL)userDefaultsChanged;
+- (BOOL)fileSystemChanged;
+- (BOOL)userDefaultsChanged;
 
--(void)noteFileSystemChanged;
--(void)noteFileSystemChanged:(NSString *)path;
--(void)noteUserDefaultsChanged;
+- (void)noteFileSystemChanged;
+- (void)noteFileSystemChanged:(NSString *)path;
+- (void)noteUserDefaultsChanged;
 
--(BOOL)isFilePackageAtPath:(NSString *)path;
--(NSString *)absolutePathForAppBundleWithIdentifier:(NSString *)identifier;
--(NSString *)pathForApplication:(NSString *)application;
--(NSArray *)launchedApplications;
--(BOOL)launchApplication:(NSString *)application;
--(BOOL)launchApplication:(NSString *)application showIcon:(BOOL)showIcon autolaunch:(BOOL)autolaunch;
+- (BOOL)isFilePackageAtPath:(NSString *)path;
+- (NSString *)absolutePathForAppBundleWithIdentifier:(NSString *)identifier;
+- (NSString *)pathForApplication:(NSString *)application;
+- (NSArray *)launchedApplications;
+- (BOOL)launchApplication:(NSString *)application;
+- (BOOL)launchApplication:(NSString *)application showIcon:(BOOL)showIcon autolaunch:(BOOL)autolaunch;
 
--(void)findApplications;
--(NSDictionary *)activeApplication;
--(void)hideOtherApplications;
+- (void)findApplications;
+- (NSDictionary *)activeApplication;
+- (void)hideOtherApplications;
 
--(int)extendPowerOffBy:(int)milliseconds;
+- (int)extendPowerOffBy:(int)milliseconds;
 
 @end
 
@@ -80,7 +80,6 @@ APPKIT_EXPORT NSString * const NSWorkspaceRecycleOperation;
 
 // Cocoa should provide a simple method for this - but it doesn't. You have to build it with Launch Services
 // But so many files are typically hidden from users in GUI browsers that this just makes life better for everyone...
-- (BOOL)isFileHiddenAtPath:(NSString*)path;
+- (BOOL)isFileHiddenAtPath:(NSString *)path;
 
 @end
-

@@ -9,23 +9,23 @@
 #import <Foundation/NSString.h>
 
 @interface NSString_isoLatin2 : NSString {
-	NSUInteger  _length;
-	unsigned char _bytes[1];
+    NSUInteger _length;
+    unsigned char _bytes[1];
 }
 
 @end
 
-unichar *NSISOLatin2ToUnicode(const char *cString,NSUInteger length,
-							NSUInteger *resultLength,NSZone *zone);
+unichar *NSISOLatin2ToUnicode(const char *cString, NSUInteger length,
+    NSUInteger *resultLength, NSZone *zone);
 
-char *NSUnicodeToISOLatin2(const unichar *characters,NSUInteger length,
-						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+char *NSUnicodeToISOLatin2(const unichar *characters, NSUInteger length,
+    BOOL lossy, NSUInteger *resultLength, NSZone *zone, BOOL zeroTerminate);
 
 NSString *NSString_isoLatin2NewWithBytes(NSZone *zone,
-									   const char *bytes,NSUInteger length);
+    const char *bytes, NSUInteger length);
 
 NSString *NSISOLatin2CStringNewWithCharacters(NSZone *zone,
-                                            const unichar *characters,NSUInteger length,BOOL lossy);
+    const unichar *characters, NSUInteger length, BOOL lossy);
 
-NSUInteger NSGetISOLatin2CStringWithMaxLength(const unichar *characters,NSUInteger length,
-                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+NSUInteger NSGetISOLatin2CStringWithMaxLength(const unichar *characters, NSUInteger length,
+    NSUInteger *location, char *cString, NSUInteger maxLength, BOOL lossy);

@@ -7,55 +7,55 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary;
+@class NSArray, NSDictionary;
 
-FOUNDATION_EXPORT NSString * const NSLocaleCountryCode;
-FOUNDATION_EXPORT NSString * const NSLocaleLanguageCode;
-FOUNDATION_EXPORT NSString * const NSLocaleVariantCode;
-FOUNDATION_EXPORT NSString * const NSLocaleIdentifier;
+FOUNDATION_EXPORT NSString *const NSLocaleCountryCode;
+FOUNDATION_EXPORT NSString *const NSLocaleLanguageCode;
+FOUNDATION_EXPORT NSString *const NSLocaleVariantCode;
+FOUNDATION_EXPORT NSString *const NSLocaleIdentifier;
 
-FOUNDATION_EXPORT NSString * const NSLocaleGroupingSeparator;
-FOUNDATION_EXPORT NSString * const NSLocaleDecimalSeparator;
-FOUNDATION_EXPORT NSString * const NSLocaleCalendar;
-FOUNDATION_EXPORT NSString * const NSLocaleCurrencyCode;
-FOUNDATION_EXPORT NSString * const NSLocaleCurrencySymbol;
-FOUNDATION_EXPORT NSString * const NSLocaleUsesMetricSystem;
-FOUNDATION_EXPORT NSString * const NSLocaleMeasurementSystem;
+FOUNDATION_EXPORT NSString *const NSLocaleGroupingSeparator;
+FOUNDATION_EXPORT NSString *const NSLocaleDecimalSeparator;
+FOUNDATION_EXPORT NSString *const NSLocaleCalendar;
+FOUNDATION_EXPORT NSString *const NSLocaleCurrencyCode;
+FOUNDATION_EXPORT NSString *const NSLocaleCurrencySymbol;
+FOUNDATION_EXPORT NSString *const NSLocaleUsesMetricSystem;
+FOUNDATION_EXPORT NSString *const NSLocaleMeasurementSystem;
 
-FOUNDATION_EXPORT NSString * const NSLocaleScriptCode;
-FOUNDATION_EXPORT NSString * const NSLocaleExemplarCharacterSet;
-FOUNDATION_EXPORT NSString * const NSLocaleCollationIdentifier;
+FOUNDATION_EXPORT NSString *const NSLocaleScriptCode;
+FOUNDATION_EXPORT NSString *const NSLocaleExemplarCharacterSet;
+FOUNDATION_EXPORT NSString *const NSLocaleCollationIdentifier;
 
-FOUNDATION_EXPORT NSString * const NSCurrentLocaleDidChangeNotification;
+FOUNDATION_EXPORT NSString *const NSCurrentLocaleDidChangeNotification;
 
-@interface NSLocale : NSObject <NSCoding,NSCopying> {
-   NSDictionary *_locale;
+@interface NSLocale : NSObject <NSCoding, NSCopying> {
+    NSDictionary *_locale;
 }
 
-+systemLocale;
-+currentLocale;
-+autoupdatingCurrentLocale;
++ systemLocale;
++ currentLocale;
++ autoupdatingCurrentLocale;
 
-+(NSArray *)availableLocaleIdentifiers;
++ (NSArray *)availableLocaleIdentifiers;
 
-+(NSString *)canonicalLocaleIdentifierFromString:(NSString *)string;
++ (NSString *)canonicalLocaleIdentifierFromString:(NSString *)string;
 
-+(NSDictionary *)componentsFromLocaleIdentifier:(NSString *)identifier;
-+(NSString *)localeIdentifierFromComponents:(NSDictionary *)components;
++ (NSDictionary *)componentsFromLocaleIdentifier:(NSString *)identifier;
++ (NSString *)localeIdentifierFromComponents:(NSDictionary *)components;
 
-+(NSArray *)ISOCountryCodes;
-+(NSArray *)ISOLanguageCodes;
-+(NSArray *)ISOCurrencyCodes;
-+(NSArray *)commonISOCurrencyCodes;
++ (NSArray *)ISOCountryCodes;
++ (NSArray *)ISOLanguageCodes;
++ (NSArray *)ISOCurrencyCodes;
++ (NSArray *)commonISOCurrencyCodes;
 
-+(NSArray *)preferredLanguages;
++ (NSArray *)preferredLanguages;
 
--initWithLocaleIdentifier:(NSString *)identifier;
+- initWithLocaleIdentifier:(NSString *)identifier;
 
--(NSString *)localeIdentifier;
+- (NSString *)localeIdentifier;
 
--objectForKey:key;
+- objectForKey:key;
 
--(NSString *)displayNameForKey:key value:value;
+- (NSString *)displayNameForKey:key value:value;
 
 @end

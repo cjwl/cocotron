@@ -9,15 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSActionCell.h>
 
 typedef enum {
-   NSTickMarkBelow=0,
-   NSTickMarkAbove=1,
-   NSTickMarkLeft =NSTickMarkAbove,
-   NSTickMarkRight=NSTickMarkBelow,
+    NSTickMarkBelow = 0,
+    NSTickMarkAbove = 1,
+    NSTickMarkLeft = NSTickMarkAbove,
+    NSTickMarkRight = NSTickMarkBelow,
 } NSTickMarkPosition;
 
 typedef enum {
-   NSLinearSlider  =0,
-   NSCircularSlider=1,
+    NSLinearSlider = 0,
+    NSCircularSlider = 1,
 } NSSliderType;
 
 @interface NSSliderCell : NSActionCell {
@@ -33,42 +33,42 @@ typedef enum {
     BOOL _allowsTickMarkValuesOnly;
 }
 
--(NSSliderType)sliderType;
+- (NSSliderType)sliderType;
 
--(double)minValue;
--(double)maxValue;
--(double)altIncrementValue;
+- (double)minValue;
+- (double)maxValue;
+- (double)altIncrementValue;
 
--(NSInteger)numberOfTickMarks;
--(NSTickMarkPosition)tickMarkPosition;
--(BOOL)allowsTickMarkValuesOnly;
--(CGFloat)knobThickness;
+- (NSInteger)numberOfTickMarks;
+- (NSTickMarkPosition)tickMarkPosition;
+- (BOOL)allowsTickMarkValuesOnly;
+- (CGFloat)knobThickness;
 
--(void)setSliderType:(NSSliderType)value;
+- (void)setSliderType:(NSSliderType)value;
 
--(void)setMinValue:(double)minValue;
--(void)setMaxValue:(double)maxValue;
--(void)setAltIncrementValue:(double)value;
+- (void)setMinValue:(double)minValue;
+- (void)setMaxValue:(double)maxValue;
+- (void)setAltIncrementValue:(double)value;
 
--(void)setNumberOfTickMarks:(NSInteger)number;
--(void)setTickMarkPosition:(NSTickMarkPosition)position;
--(void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
--(void)setKnobThickness:(CGFloat)thickness;
+- (void)setNumberOfTickMarks:(NSInteger)number;
+- (void)setTickMarkPosition:(NSTickMarkPosition)position;
+- (void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
+- (void)setKnobThickness:(CGFloat)thickness;
 
--(NSInteger)isVertical;
+- (NSInteger)isVertical;
 
--(NSInteger)indexOfTickMarkAtPoint:(NSPoint)point;
+- (NSInteger)indexOfTickMarkAtPoint:(NSPoint)point;
 
--(double)tickMarkValueAtIndex:(NSInteger)index;
--(double)closestTickMarkValueToValue:(double)value;
+- (double)tickMarkValueAtIndex:(NSInteger)index;
+- (double)closestTickMarkValueToValue:(double)value;
 
--(NSRect)trackRect;
+- (NSRect)trackRect;
 
--(NSRect)rectOfTickMarkAtIndex:(NSInteger)index;
+- (NSRect)rectOfTickMarkAtIndex:(NSInteger)index;
 
--(void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped;
--(NSRect)knobRectFlipped:(BOOL)flipped;
--(void)drawKnob;
--(void)drawKnob:(NSRect)rect;
+- (void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped;
+- (NSRect)knobRectFlipped:(BOOL)flipped;
+- (void)drawKnob;
+- (void)drawKnob:(NSRect)rect;
 
 @end

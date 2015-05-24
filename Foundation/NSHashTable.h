@@ -14,17 +14,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct NSHashTable NSHashTable;
 
 typedef struct {
-   NSHashTable         *table;
-   NSUInteger             i;
-   struct NSHashBucket *j;
+    NSHashTable *table;
+    NSUInteger i;
+    struct NSHashBucket *j;
 } NSHashEnumerator;
 
 typedef struct {
-   NSUInteger  (*hash)(NSHashTable *table,const void *);
-   BOOL      (*isEqual)(NSHashTable *table,const void *,const void *);
-   void      (*retain)(NSHashTable *table,const void *);
-   void      (*release)(NSHashTable *table,void *);
-   NSString *(*describe)(NSHashTable *table,const void *);
+    NSUInteger (*hash)(NSHashTable *table, const void *);
+    BOOL (*isEqual)(NSHashTable *table, const void *, const void *);
+    void (*retain)(NSHashTable *table, const void *);
+    void (*release)(NSHashTable *table, void *);
+    NSString *(*describe)(NSHashTable *table, const void *);
 } NSHashTableCallBacks;
 
 FOUNDATION_EXPORT const NSHashTableCallBacks NSIntHashCallBacks;
@@ -36,20 +36,20 @@ FOUNDATION_EXPORT const NSHashTableCallBacks NSOwnedPointerHashCallBacks;
 FOUNDATION_EXPORT const NSHashTableCallBacks NSPointerToStructHashCallBacks;
 
 FOUNDATION_EXPORT NSHashTable *NSCreateHashTable(NSHashTableCallBacks callBacks,
- NSUInteger capacity);
+    NSUInteger capacity);
 FOUNDATION_EXPORT NSHashTable *NSCreateHashTableWithZone(NSHashTableCallBacks callBacks,
- NSUInteger capacity,NSZone *zone);
-FOUNDATION_EXPORT NSHashTable *NSCopyHashTableWithZone(NSHashTable *table,NSZone *zone);
+    NSUInteger capacity, NSZone *zone);
+FOUNDATION_EXPORT NSHashTable *NSCopyHashTableWithZone(NSHashTable *table, NSZone *zone);
 FOUNDATION_EXPORT void NSFreeHashTable(NSHashTable *table);
 FOUNDATION_EXPORT void NSResetHashTable(NSHashTable *table);
-FOUNDATION_EXPORT BOOL NSCompareHashTables(NSHashTable *table1,NSHashTable *table2);
+FOUNDATION_EXPORT BOOL NSCompareHashTables(NSHashTable *table1, NSHashTable *table2);
 FOUNDATION_EXPORT NSUInteger NSCountHashTable(NSHashTable *table);
-FOUNDATION_EXPORT void *NSHashGet(NSHashTable *table,const void *pointer);
+FOUNDATION_EXPORT void *NSHashGet(NSHashTable *table, const void *pointer);
 FOUNDATION_EXPORT NSArray *NSAllHashTableObjects(NSHashTable *table);
 FOUNDATION_EXPORT NSHashEnumerator NSEnumerateHashTable(NSHashTable *table);
 FOUNDATION_EXPORT void *NSNextHashEnumeratorItem(NSHashEnumerator *enumerator);
-FOUNDATION_EXPORT void NSHashInsert(NSHashTable *table,const void *pointer);
-FOUNDATION_EXPORT void NSHashInsertKnownAbsent(NSHashTable *table,const void *pointer);
-FOUNDATION_EXPORT void *NSHashInsertIfAbsent(NSHashTable *table,const void *pointer);
-FOUNDATION_EXPORT void NSHashRemove(NSHashTable *table,const void *pointer);
+FOUNDATION_EXPORT void NSHashInsert(NSHashTable *table, const void *pointer);
+FOUNDATION_EXPORT void NSHashInsertKnownAbsent(NSHashTable *table, const void *pointer);
+FOUNDATION_EXPORT void *NSHashInsertIfAbsent(NSHashTable *table, const void *pointer);
+FOUNDATION_EXPORT void NSHashRemove(NSHashTable *table, const void *pointer);
 FOUNDATION_EXPORT NSString *NSStringFromHashTable(NSHashTable *table);

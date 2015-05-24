@@ -11,10 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSImage;
 
 @interface NSButtonImageSource : NSObject {
-   NSString *_imageName;
+    NSString *_imageName;
 }
 
--(NSImage *)normalImage;
--(NSImage *)alternateImage;
+- (NSImage *)normalImage;
+- (NSImage *)alternateImage;
 
 @end

@@ -8,14 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSNibConnector.h>
 
-@interface NSNibHelpConnector : NSNibConnector  {
+@interface NSNibHelpConnector : NSNibConnector {
     NSString *_file;
     NSString *_marker;
 }
 
--file;
--marker;
+- file;
+- marker;
 
--(void)setFile:(NSString *)file;
--(void)setMarker:(NSString *)marker;
+- (void)setFile:(NSString *)file;
+- (void)setMarker:(NSString *)marker;
 @end

@@ -10,8 +10,8 @@
 #include <pthread.h>
 
 @interface NSCondition_posix : NSCondition {
-	pthread_mutex_t mutex;
-	pthread_cond_t condition;
+    pthread_mutex_t mutex;
+    pthread_cond_t condition;
 }
 
 @end

@@ -10,12 +10,12 @@
 @class NSMutableDictionary, NSUserDefaultsController;
 
 @interface NSUserDefaultsControllerProxy : NSObject {
-   NSUserDefaultsController *_controller;
-   NSMutableDictionary      *_cachedValues;
+    NSUserDefaultsController *_controller;
+    NSMutableDictionary *_cachedValues;
 }
--(id)initWithController:(NSUserDefaultsController*)controller;
--(void)save;
--(void)revert;
--(void)revertToInitialValues;
--(BOOL)hasUnappliedChanges;
+- (id)initWithController:(NSUserDefaultsController *)controller;
+- (void)save;
+- (void)revert;
+- (void)revertToInitialValues;
+- (BOOL)hasUnappliedChanges;
 @end

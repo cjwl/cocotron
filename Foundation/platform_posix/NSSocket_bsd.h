@@ -8,14 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket.h>
 
 @interface NSSocket_bsd : NSSocket {
-   int _descriptor;
+    int _descriptor;
 }
 
--initWithDescriptor:(int)descriptor;
-+socketWithDescriptor:(int)descriptor;
+- initWithDescriptor:(int)descriptor;
++ socketWithDescriptor:(int)descriptor;
 
--(int)descriptor;
+- (int)descriptor;
 // for cheating only;
--(void)setDescriptor:(int)descriptor;
+- (void)setDescriptor:(int)descriptor;
 
 @end

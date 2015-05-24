@@ -9,22 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPortNameServer.h>
 
 @interface NSSocketPortNameServer : NSPortNameServer {
-
 }
 
-+sharedInstance;
++ sharedInstance;
 
--(uint16_t)defaultNameServerPortNumber;
+- (uint16_t)defaultNameServerPortNumber;
 
--(void)setDefaultNameServerPortNumber:(uint16_t)number;
+- (void)setDefaultNameServerPortNumber:(uint16_t)number;
 
--(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(uint16_t)number;
--(NSPort *)portForName:(NSString *)name host:(NSString *)host;
--(NSPort *)portForName:(NSString *)name;
+- (NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(uint16_t)number;
+- (NSPort *)portForName:(NSString *)name host:(NSString *)host;
+- (NSPort *)portForName:(NSString *)name;
 
--(BOOL)registerPort:(NSPort *)port name:(NSString *)name;
--(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(uint16_t)number;
+- (BOOL)registerPort:(NSPort *)port name:(NSString *)name;
+- (BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(uint16_t)number;
 
--(BOOL)removePortForName:(NSString *)name;
+- (BOOL)removePortForName:(NSString *)name;
 
 @end

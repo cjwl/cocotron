@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <objc/objc.h>
 
-void OBJCLog(const char *format,...);
-void OBJCPartialLog(const char *format,...);
-void OBJCFinishLog(const char *format,...);
-void OBJCRaiseException(const char *name,const char *format,...);
+void OBJCLog(const char *format, ...);
+void OBJCPartialLog(const char *format, ...);
+void OBJCFinishLog(const char *format, ...);
+void OBJCRaiseException(const char *name, const char *format, ...);

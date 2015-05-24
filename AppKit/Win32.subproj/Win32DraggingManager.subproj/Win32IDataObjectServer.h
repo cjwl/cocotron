@@ -11,13 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class Win32Pasteboard;
 
 @interface Win32IDataObjectServer : Win32IUnknownServer {
-   Win32Pasteboard   *_pasteboard;
+    Win32Pasteboard *_pasteboard;
 }
 
--initWithPasteboard:(Win32Pasteboard *)pasteboard;
+- initWithPasteboard:(Win32Pasteboard *)pasteboard;
 
--(BOOL)setOnClipboard;
+- (BOOL)setOnClipboard;
 
--(NSArray *)formatEtcs;
+- (NSArray *)formatEtcs;
 
 @end

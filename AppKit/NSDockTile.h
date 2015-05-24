@@ -4,24 +4,24 @@
 @class NSView;
 
 @interface NSDockTile : NSObject {
-   id        _owner;
-   NSSize    _size;
-   NSString *_badgeLabel;
-   NSView   *_contentView;
-   BOOL      _showsApplicationBadge;
+    id _owner;
+    NSSize _size;
+    NSString *_badgeLabel;
+    NSView *_contentView;
+    BOOL _showsApplicationBadge;
 }
 
--(NSSize)size;
--owner;
+- (NSSize)size;
+- owner;
 
--(NSString *)badgeLabel;
--(NSView *)contentView;
--(BOOL)showsApplicationBadge;
+- (NSString *)badgeLabel;
+- (NSView *)contentView;
+- (BOOL)showsApplicationBadge;
 
--(void)setBadgeLabel:(NSString *)value;
--(void)setContentView:(NSView *)view;
--(void)setShowsApplicationBadge:(BOOL)value;
+- (void)setBadgeLabel:(NSString *)value;
+- (void)setContentView:(NSView *)view;
+- (void)setShowsApplicationBadge:(BOOL)value;
 
--(void)display;
+- (void)display;
 
 @end

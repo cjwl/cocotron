@@ -9,22 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSPanel.h>
 
-@class NSImageView,NSTextField;
+@class NSImageView, NSTextField;
 
-@interface NSSystemInfoPanel : NSObject
-{
-   IBOutlet NSImageView  *appIconView;
-   IBOutlet NSTextField  *appNameField;
-   IBOutlet NSScrollView *creditScrollView;
-   IBOutlet NSTextView   *creditView;
-   IBOutlet NSPanel      *infoPanel;
-   IBOutlet NSTextField  *legalTextField;
-   IBOutlet NSTextField  *versionField;
+@interface NSSystemInfoPanel : NSObject {
+    IBOutlet NSImageView *appIconView;
+    IBOutlet NSTextField *appNameField;
+    IBOutlet NSScrollView *creditScrollView;
+    IBOutlet NSTextView *creditView;
+    IBOutlet NSPanel *infoPanel;
+    IBOutlet NSTextField *legalTextField;
+    IBOutlet NSTextField *versionField;
 }
 
 + (NSSystemInfoPanel *)standardAboutPanel;
 - (IBAction)showInfoPanel:(id)sender;
-- (void)showInfoPanel:(id)sender withOptions:(NSDictionary*)options;
+- (void)showInfoPanel:(id)sender withOptions:(NSDictionary *)options;
 
 - (void)_resetInfoPanel;
 @end

@@ -10,33 +10,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableParagraphStyle : NSParagraphStyle
 
--(void)setParagraphStyle:(NSParagraphStyle *)other;
+- (void)setParagraphStyle:(NSParagraphStyle *)other;
 
--(void)setBaseWritingDirection:(NSWritingDirection)direction;
+- (void)setBaseWritingDirection:(NSWritingDirection)direction;
 
--(void)setParagraphSpacing:(float)spacing;
--(void)setParagraphSpacingBefore:(float)spacing;
+- (void)setParagraphSpacing:(float)spacing;
+- (void)setParagraphSpacingBefore:(float)spacing;
 
--(void)setTextBlocks:(NSArray *)blocks;
--(void)setTextLists:(NSArray *)lists;
+- (void)setTextBlocks:(NSArray *)blocks;
+- (void)setTextLists:(NSArray *)lists;
 
--(void)setHeaderLevel:(int)level;
+- (void)setHeaderLevel:(int)level;
 
--(void)setFirstLineHeadIndent:(float)indent;
--(void)setHeadIndent:(float)indent;
--(void)setTailIndent:(float)indent;
+- (void)setFirstLineHeadIndent:(float)indent;
+- (void)setHeadIndent:(float)indent;
+- (void)setTailIndent:(float)indent;
 
--(void)setAlignment:(NSTextAlignment)alignment;
--(void)setLineBreakMode:(NSLineBreakMode)mode;
+- (void)setAlignment:(NSTextAlignment)alignment;
+- (void)setLineBreakMode:(NSLineBreakMode)mode;
 
--(void)setMinimumLineHeight:(float)height;
--(void)setMaximumLineHeight:(float)height;
--(void)setLineHeightMultiple:(float)multiple;
--(void)setLineSpacing:(float)spacing;
+- (void)setMinimumLineHeight:(float)height;
+- (void)setMaximumLineHeight:(float)height;
+- (void)setLineHeightMultiple:(float)multiple;
+- (void)setLineSpacing:(float)spacing;
 
--(void)setDefaultTabInterval:(float)interval;
--(void)setTabStops:(NSArray *)tabStops;
+- (void)setDefaultTabInterval:(float)interval;
+- (void)setTabStops:(NSArray *)tabStops;
 
--(void)setHyphenationFactor:(float)factor;
--(void)setTighteningFactorForTruncation:(float)factor;
+- (void)setHyphenationFactor:(float)factor;
+- (void)setTighteningFactorForTruncation:(float)factor;
 @end

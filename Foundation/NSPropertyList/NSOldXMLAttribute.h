@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 @interface NSOldXMLAttribute : NSObject {
-   NSString *_name;
-   NSString *_value;
+    NSString *_name;
+    NSString *_value;
 }
 
-+(NSOldXMLAttribute *)attributeWithName:(NSString *)name value:(NSString *)value;
++ (NSOldXMLAttribute *)attributeWithName:(NSString *)name value:(NSString *)value;
 
--initWithName:(NSString *)name value:(NSString *)value;
+- initWithName:(NSString *)name value:(NSString *)value;
 
--(NSString *)name;
--(NSString *)value;
+- (NSString *)name;
+- (NSString *)value;
 
--(NSString *)stringValue;
--(float)floatValue;
+- (NSString *)stringValue;
+- (float)floatValue;
 
 @end

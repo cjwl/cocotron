@@ -10,17 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMutableData, NSData;
 
-
 @interface NSPropertyListWriter_xml1 : NSObject {
-   NSMutableData *_data;
+    NSMutableData *_data;
 }
 
--(id)init;
+- (id)init;
 
--(void)encodePropertyList:(id)object indent:(NSInteger)indent;
+- (void)encodePropertyList:(id)object indent:(NSInteger)indent;
 
--(NSData *)dataForRootObject:(id)object;
+- (NSData *)dataForRootObject:(id)object;
 
-+(NSData *)dataWithPropertyList:(id)plist;
++ (NSData *)dataWithPropertyList:(id)plist;
 
 @end

@@ -10,54 +10,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <CoreFoundation/CFRunLoop.h>
 
-@class NSTimer,NSDate,NSMutableArray,NSInputSource,NSPort,NSPipe;
+@class NSTimer, NSDate, NSMutableArray, NSInputSource, NSPort, NSPipe;
 
-FOUNDATION_EXPORT NSString * const NSDefaultRunLoopMode;
-FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
+FOUNDATION_EXPORT NSString *const NSDefaultRunLoopMode;
+FOUNDATION_EXPORT NSString *const NSRunLoopCommonModes;
 
 @interface NSRunLoop : NSObject {
-   NSMapTable      *_modes;
-   NSMutableArray  *_commonModes;
-   NSString        *_currentMode;
-   NSMutableArray  *_continue;
-   NSMutableArray  *_orderedPerforms;
+    NSMapTable *_modes;
+    NSMutableArray *_commonModes;
+    NSString *_currentMode;
+    NSMutableArray *_continue;
+    NSMutableArray *_orderedPerforms;
 }
 
-+(NSRunLoop *)currentRunLoop;
-+(NSRunLoop *)mainRunLoop;
++ (NSRunLoop *)currentRunLoop;
++ (NSRunLoop *)mainRunLoop;
 
--(NSString *)currentMode;
+- (NSString *)currentMode;
 - (CFRunLoopRef)getCFRunLoop;
 
--(NSDate *)limitDateForMode:(NSString *)mode;
--(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
+- (NSDate *)limitDateForMode:(NSString *)mode;
+- (void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
 
--(BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date;
--(void)runUntilDate:(NSDate *)date;
--(void)run; 
+- (BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date;
+- (void)runUntilDate:(NSDate *)date;
+- (void)run;
 
--(void)addPort:(NSPort *)port forMode:(NSString *)mode;
--(void)removePort:(NSPort *)port forMode:(NSString *)mode;
+- (void)addPort:(NSPort *)port forMode:(NSString *)mode;
+- (void)removePort:(NSPort *)port forMode:(NSString *)mode;
 
--(void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode;
--(void)removeInputSource:(NSInputSource *)source forMode:(NSString *)mode;
+- (void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode;
+- (void)removeInputSource:(NSInputSource *)source forMode:(NSString *)mode;
 
--(void)addTimer:(NSTimer *)timer forMode:(NSString *)mode;
+- (void)addTimer:(NSTimer *)timer forMode:(NSString *)mode;
 
--(void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
+- (void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
 
--(void)cancelPerformSelector:(SEL)selector target:target argument:argument;
--(void)cancelPerformSelectorsWithTarget:target;
-
-@end
-
-@interface NSObject(NSRunLoop_delayedPerform)
-
--(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay;
--(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay inModes:(NSArray *)modes;
-
-+(void)cancelPreviousPerformRequestsWithTarget:target selector:(SEL)selector object:object;
-+(void)cancelPreviousPerformRequestsWithTarget:target;
+- (void)cancelPerformSelector:(SEL)selector target:target argument:argument;
+- (void)cancelPerformSelectorsWithTarget:target;
 
 @end
 
+@interface NSObject (NSRunLoop_delayedPerform)
+
+- (void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay;
+- (void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay inModes:(NSArray *)modes;
+
++ (void)cancelPreviousPerformRequestsWithTarget:target selector:(SEL)selector object:object;
++ (void)cancelPreviousPerformRequestsWithTarget:target;
+
+@end

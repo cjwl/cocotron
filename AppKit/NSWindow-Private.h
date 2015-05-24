@@ -13,34 +13,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // style flag for private windows (that NSApp doesn't have to know about)
 #define NSAppKitPrivateWindow 0x8000000
 
-@interface NSWindow(NSWindow_private)
--(CGWindow *)platformWindow;
--(CGContextRef)cgContext;
--(BOOL)_isActive;
--(void)_setVisible:(BOOL)visible;
--(NSArray *)_draggedTypes;
--(void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;
--(void)_removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;
--(void)_discardCursorRectsForView:(NSView *)view;
--(void)_discardTrackingRectsForView:(NSView *)view toolTipsOnly:(BOOL)toolTipsOnly;
--(NSTrackingRectTag)_addTrackingRect:(NSRect)rect view:(NSView *)view flipped:(BOOL)flipped owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside isToolTip:(BOOL)isToolTip;
--(void)_removeTrackingRect:(NSTrackingRectTag)tag;
--(void)_removeAllToolTips;
--(void)_attachSheetContextOrderFrontAndAnimate:(NSSheetContext *)sheetContext;
--(void)_setSheetContext:(NSSheetContext*)sheetContext;
--(NSSheetContext *)_sheetContext;
--(void)_detachSheetContextAnimateAndOrderOut;
--(void)_attachDrawer:(NSDrawer *)drawer;
--(void)_detachDrawer:(NSDrawer *)drawer;
--(NSView *)_backgroundView;
--(void)_hideMenuViewIfNeeded;
--(void)_showMenuViewIfNeeded;
--(void)_updateTrackingAreas;
--(void)_invalidateTrackingAreas;
--(void)_setFrameAutosaveNameNoIO:(NSString *)name;
+@interface NSWindow (NSWindow_private)
+- (CGWindow *)platformWindow;
+- (CGContextRef)cgContext;
+- (BOOL)_isActive;
+- (void)_setVisible:(BOOL)visible;
+- (NSArray *)_draggedTypes;
+- (void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;
+- (void)_removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;
+- (void)_discardCursorRectsForView:(NSView *)view;
+- (void)_discardTrackingRectsForView:(NSView *)view toolTipsOnly:(BOOL)toolTipsOnly;
+- (NSTrackingRectTag)_addTrackingRect:(NSRect)rect view:(NSView *)view flipped:(BOOL)flipped owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside isToolTip:(BOOL)isToolTip;
+- (void)_removeTrackingRect:(NSTrackingRectTag)tag;
+- (void)_removeAllToolTips;
+- (void)_attachSheetContextOrderFrontAndAnimate:(NSSheetContext *)sheetContext;
+- (void)_setSheetContext:(NSSheetContext *)sheetContext;
+- (NSSheetContext *)_sheetContext;
+- (void)_detachSheetContextAnimateAndOrderOut;
+- (void)_attachDrawer:(NSDrawer *)drawer;
+- (void)_detachDrawer:(NSDrawer *)drawer;
+- (NSView *)_backgroundView;
+- (void)_hideMenuViewIfNeeded;
+- (void)_showMenuViewIfNeeded;
+- (void)_updateTrackingAreas;
+- (void)_invalidateTrackingAreas;
+- (void)_setFrameAutosaveNameNoIO:(NSString *)name;
 - (NSWindowAnimationContext *)_animationContext;
--(void)undo:sender;
--(void)redo:sender;
--(BOOL)validateMenuItem:(NSMenuItem *)item;
--(void)dirtyRect:(NSRect)rect;
+- (void)undo:sender;
+- (void)redo:sender;
+- (BOOL)validateMenuItem:(NSMenuItem *)item;
+- (void)dirtyRect:(NSRect)rect;
 @end

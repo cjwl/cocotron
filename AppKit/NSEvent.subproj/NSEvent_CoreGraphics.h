@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class CGEvent;
 
 @interface NSEvent_CoreGraphics : NSEvent {
-   CGEvent *_coreGraphicsEvent;
+    CGEvent *_coreGraphicsEvent;
 }
 
--initWithCoreGraphicsEvent:(CGEvent *)event window:(NSWindow *)window;
--initWithDisplayEvent:(CGEvent *)event;
+- initWithCoreGraphicsEvent:(CGEvent *)event window:(NSWindow *)window;
+- initWithDisplayEvent:(CGEvent *)event;
 
--(CGEvent *)coreGraphicsEvent;
+- (CGEvent *)coreGraphicsEvent;
 
 @end

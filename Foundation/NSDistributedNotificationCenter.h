@@ -11,26 +11,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef int NSNotificationSuspensionBehavior;
 
-FOUNDATION_EXPORT NSString * const NSLocalNotificationCenterType;
+FOUNDATION_EXPORT NSString *const NSLocalNotificationCenterType;
 
 @interface NSDistributedNotificationCenter : NSNotificationCenter
 
-+(NSDistributedNotificationCenter *)defaultCenter;
++ (NSDistributedNotificationCenter *)defaultCenter;
 
-+(NSDistributedNotificationCenter *)notificationCenterForType:(NSString *)type;
++ (NSDistributedNotificationCenter *)notificationCenterForType:(NSString *)type;
 
--(BOOL)suspended;
+- (BOOL)suspended;
 
--(void)setSuspended:(BOOL)value;
+- (void)setSuspended:(BOOL)value;
 
--(void)addObserver:observer selector:(SEL)selector name:(NSString *)name object:(NSString *)object;
--(void)addObserver:observer selector:(SEL)selector name:(NSString *)name object:(NSString *)object suspensionBehavior:(NSNotificationSuspensionBehavior)behavior;
+- (void)addObserver:observer selector:(SEL)selector name:(NSString *)name object:(NSString *)object;
+- (void)addObserver:observer selector:(SEL)selector name:(NSString *)name object:(NSString *)object suspensionBehavior:(NSNotificationSuspensionBehavior)behavior;
 
--(void)removeObserver:observer name:(NSString *)name object:(NSString *)object;
+- (void)removeObserver:observer name:(NSString *)name object:(NSString *)object;
 
--(void)postNotificationName:(NSString *)name object:(NSString *)object;
--(void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo;
--(void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo deliverImmediately:(BOOL)immediately;
--(void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo options:(NSUInteger)options;
+- (void)postNotificationName:(NSString *)name object:(NSString *)object;
+- (void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo;
+- (void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo deliverImmediately:(BOOL)immediately;
+- (void)postNotificationName:(NSString *)name object:(NSString *)object userInfo:(NSDictionary *)userInfo options:(NSUInteger)options;
 
 @end

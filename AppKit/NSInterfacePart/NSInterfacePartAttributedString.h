@@ -12,15 +12,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSColor;
 
 @interface NSInterfacePartAttributedString : NSInterfacePart {
-   NSAttributedString *_attributedString;
+    NSAttributedString *_attributedString;
 }
 
--initWithCharacter:(unichar)character fontName:(NSString *)fontName pointSize:(float)pointSize color:(NSColor *)color;
+- initWithCharacter:(unichar)character fontName:(NSString *)fontName pointSize:(float)pointSize color:(NSColor *)color;
 
--initWithMarlettCharacter:(unichar)character;
+- initWithMarlettCharacter:(unichar)character;
 
-+(NSColor *)textColor;
++ (NSColor *)textColor;
 
--(void)drawAtPoint:(NSPoint)point;
+- (void)drawAtPoint:(NSPoint)point;
 
 @end

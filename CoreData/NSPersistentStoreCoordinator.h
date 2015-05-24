@@ -10,53 +10,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLock.h>
 #import <CoreData/CoreDataExports.h>
 
-@class NSManagedObjectModel,NSPersistentStore,NSManagedObjectID;
+@class NSManagedObjectModel, NSPersistentStore, NSManagedObjectID;
 
-COREDATA_EXPORT NSString * const NSStoreTypeKey;
-COREDATA_EXPORT NSString * const NSStoreUUIDKey;
+COREDATA_EXPORT NSString *const NSStoreTypeKey;
+COREDATA_EXPORT NSString *const NSStoreUUIDKey;
 
-COREDATA_EXPORT NSString * const NSXMLStoreType;
-COREDATA_EXPORT NSString * const NSInMemoryStoreType;
-COREDATA_EXPORT NSString * const NSMigratePersistentStoresAutomaticallyOption;
+COREDATA_EXPORT NSString *const NSXMLStoreType;
+COREDATA_EXPORT NSString *const NSInMemoryStoreType;
+COREDATA_EXPORT NSString *const NSMigratePersistentStoresAutomaticallyOption;
 
-COREDATA_EXPORT NSString * const NSPersistentStoreCoordinatorStoresDidChangeNotification;
-COREDATA_EXPORT NSString * const NSAddedPersistentStoresKey;
-COREDATA_EXPORT NSString * const NSRemovedPersistentStoresKey;
-COREDATA_EXPORT NSString * const NSUUIDChangedPersistentStoresKey;
+COREDATA_EXPORT NSString *const NSPersistentStoreCoordinatorStoresDidChangeNotification;
+COREDATA_EXPORT NSString *const NSAddedPersistentStoresKey;
+COREDATA_EXPORT NSString *const NSRemovedPersistentStoresKey;
+COREDATA_EXPORT NSString *const NSUUIDChangedPersistentStoresKey;
 
 @interface NSPersistentStoreCoordinator : NSObject <NSLocking> {
-   NSLock               *_lock;
-   NSManagedObjectModel *_model;
-   NSMutableArray       *_stores;
+    NSLock *_lock;
+    NSManagedObjectModel *_model;
+    NSMutableArray *_stores;
 }
 
-+(NSDictionary *)registeredStoreTypes;
-+(void)registerStoreClass:(Class)storeClass forStoreType:(NSString *)storeType;
++ (NSDictionary *)registeredStoreTypes;
++ (void)registerStoreClass:(Class)storeClass forStoreType:(NSString *)storeType;
 
--initWithManagedObjectModel:(NSManagedObjectModel *)model;
+- initWithManagedObjectModel:(NSManagedObjectModel *)model;
 
--(NSManagedObjectModel *)managedObjectModel;
+- (NSManagedObjectModel *)managedObjectModel;
 
--(NSPersistentStore *)addPersistentStoreWithType:(NSString *)storeType configuration:(NSString *)configuration URL:(NSURL *)storeURL options:(NSDictionary *)options error:(NSError **)error;
+- (NSPersistentStore *)addPersistentStoreWithType:(NSString *)storeType configuration:(NSString *)configuration URL:(NSURL *)storeURL options:(NSDictionary *)options error:(NSError **)error;
 
--(BOOL)setURL:(NSURL *)url forPersistentStore:(NSPersistentStore *)store;
+- (BOOL)setURL:(NSURL *)url forPersistentStore:(NSPersistentStore *)store;
 
--(BOOL)removePersistentStore:(NSPersistentStore *)store error:(NSError **)error;
--(NSPersistentStore *)migratePersistentStore:(NSPersistentStore *)store toURL:(NSURL *)URL options:(NSDictionary *)options withType:(NSString *)storeType error:(NSError **)error;
--(NSArray *)persistentStores;
--(NSPersistentStore *)persistentStoreForURL:(NSURL *)URL;
--(NSURL *)URLForPersistentStore:(NSPersistentStore *)store;
+- (BOOL)removePersistentStore:(NSPersistentStore *)store error:(NSError **)error;
+- (NSPersistentStore *)migratePersistentStore:(NSPersistentStore *)store toURL:(NSURL *)URL options:(NSDictionary *)options withType:(NSString *)storeType error:(NSError **)error;
+- (NSArray *)persistentStores;
+- (NSPersistentStore *)persistentStoreForURL:(NSURL *)URL;
+- (NSURL *)URLForPersistentStore:(NSPersistentStore *)store;
 
--(NSManagedObjectID *)managedObjectIDForURIRepresentation:(NSURL *)URL;
+- (NSManagedObjectID *)managedObjectIDForURIRepresentation:(NSURL *)URL;
 
--(void)lock;
--(BOOL)tryLock;
--(void)unlock;
+- (void)lock;
+- (BOOL)tryLock;
+- (void)unlock;
 
--(NSDictionary *)metadataForPersistentStore:(NSPersistentStore *)store;
--(void)setMetadata:(NSDictionary *)metadata forPersistentStore:(NSPersistentStore *)store;
-+(BOOL)setMetadata:(NSDictionary *)metadata forPersistentStoreOfType:(NSString *)storeType URL:(NSURL *)url error:(NSError **)error;
-+(NSDictionary *)metadataForPersistentStoreOfType:(NSString *)storeType URL:(NSURL *)url error:(NSError **)error;
-
+- (NSDictionary *)metadataForPersistentStore:(NSPersistentStore *)store;
+- (void)setMetadata:(NSDictionary *)metadata forPersistentStore:(NSPersistentStore *)store;
++ (BOOL)setMetadata:(NSDictionary *)metadata forPersistentStoreOfType:(NSString *)storeType URL:(NSURL *)url error:(NSError **)error;
++ (NSDictionary *)metadataForPersistentStoreOfType:(NSString *)storeType URL:(NSURL *)url error:(NSError **)error;
 
 @end

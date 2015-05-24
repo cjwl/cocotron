@@ -12,11 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2DataProvider;
 
 @interface O2ImageSource_GIF : O2ImageSource {
-   GifFileType    *_gif;
+    GifFileType *_gif;
 }
 
--(unsigned)count;
+- (unsigned)count;
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+- (O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

@@ -13,33 +13,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef O2Function *O2FunctionRef;
 
 typedef struct {
-   unsigned version;
-   void    (*evaluate)(void *,const float *,float *);
-   void    (*releaseInfo)(void *);
+    unsigned version;
+    void (*evaluate)(void *, const float *, float *);
+    void (*releaseInfo)(void *);
 } O2FunctionCallbacks;
 
 @interface O2Function : NSObject {
-   void               *_info;
-   unsigned            _domainCount;
-   float              *_domain;
-   unsigned            _rangeCount;
-   float              *_range;
-   O2FunctionCallbacks _callbacks;
+    void *_info;
+    unsigned _domainCount;
+    float *_domain;
+    unsigned _rangeCount;
+    float *_range;
+    O2FunctionCallbacks _callbacks;
 }
 
-O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const O2Float *domain,size_t rangeDimension,const O2Float *range,const O2FunctionCallbacks *callbacks);
+O2FunctionRef O2FunctionCreate(void *info, size_t domainDimension, const O2Float *domain, size_t rangeDimension, const O2Float *range, const O2FunctionCallbacks *callbacks);
 
 O2FunctionRef O2FunctionRetain(O2FunctionRef self);
 void O2FunctionRelease(O2FunctionRef self);
 
 // FIX, only works for one input value
-void O2FunctionEvaluate(O2FunctionRef self,O2Float in,O2Float *out);
+void O2FunctionEvaluate(O2FunctionRef self, O2Float in, O2Float *out);
 
--(unsigned)domainCount;
--(const float *)domain;
--(unsigned)rangeCount;
--(const float *)range;
+- (unsigned)domainCount;
+- (const float *)domain;
+- (unsigned)rangeCount;
+- (const float *)range;
 
--(BOOL)isLinear;
+- (BOOL)isLinear;
 
 @end

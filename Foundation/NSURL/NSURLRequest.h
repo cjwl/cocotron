@@ -8,45 +8,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSURL,NSInputStream,NSMutableDictionary;
+@class NSURL, NSInputStream, NSMutableDictionary;
 
 typedef enum {
-   NSURLRequestUseProtocolCachePolicy,
-   NSURLRequestReloadIgnoringCacheData,
-   NSURLRequestReturnCacheDataElseLoad,
-   NSURLRequestReturnCacheDataDontLoad
+    NSURLRequestUseProtocolCachePolicy,
+    NSURLRequestReloadIgnoringCacheData,
+    NSURLRequestReturnCacheDataElseLoad,
+    NSURLRequestReturnCacheDataDontLoad
 } NSURLRequestCachePolicy;
 
-@interface NSURLRequest : NSObject <NSCopying,NSMutableCopying>{
-   NSURL                  *_url;
-   NSURLRequestCachePolicy _cachePolicy;
-   NSTimeInterval          _timeoutInterval;
-   NSString               *_method;
-   id                      _bodyDataOrStream;
-   NSMutableDictionary    *_headerFields;
-   NSURL                  *_mainDocumentURL;
-   BOOL                    _handleCookies;
+@interface NSURLRequest : NSObject <NSCopying, NSMutableCopying> {
+    NSURL *_url;
+    NSURLRequestCachePolicy _cachePolicy;
+    NSTimeInterval _timeoutInterval;
+    NSString *_method;
+    id _bodyDataOrStream;
+    NSMutableDictionary *_headerFields;
+    NSURL *_mainDocumentURL;
+    BOOL _handleCookies;
 }
 
--initWithURL:(NSURL *)url;
--initWithURL:(NSURL *)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeout;
+- initWithURL:(NSURL *)url;
+- initWithURL:(NSURL *)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeout;
 
-+requestWithURL:(NSURL *)url;
-+requestWithURL:(NSURL *)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeout;
++ requestWithURL:(NSURL *)url;
++ requestWithURL:(NSURL *)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeout;
 
--(NSURL *)URL;
--(NSURLRequestCachePolicy)cachePolicy;
--(NSTimeInterval)timeoutInterval;
+- (NSURL *)URL;
+- (NSURLRequestCachePolicy)cachePolicy;
+- (NSTimeInterval)timeoutInterval;
 
--(NSString *)HTTPMethod;
--(NSData *)HTTPBody;
--(NSInputStream *)HTTPBodyStream;
+- (NSString *)HTTPMethod;
+- (NSData *)HTTPBody;
+- (NSInputStream *)HTTPBodyStream;
 
--(NSDictionary *)allHTTPHeaderFields;
--(NSString *)valueForHTTPHeaderField:(NSString *)field;
+- (NSDictionary *)allHTTPHeaderFields;
+- (NSString *)valueForHTTPHeaderField:(NSString *)field;
 
--(NSURL *)mainDocumentURL;
+- (NSURL *)mainDocumentURL;
 
--(BOOL)HTTPShouldHandleCookies;
+- (BOOL)HTTPShouldHandleCookies;
 
 @end

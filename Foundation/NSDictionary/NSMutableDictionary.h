@@ -10,18 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableDictionary : NSDictionary
 
--initWithCapacity:(NSUInteger)capacity;
+- initWithCapacity:(NSUInteger)capacity;
 
-+dictionaryWithCapacity:(NSUInteger)capacity;
++ dictionaryWithCapacity:(NSUInteger)capacity;
 
--(void)setObject:object forKey:key;
--(void)addEntriesFromDictionary:(NSDictionary *)dictionary;
--(void)setDictionary:(NSDictionary *)dictionary;
+- (void)setObject:object forKey:key;
+- (void)addEntriesFromDictionary:(NSDictionary *)dictionary;
+- (void)setDictionary:(NSDictionary *)dictionary;
 
--(void)removeObjectForKey:key;
--(void)removeAllObjects;
--(void)removeObjectsForKeys:(NSArray *)keys;
-
+- (void)removeObjectForKey:key;
+- (void)removeAllObjects;
+- (void)removeObjectsForKeys:(NSArray *)keys;
 
 @end
-

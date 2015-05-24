@@ -10,28 +10,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_sel.h"
 
 typedef struct {
-   unsigned long  selectorCount;
-   objc_selector_internal *selectorReferences;		
-   unsigned short classCount;
-   unsigned short categoryCount;
-   void          *definitions[0];
+    unsigned long selectorCount;
+    objc_selector_internal *selectorReferences;
+    unsigned short classCount;
+    unsigned short categoryCount;
+    void *definitions[0];
 } OBJCSymbolTable;
 
 typedef struct {
-   unsigned long    version;
-   unsigned long    size;
-   const char      *name;
-   OBJCSymbolTable *symbolTable;	
+    unsigned long version;
+    unsigned long size;
+    const char *name;
+    OBJCSymbolTable *symbolTable;
 } OBJCModule;
 
 typedef struct {
-   char *name;
-   id    instances[0];
+    char *name;
+    id instances[0];
 } OBJCStaticInstanceList;
 
 typedef struct {
-   char       *path;
-   OBJCArray  *moduleArray;
+    char *path;
+    OBJCArray *moduleArray;
 } OBJCObjectFile;
 
 OBJC_EXPORT void OBJCQueueModule(OBJCModule *module);

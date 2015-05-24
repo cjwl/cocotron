@@ -15,12 +15,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // a NULL list is considered empty
 typedef struct NSAtomicListNode *NSAtomicListRef;
 
-
 // thread safe functions: may be called on a shared list from multiple threads with no locking
-void NSAtomicListInsert( NSAtomicListRef *listPtr, void *elt );
-NSAtomicListRef NSAtomicListSteal( NSAtomicListRef *listPtr );
+void NSAtomicListInsert(NSAtomicListRef *listPtr, void *elt);
+NSAtomicListRef NSAtomicListSteal(NSAtomicListRef *listPtr);
 
 // thread unsafe functions: must be called only on lists which other threads cannot access
-void NSAtomicListReverse( NSAtomicListRef *listPtr );
-void *NSAtomicListPop( NSAtomicListRef *listPtr); // returns NULL on empty list
+void NSAtomicListReverse(NSAtomicListRef *listPtr);
+void *NSAtomicListPop(NSAtomicListRef *listPtr); // returns NULL on empty list
 void NSAtomicListAddToArray(NSAtomicListRef *listPtr, NSMutableArray *array);

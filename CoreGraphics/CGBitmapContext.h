@@ -9,19 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGContext.h>
 #import <CoreGraphics/CGImage.h>
 
-typedef void (*CGBitmapContextReleaseDataCallback)(void *userInfo,void *data);
+typedef void (*CGBitmapContextReleaseDataCallback)(void *userInfo, void *data);
 
-COREGRAPHICS_EXPORT CGContextRef CGBitmapContextCreate(void *data,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo);
+COREGRAPHICS_EXPORT CGContextRef CGBitmapContextCreate(void *data, size_t width, size_t height, size_t bitsPerComponent, size_t bytesPerRow, CGColorSpaceRef colorSpace, CGBitmapInfo bitmapInfo);
 
-COREGRAPHICS_EXPORT void           *CGBitmapContextGetData(CGContextRef self);
-COREGRAPHICS_EXPORT size_t          CGBitmapContextGetWidth(CGContextRef self);
-COREGRAPHICS_EXPORT size_t          CGBitmapContextGetHeight(CGContextRef self);
-COREGRAPHICS_EXPORT size_t          CGBitmapContextGetBitsPerComponent(CGContextRef self);
-COREGRAPHICS_EXPORT size_t          CGBitmapContextGetBytesPerRow(CGContextRef self);
+COREGRAPHICS_EXPORT void *CGBitmapContextGetData(CGContextRef self);
+COREGRAPHICS_EXPORT size_t CGBitmapContextGetWidth(CGContextRef self);
+COREGRAPHICS_EXPORT size_t CGBitmapContextGetHeight(CGContextRef self);
+COREGRAPHICS_EXPORT size_t CGBitmapContextGetBitsPerComponent(CGContextRef self);
+COREGRAPHICS_EXPORT size_t CGBitmapContextGetBytesPerRow(CGContextRef self);
 COREGRAPHICS_EXPORT CGColorSpaceRef CGBitmapContextGetColorSpace(CGContextRef self);
-COREGRAPHICS_EXPORT CGBitmapInfo    CGBitmapContextGetBitmapInfo(CGContextRef self);
+COREGRAPHICS_EXPORT CGBitmapInfo CGBitmapContextGetBitmapInfo(CGContextRef self);
 
-COREGRAPHICS_EXPORT size_t           CGBitmapContextGetBitsPerPixel(CGContextRef self);
+COREGRAPHICS_EXPORT size_t CGBitmapContextGetBitsPerPixel(CGContextRef self);
 COREGRAPHICS_EXPORT CGImageAlphaInfo CGBitmapContextGetAlphaInfo(CGContextRef self);
-COREGRAPHICS_EXPORT CGImageRef       CGBitmapContextCreateImage(CGContextRef self);
- 
+COREGRAPHICS_EXPORT CGImageRef CGBitmapContextCreateImage(CGContextRef self);

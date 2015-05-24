@@ -15,41 +15,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef O2Pattern *O2PatternRef;
 
-typedef enum  {
-   kO2PatternTilingNoDistortion,
-   kO2PatternTilingConstantSpacingMinimalDistortion,
-   kO2PatternTilingConstantSpacing,
+typedef enum {
+    kO2PatternTilingNoDistortion,
+    kO2PatternTilingConstantSpacingMinimalDistortion,
+    kO2PatternTilingConstantSpacing,
 } O2PatternTiling;
 
 #import <Onyx2D/O2Context.h>
 
 typedef struct {
-   unsigned int version;
-   void       (*drawPattern)(void *,O2ContextRef);
-   void       (*releaseInfo)(void *);
+    unsigned int version;
+    void (*drawPattern)(void *, O2ContextRef);
+    void (*releaseInfo)(void *);
 } O2PatternCallbacks;
 
 @interface O2Pattern : NSObject {
-   void              *_info;
-   O2Rect             _bounds;
-   O2AffineTransform  _matrix;
-   O2Float            _xstep;
-   O2Float            _ystep;
-   O2PatternTiling    _tiling;
-   BOOL               _isColored;
-   O2PatternCallbacks _callbacks;
+    void *_info;
+    O2Rect _bounds;
+    O2AffineTransform _matrix;
+    O2Float _xstep;
+    O2Float _ystep;
+    O2PatternTiling _tiling;
+    BOOL _isColored;
+    O2PatternCallbacks _callbacks;
 }
 
--(O2Rect)bounds;
--(O2AffineTransform)matrix;
--(O2Float)xstep;
--(O2Float)ystep;
+- (O2Rect)bounds;
+- (O2AffineTransform)matrix;
+- (O2Float)xstep;
+- (O2Float)ystep;
 
--(void)drawInContext:(O2ContextRef)context;
+- (void)drawInContext:(O2ContextRef)context;
 
-O2PatternRef O2PatternCreate(void *info,O2Rect bounds,O2AffineTransform matrix,O2Float xStep,O2Float yStep,O2PatternTiling tiling,bool isColored,const O2PatternCallbacks *callbacks);
+O2PatternRef O2PatternCreate(void *info, O2Rect bounds, O2AffineTransform matrix, O2Float xStep, O2Float yStep, O2PatternTiling tiling, bool isColored, const O2PatternCallbacks *callbacks);
 
 O2PatternRef O2PatternRetain(O2PatternRef self);
-void         O2PatternRelease(O2PatternRef self);
+void O2PatternRelease(O2PatternRef self);
 
 @end

@@ -11,12 +11,12 @@
 @interface NSAnimationContext : NSObject <NSCopying> {
 }
 
-+(void)beginGrouping;
-+(void)endGrouping;
++ (void)beginGrouping;
++ (void)endGrouping;
 
-+(NSAnimationContext*)currentContext;
++ (NSAnimationContext *)currentContext;
 
--(void)setDuration:(NSTimeInterval)duration;
--(NSTimeInterval)duration;
+- (void)setDuration:(NSTimeInterval)duration;
+- (NSTimeInterval)duration;
 
 @end

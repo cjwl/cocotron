@@ -3,204 +3,184 @@
 
 @class IKImageBrowserCell;
 
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQuickLookPathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQuickLookPathRepresentationType;
 
-IMAGEKIT_EXPORT NSString * const IKImageBrowserGroupRangeKey;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserGroupTitleKey;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserGroupStyleKey;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserGroupRangeKey;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserGroupTitleKey;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserGroupStyleKey;
 
-IMAGEKIT_EXPORT NSString * const IKImageBrowserBackgroundColorKey;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserBackgroundColorKey;
 
-IMAGEKIT_EXPORT NSString * const IKImageBrowserPathRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserNSURLRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserNSImageRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserCGImageRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserCGImageSourceRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserNSDataRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserNSBitmapImageRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQTMovieRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQTMoviePathRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQCCompositionRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQCCompositionPathRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserQuickLookPathRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserIconRefPathRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserIconRefRepresentationType;
-IMAGEKIT_EXPORT NSString * const IKImageBrowserPDFPageRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserPathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserNSURLRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserNSImageRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserCGImageRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserCGImageSourceRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserNSDataRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserNSBitmapImageRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQTMovieRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQTMoviePathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQCCompositionRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQCCompositionPathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserQuickLookPathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserIconRefPathRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserIconRefRepresentationType;
+IMAGEKIT_EXPORT NSString *const IKImageBrowserPDFPageRepresentationType;
 
 enum {
-   IKGroupBezelStyle,
-   IKGroupDisclosureStyle,
+    IKGroupBezelStyle,
+    IKGroupDisclosureStyle,
 };
 
 enum {
-   IKCellsStyleNone              =0,
-   IKCellsStyleShadowed          =1,
-   IKCellsStyleOutlined          =2,
-   IKCellsStyleTitled            =4,
-   IKCellsStyleSubtitled         =8,
+    IKCellsStyleNone = 0,
+    IKCellsStyleShadowed = 1,
+    IKCellsStyleOutlined = 2,
+    IKCellsStyleTitled = 4,
+    IKCellsStyleSubtitled = 8,
 };
 
 typedef enum {
-   IKImageBrowserDropOn=0,
-   IKImageBrowserDropBefore=1,
+    IKImageBrowserDropOn = 0,
+    IKImageBrowserDropBefore = 1,
 } IKImageBrowserDropOperation;
 
 @interface IKImageBrowserView : NSView {
-   id _delegate;
-   id _dataSource;
-   NSUInteger _numberOfColumns;
-   NSUInteger _numberOfRows;
-   NSSize _cellSize;
-   NSSize _intercellSpacing;
-   NSColor *_backgroundColor;
-   float _zoomValue;
-   BOOL _allowsDroppingOnItems;
-   BOOL _allowsEmptySelection;
-   BOOL _allowsMultipleSelection;
-   BOOL _allowsReordering;
-   BOOL _animates;
-   BOOL _canControlQuickLookPanel;
+    id _delegate;
+    id _dataSource;
+    NSUInteger _numberOfColumns;
+    NSUInteger _numberOfRows;
+    NSSize _cellSize;
+    NSSize _intercellSpacing;
+    NSColor *_backgroundColor;
+    float _zoomValue;
+    BOOL _allowsDroppingOnItems;
+    BOOL _allowsEmptySelection;
+    BOOL _allowsMultipleSelection;
+    BOOL _allowsReordering;
+    BOOL _animates;
+    BOOL _canControlQuickLookPanel;
 }
 
--initWithFrame:(NSRect)frame;
+- initWithFrame:(NSRect)frame;
 
--delegate;
--dataSource;
+- delegate;
+- dataSource;
 
--(NSSize)intercellSpacing;
+- (NSSize)intercellSpacing;
 
--(BOOL)allowsDroppingOnItems;
--(BOOL)allowsEmptySelection;
--(BOOL)allowsMultipleSelection;
--(BOOL)allowsReordering;
--(BOOL)animates;
--(BOOL)canControlQuickLookPanel;
--(BOOL)constrainsToOriginalSize;
--(NSSize)cellSize;
+- (BOOL)allowsDroppingOnItems;
+- (BOOL)allowsEmptySelection;
+- (BOOL)allowsMultipleSelection;
+- (BOOL)allowsReordering;
+- (BOOL)animates;
+- (BOOL)canControlQuickLookPanel;
+- (BOOL)constrainsToOriginalSize;
+- (NSSize)cellSize;
 
--(NSUInteger)cellsStyleMask;
+- (NSUInteger)cellsStyleMask;
 
--(CALayer *)backgroundLayer;
--(CALayer *)foregroundLayer;
+- (CALayer *)backgroundLayer;
+- (CALayer *)foregroundLayer;
 
--(void)setAllowsDroppingOnItems:(BOOL)value;
--(void)setAllowsEmptySelection:(BOOL)value;
--(void)setAllowsMultipleSelection:(BOOL)value;
--(void)setAllowsReordering:(BOOL)value;
--(void)setAnimates:(BOOL)value;
--(void)setCanControlQuickLookPanel:(BOOL)value;
--(void)setCellSize:(NSSize)value;
--(void)setCellsStyleMask:(NSUInteger)value;
--(void)setConstrainsToOriginalSize:(BOOL)value;
--(void)setContentResizingMask:(NSUInteger)value;
+- (void)setAllowsDroppingOnItems:(BOOL)value;
+- (void)setAllowsEmptySelection:(BOOL)value;
+- (void)setAllowsMultipleSelection:(BOOL)value;
+- (void)setAllowsReordering:(BOOL)value;
+- (void)setAnimates:(BOOL)value;
+- (void)setCanControlQuickLookPanel:(BOOL)value;
+- (void)setCellSize:(NSSize)value;
+- (void)setCellsStyleMask:(NSUInteger)value;
+- (void)setConstrainsToOriginalSize:(BOOL)value;
+- (void)setContentResizingMask:(NSUInteger)value;
 
--(void)setBackgroundLayer:(CALayer *)aLayer;
+- (void)setBackgroundLayer:(CALayer *)aLayer;
 
--(void)setDataSource:source;
+- (void)setDataSource:source;
 
--(void)setDelegate:delegate;
+- (void)setDelegate:delegate;
 
--(void)setDraggingDestinationDelegate:delegate;
+- (void)setDraggingDestinationDelegate:delegate;
 
--(void)setForegroundLayer:(CALayer *)layer;
+- (void)setForegroundLayer:(CALayer *)layer;
 
--(void)setIntercellSpacing:(NSSize)value;
+- (void)setIntercellSpacing:(NSSize)value;
 
+- (IKImageBrowserCell *)cellForItemAtIndex:(NSUInteger)index;
 
+- (void)collapseGroupAtIndex:(NSUInteger)index;
 
--(IKImageBrowserCell *)cellForItemAtIndex:(NSUInteger)index;
+- (NSIndexSet *)columnIndexesInRect:(NSRect)rect;
 
+- (NSUInteger)contentResizingMask;
 
--(void)collapseGroupAtIndex:(NSUInteger)index;
+- draggingDestinationDelegate;
 
--(NSIndexSet *)columnIndexesInRect:(NSRect)rect;
+- (IKImageBrowserDropOperation)dropOperation;
 
+- (void)expandGroupAtIndex:(NSUInteger)index;
 
--(NSUInteger)contentResizingMask;
+- (NSUInteger)indexAtLocationOfDroppedItem;
 
--draggingDestinationDelegate;
+- (NSInteger)indexOfItemAtPoint:(NSPoint)point;
+- (BOOL)isGroupExpandedAtIndex:(NSUInteger)index;
 
--(IKImageBrowserDropOperation)dropOperation;
+- (NSRect)itemFrameAtIndex:(NSInteger)index;
 
--(void)expandGroupAtIndex:(NSUInteger)index;
+- (IKImageBrowserCell *)newCellForRepresentedItem:item;
 
+- (NSUInteger)numberOfRows;
+- (NSUInteger)numberOfColumns;
 
--(NSUInteger)indexAtLocationOfDroppedItem;
+- (NSRect)rectOfColumn:(NSUInteger)column;
+- (NSRect)rectOfRow:(NSUInteger)rowIndex;
 
--(NSInteger)indexOfItemAtPoint:(NSPoint)point;
--(BOOL)isGroupExpandedAtIndex:(NSUInteger)index;
+- (void)reloadData;
 
--(NSRect)itemFrameAtIndex:(NSInteger)index;
+- (NSIndexSet *)rowIndexesInRect:(NSRect)rect;
 
--(IKImageBrowserCell *)newCellForRepresentedItem:item;
+- (NSIndexSet *)selectionIndexes;
 
--(NSUInteger)numberOfRows;
--(NSUInteger)numberOfColumns;
+- (void)setSelectionIndexes:(NSIndexSet *)value byExtendingSelection:(BOOL)extendSelection;
 
+- (void)scrollIndexToVisible:(NSInteger)index;
 
--(NSRect)rectOfColumn:(NSUInteger)column;
--(NSRect)rectOfRow:(NSUInteger)rowIndex;
+- (NSIndexSet *)visibleItemIndexes;
 
--(void)reloadData;
-
--(NSIndexSet *)rowIndexesInRect:(NSRect)rect;
-
-
--(NSIndexSet *)selectionIndexes;
-
-
--(void)setSelectionIndexes:(NSIndexSet *)value byExtendingSelection:(BOOL)extendSelection;
-
--(void)scrollIndexToVisible:(NSInteger)index;
-
--(NSIndexSet *)visibleItemIndexes;
-
--(float)zoomValue;
--(void)setZoomValue:(float)value; 
+- (float)zoomValue;
+- (void)setZoomValue:(float)value;
 
 @end
 
-@interface NSObject(IKImageBrowserItem)
-- (id) imageRepresentation;
-- (NSString *) imageRepresentationType;
-- (NSString *) imageSubtitle;
-- (NSString *) imageTitle;
-- (NSString *) imageUID;
-- (NSUInteger) imageVersion;
-- (BOOL) isSelectable;
+@interface NSObject (IKImageBrowserItem)
+- (id)imageRepresentation;
+- (NSString *)imageRepresentationType;
+- (NSString *)imageSubtitle;
+- (NSString *)imageTitle;
+- (NSString *)imageUID;
+- (NSUInteger)imageVersion;
+- (BOOL)isSelectable;
 
 @end
 
-@interface NSObject(IKImageBrowserDelegate)
+@interface NSObject (IKImageBrowserDelegate)
 
--(void)imageBrowserSelectionDidChange:(IKImageBrowserView *)browser;
+- (void)imageBrowserSelectionDidChange:(IKImageBrowserView *)browser;
 
--(void)imageBrowser:(IKImageBrowserView *)browser backgroundWasRightClickedWithEvent:(NSEvent *)event;
--(void)imageBrowser:(IKImageBrowserView *)browser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event;
--(void)imageBrowser:(IKImageBrowserView *)browser cellWasDoubleClickedAtIndex:(NSUInteger)index;
+- (void)imageBrowser:(IKImageBrowserView *)browser backgroundWasRightClickedWithEvent:(NSEvent *)event;
+- (void)imageBrowser:(IKImageBrowserView *)browser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event;
+- (void)imageBrowser:(IKImageBrowserView *)browser cellWasDoubleClickedAtIndex:(NSUInteger)index;
 @end
 
-@interface NSObject(IKImageBrowserDataSource)
+@interface NSObject (IKImageBrowserDataSource)
 
--(NSDictionary *)imageBrowser:(IKImageBrowserView *)browser groupAtIndex:(NSUInteger)index;
--imageBrowser:(IKImageBrowserView *)browser itemAtIndex:(NSUInteger)index;
+- (NSDictionary *)imageBrowser:(IKImageBrowserView *)browser groupAtIndex:(NSUInteger)index;
+- imageBrowser:(IKImageBrowserView *)browser itemAtIndex:(NSUInteger)index;
 
--(BOOL)imageBrowser:(IKImageBrowserView *)browser moveItemsAtIndexes: (NSIndexSet *)indexes toIndex:(NSUInteger)destinationIndex;
--(void)imageBrowser:(IKImageBrowserView *)browser removeItemsAtIndexes:(NSIndexSet *)indexes;
--(NSUInteger)imageBrowser:(IKImageBrowserView *)browser writeItemsAtIndexes:(NSIndexSet *)itemIndexes toPasteboard:(NSPasteboard *)pasteboard;
--(NSUInteger)numberOfGroupsInImageBrowser:(IKImageBrowserView *)browser;
--(NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)browser;
-
+- (BOOL)imageBrowser:(IKImageBrowserView *)browser moveItemsAtIndexes:(NSIndexSet *)indexes toIndex:(NSUInteger)destinationIndex;
+- (void)imageBrowser:(IKImageBrowserView *)browser removeItemsAtIndexes:(NSIndexSet *)indexes;
+- (NSUInteger)imageBrowser:(IKImageBrowserView *)browser writeItemsAtIndexes:(NSIndexSet *)itemIndexes toPasteboard:(NSPasteboard *)pasteboard;
+- (NSUInteger)numberOfGroupsInImageBrowser:(IKImageBrowserView *)browser;
+- (NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)browser;
 
 @end
-
-
-
-
-
-
-
-
-
-
-

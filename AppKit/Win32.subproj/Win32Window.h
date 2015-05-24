@@ -15,119 +15,118 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define WM_NSTRAYACTIVATE 9001
 #import <windows.h>
 
-@class O2Context_gdi,O2Surface,O2Surface_DIBSection;
+@class O2Context_gdi, O2Surface, O2Surface_DIBSection;
 
 @interface Win32Window : CGWindow {
-   CRITICAL_SECTION       _lock; // This must be a recursive lock.
-   CGRect                 _frame;
-   int                    _level;
-   BOOL                   _isOpaque;
-   BOOL                   _hasShadow;
-   CGFloat                _alphaValue;
-   HWND                   _handle;
-   HGLRC                  _hglrc;
-   GLint                  _backingTextureId;
-   BOOL                   _hasRenderTexture;
-   BOOL                   _hasMakeCurrentRead;
-   BOOL                   _hasReadback;
-   BOOL                   _hasSwapHintRect;
-   BOOL                   _reloadBackingTexture;
-   CGFloat                _borderTop,_borderLeft,_borderBottom,_borderRight;
-   O2Context_gdi         *_cgContext;
+    CRITICAL_SECTION _lock; // This must be a recursive lock.
+    CGRect _frame;
+    int _level;
+    BOOL _isOpaque;
+    BOOL _hasShadow;
+    CGFloat _alphaValue;
+    HWND _handle;
+    HGLRC _hglrc;
+    GLint _backingTextureId;
+    BOOL _hasRenderTexture;
+    BOOL _hasMakeCurrentRead;
+    BOOL _hasReadback;
+    BOOL _hasSwapHintRect;
+    BOOL _reloadBackingTexture;
+    CGFloat _borderTop, _borderLeft, _borderBottom, _borderRight;
+    O2Context_gdi *_cgContext;
 
-   CGSBackingStoreType    _backingType;
-   O2Context             *_backingContext;
+    CGSBackingStoreType _backingType;
+    O2Context *_backingContext;
 
     int _surfaceCount;
     void **_surfaces;
-    
+
     int _textureIdCount;
     GLint *_textureIds;
-    
+
     O2Surface_DIBSection *_overlayResult;
-   NSMutableArray        *_overlays;
-   
-   int                    _disableFlushWindow;
-   NSString              *_title;
-   BOOL                  _isLayered;
-   BOOL                  _ignoreMinMaxMessage;
-   BOOL                  _sentBeginSizing;
-   BOOL                  _disableDisplay;
-   unsigned              _styleMask;
-   BOOL                  _isPanel;
-   BOOL                  _isMiniaturized;
-   
-   id                    _delegate;
-   NSMutableDictionary  *_deviceDictionary;
+    NSMutableArray *_overlays;
+
+    int _disableFlushWindow;
+    NSString *_title;
+    BOOL _isLayered;
+    BOOL _ignoreMinMaxMessage;
+    BOOL _sentBeginSizing;
+    BOOL _disableDisplay;
+    unsigned _styleMask;
+    BOOL _isPanel;
+    BOOL _isMiniaturized;
+
+    id _delegate;
+    NSMutableDictionary *_deviceDictionary;
     NSRect _dirtyRect;
 }
 
--initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
+- initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
 
--(void)setDelegate:delegate;
--delegate;
+- (void)setDelegate:delegate;
+- delegate;
 
--(void)invalidate;
+- (void)invalidate;
 
--(void)lock;
--(void)unlock;
+- (void)lock;
+- (void)unlock;
 
--(HWND)windowHandle;
--(CGRect)frame;
+- (HWND)windowHandle;
+- (CGRect)frame;
 
--(void)showWindowForAppActivation:(CGRect)frame;
--(void)hideWindowForAppDeactivation:(CGRect)frame;
+- (void)showWindowForAppActivation:(CGRect)frame;
+- (void)hideWindowForAppDeactivation:(CGRect)frame;
 
--(void)hideWindow;
--(void)showWindowWithoutActivation;
--(void)bringToTop;
--(void)makeTransparent;
--(void)placeAboveWindow:(Win32Window *)other;
--(void)placeBelowWindow:(Win32Window *)other;
+- (void)hideWindow;
+- (void)showWindowWithoutActivation;
+- (void)bringToTop;
+- (void)makeTransparent;
+- (void)placeAboveWindow:(Win32Window *)other;
+- (void)placeBelowWindow:(Win32Window *)other;
 
--(void)makeKey;
--(void)captureEvents;
--(void)miniaturize;
--(void)deminiaturize;
--(BOOL)isMiniaturized;
+- (void)makeKey;
+- (void)captureEvents;
+- (void)miniaturize;
+- (void)deminiaturize;
+- (BOOL)isMiniaturized;
 
--(BOOL)isLayeredWindow;
+- (BOOL)isLayeredWindow;
 
--(void)flushBuffer;
+- (void)flushBuffer;
 
--(NSPoint)convertPOINTLToBase:(POINTL)point;
--(NSPoint)mouseLocationOutsideOfEventStream;
+- (NSPoint)convertPOINTLToBase:(POINTL)point;
+- (NSPoint)mouseLocationOutsideOfEventStream;
 
--(void)adjustEventLocation:(NSPoint *)location childWindow:(BOOL)childWindow;
+- (void)adjustEventLocation:(NSPoint *)location childWindow:(BOOL)childWindow;
 
--(void)sendEvent:(CGEvent *)event;
+- (void)sendEvent:(CGEvent *)event;
 
--(int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;
--(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;   
+- (int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;
+- (int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;
 
 @end
 
-void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right);
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask, CGFloat *top, CGFloat *left, CGFloat *bottom, CGFloat *right);
 
 static inline CGRect CGRectFromRECT(RECT rect) {
-   CGRect result;
+    CGRect result;
 
-   result.origin.x=rect.left;
-   result.origin.y=rect.top;
-   result.size.width=rect.right-rect.left;
-   result.size.height=rect.bottom-rect.top;
+    result.origin.x = rect.left;
+    result.origin.y = rect.top;
+    result.size.width = rect.right - rect.left;
+    result.size.height = rect.bottom - rect.top;
 
-   return result;
+    return result;
 }
 
 static inline RECT RECTFromCGRect(CGRect rect) {
-   RECT result;
-   
-   result.top=rect.origin.y;
-   result.left=rect.origin.x;
-   result.bottom=result.top+rect.size.height;
-   result.right=result.left+rect.size.width;
-   
-   return result;
-}
+    RECT result;
 
+    result.top = rect.origin.y;
+    result.left = rect.origin.x;
+    result.bottom = result.top + rect.size.height;
+    result.right = result.left + rect.size.width;
+
+    return result;
+}

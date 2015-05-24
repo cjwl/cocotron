@@ -10,23 +10,23 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef CFTypeRef CFPropertyListRef;
 
-typedef enum  {
-   kCFPropertyListOpenStepFormat   =1,
-   kCFPropertyListXMLFormat_v1_0   =100,
-   kCFPropertyListBinaryFormat_v1_0=200,
+typedef enum {
+    kCFPropertyListOpenStepFormat = 1,
+    kCFPropertyListXMLFormat_v1_0 = 100,
+    kCFPropertyListBinaryFormat_v1_0 = 200,
 } CFPropertyListFormat;
 
-typedef enum  {
-   kCFPropertyListImmutable                 =0,
-   kCFPropertyListMutableContainers         =1,
-   kCFPropertyListMutableContainersAndLeaves=2,
+typedef enum {
+    kCFPropertyListImmutable = 0,
+    kCFPropertyListMutableContainers = 1,
+    kCFPropertyListMutableContainersAndLeaves = 2,
 } CFPropertyListMutabilityOptions;
 
-COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromStream(CFAllocatorRef allocator,CFReadStreamRef stream,CFIndex length,CFOptionFlags options,CFPropertyListFormat *format,CFStringRef *error);
-COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromXMLData(CFAllocatorRef allocator,CFDataRef data,CFOptionFlags options,CFStringRef *error);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromStream(CFAllocatorRef allocator, CFReadStreamRef stream, CFIndex length, CFOptionFlags options, CFPropertyListFormat *format, CFStringRef *error);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromXMLData(CFAllocatorRef allocator, CFDataRef data, CFOptionFlags options, CFStringRef *error);
 
-COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateDeepCopy(CFAllocatorRef allocator,CFPropertyListRef self,CFOptionFlags options);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateDeepCopy(CFAllocatorRef allocator, CFPropertyListRef self, CFOptionFlags options);
 
-COREFOUNDATION_EXPORT CFDataRef         CFPropertyListCreateXMLData(CFAllocatorRef allocator,CFPropertyListRef self);
-COREFOUNDATION_EXPORT Boolean           CFPropertyListIsValid(CFPropertyListRef self,CFPropertyListFormat format);
-COREFOUNDATION_EXPORT CFIndex           CFPropertyListWriteToStream(CFPropertyListRef self,CFWriteStreamRef stream,CFPropertyListFormat format,CFStringRef *error);
+COREFOUNDATION_EXPORT CFDataRef CFPropertyListCreateXMLData(CFAllocatorRef allocator, CFPropertyListRef self);
+COREFOUNDATION_EXPORT Boolean CFPropertyListIsValid(CFPropertyListRef self, CFPropertyListFormat format);
+COREFOUNDATION_EXPORT CFIndex CFPropertyListWriteToStream(CFPropertyListRef self, CFWriteStreamRef stream, CFPropertyListFormat format, CFStringRef *error);

@@ -10,21 +10,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 
 @interface NSPDFImageRep : NSImageRep <NSCopying> {
-   NSData        *_pdf;
-   int            _currentPage;
-   CGPDFDocumentRef _document;
+    NSData *_pdf;
+    int _currentPage;
+    CGPDFDocumentRef _document;
 }
 
--initWithData:(NSData *)data;
+- initWithData:(NSData *)data;
 
-+(NSArray *)imageRepsWithData:(NSData *)data;
-+imageRepWithData:(NSData *)data;
++ (NSArray *)imageRepsWithData:(NSData *)data;
++ imageRepWithData:(NSData *)data;
 
--(NSData *)PDFRepresentation;
+- (NSData *)PDFRepresentation;
 
--(int)pageCount;
--(int)currentPage;
+- (int)pageCount;
+- (int)currentPage;
 
--(void)setCurrentPage:(int)page;
+- (void)setCurrentPage:(int)page;
 
 @end

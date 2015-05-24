@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 
 @interface NSCustomImageRep : NSImageRep {
-   SEL _drawSelector;
-   id  _delegate;
+    SEL _drawSelector;
+    id _delegate;
 }
 
--initWithDrawSelector:(SEL)selector delegate:delegate;
+- initWithDrawSelector:(SEL)selector delegate:delegate;
 
--(SEL)drawSelector;
--delegate;
+- (SEL)drawSelector;
+- delegate;
 
 @end

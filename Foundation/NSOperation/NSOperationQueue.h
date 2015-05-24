@@ -11,35 +11,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSMutableArray,NSOperation,NSCondition,NSThread;
+@class NSArray, NSMutableArray, NSOperation, NSCondition, NSThread;
 
 enum {
-	NSOperationQueueDefaultMaxConcurrentOperationCount = -1
+    NSOperationQueueDefaultMaxConcurrentOperationCount = -1
 };
 
 enum {
-	NSOperationQueuePriority_Count = 3
+    NSOperationQueuePriority_Count = 3
 };
 
 @interface NSOperationQueue : NSObject {
-	NSThread *_thread;
-	
-	NSCondition *workAvailable;
-	NSCondition *suspendedCondition;
-	NSCondition *allWorkDone;
-	BOOL isSuspended;
-	
-	NSMutableArray *_operations;
-	
-	void *queues[NSOperationQueuePriority_Count];
-	NSString *_name;
+    NSThread *_thread;
+
+    NSCondition *workAvailable;
+    NSCondition *suspendedCondition;
+    NSCondition *allWorkDone;
+    BOOL isSuspended;
+
+    NSMutableArray *_operations;
+
+    void *queues[NSOperationQueuePriority_Count];
+    NSString *_name;
 }
 
 - (id)init;
 
 #pragma mark Managing Operations in the Queue
 
-- (void)addOperation: (NSOperation *)op;
+- (void)addOperation:(NSOperation *)op;
 
 - (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
 

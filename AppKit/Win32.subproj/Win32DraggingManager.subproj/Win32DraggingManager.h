@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDraggingManager.h>
 #import <windows.h>
 
-@class NSView,NSWindow,NSMutableArray;
+@class NSView, NSWindow, NSMutableArray;
 
 @interface Win32DraggingManager : NSDraggingManager {
-   NSMutableArray *_dropTargets;
-   id              _localDraggingSource;
+    NSMutableArray *_dropTargets;
+    id _localDraggingSource;
 }
 
--(void)registerWindow:(NSWindow *)window dragTypes:(NSArray *)dragTypes;
--(void)unregisterWindow:(NSWindow *)window;
+- (void)registerWindow:(NSWindow *)window dragTypes:(NSArray *)dragTypes;
+- (void)unregisterWindow:(NSWindow *)window;
 
--(id)localDraggingSource;
+- (id)localDraggingSource;
 
--(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:(id)source slideBack:(BOOL)slideBack;
+- (void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:(id)source slideBack:(BOOL)slideBack;
 
 @end
 

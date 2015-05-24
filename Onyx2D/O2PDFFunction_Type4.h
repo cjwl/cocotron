@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Function+PDF.h>
 #import <Onyx2D/O2PDFObject.h>
 
-@class NSArray,O2PDFBlock;
+@class NSArray, O2PDFBlock;
 
 @interface O2PDFFunction_Type4 : O2Function {
-   O2PDFBlock *_calculator;
+    O2PDFBlock *_calculator;
 }
 
--initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range calculator:(NSData *)calculator;
+- initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range calculator:(NSData *)calculator;
 
 @end

@@ -9,60 +9,60 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 
-@class NSArray,NSData,NSPasteboard,NSURL;
+@class NSArray, NSData, NSPasteboard, NSURL;
 
 @interface NSImageRep : NSObject <NSCopying> {
-   NSSize    _size;
-   NSString *_colorSpaceName;
-   NSInteger _bitsPerSample;
-   int       _pixelsWide;
-   int       _pixelsHigh;
+    NSSize _size;
+    NSString *_colorSpaceName;
+    NSInteger _bitsPerSample;
+    int _pixelsWide;
+    int _pixelsHigh;
 
-   BOOL      _hasAlpha;
-   BOOL      _isOpaque;
+    BOOL _hasAlpha;
+    BOOL _isOpaque;
 }
 
-+(NSArray *)registeredImageRepClasses;
-+(void)registerImageRepClass:(Class)aClass;
-+(void)unregisterImageRepClass:(Class)aClass;
++ (NSArray *)registeredImageRepClasses;
++ (void)registerImageRepClass:(Class)aClass;
++ (void)unregisterImageRepClass:(Class)aClass;
 
-+(NSArray *)imageFileTypes;
-+(NSArray *)imageUnfilteredFileTypes;
-+(NSArray *)imagePasteboardTypes;
-+(NSArray *)imageUnfilteredPasteboardTypes;
++ (NSArray *)imageFileTypes;
++ (NSArray *)imageUnfilteredFileTypes;
++ (NSArray *)imagePasteboardTypes;
++ (NSArray *)imageUnfilteredPasteboardTypes;
 
-+(BOOL)canInitWithData:(NSData *)data;
-+(BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard;
++ (BOOL)canInitWithData:(NSData *)data;
++ (BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard;
 
-+(Class)imageRepClassForData:(NSData *)data;
-+(Class)imageRepClassForFileType:(NSString *)type;
-+(Class)imageRepClassForPasteboardType:(NSString *)type;
++ (Class)imageRepClassForData:(NSData *)data;
++ (Class)imageRepClassForFileType:(NSString *)type;
++ (Class)imageRepClassForPasteboardType:(NSString *)type;
 
-+(NSArray *)imageRepsWithContentsOfFile:(NSString *)path;
-+(NSArray *)imageRepsWithContentsOfURL:(NSURL *)url;
-+(NSArray *)imageRepsWithPasteboard:(NSPasteboard *)pasteboard;
-+imageRepWithContentsOfFile:(NSString *)path;
-+imageRepWithContentsOfURL:(NSURL *)url;
-+imageRepWithPasteboard:(NSPasteboard *)pasteboard;
++ (NSArray *)imageRepsWithContentsOfFile:(NSString *)path;
++ (NSArray *)imageRepsWithContentsOfURL:(NSURL *)url;
++ (NSArray *)imageRepsWithPasteboard:(NSPasteboard *)pasteboard;
++ imageRepWithContentsOfFile:(NSString *)path;
++ imageRepWithContentsOfURL:(NSURL *)url;
++ imageRepWithPasteboard:(NSPasteboard *)pasteboard;
 
--(NSSize)size;
--(int)pixelsWide;
--(int)pixelsHigh;
--(BOOL)isOpaque;
--(BOOL)hasAlpha;
--(NSString *)colorSpaceName;
--(NSInteger)bitsPerSample;
+- (NSSize)size;
+- (int)pixelsWide;
+- (int)pixelsHigh;
+- (BOOL)isOpaque;
+- (BOOL)hasAlpha;
+- (NSString *)colorSpaceName;
+- (NSInteger)bitsPerSample;
 
--(void)setSize:(NSSize)value;
--(void)setPixelsWide:(int)value;
--(void)setPixelsHigh:(int)value;
--(void)setOpaque:(BOOL)value;
--(void)setAlpha:(BOOL)value;
--(void)setColorSpaceName:(NSString *)value;
--(void)setBitsPerSample:(int)value;
+- (void)setSize:(NSSize)value;
+- (void)setPixelsWide:(int)value;
+- (void)setPixelsHigh:(int)value;
+- (void)setOpaque:(BOOL)value;
+- (void)setAlpha:(BOOL)value;
+- (void)setColorSpaceName:(NSString *)value;
+- (void)setBitsPerSample:(int)value;
 
--(BOOL)draw;
--(BOOL)drawAtPoint:(NSPoint)point;
--(BOOL)drawInRect:(NSRect)rect;
+- (BOOL)draw;
+- (BOOL)drawAtPoint:(NSPoint)point;
+- (BOOL)drawInRect:(NSRect)rect;
 
 @end

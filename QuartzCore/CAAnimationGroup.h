@@ -3,7 +3,7 @@
 @class NSArray;
 
 @interface CAAnimationGroup : CAAnimation {
-   NSArray *_animations;
+    NSArray *_animations;
 }
 
 @property(copy) NSArray *animations;

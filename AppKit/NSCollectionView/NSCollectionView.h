@@ -9,47 +9,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCollectionViewItem.h>
 
 @interface NSCollectionView : NSView {
-   NSArray              *_content;
-   NSCollectionViewItem *_itemPrototype;
-   BOOL                  _isSelectable;
-   NSSize                _minItemSize;
-   NSSize                _maxItemSize;
-   NSUInteger            _maxNumberOfRows;
-   NSUInteger            _maxNumberOfColumns;
-   NSArray              *_backgroundColors;
-   BOOL                  _allowsMultipleSelection;
-   NSIndexSet           *_selectionIndexes;
+    NSArray *_content;
+    NSCollectionViewItem *_itemPrototype;
+    BOOL _isSelectable;
+    NSSize _minItemSize;
+    NSSize _maxItemSize;
+    NSUInteger _maxNumberOfRows;
+    NSUInteger _maxNumberOfColumns;
+    NSArray *_backgroundColors;
+    BOOL _allowsMultipleSelection;
+    NSIndexSet *_selectionIndexes;
 }
 
--(NSArray *)content;
--(NSCollectionViewItem *)itemPrototype;
+- (NSArray *)content;
+- (NSCollectionViewItem *)itemPrototype;
 
--(BOOL)isSelectable;
+- (BOOL)isSelectable;
 
--(NSSize)minItemSize;
--(NSSize)maxItemSize;
+- (NSSize)minItemSize;
+- (NSSize)maxItemSize;
 
--(NSUInteger)maxNumberOfRows;
--(NSUInteger)maxNumberOfColumns;
+- (NSUInteger)maxNumberOfRows;
+- (NSUInteger)maxNumberOfColumns;
 
--(NSArray *)backgroundColors;
--(BOOL)allowsMultipleSelection;
--(NSIndexSet *)selectionIndexes;
+- (NSArray *)backgroundColors;
+- (BOOL)allowsMultipleSelection;
+- (NSIndexSet *)selectionIndexes;
 
--(void)setContent:(NSArray *)value;
--(void)setItemPrototype:(NSCollectionViewItem *)value;
--(void)setSelectable:(BOOL)value;
+- (void)setContent:(NSArray *)value;
+- (void)setItemPrototype:(NSCollectionViewItem *)value;
+- (void)setSelectable:(BOOL)value;
 
--(void)setMinItemSize:(NSSize)value;
--(void)setMaxItemSize:(NSSize)value;
--(void)setMaxNumberOfRows:(NSUInteger)value;
--(void)setMaxNumberOfColumns:(NSUInteger)value;
+- (void)setMinItemSize:(NSSize)value;
+- (void)setMaxItemSize:(NSSize)value;
+- (void)setMaxNumberOfRows:(NSUInteger)value;
+- (void)setMaxNumberOfColumns:(NSUInteger)value;
 
--(void)setBackgroundColors:(NSArray *)value;
--(void)setAllowsMultipleSelection:(BOOL)value;
--(void)setSelectionIndexes:(NSIndexSet *)value;
+- (void)setBackgroundColors:(NSArray *)value;
+- (void)setAllowsMultipleSelection:(BOOL)value;
+- (void)setSelectionIndexes:(NSIndexSet *)value;
 
--(BOOL)isFirstResponder;
--(NSCollectionViewItem *)newItemForRepresentedObject:object;
+- (BOOL)isFirstResponder;
+- (NSCollectionViewItem *)newItemForRepresentedObject:object;
 
 @end

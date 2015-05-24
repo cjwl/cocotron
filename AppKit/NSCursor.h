@@ -9,63 +9,63 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 
-@class NSImage,NSColor,NSEvent;
+@class NSImage, NSColor, NSEvent;
 
 @interface NSCursor : NSObject <NSCoding> {
-   NSImage *_image;
-   NSPoint  _hotSpot;
-   BOOL     _isSetOnMouseEntered;
-   BOOL     _isSetOnMouseExited;
-   id       _platformCursor;
+    NSImage *_image;
+    NSPoint _hotSpot;
+    BOOL _isSetOnMouseEntered;
+    BOOL _isSetOnMouseExited;
+    id _platformCursor;
 }
 
-+(NSCursor *)currentCursor;
-+(NSCursor *)currentSystemCursor;
++ (NSCursor *)currentCursor;
++ (NSCursor *)currentSystemCursor;
 
-+(NSCursor *)arrowCursor;
-+(NSCursor *)closedHandCursor;
-+(NSCursor *)contextualMenuCursor;
-+(NSCursor *)crosshairCursor;
-+(NSCursor *)disappearingItemCursor;
-+(NSCursor *)IBeamCursor;
-+(NSCursor *)openHandCursor;
-+(NSCursor *)pointingHandCursor;
-+(NSCursor *)resizeDownCursor;
-+(NSCursor *)resizeLeftCursor;
-+(NSCursor *)resizeLeftRightCursor;
-+(NSCursor *)resizeRightCursor;
-+(NSCursor *)resizeUpCursor;
-+(NSCursor *)resizeUpDownCursor;
++ (NSCursor *)arrowCursor;
++ (NSCursor *)closedHandCursor;
++ (NSCursor *)contextualMenuCursor;
++ (NSCursor *)crosshairCursor;
++ (NSCursor *)disappearingItemCursor;
++ (NSCursor *)IBeamCursor;
++ (NSCursor *)openHandCursor;
++ (NSCursor *)pointingHandCursor;
++ (NSCursor *)resizeDownCursor;
++ (NSCursor *)resizeLeftCursor;
++ (NSCursor *)resizeLeftRightCursor;
++ (NSCursor *)resizeRightCursor;
++ (NSCursor *)resizeUpCursor;
++ (NSCursor *)resizeUpDownCursor;
 
-+(NSCursor *)dragCopyCursor;
-+(NSCursor *)dragLinkCursor;
-+(NSCursor *)operationNotAllowedCursor;
++ (NSCursor *)dragCopyCursor;
++ (NSCursor *)dragLinkCursor;
++ (NSCursor *)operationNotAllowedCursor;
 
-+(void)hide;
-+(void)unhide;
++ (void)hide;
++ (void)unhide;
 
-+(void)setHiddenUntilMouseMoves:(BOOL)flag;
++ (void)setHiddenUntilMouseMoves:(BOOL)flag;
 
--initWithImage:(NSImage *)image foregroundColorHint:(NSColor *)foregroundHint backgroundColorHint:(NSColor *)backgroundHint hotSpot:(NSPoint)hotSpot;
--initWithImage:(NSImage *)image hotSpot:(NSPoint)hotSpot;
+- initWithImage:(NSImage *)image foregroundColorHint:(NSColor *)foregroundHint backgroundColorHint:(NSColor *)backgroundHint hotSpot:(NSPoint)hotSpot;
+- initWithImage:(NSImage *)image hotSpot:(NSPoint)hotSpot;
 
--(NSImage *)image;
--(NSPoint)hotSpot;
+- (NSImage *)image;
+- (NSPoint)hotSpot;
 
--(BOOL)isSetOnMouseEntered;
--(BOOL)isSetOnMouseExited;
+- (BOOL)isSetOnMouseEntered;
+- (BOOL)isSetOnMouseExited;
 
--(void)setOnMouseEntered:(BOOL)value;
--(void)setOnMouseExited:(BOOL)value;
+- (void)setOnMouseEntered:(BOOL)value;
+- (void)setOnMouseExited:(BOOL)value;
 
--(void)mouseEntered:(NSEvent *)event;
--(void)mouseExited:(NSEvent *)event;
+- (void)mouseEntered:(NSEvent *)event;
+- (void)mouseExited:(NSEvent *)event;
 
--(void)pop;
+- (void)pop;
 
--(void)set;
+- (void)set;
 
--(void)push;
-+(void)pop;
+- (void)push;
++ (void)pop;
 
 @end

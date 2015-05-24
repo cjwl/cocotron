@@ -7,46 +7,46 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSCachedURLResponse,NSURLRequest,NSMutableDictionary,NSMutableArray;
+@class NSCachedURLResponse, NSURLRequest, NSMutableDictionary, NSMutableArray;
 
 typedef enum {
-   NSURLCacheStorageAllowed,
-   NSURLCacheStorageAllowedInMemoryOnly,
-   NSURLCacheStorageNotAllowed,
+    NSURLCacheStorageAllowed,
+    NSURLCacheStorageAllowedInMemoryOnly,
+    NSURLCacheStorageNotAllowed,
 } NSURLCacheStoragePolicy;
 
 @interface NSURLCache : NSObject {
-   NSString  *_path;
-   NSUInteger _memoryCapacity;
-   NSUInteger _diskCapacity;
-   
-   NSUInteger           _currentMemoryUsage;
-   NSMutableDictionary *_memoryCache;
-   NSMutableArray      *_memoryAccess;
-   
-   NSUInteger           _currentDiskUsage;
-   NSMutableDictionary *_diskCache;
+    NSString *_path;
+    NSUInteger _memoryCapacity;
+    NSUInteger _diskCapacity;
+
+    NSUInteger _currentMemoryUsage;
+    NSMutableDictionary *_memoryCache;
+    NSMutableArray *_memoryAccess;
+
+    NSUInteger _currentDiskUsage;
+    NSMutableDictionary *_diskCache;
 }
 
-+(NSURLCache *)sharedURLCache;
-+(void)setSharedURLCache:(NSURLCache *)cache;
++ (NSURLCache *)sharedURLCache;
++ (void)setSharedURLCache:(NSURLCache *)cache;
 
--initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)diskPath;
+- initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)diskPath;
 
--(NSUInteger)memoryCapacity;
--(NSUInteger)diskCapacity;
+- (NSUInteger)memoryCapacity;
+- (NSUInteger)diskCapacity;
 
--(NSUInteger)currentDiskUsage;
--(NSUInteger)currentMemoryUsage;
+- (NSUInteger)currentDiskUsage;
+- (NSUInteger)currentMemoryUsage;
 
--(NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request;
+- (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request;
 
--(void)setMemoryCapacity:(NSUInteger)memoryCapacity;
--(void)setDiskCapacity:(NSUInteger)diskCapacity;
+- (void)setMemoryCapacity:(NSUInteger)memoryCapacity;
+- (void)setDiskCapacity:(NSUInteger)diskCapacity;
 
--(void)storeCachedResponse:(NSCachedURLResponse *)response forRequest:(NSURLRequest *)request;
+- (void)storeCachedResponse:(NSCachedURLResponse *)response forRequest:(NSURLRequest *)request;
 
--(void)removeAllCachedResponses;
--(void)removeCachedResponseForRequest:(NSURLRequest *)request;
+- (void)removeAllCachedResponses;
+- (void)removeCachedResponseForRequest:(NSURLRequest *)request;
 
 @end

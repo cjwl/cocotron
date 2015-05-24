@@ -9,6 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 
 @protocol NSTextInput
--(NSRect)firstRectForCharacterRange:(NSRange)range;
--(NSUInteger)characterIndexForPoint:(NSPoint)point;
+- (NSRect)firstRectForCharacterRange:(NSRange)range;
+- (NSUInteger)characterIndexForPoint:(NSPoint)point;
 @end

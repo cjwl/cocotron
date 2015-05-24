@@ -13,14 +13,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSParentDeathMonitor_win32;
 
 @interface NSPlatform_win32 : NSPlatform {
-   NSParentDeathMonitor_win32 *_parentDeathMonitor;
+    NSParentDeathMonitor_win32 *_parentDeathMonitor;
 }
 
 @end
 
-void _Win32Assert(const char *code,int line,const char *file);
+void _Win32Assert(const char *code, int line, const char *file);
 
-#define Win32Assert(call) _Win32Assert(call,__LINE__,__FILE__)
+#define Win32Assert(call) _Win32Assert(call, __LINE__, __FILE__)
 
 NSTimeInterval Win32TimeIntervalFromFileTime(FILETIME fileTime);
 void Win32ThreadSleepForTimeInterval(NSTimeInterval interval);

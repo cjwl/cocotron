@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSObjCRuntime.h>
 
-@class NSString, NSArray, NSDictionary, NSCalendarDate,NSTimeZone;
+@class NSString, NSArray, NSDictionary, NSCalendarDate, NSTimeZone;
 
 typedef double NSTimeInterval;
 
@@ -17,52 +17,52 @@ FOUNDATION_EXPORT const NSTimeInterval NSTimeIntervalSince1970;
 
 @interface NSDate : NSObject <NSCopying, NSCoding>
 
-+(NSTimeInterval)timeIntervalSinceReferenceDate;
++ (NSTimeInterval)timeIntervalSinceReferenceDate;
 
-+distantPast;
-+distantFuture;
++ distantPast;
++ distantFuture;
 
--init;
--initWithString:(NSString *)string;
--initWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds;
--initWithTimeIntervalSinceNow:(NSTimeInterval)seconds;
--initWithTimeIntervalSince1970:(NSTimeInterval)seconds;
--initWithTimeInterval:(NSTimeInterval)seconds sinceDate:(NSDate *)date;
+- init;
+- initWithString:(NSString *)string;
+- initWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds;
+- initWithTimeIntervalSinceNow:(NSTimeInterval)seconds;
+- initWithTimeIntervalSince1970:(NSTimeInterval)seconds;
+- initWithTimeInterval:(NSTimeInterval)seconds sinceDate:(NSDate *)date;
 
-+date;
-+dateWithString:(NSString *)string;
-+dateWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds;
-+dateWithTimeIntervalSinceNow:(NSTimeInterval)seconds;    
-+dateWithTimeIntervalSince1970:(NSTimeInterval)seconds;
++ date;
++ dateWithString:(NSString *)string;
++ dateWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds;
++ dateWithTimeIntervalSinceNow:(NSTimeInterval)seconds;
++ dateWithTimeIntervalSince1970:(NSTimeInterval)seconds;
 
--(NSTimeInterval)timeIntervalSinceReferenceDate;
+- (NSTimeInterval)timeIntervalSinceReferenceDate;
 
--(NSTimeInterval)timeIntervalSinceDate:(NSDate *)date;
--(NSTimeInterval)timeIntervalSinceNow;
--(NSTimeInterval)timeIntervalSince1970;
+- (NSTimeInterval)timeIntervalSinceDate:(NSDate *)date;
+- (NSTimeInterval)timeIntervalSinceNow;
+- (NSTimeInterval)timeIntervalSince1970;
 
--(BOOL)isEqualToDate:(NSDate *)date;
+- (BOOL)isEqualToDate:(NSDate *)date;
 
--(NSComparisonResult)compare:(NSDate *)date;
--(NSDate *)earlierDate:(NSDate *)date;
--(NSDate *)laterDate:(NSDate *)date;
+- (NSComparisonResult)compare:(NSDate *)date;
+- (NSDate *)earlierDate:(NSDate *)date;
+- (NSDate *)laterDate:(NSDate *)date;
 
--addTimeInterval:(NSTimeInterval)seconds;
--dateByAddingTimeInterval:(NSTimeInterval)seconds;
+- addTimeInterval:(NSTimeInterval)seconds;
+- dateByAddingTimeInterval:(NSTimeInterval)seconds;
 
--(NSCalendarDate *)dateWithCalendarFormat:(NSString *)format
-  timeZone:(NSTimeZone *)timeZone;
+- (NSCalendarDate *)dateWithCalendarFormat:(NSString *)format
+                                  timeZone:(NSTimeZone *)timeZone;
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale;
--(NSString *)descriptionWithCalendarFormat:(NSString *)format
-  timeZone:(NSTimeZone *)timeZone locale:(NSDictionary *)locale;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale;
+- (NSString *)descriptionWithCalendarFormat:(NSString *)format
+                                   timeZone:(NSTimeZone *)timeZone
+                                     locale:(NSDictionary *)locale;
 
 @end
 
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSCalendarDate.h>
 
-@interface NSDate(NSCalendarDateExtras)
+@interface NSDate (NSCalendarDateExtras)
 + (id)dateWithNaturalLanguageString:(NSString *)string;
 @end
-

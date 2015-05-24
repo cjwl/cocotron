@@ -9,35 +9,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 typedef struct NSSetBucket {
-   struct NSSetBucket *next;
-   id                  key;
+    struct NSSetBucket *next;
+    id key;
 } NSSetBucket;
 
 typedef struct NSCountBucket {
-   struct NSCountBucket *next;
-   id                       key;
-   NSUInteger                 count;
+    struct NSCountBucket *next;
+    id key;
+    NSUInteger count;
 } NSCountBucket;
 
 typedef struct {
-   NSUInteger      count;
-   NSUInteger      numBuckets;
-   NSSetBucket **buckets;
+    NSUInteger count;
+    NSUInteger numBuckets;
+    NSSetBucket **buckets;
 } NSSetTable;
 
 NSUInteger NSSetTableRoundCount(NSUInteger count);
 
-void NSSetTableInit(NSSetTable *table,NSUInteger capacity,NSZone *zone);
+void NSSetTableInit(NSSetTable *table, NSUInteger capacity, NSZone *zone);
 void NSSetTableFreeObjects(NSSetTable *table);
 void NSSetTableFreeBuckets(NSSetTable *table);
 
-void NSSetTableAddObjectNoGrow(NSSetTable *table,id object);
-void NSSetTableAddObject(NSSetTable *table,id object);
+void NSSetTableAddObjectNoGrow(NSSetTable *table, id object);
+void NSSetTableAddObject(NSSetTable *table, id object);
 
-id   NSSetTableMember(NSSetTable *table,id object);
-void NSSetTableRemoveObject(NSSetTable *table,id object);
+id NSSetTableMember(NSSetTable *table, id object);
+void NSSetTableRemoveObject(NSSetTable *table, id object);
 
-
-NSUInteger NSSetTableObjectCount(NSSetTable *table,id object);
-void NSSetTableAddObjectCount(NSSetTable *table,id object);
-void NSSetTableRemoveObjectCount(NSSetTable *table,id object);
+NSUInteger NSSetTableObjectCount(NSSetTable *table, id object);
+void NSSetTableAddObjectCount(NSSetTable *table, id object);
+void NSSetTableRemoveObjectCount(NSSetTable *table, id object);

@@ -8,41 +8,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSURLCache.h>
 
-@class NSInputStream,NSOutputStream,NSRunLoop,NSURLRequest,NSData,NSURLResponse,NSError,NSMutableArray,NSURLAuthenticationChallenge,NSCachedURLResponse,NSURLProtocol,NSMutableData;
+@class NSInputStream, NSOutputStream, NSRunLoop, NSURLRequest, NSData, NSURLResponse, NSError, NSMutableArray, NSURLAuthenticationChallenge, NSCachedURLResponse, NSURLProtocol, NSMutableData;
 
 @interface NSURLConnection : NSObject {
-   NSURLRequest  *_request;
-   NSURLProtocol *_protocol;
-   id             _delegate;
-   NSURLResponse *_response;
-   NSURLCacheStoragePolicy _storagePolicy;
-   NSMutableData *_mutableData;
+    NSURLRequest *_request;
+    NSURLProtocol *_protocol;
+    id _delegate;
+    NSURLResponse *_response;
+    NSURLCacheStoragePolicy _storagePolicy;
+    NSMutableData *_mutableData;
 }
 
-+(BOOL)canHandleRequest:(NSURLRequest *)request;
-+(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
++ (BOOL)canHandleRequest:(NSURLRequest *)request;
++ (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
-+(NSURLConnection *)connectionWithRequest:(NSURLRequest *)request delegate:delegate;
++ (NSURLConnection *)connectionWithRequest:(NSURLRequest *)request delegate:delegate;
 
--initWithRequest:(NSURLRequest *)request delegate:delegate startImmediately:(BOOL)startLoading;
--initWithRequest:(NSURLRequest *)request delegate:delegate;
+- initWithRequest:(NSURLRequest *)request delegate:delegate startImmediately:(BOOL)startLoading;
+- initWithRequest:(NSURLRequest *)request delegate:delegate;
 
--(void)start;
--(void)cancel;
+- (void)start;
+- (void)cancel;
 
--(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
--(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+- (void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
 @end
 
-@interface NSObject(NSURLConnectionDelegate)
--(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
--(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
--(void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
--(NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response;
--(NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
--(void)connectionDidFinishLoading:(NSURLConnection *)connection;
+@interface NSObject (NSURLConnectionDelegate)
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response;
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 
 @end

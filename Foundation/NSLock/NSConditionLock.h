@@ -13,20 +13,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString *_name;
 }
 
--initWithCondition:(NSInteger)condition;
+- initWithCondition:(NSInteger)condition;
 
--(NSString *)name;
--(void)setName:(NSString *)value;
+- (NSString *)name;
+- (void)setName:(NSString *)value;
 
--(NSInteger)condition;
+- (NSInteger)condition;
 
--(BOOL)tryLock;
--(BOOL)tryLockWhenCondition:(NSInteger)condition;
+- (BOOL)tryLock;
+- (BOOL)tryLockWhenCondition:(NSInteger)condition;
 
--(void)lockWhenCondition:(NSInteger)condition;
--(void)unlockWithCondition:(NSInteger)condition;
+- (void)lockWhenCondition:(NSInteger)condition;
+- (void)unlockWithCondition:(NSInteger)condition;
 
--(BOOL)lockBeforeDate:(NSDate *)date;
--(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date;
+- (BOOL)lockBeforeDate:(NSDate *)date;
+- (BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date;
 
 @end

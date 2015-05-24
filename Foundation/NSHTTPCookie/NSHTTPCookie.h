@@ -7,49 +7,49 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary,NSURL,NSDate;
+@class NSArray, NSDictionary, NSURL, NSDate;
 
-FOUNDATION_EXPORT NSString * const NSHTTPCookieSecure;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieDiscard;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieExpires;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieMaximumAge;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieOriginURL;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieSecure;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieDiscard;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieExpires;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieMaximumAge;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieOriginURL;
 
-FOUNDATION_EXPORT NSString * const NSHTTPCookieVersion;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieDomain;
-FOUNDATION_EXPORT NSString * const NSHTTPCookiePath;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieName;
-FOUNDATION_EXPORT NSString * const NSHTTPCookiePort;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieValue;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieVersion;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieDomain;
+FOUNDATION_EXPORT NSString *const NSHTTPCookiePath;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieName;
+FOUNDATION_EXPORT NSString *const NSHTTPCookiePort;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieValue;
 
-FOUNDATION_EXPORT NSString * const NSHTTPCookieComment;
-FOUNDATION_EXPORT NSString * const NSHTTPCookieCommentURL;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieComment;
+FOUNDATION_EXPORT NSString *const NSHTTPCookieCommentURL;
 
 @interface NSHTTPCookie : NSObject <NSCopying> {
-   NSDictionary *_properties;
+    NSDictionary *_properties;
 }
 
-+(NSArray *)cookiesWithResponseHeaderFields:(NSDictionary *)headerFields forURL:(NSURL *)url;
-+(NSDictionary *)requestHeaderFieldsWithCookies:(NSArray *)cookies;
++ (NSArray *)cookiesWithResponseHeaderFields:(NSDictionary *)headerFields forURL:(NSURL *)url;
++ (NSDictionary *)requestHeaderFieldsWithCookies:(NSArray *)cookies;
 
-+cookieWithProperties:(NSDictionary *)properties;
++ cookieWithProperties:(NSDictionary *)properties;
 
--initWithProperties:(NSDictionary *)properties;
+- initWithProperties:(NSDictionary *)properties;
 
--(NSDictionary *)properties;
+- (NSDictionary *)properties;
 
--(BOOL)isSecure;
--(BOOL)isSessionOnly;
--(NSDate *)expiresDate;
+- (BOOL)isSecure;
+- (BOOL)isSessionOnly;
+- (NSDate *)expiresDate;
 
--(NSUInteger)version;
--(NSString *)domain;
--(NSString *)path;
--(NSString *)name;
--(NSArray *)portList;
--(NSString *)value;
+- (NSUInteger)version;
+- (NSString *)domain;
+- (NSString *)path;
+- (NSString *)name;
+- (NSArray *)portList;
+- (NSString *)value;
 
--(NSString *)comment;
--(NSURL *)commentURL;
+- (NSString *)comment;
+- (NSURL *)commentURL;
 
 @end

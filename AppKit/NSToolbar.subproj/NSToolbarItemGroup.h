@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray;
 
 @interface NSToolbarItemGroup : NSToolbarItem {
-   NSArray *_subitems;
+    NSArray *_subitems;
 }
 
--(NSArray *)subitems;
--(void)setSubitems:(NSArray *)subitems;
+- (NSArray *)subitems;
+- (void)setSubitems:(NSArray *)subitems;
 
 @end

@@ -11,117 +11,115 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSText.h>
 #import <AppKit/NSCell.h>
 
-@class NSCell,NSFont,NSText,NSTextView;
+@class NSCell, NSFont, NSText, NSTextView;
 
-APPKIT_EXPORT NSString * const NSControlTextDidBeginEditingNotification;
-APPKIT_EXPORT NSString * const NSControlTextDidChangeNotification;
-APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
+APPKIT_EXPORT NSString *const NSControlTextDidBeginEditingNotification;
+APPKIT_EXPORT NSString *const NSControlTextDidChangeNotification;
+APPKIT_EXPORT NSString *const NSControlTextDidEndEditingNotification;
 
 @interface NSControl : NSView {
-   id      _cell;
-   NSText *_currentEditor;
+    id _cell;
+    NSText *_currentEditor;
 }
 
-+(Class)cellClass;
-+(void)setCellClass:(Class)aClass;
++ (Class)cellClass;
++ (void)setCellClass:(Class)aClass;
 
--cell;
+- cell;
 
--target;
--(SEL)action;
--(int)tag;
--(NSFont *)font;
--(NSImage *)image;
--(NSTextAlignment)alignment;
--(BOOL)isEnabled;
--(BOOL)isEditable;
--(BOOL)isSelectable;
--(BOOL)isScrollable;
--(BOOL)isBordered;
--(BOOL)isBezeled;
--(BOOL)isContinuous;
--(BOOL)refusesFirstResponder;
--(id)formatter;
+- target;
+- (SEL)action;
+- (int)tag;
+- (NSFont *)font;
+- (NSImage *)image;
+- (NSTextAlignment)alignment;
+- (BOOL)isEnabled;
+- (BOOL)isEditable;
+- (BOOL)isSelectable;
+- (BOOL)isScrollable;
+- (BOOL)isBordered;
+- (BOOL)isBezeled;
+- (BOOL)isContinuous;
+- (BOOL)refusesFirstResponder;
+- (id)formatter;
 
--objectValue;
--(NSString *)stringValue;
--(NSAttributedString *)attributedStringValue;
--(int)intValue;
--(float)floatValue;
--(double)doubleValue;
--(NSInteger)integerValue;
+- objectValue;
+- (NSString *)stringValue;
+- (NSAttributedString *)attributedStringValue;
+- (int)intValue;
+- (float)floatValue;
+- (double)doubleValue;
+- (NSInteger)integerValue;
 
--selectedCell;
--(int)selectedTag;
+- selectedCell;
+- (int)selectedTag;
 
--(void)setCell:(NSCell *)cell;
--(void)setTarget:target;
--(void)setAction:(SEL)action;
--(void)setTag:(int)tag;
--(void)setFont:(NSFont *)font;
--(void)setImage:(NSImage *)image;
--(void)setAlignment:(NSTextAlignment)alignment;
--(void)setFloatingPointFormat:(BOOL)fpp left:(unsigned)left right:(unsigned)right;
--(void)setEnabled:(BOOL)flag;
--(void)setEditable:(BOOL)flag;
--(void)setSelectable:(BOOL)flag;
--(void)setScrollable:(BOOL)flag;
--(void)setBordered:(BOOL)flag;
--(void)setBezeled:(BOOL)flag;
--(void)setContinuous:(BOOL)flag;
--(void)setRefusesFirstResponder:(BOOL)flag;
--(void)setFormatter:(NSFormatter *)formatter;
+- (void)setCell:(NSCell *)cell;
+- (void)setTarget:target;
+- (void)setAction:(SEL)action;
+- (void)setTag:(int)tag;
+- (void)setFont:(NSFont *)font;
+- (void)setImage:(NSImage *)image;
+- (void)setAlignment:(NSTextAlignment)alignment;
+- (void)setFloatingPointFormat:(BOOL)fpp left:(unsigned)left right:(unsigned)right;
+- (void)setEnabled:(BOOL)flag;
+- (void)setEditable:(BOOL)flag;
+- (void)setSelectable:(BOOL)flag;
+- (void)setScrollable:(BOOL)flag;
+- (void)setBordered:(BOOL)flag;
+- (void)setBezeled:(BOOL)flag;
+- (void)setContinuous:(BOOL)flag;
+- (void)setRefusesFirstResponder:(BOOL)flag;
+- (void)setFormatter:(NSFormatter *)formatter;
 
--(void)setObjectValue:(id <NSCopying>)value;
--(void)setStringValue:(NSString *)value;
--(void)setIntValue:(int)value;
--(void)setIntegerValue:(NSInteger)value;
--(void)setFloatValue:(float)value;
--(void)setDoubleValue:(double)value;
--(void)setIntegerValue:(NSInteger)anInteger;
--(void)setAttributedStringValue:(NSAttributedString *)value;
+- (void)setObjectValue:(id<NSCopying>)value;
+- (void)setStringValue:(NSString *)value;
+- (void)setIntValue:(int)value;
+- (void)setIntegerValue:(NSInteger)value;
+- (void)setFloatValue:(float)value;
+- (void)setDoubleValue:(double)value;
+- (void)setIntegerValue:(NSInteger)anInteger;
+- (void)setAttributedStringValue:(NSAttributedString *)value;
 
--(void)takeObjectValueFrom:(id)sender;
--(void)takeStringValueFrom:(id)sender;
--(void)takeIntValueFrom:(id)sender;
--(void)takeFloatValueFrom:(id)sender;
--(void)takeDoubleValueFrom:(id)sender;
--(void)takeIntegerValueFrom:(id)sender;
+- (void)takeObjectValueFrom:(id)sender;
+- (void)takeStringValueFrom:(id)sender;
+- (void)takeIntValueFrom:(id)sender;
+- (void)takeFloatValueFrom:(id)sender;
+- (void)takeDoubleValueFrom:(id)sender;
+- (void)takeIntegerValueFrom:(id)sender;
 
--(void)selectCell:(NSCell *)cell;
+- (void)selectCell:(NSCell *)cell;
 
--(void)drawCell:(NSCell *)cell;
--(void)drawCellInside:(NSCell *)cell;
--(void)updateCell:(NSCell *)cell;
--(void)updateCellInside:(NSCell *)cell;
+- (void)drawCell:(NSCell *)cell;
+- (void)drawCellInside:(NSCell *)cell;
+- (void)updateCell:(NSCell *)cell;
+- (void)updateCellInside:(NSCell *)cell;
 
+- (void)performClick:sender;
+- (BOOL)sendAction:(SEL)action to:target;
 
--(void)performClick:sender;
--(BOOL)sendAction:(SEL)action to:target;
+- (NSText *)currentEditor;
+- (void)validateEditing;
+- (BOOL)abortEditing;
 
--(NSText *)currentEditor;
--(void)validateEditing;
--(BOOL)abortEditing;
-
--(void)calcSize;
--(void)sizeToFit;
--(void)setNeedsDisplay;
+- (void)calcSize;
+- (void)sizeToFit;
+- (void)setNeedsDisplay;
 
 @end
 
-@interface NSObject(NSControl_delegate)
--(void)controlTextDidBeginEditing:(NSNotification *)note;
--(void)controlTextDidChange:(NSNotification *)note;
--(void)controlTextDidEndEditing:(NSNotification *)note;
+@interface NSObject (NSControl_delegate)
+- (void)controlTextDidBeginEditing:(NSNotification *)note;
+- (void)controlTextDidChange:(NSNotification *)note;
+- (void)controlTextDidEndEditing:(NSNotification *)note;
 @end
 
 @protocol NSControlTextEditingDelegate <NSObject>
 @optional
--(BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
--(BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
--(BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor;
--(BOOL)control:(NSControl *)control didFailToFormatString:(NSString *)string errorDescription:(NSString *)error;
--(void)control:(NSControl *)control didFailToValidatePartialString:(NSString *)string errorDescription:(NSString *)error;
--(BOOL)control:(NSControl *)control isValidObject:(id)obj;
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor;
+- (BOOL)control:(NSControl *)control didFailToFormatString:(NSString *)string errorDescription:(NSString *)error;
+- (void)control:(NSControl *)control didFailToValidatePartialString:(NSString *)string errorDescription:(NSString *)error;
+- (BOOL)control:(NSControl *)control isValidObject:(id)obj;
 @end
-

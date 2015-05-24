@@ -9,64 +9,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSMapTable.h>
 
-@class NSMutableArray,NSMutableData,NSMutableDictionary;
+@class NSMutableArray, NSMutableData, NSMutableDictionary;
 
-FOUNDATION_EXPORT NSString * const NSInvalidArchiveOperationException;
+FOUNDATION_EXPORT NSString *const NSInvalidArchiveOperationException;
 
 @interface NSKeyedArchiver : NSCoder {
-   NSMutableData       *_data;
-   NSMutableArray      *_plistStack;
-   NSMutableArray      *_objects;
-   NSMutableDictionary *_top;
-   id                   _delegate;
-   NSPropertyListFormat _outputFormat;
-   NSMapTable          *_nameToClass;
-   NSUInteger             _pass;
-   NSMapTable          *_objectToUid;
+    NSMutableData *_data;
+    NSMutableArray *_plistStack;
+    NSMutableArray *_objects;
+    NSMutableDictionary *_top;
+    id _delegate;
+    NSPropertyListFormat _outputFormat;
+    NSMapTable *_nameToClass;
+    NSUInteger _pass;
+    NSMapTable *_objectToUid;
 }
 
-+(NSData *)archivedDataWithRootObject:rootObject;
-+(BOOL)archiveRootObject:rootObject toFile:(NSString *)path;
++ (NSData *)archivedDataWithRootObject:rootObject;
++ (BOOL)archiveRootObject:rootObject toFile:(NSString *)path;
 
--initForWritingWithMutableData:(NSMutableData *)data;
+- initForWritingWithMutableData:(NSMutableData *)data;
 
-+(NSString *)classNameForClass:(Class)aClass;
-+(void)setClassName:(NSString *)className forClass:(Class)aClass;
++ (NSString *)classNameForClass:(Class)aClass;
++ (void)setClassName:(NSString *)className forClass:(Class)aClass;
 
--delegate;
--(NSString *)classNameForClass:(Class)aClass;
--(NSPropertyListFormat)outputFormat;
+- delegate;
+- (NSString *)classNameForClass:(Class)aClass;
+- (NSPropertyListFormat)outputFormat;
 
--(void)setDelegate:delegate;
--(void)setClassName:(NSString *)className forClass:(Class)aClass;
--(void)setOutputFormat:(NSPropertyListFormat)format;
+- (void)setDelegate:delegate;
+- (void)setClassName:(NSString *)className forClass:(Class)aClass;
+- (void)setOutputFormat:(NSPropertyListFormat)format;
 
--(void)encodeBool:(BOOL)value forKey:(NSString *)key;
--(void)encodeInt:(int)value forKey:(NSString *)key;
--(void)encodeInt32:(int32_t)value forKey:(NSString *)key;
--(void)encodeInt64:(int64_t)value forKey:(NSString *)key;
--(void)encodeFloat:(float)value forKey:(NSString *)key;
--(void)encodeDouble:(double)value forKey:(NSString *)key;
--(void)encodeBytes:(const void *)ptr length:(NSUInteger)length forKey:(NSString *)key;
--(void)encodeObject:object forKey:(NSString *)key;
--(void)encodeConditionalObject:object forKey:(NSString *)key;
+- (void)encodeBool:(BOOL)value forKey:(NSString *)key;
+- (void)encodeInt:(int)value forKey:(NSString *)key;
+- (void)encodeInt32:(int32_t)value forKey:(NSString *)key;
+- (void)encodeInt64:(int64_t)value forKey:(NSString *)key;
+- (void)encodeFloat:(float)value forKey:(NSString *)key;
+- (void)encodeDouble:(double)value forKey:(NSString *)key;
+- (void)encodeBytes:(const void *)ptr length:(NSUInteger)length forKey:(NSString *)key;
+- (void)encodeObject:object forKey:(NSString *)key;
+- (void)encodeConditionalObject:object forKey:(NSString *)key;
 
--(void)finishEncoding;
+- (void)finishEncoding;
 
 @end
 
-@interface NSObject(NSKeyedArchiverDelegate)
--(void)archiver:(NSKeyedArchiver *)archiver willReplaceObject:object withObject:other;
--(void)archiver:(NSKeyedArchiver *)archiver willEncodeObject:object;
--(void)archiver:(NSKeyedArchiver *)archiver didEncodeObject:object;
--(void)archiverWllFinish:(NSKeyedArchiver *)archiver;
--(void)archiverDidFinish:(NSKeyedArchiver *)archiver;
+@interface NSObject (NSKeyedArchiverDelegate)
+- (void)archiver:(NSKeyedArchiver *)archiver willReplaceObject:object withObject:other;
+- (void)archiver:(NSKeyedArchiver *)archiver willEncodeObject:object;
+- (void)archiver:(NSKeyedArchiver *)archiver didEncodeObject:object;
+- (void)archiverWllFinish:(NSKeyedArchiver *)archiver;
+- (void)archiverDidFinish:(NSKeyedArchiver *)archiver;
 @end
 
-@interface NSObject(NSKeyedArchiver)
-+(Class)classForKeyedUnarchiver;
-+(NSArray *)classFallbacksForKeyedArchiver;
--replacementObjectForKeyedArchiver:(NSKeyedArchiver *)archiver;
+@interface NSObject (NSKeyedArchiver)
++ (Class)classForKeyedUnarchiver;
++ (NSArray *)classFallbacksForKeyedArchiver;
+- replacementObjectForKeyedArchiver:(NSKeyedArchiver *)archiver;
 @end
 
 #import <Foundation/NSKeyedUnarchiver.h>

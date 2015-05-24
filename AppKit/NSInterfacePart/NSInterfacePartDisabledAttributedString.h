@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSInterfacePartAttributedString.h>
 
 @interface NSInterfacePartDisabledAttributedString : NSInterfacePartAttributedString {
-   NSAttributedString *_shadow;
+    NSAttributedString *_shadow;
 }
 
 @end

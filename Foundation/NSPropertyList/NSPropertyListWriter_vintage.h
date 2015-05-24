@@ -8,23 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSMutableData,NSData;
+@class NSMutableData, NSData;
 
 @interface NSPropertyListWriter_vintage : NSObject {
-   NSMutableData *_data;
+    NSMutableData *_data;
 }
 
--init;
+- init;
 
--(void)encodePropertyList:object indent:(NSInteger)indent;
+- (void)encodePropertyList:object indent:(NSInteger)indent;
 
--(NSData *)dataForRootObject:object;
+- (NSData *)dataForRootObject:object;
 
-+(NSData *)nullTerminatedASCIIDataWithString:(NSString *)string;
-+(NSData *)nullTerminatedASCIIDataWithPropertyList:plist;
-+(NSData *)dataWithPropertyList:plist;
-+(NSString *)stringWithPropertyList:plist;
++ (NSData *)nullTerminatedASCIIDataWithString:(NSString *)string;
++ (NSData *)nullTerminatedASCIIDataWithPropertyList:plist;
++ (NSData *)dataWithPropertyList:plist;
++ (NSString *)stringWithPropertyList:plist;
 
-+(BOOL)writePropertyList:object toFile:(NSString *)path atomically:(BOOL)atomically;
++ (BOOL)writePropertyList:object toFile:(NSString *)path atomically:(BOOL)atomically;
 
 @end

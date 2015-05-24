@@ -11,11 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSOldXMLElement;
 
 @interface NSOldXMLDocument : NSObject {
-   NSOldXMLElement *_rootElement;
+    NSOldXMLElement *_rootElement;
 }
 
--(void)setRootElement:(NSOldXMLElement *)element;
+- (void)setRootElement:(NSOldXMLElement *)element;
 
--(NSOldXMLElement *)rootElement;
+- (NSOldXMLElement *)rootElement;
 
 @end

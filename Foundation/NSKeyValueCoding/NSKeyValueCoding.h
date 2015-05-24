@@ -9,30 +9,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary, NSArray, NSError;
 
-FOUNDATION_EXPORT NSString * const NSUndefinedKeyException;
+FOUNDATION_EXPORT NSString *const NSUndefinedKeyException;
 
 @interface NSObject (KeyValueCoding)
-+(BOOL)accessInstanceVariablesDirectly;
++ (BOOL)accessInstanceVariablesDirectly;
 
 // primitive methods
--(id)valueForKey:(NSString*)key;
--(void)setValue:(id)value forKey:(NSString *)key;
--(BOOL)validateValue:(id *)ioValue forKey:(NSString *)key error:(NSError **)outError;
+- (id)valueForKey:(NSString *)key;
+- (void)setValue:(id)value forKey:(NSString *)key;
+- (BOOL)validateValue:(id *)ioValue forKey:(NSString *)key error:(NSError **)outError;
 
 // key path methods
--(id)valueForKeyPath:(NSString*)keyPath;
--(void)setValue:(id)value forKeyPath:(NSString *)keyPath;
--(BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)keyPath error:(NSError **)outError;
+- (id)valueForKeyPath:(NSString *)keyPath;
+- (void)setValue:(id)value forKeyPath:(NSString *)keyPath;
+- (BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)keyPath error:(NSError **)outError;
 
 // dictionary methods
--(NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
--(void)setValuesForKeysWithDictionary:(NSDictionary *)keyedValues;
+- (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
+- (void)setValuesForKeysWithDictionary:(NSDictionary *)keyedValues;
 
 // undefined keys etc.
--(id)valueForUndefinedKey:(NSString *)key;
--(void)setValue:(id)value forUndefinedKey:(NSString *)key;
--(void)setNilValueForKey:(id)key;
+- (id)valueForUndefinedKey:(NSString *)key;
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
+- (void)setNilValueForKey:(id)key;
 
--(id)mutableArrayValueForKey:(id)key;
--(id)mutableArrayValueForKeyPath:(id)keyPath;
+- (id)mutableArrayValueForKey:(id)key;
+- (id)mutableArrayValueForKeyPath:(id)keyPath;
 @end

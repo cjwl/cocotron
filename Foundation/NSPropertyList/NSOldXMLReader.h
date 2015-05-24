@@ -11,29 +11,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSHashTable.h>
 
-@class NSOldXMLDocument,NSOldXMLElement,NSMutableDictionary,NSMutableArray;
+@class NSOldXMLDocument, NSOldXMLElement, NSMutableDictionary, NSMutableArray;
 
 @interface NSOldXMLReader : NSString {
-   NSData              *_data;
-   const uint8_t *_bytes;
-   NSUInteger           _length;
-   NSRange              _range;
+    NSData *_data;
+    const uint8_t *_bytes;
+    NSUInteger _length;
+    NSRange _range;
 
-   NSMutableDictionary *_entityRefContents;
+    NSMutableDictionary *_entityRefContents;
 
-   int             _state;
-   unichar         _charRef;
-   NSMutableArray *_stack;
-   NSHashTable    *_strings;
-   NSOldXMLElement     *_rootElement;
+    int _state;
+    unichar _charRef;
+    NSMutableArray *_stack;
+    NSHashTable *_strings;
+    NSOldXMLElement *_rootElement;
 }
 
--initWithData:(NSData *)data;
--initWithContentsOfFile:(NSString *)path;
+- initWithData:(NSData *)data;
+- initWithContentsOfFile:(NSString *)path;
 
--(BOOL)tokenize;
+- (BOOL)tokenize;
 
-+(NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path;
-+(NSOldXMLDocument *)documentWithData:(NSData *)data;
++ (NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path;
++ (NSOldXMLDocument *)documentWithData:(NSData *)data;
 
 @end

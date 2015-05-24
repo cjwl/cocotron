@@ -12,14 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32;
 
 @interface NSHandleMonitorSet_win32 : NSInputSourceSet {
-   NSMutableSet  *_monitors;
-   NSInputSource *_eventInputSource;
+    NSMutableSet *_monitors;
+    NSInputSource *_eventInputSource;
 }
 
--init;
+- init;
 
--(NSUInteger)count;
+- (NSUInteger)count;
 
--(NSHandleMonitor_win32 *)waitForHandleActivityBeforeDate:(NSDate *)date mode:(NSString *)mode;
+- (NSHandleMonitor_win32 *)waitForHandleActivityBeforeDate:(NSDate *)date mode:(NSString *)mode;
 
 @end

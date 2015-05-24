@@ -8,33 +8,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSCustomObject,NSSet,NSDictionary,NSMenu;
+@class NSArray, NSCustomObject, NSSet, NSDictionary, NSMenu;
 
 @interface NSIBObjectData : NSObject {
-   NSArray        *_namesKeys;
-   NSArray        *_namesValues;
-   NSArray        *_accessibilityConnectors;
-   NSArray        *_accessibilityOidsKeys;
-   NSArray        *_accessibilityOidsValues;
-   NSArray        *_classesKeys;
-   NSArray        *_classesValues;
-   NSArray        *_connections;
-   id              _fontManager;
-   NSString       *_framework;
-   int             _nextOid;
-   NSArray        *_objectsKeys;
-   NSArray        *_objectsValues;
-   NSArray        *_oidKeys;
-   NSArray        *_oidValues;
-   NSCustomObject *_fileOwner;
-   NSSet          *_visibleWindows;
+    NSArray *_namesKeys;
+    NSArray *_namesValues;
+    NSArray *_accessibilityConnectors;
+    NSArray *_accessibilityOidsKeys;
+    NSArray *_accessibilityOidsValues;
+    NSArray *_classesKeys;
+    NSArray *_classesValues;
+    NSArray *_connections;
+    id _fontManager;
+    NSString *_framework;
+    int _nextOid;
+    NSArray *_objectsKeys;
+    NSArray *_objectsValues;
+    NSArray *_oidKeys;
+    NSArray *_oidValues;
+    NSCustomObject *_fileOwner;
+    NSSet *_visibleWindows;
 }
 
--(void)buildConnectionsWithNameTable:(NSDictionary *)nameTable;
+- (void)buildConnectionsWithNameTable:(NSDictionary *)nameTable;
 
--(NSSet *)visibleWindows;
+- (NSSet *)visibleWindows;
 
--(NSMenu *)mainMenu;
+- (NSMenu *)mainMenu;
 - (NSArray *)topLevelObjects;
 
 @end

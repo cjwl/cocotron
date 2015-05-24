@@ -8,12 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPortNameServer.h>
 
 @interface NSMessagePortNameServer : NSPortNameServer {
-
 }
 
-+sharedInstance;
++ sharedInstance;
 
--(NSPort *)portForName:(NSString *)name host:(NSString *)host;
--(NSPort *)portForName:(NSString *)name;
+- (NSPort *)portForName:(NSString *)name host:(NSString *)host;
+- (NSPort *)portForName:(NSString *)name;
 
 @end

@@ -6,17 +6,16 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 #import <Foundation/NSNotification.h>
 
 @interface NSNotification_concrete : NSNotification {
-   NSString     *_name;
-   id            _object;
-   NSDictionary *_userInfo;
+    NSString *_name;
+    id _object;
+    NSDictionary *_userInfo;
 }
 
--initWithName:(NSString *)name object:object userInfo:(NSDictionary *)userInfo;
+- initWithName:(NSString *)name object:object userInfo:(NSDictionary *)userInfo;
 
 @end
 
-NSNotification_concrete *NSNotification_concreteNew(NSZone *zone,NSString *name,id object,NSDictionary *userInfo);
+NSNotification_concrete *NSNotification_concreteNew(NSZone *zone, NSString *name, id object, NSDictionary *userInfo);

@@ -10,57 +10,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <OpenGL/OpenGL.h>
 
 enum {
-   NSOpenGLPFAAllRenderers         =  1,
-   NSOpenGLPFADoubleBuffer         =  5,
-   NSOpenGLPFAStereo               =  6,
-   NSOpenGLPFAAuxBuffers           =  7,
-   NSOpenGLPFAColorSize            =  8,
-   NSOpenGLPFAAlphaSize            = 11,
-   NSOpenGLPFADepthSize            = 12,
-   NSOpenGLPFAStencilSize          = 13,
-   NSOpenGLPFAAccumSize            = 14,
-   NSOpenGLPFAMinimumPolicy        = 51,
-   NSOpenGLPFAMaximumPolicy        = 52,
-   NSOpenGLPFAOffScreen            = 53,
-   NSOpenGLPFAFullScreen           = 54,
-   NSOpenGLPFASampleBuffers        = 55,
-   NSOpenGLPFASamples              = 56,
-   NSOpenGLPFAAuxDepthStencil      = 57,
-   NSOpenGLPFAColorFloat           = 58,
-   NSOpenGLPFAMultisample          = 59,
-   NSOpenGLPFASupersample          = 60,
-   NSOpenGLPFASampleAlpha          = 61,
-   NSOpenGLPFARendererID           = 70,
-   NSOpenGLPFASingleRenderer       = 71,
-   NSOpenGLPFANoRecovery           = 72,
-   NSOpenGLPFAAccelerated          = 73,
-   NSOpenGLPFAClosestPolicy        = 74,
-   NSOpenGLPFARobust               = 75,
-   NSOpenGLPFABackingStore         = 76,
-   NSOpenGLPFAMPSafe               = 78,
-   NSOpenGLPFAWindow               = 80,
-   NSOpenGLPFAMultiScreen          = 81,
-   NSOpenGLPFACompliant            = 83,
-   NSOpenGLPFAScreenMask           = 84,
-   NSOpenGLPFAPixelBuffer          = 90,
-   NSOpenGLPFARemotePixelBuffer    = 91,
-   NSOpenGLPFAAllowOfflineRenderers= 96,
-   NSOpenGLPFAAcceleratedCompute   = 97,
-   NSOpenGLPFAVirtualScreenCount   =128,
+    NSOpenGLPFAAllRenderers = 1,
+    NSOpenGLPFADoubleBuffer = 5,
+    NSOpenGLPFAStereo = 6,
+    NSOpenGLPFAAuxBuffers = 7,
+    NSOpenGLPFAColorSize = 8,
+    NSOpenGLPFAAlphaSize = 11,
+    NSOpenGLPFADepthSize = 12,
+    NSOpenGLPFAStencilSize = 13,
+    NSOpenGLPFAAccumSize = 14,
+    NSOpenGLPFAMinimumPolicy = 51,
+    NSOpenGLPFAMaximumPolicy = 52,
+    NSOpenGLPFAOffScreen = 53,
+    NSOpenGLPFAFullScreen = 54,
+    NSOpenGLPFASampleBuffers = 55,
+    NSOpenGLPFASamples = 56,
+    NSOpenGLPFAAuxDepthStencil = 57,
+    NSOpenGLPFAColorFloat = 58,
+    NSOpenGLPFAMultisample = 59,
+    NSOpenGLPFASupersample = 60,
+    NSOpenGLPFASampleAlpha = 61,
+    NSOpenGLPFARendererID = 70,
+    NSOpenGLPFASingleRenderer = 71,
+    NSOpenGLPFANoRecovery = 72,
+    NSOpenGLPFAAccelerated = 73,
+    NSOpenGLPFAClosestPolicy = 74,
+    NSOpenGLPFARobust = 75,
+    NSOpenGLPFABackingStore = 76,
+    NSOpenGLPFAMPSafe = 78,
+    NSOpenGLPFAWindow = 80,
+    NSOpenGLPFAMultiScreen = 81,
+    NSOpenGLPFACompliant = 83,
+    NSOpenGLPFAScreenMask = 84,
+    NSOpenGLPFAPixelBuffer = 90,
+    NSOpenGLPFARemotePixelBuffer = 91,
+    NSOpenGLPFAAllowOfflineRenderers = 96,
+    NSOpenGLPFAAcceleratedCompute = 97,
+    NSOpenGLPFAVirtualScreenCount = 128,
 };
 
 typedef uint32_t NSOpenGLPixelFormatAttribute;
 
 @interface NSOpenGLPixelFormat : NSObject {
-   void *_cglPixelFormat;
-   GLint _numberOfVirtualScreens;
+    void *_cglPixelFormat;
+    GLint _numberOfVirtualScreens;
 }
 
--initWithAttributes:(const NSOpenGLPixelFormatAttribute *)attributes;
+- initWithAttributes:(const NSOpenGLPixelFormatAttribute *)attributes;
 
--(void *)CGLPixelFormatObj;
--(GLint)numberOfVirtualScreens;
+- (void *)CGLPixelFormatObj;
+- (GLint)numberOfVirtualScreens;
 
--(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen;
+- (void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen;
 
 @end

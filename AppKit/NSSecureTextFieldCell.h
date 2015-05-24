@@ -9,11 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextFieldCell.h>
 
 @interface NSSecureTextFieldCell : NSTextFieldCell {
-   BOOL _echosBullets;
+    BOOL _echosBullets;
 }
 
--(BOOL)echosBullets;
+- (BOOL)echosBullets;
 
--(void)setEchosBullets:(BOOL)yorn;
+- (void)setEchosBullets:(BOOL)yorn;
 
 @end

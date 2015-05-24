@@ -10,7 +10,7 @@
 #import <ApplicationServices/ApplicationServices.h>
 
 @interface O2Font_CG : O2Font_ttf {
-  CGFontRef _cgFont;
+    CGFontRef _cgFont;
 }
 
 @end

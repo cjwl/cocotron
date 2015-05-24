@@ -11,7 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // clang has these as builtins, guard against that
 #ifndef IBOutlet
 #if 0
-#define NIBDEBUG(desc, ...) do { NSString *location = [NSString stringWithFormat: @"%s %ld", __FILE__, (long)__LINE__]; NSString *msg = [NSString stringWithFormat: desc, ##__VA_ARGS__]; NSLog(@"%@: %@", location, msg); } while(0)
+#define NIBDEBUG(desc, ...)                                                                   \
+    do {                                                                                      \
+        NSString *location = [NSString stringWithFormat:@"%s %ld", __FILE__, (long)__LINE__]; \
+        NSString *msg = [NSString stringWithFormat:desc, ##__VA_ARGS__];                      \
+        NSLog(@"%@: %@", location, msg);                                                      \
+    } while(0)
 #else
 #define NIBDEBUG(desc, ...)
 #endif
@@ -24,17 +29,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSString, NSDictionary;
 
-@interface NSObject(NSNibLoading)
--(void)awakeFromNib;
+@interface NSObject (NSNibLoading)
+- (void)awakeFromNib;
 @end
 
-@interface NSBundle(NSNibLoading)
+@interface NSBundle (NSNibLoading)
 
-+(BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
++ (BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
 
-+(BOOL)loadNibNamed:(NSString *)name owner:owner;
++ (BOOL)loadNibNamed:(NSString *)name owner:owner;
 
--(BOOL)loadNibFile:(NSString *)fileName externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
+- (BOOL)loadNibFile:(NSString *)fileName externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
 
 @end
-

@@ -9,50 +9,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSEnumerator.h>
 
-@class NSArray,NSDictionary,NSString,NSPredicate;
+@class NSArray, NSDictionary, NSString, NSPredicate;
 
-@interface NSSet : NSObject <NSCoding,NSCopying,NSMutableCopying,NSFastEnumeration>
+@interface NSSet : NSObject <NSCoding, NSCopying, NSMutableCopying, NSFastEnumeration>
 
--initWithObjects:(id *)objects count:(NSUInteger)count;
--initWithArray:(NSArray *)array;
--initWithSet:(NSSet *)set;
--initWithSet:(NSSet *)set copyItems:(BOOL)copyItems;
--initWithObjects:first,...;
+- initWithObjects:(id *)objects count:(NSUInteger)count;
+- initWithArray:(NSArray *)array;
+- initWithSet:(NSSet *)set;
+- initWithSet:(NSSet *)set copyItems:(BOOL)copyItems;
+- initWithObjects:first, ...;
 
-+set;
-+setWithArray:(NSArray *)array;
-+setWithSet:(NSSet *)set;
-+setWithObject:object;
-+setWithObjects:first,...;
-+setWithObjects:(id *)objects count:(NSUInteger)count;
++ set;
++ setWithArray:(NSArray *)array;
++ setWithSet:(NSSet *)set;
++ setWithObject:object;
++ setWithObjects:first, ...;
++ setWithObjects:(id *)objects count:(NSUInteger)count;
 
--(NSSet *)setByAddingObject:object;
--(NSSet *)setByAddingObjectsFromSet:(NSSet *)other;
--(NSSet *)setByAddingObjectsFromArray:(NSArray *)array;
+- (NSSet *)setByAddingObject:object;
+- (NSSet *)setByAddingObjectsFromSet:(NSSet *)other;
+- (NSSet *)setByAddingObjectsFromArray:(NSArray *)array;
 
--member:object;
--(NSUInteger)count;
--(NSEnumerator *)objectEnumerator;
+- member:object;
+- (NSUInteger)count;
+- (NSEnumerator *)objectEnumerator;
 
--(BOOL)isEqualToSet:(NSSet *)set;
+- (BOOL)isEqualToSet:(NSSet *)set;
 
--(NSArray *)allObjects;
+- (NSArray *)allObjects;
 
--(BOOL)containsObject:object;
--(BOOL)isSubsetOfSet:(NSSet *)set;
+- (BOOL)containsObject:object;
+- (BOOL)isSubsetOfSet:(NSSet *)set;
 
--(BOOL)intersectsSet:(NSSet *)set;
+- (BOOL)intersectsSet:(NSSet *)set;
 
--(void)makeObjectsPerformSelector:(SEL)selector;
--(void)makeObjectsPerformSelector:(SEL)selector withObject:argument;
+- (void)makeObjectsPerformSelector:(SEL)selector;
+- (void)makeObjectsPerformSelector:(SEL)selector withObject:argument;
 
--anyObject;
+- anyObject;
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale;
+- (NSString *)descriptionWithLocale:(NSDictionary *)locale;
 
--(NSSet *)filteredSetUsingPredicate:(NSPredicate *)predicate;
+- (NSSet *)filteredSetUsingPredicate:(NSPredicate *)predicate;
 
 @end
-
 
 #import <Foundation/NSMutableSet.h>

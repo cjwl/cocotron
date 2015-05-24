@@ -13,48 +13,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSDatePicker : NSControl
 
--(BOOL)isBezeled;
--(BOOL)isBordered;
+- (BOOL)isBezeled;
+- (BOOL)isBordered;
 
--delegate;
+- delegate;
 
--(NSDatePickerElementFlags)datePickerElements;
--(NSDatePickerMode)datePickerMode;
--(NSDatePickerStyle)datePickerStyle;
+- (NSDatePickerElementFlags)datePickerElements;
+- (NSDatePickerMode)datePickerMode;
+- (NSDatePickerStyle)datePickerStyle;
 
--(NSCalendar *)calendar;
--(NSLocale *)locale;
--(NSDate *)minDate;
--(NSDate *)maxDate;
+- (NSCalendar *)calendar;
+- (NSLocale *)locale;
+- (NSDate *)minDate;
+- (NSDate *)maxDate;
 
--(NSDate *)dateValue;
--(NSTimeInterval)timeInterval;
--(NSTimeZone *)timeZone;
+- (NSDate *)dateValue;
+- (NSTimeInterval)timeInterval;
+- (NSTimeZone *)timeZone;
 
--(BOOL)drawsBackground;
--(NSColor *)backgroundColor;
--(NSColor *)textColor;
+- (BOOL)drawsBackground;
+- (NSColor *)backgroundColor;
+- (NSColor *)textColor;
 
--(void)setBezeled:(BOOL)flag;
--(void)setBordered:(BOOL)flag;
+- (void)setBezeled:(BOOL)flag;
+- (void)setBordered:(BOOL)flag;
 
--(void)setDelegate:delegate;
+- (void)setDelegate:delegate;
 
--(void)setDatePickerElements:(NSDatePickerElementFlags)elements;
--(void)setDatePickerMode:(NSDatePickerMode)mode;
--(void)setDatePickerStyle:(NSDatePickerStyle)style;
+- (void)setDatePickerElements:(NSDatePickerElementFlags)elements;
+- (void)setDatePickerMode:(NSDatePickerMode)mode;
+- (void)setDatePickerStyle:(NSDatePickerStyle)style;
 
--(void)setCalendar:(NSCalendar *)calendar;
--(void)setLocale:(NSLocale *)locale;
--(void)setMinDate:(NSDate *)date;
--(void)setMaxDate:(NSDate *)date;
+- (void)setCalendar:(NSCalendar *)calendar;
+- (void)setLocale:(NSLocale *)locale;
+- (void)setMinDate:(NSDate *)date;
+- (void)setMaxDate:(NSDate *)date;
 
--(void)setDateValue:(NSDate *)date;
--(void)setTimeInterval:(NSTimeInterval)interval;
--(void)setTimeZone:(NSTimeZone *)timeZone;
+- (void)setDateValue:(NSDate *)date;
+- (void)setTimeInterval:(NSTimeInterval)interval;
+- (void)setTimeZone:(NSTimeZone *)timeZone;
 
--(void)setDrawsBackground:(BOOL)flag;
--(void)setBackgroundColor:(NSColor *)color;
--(void)setTextColor:(NSColor *)color;
+- (void)setDrawsBackground:(BOOL)flag;
+- (void)setBackgroundColor:(NSColor *)color;
+- (void)setTextColor:(NSColor *)color;
 
 @end

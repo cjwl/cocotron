@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32IDataObjectClient.h>
 
 @interface Win32DropPasteboard : Win32Pasteboard {
-   Win32IDataObjectClient *_dataClient;
+    Win32IDataObjectClient *_dataClient;
 }
 
--initWithIDataObject:(IDataObject *)dataObject;
+- initWithIDataObject:(IDataObject *)dataObject;
 
 @end

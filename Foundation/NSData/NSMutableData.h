@@ -10,24 +10,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableData : NSData
 
--initWithCapacity:(NSUInteger)capacity;
--initWithLength:(NSUInteger)length;
+- initWithCapacity:(NSUInteger)capacity;
+- initWithLength:(NSUInteger)length;
 
-+dataWithCapacity:(NSUInteger)capacity;
-+dataWithLength:(NSUInteger)length;
++ dataWithCapacity:(NSUInteger)capacity;
++ dataWithLength:(NSUInteger)length;
 
--(void *)mutableBytes;
+- (void *)mutableBytes;
 
--(void)setLength:(NSUInteger)length;
--(void)increaseLengthBy:(NSUInteger)delta;
+- (void)setLength:(NSUInteger)length;
+- (void)increaseLengthBy:(NSUInteger)delta;
 
--(void)appendBytes:(const void *)bytes length:(NSUInteger)length;
--(void)appendData:(NSData *)data;
+- (void)appendBytes:(const void *)bytes length:(NSUInteger)length;
+- (void)appendData:(NSData *)data;
 
--(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes;
--(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(NSUInteger)bytesLength;
--(void)setData:(NSData *)data;
+- (void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes;
+- (void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(NSUInteger)bytesLength;
+- (void)setData:(NSData *)data;
 
--(void)resetBytesInRange:(NSRange)range;
+- (void)resetBytesInRange:(NSRange)range;
 
 @end

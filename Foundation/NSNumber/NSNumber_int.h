@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_CF.h>
 
 @interface NSNumber_int : NSNumber_CF {
-   int _value;
+    int _value;
 }
 @end
 
-NSNumber *NSNumber_intNew(NSZone *zone,int value);
+NSNumber *NSNumber_intNew(NSZone *zone, int value);

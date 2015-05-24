@@ -11,18 +11,17 @@
 
 @class NSString, NSData;
 
-@interface NSTimeZone_win32 : NSTimeZone
-{
+@interface NSTimeZone_win32 : NSTimeZone {
     NSString *_abbreviation;
 }
 
--(TIME_ZONE_INFORMATION)_timeZoneInformation;
+- (TIME_ZONE_INFORMATION)_timeZoneInformation;
 
-+(NSData *)_windowsDataFromRegistry:(NSString *)registryname stdName:(NSString **)stdName daylightName:(NSString **)daylightName;
-+(NSData *)_getDataWithWindowsName:(NSString *)name registryName:(NSString **)registryName;
-+(NSDate *)_systemtimeToDate:(SYSTEMTIME)systime;
-+(NSDictionary *)_windowsZones;
-+(SYSTEMTIME)_dateToSystemTime:(NSDate *)date;
-+(NSString *)_registryNameToAbbreviation:(NSString *)registryName;
++ (NSData *)_windowsDataFromRegistry:(NSString *)registryname stdName:(NSString **)stdName daylightName:(NSString **)daylightName;
++ (NSData *)_getDataWithWindowsName:(NSString *)name registryName:(NSString **)registryName;
++ (NSDate *)_systemtimeToDate:(SYSTEMTIME)systime;
++ (NSDictionary *)_windowsZones;
++ (SYSTEMTIME)_dateToSystemTime:(NSDate *)date;
++ (NSString *)_registryNameToAbbreviation:(NSString *)registryName;
 
 @end

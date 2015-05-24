@@ -10,44 +10,43 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 typedef struct CFMutableBag *CFBagRef;
 typedef struct CFMutableBag *CFMutableBagRef;
 
-typedef const void *(*CFBagRetainCallBack)(CFAllocatorRef allocator,const void *value);
-typedef void        (*CFBagReleaseCallBack)(CFAllocatorRef allocator,const void *value);
+typedef const void *(*CFBagRetainCallBack)(CFAllocatorRef allocator, const void *value);
+typedef void (*CFBagReleaseCallBack)(CFAllocatorRef allocator, const void *value);
 typedef CFAllocatorCopyDescriptionCallBack CFBagCopyDescriptionCallBack;
-typedef Boolean     (*CFBagEqualCallBack)(const void *value,const void *other);
-typedef CFHashCode  (*CFBagHashCallBack)(const void *value);
+typedef Boolean (*CFBagEqualCallBack)(const void *value, const void *other);
+typedef CFHashCode (*CFBagHashCallBack)(const void *value);
 
 typedef struct {
-   CFIndex                      version;
-   CFBagRetainCallBack          retain;
-   CFBagReleaseCallBack         release;
-   CFBagCopyDescriptionCallBack copyDescription;
-   CFBagEqualCallBack           equal;
-   CFBagHashCallBack            hash;
+    CFIndex version;
+    CFBagRetainCallBack retain;
+    CFBagReleaseCallBack release;
+    CFBagCopyDescriptionCallBack copyDescription;
+    CFBagEqualCallBack equal;
+    CFBagHashCallBack hash;
 } CFBagCallBacks;
 
-typedef void (*CFBagApplierFunction)(const void *value,void *context);
+typedef void (*CFBagApplierFunction)(const void *value, void *context);
 
 COREFOUNDATION_EXPORT const CFBagCallBacks kCFTypeBagCallBacks;
 COREFOUNDATION_EXPORT const CFBagCallBacks kCFCopyStringBagCallBacks;
 
-COREFOUNDATION_EXPORT CFTypeID    CFBagGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFBagGetTypeID(void);
 
-COREFOUNDATION_EXPORT void        CFBagApplyFunction(CFBagRef self,CFBagApplierFunction function,void *context);
-COREFOUNDATION_EXPORT Boolean     CFBagContainsValue(CFBagRef self,const void *value);
-COREFOUNDATION_EXPORT CFBagRef    CFBagCreate(CFAllocatorRef allocator,const void **values,CFIndex count,const CFBagCallBacks *callbacks);
-COREFOUNDATION_EXPORT CFBagRef    CFBagCreateCopy(CFAllocatorRef allocator,CFBagRef self);
-COREFOUNDATION_EXPORT CFIndex     CFBagGetCount(CFBagRef self);
-COREFOUNDATION_EXPORT CFIndex     CFBagGetCountOfValue(CFBagRef self,const void *value);
-COREFOUNDATION_EXPORT const void *CFBagGetValue(CFBagRef self,const void *value);
-COREFOUNDATION_EXPORT Boolean     CFBagGetValueIfPresent(CFBagRef self,const void *candidate,const void **value);
-COREFOUNDATION_EXPORT void        CFBagGetValues(CFBagRef self,const void **values);
+COREFOUNDATION_EXPORT void CFBagApplyFunction(CFBagRef self, CFBagApplierFunction function, void *context);
+COREFOUNDATION_EXPORT Boolean CFBagContainsValue(CFBagRef self, const void *value);
+COREFOUNDATION_EXPORT CFBagRef CFBagCreate(CFAllocatorRef allocator, const void **values, CFIndex count, const CFBagCallBacks *callbacks);
+COREFOUNDATION_EXPORT CFBagRef CFBagCreateCopy(CFAllocatorRef allocator, CFBagRef self);
+COREFOUNDATION_EXPORT CFIndex CFBagGetCount(CFBagRef self);
+COREFOUNDATION_EXPORT CFIndex CFBagGetCountOfValue(CFBagRef self, const void *value);
+COREFOUNDATION_EXPORT const void *CFBagGetValue(CFBagRef self, const void *value);
+COREFOUNDATION_EXPORT Boolean CFBagGetValueIfPresent(CFBagRef self, const void *candidate, const void **value);
+COREFOUNDATION_EXPORT void CFBagGetValues(CFBagRef self, const void **values);
 // mutable
 
-COREFOUNDATION_EXPORT void            CFBagAddValue(CFMutableBagRef self,const void *value);
-COREFOUNDATION_EXPORT CFMutableBagRef CFBagCreateMutable(CFAllocatorRef allocator,CFIndex capacity,const CFBagCallBacks *callbacks);
-COREFOUNDATION_EXPORT CFMutableBagRef CFBagCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFBagRef self);
-COREFOUNDATION_EXPORT void            CFBagRemoveAllValues(CFMutableBagRef self);
-COREFOUNDATION_EXPORT void            CFBagRemoveValue(CFMutableBagRef self,const void *value);
-COREFOUNDATION_EXPORT void            CFBagReplaceValue(CFMutableBagRef self,const void *value);
-COREFOUNDATION_EXPORT void            CFBagSetValue(CFMutableBagRef self,const void *value);
-
+COREFOUNDATION_EXPORT void CFBagAddValue(CFMutableBagRef self, const void *value);
+COREFOUNDATION_EXPORT CFMutableBagRef CFBagCreateMutable(CFAllocatorRef allocator, CFIndex capacity, const CFBagCallBacks *callbacks);
+COREFOUNDATION_EXPORT CFMutableBagRef CFBagCreateMutableCopy(CFAllocatorRef allocator, CFIndex capacity, CFBagRef self);
+COREFOUNDATION_EXPORT void CFBagRemoveAllValues(CFMutableBagRef self);
+COREFOUNDATION_EXPORT void CFBagRemoveValue(CFMutableBagRef self, const void *value);
+COREFOUNDATION_EXPORT void CFBagReplaceValue(CFMutableBagRef self, const void *value);
+COREFOUNDATION_EXPORT void CFBagSetValue(CFMutableBagRef self, const void *value);

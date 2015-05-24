@@ -9,32 +9,26 @@
 #import <Foundation/NSNumber_BOOL.h>
 #import <Foundation/NSNumber_BOOL_const.h>
 
-
 NS_DECLARE_CLASS_SYMBOL(NSNumber_BOOL);
 
-
 typedef struct
-{
-   const struct objc_class * const isa;
-   CFNumberType _type;
-   BOOL _value;
+    {
+    const struct objc_class *const isa;
+    CFNumberType _type;
+    BOOL _value;
 } NSNumber_BOOL_Def;
 
-
 static const NSNumber_BOOL_Def kTrueDef =
-{
-   &NS_CLASS_SYMBOL(NSNumber_BOOL),
-   kCFNumberCharType,
-   YES
-};
-
+    {
+     &NS_CLASS_SYMBOL(NSNumber_BOOL),
+     kCFNumberCharType,
+     YES};
 
 static const NSNumber_BOOL_Def kFalseDef =
-{
-   &NS_CLASS_SYMBOL(NSNumber_BOOL),
-   kCFNumberCharType,
-   NO
-};
+    {
+     &NS_CLASS_SYMBOL(NSNumber_BOOL),
+     kCFNumberCharType,
+     NO};
 
 const CFBooleanRef kCFBooleanTrue = (CFBooleanRef)&kTrueDef;
 const CFBooleanRef kCFBooleanFalse = (CFBooleanRef)&kFalseDef;

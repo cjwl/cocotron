@@ -8,23 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 
 typedef enum {
-   NSNotPredicateType,
-   NSAndPredicateType,
-   NSOrPredicateType
+    NSNotPredicateType,
+    NSAndPredicateType,
+    NSOrPredicateType
 } NSCompoundPredicateType;
 
 @interface NSCompoundPredicate : NSPredicate {
-   NSCompoundPredicateType _type;
-   NSArray                *_predicates;
+    NSCompoundPredicateType _type;
+    NSArray *_predicates;
 }
 
--initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)subpredicates;
+- initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)subpredicates;
 
-+(NSPredicate *)notPredicateWithSubpredicate:(NSPredicate *)predicate;
-+(NSPredicate *)andPredicateWithSubpredicates:(NSArray *)predicates;
-+(NSPredicate *)orPredicateWithSubpredicates:(NSArray *)predicates;
++ (NSPredicate *)notPredicateWithSubpredicate:(NSPredicate *)predicate;
++ (NSPredicate *)andPredicateWithSubpredicates:(NSArray *)predicates;
++ (NSPredicate *)orPredicateWithSubpredicates:(NSArray *)predicates;
 
--(NSCompoundPredicateType)compoundPredicateType;
--(NSArray *)subpredicates;
+- (NSCompoundPredicateType)compoundPredicateType;
+- (NSArray *)subpredicates;
 
 @end

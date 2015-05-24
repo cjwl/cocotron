@@ -1,1 +1,1 @@
-#define kIOMACAddress            "IOMACAddress"
+#define kIOMACAddress "IOMACAddress"

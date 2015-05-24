@@ -4,7 +4,7 @@
 #if defined(PDFKIT_INSIDE_BUILD)
 #define PDFKIT_EXPORT extern "C" __declspec(dllexport)
 #else
-#define PDFKIT_EXPORT extern "C" __declspec(dllimport) 
+#define PDFKIT_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define PDFKIT_EXPORT extern "C"

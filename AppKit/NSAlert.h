@@ -8,75 +8,74 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSButton,NSImage,NSArray,NSWindow,NSError,NSView,NSMutableArray;
+@class NSButton, NSImage, NSArray, NSWindow, NSError, NSView, NSMutableArray;
 
-typedef enum  {
-   NSWarningAlertStyle,
-   NSInformationalAlertStyle,
-   NSCriticalAlertStyle,
+typedef enum {
+    NSWarningAlertStyle,
+    NSInformationalAlertStyle,
+    NSCriticalAlertStyle,
 } NSAlertStyle;
 
 enum {
-   NSAlertFirstButtonReturn=1000,
-   NSAlertSecondButtonReturn=1001,
-   NSAlertThirdButtonReturn=1002,
+    NSAlertFirstButtonReturn = 1000,
+    NSAlertSecondButtonReturn = 1001,
+    NSAlertThirdButtonReturn = 1002,
 };
 
 @interface NSAlert : NSObject {
-   id           _delegate;
-   NSAlertStyle _style;
-   NSImage     *_icon;
-   NSString    *_messageText;
-   NSString    *_informativeText;
-   NSView      *_accessoryView;
-   BOOL         _showsHelp;
-   BOOL         _showsSuppressionButton;
-   NSString    *_helpAnchor;
-   NSMutableArray *_buttons;
-   NSButton    *_suppressionButton;
-   NSWindow    *_window;
+    id _delegate;
+    NSAlertStyle _style;
+    NSImage *_icon;
+    NSString *_messageText;
+    NSString *_informativeText;
+    NSView *_accessoryView;
+    BOOL _showsHelp;
+    BOOL _showsSuppressionButton;
+    NSString *_helpAnchor;
+    NSMutableArray *_buttons;
+    NSButton *_suppressionButton;
+    NSWindow *_window;
 
-   BOOL         _needsLayout;
-   id  _sheetDelegate;
-   SEL _sheetDidEnd;
+    BOOL _needsLayout;
+    id _sheetDelegate;
+    SEL _sheetDidEnd;
 }
 
-+(NSAlert *)alertWithError:(NSError *)error;
-+(NSAlert *)alertWithMessageText:(NSString *)messageText defaultButton:(NSString *)defaultTitle alternateButton:(NSString *)alternateTitle otherButton:(NSString *)otherTitle informativeTextWithFormat:(NSString *)format,...;
++ (NSAlert *)alertWithError:(NSError *)error;
++ (NSAlert *)alertWithMessageText:(NSString *)messageText defaultButton:(NSString *)defaultTitle alternateButton:(NSString *)alternateTitle otherButton:(NSString *)otherTitle informativeTextWithFormat:(NSString *)format, ...;
 
--delegate;
--(NSAlertStyle)alertStyle;
--(NSImage *)icon;
--(NSString *)messageText;
--(NSString *)informativeText;
--(NSView *)accessoryView;
--(BOOL)showsHelp;
--(BOOL)showsSuppressionButton;
--(NSString *)helpAnchor;
--(NSArray *)buttons;
--(NSButton *)suppressionButton;
--window;
+- delegate;
+- (NSAlertStyle)alertStyle;
+- (NSImage *)icon;
+- (NSString *)messageText;
+- (NSString *)informativeText;
+- (NSView *)accessoryView;
+- (BOOL)showsHelp;
+- (BOOL)showsSuppressionButton;
+- (NSString *)helpAnchor;
+- (NSArray *)buttons;
+- (NSButton *)suppressionButton;
+- window;
 
--(void)setDelegate:delegate;
--(void)setAlertStyle:(NSAlertStyle)value;
--(void)setIcon:(NSImage *)value;
--(void)setMessageText:(NSString *)value;
--(void)setInformativeText:(NSString *)value;
--(void)setAccessoryView:(NSView *)value;
--(void)setShowsHelp:(BOOL)value;
--(void)setShowsSuppressionButton:(BOOL)value;
--(void)setHelpAnchor:(NSString *)value;
+- (void)setDelegate:delegate;
+- (void)setAlertStyle:(NSAlertStyle)value;
+- (void)setIcon:(NSImage *)value;
+- (void)setMessageText:(NSString *)value;
+- (void)setInformativeText:(NSString *)value;
+- (void)setAccessoryView:(NSView *)value;
+- (void)setShowsHelp:(BOOL)value;
+- (void)setShowsSuppressionButton:(BOOL)value;
+- (void)setHelpAnchor:(NSString *)value;
 
--(NSButton *)addButtonWithTitle:(NSString *)title;
+- (NSButton *)addButtonWithTitle:(NSString *)title;
 
--(void)layout;
+- (void)layout;
 
--(void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info;
--(NSInteger)runModal;
+- (void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info;
+- (NSInteger)runModal;
 
 @end
 
-@interface NSObject(NSAlertDelegate)
--(BOOL)alertShowHelp:(NSAlert *)alert;
+@interface NSObject (NSAlertDelegate)
+- (BOOL)alertShowHelp:(NSAlert *)alert;
 @end
-

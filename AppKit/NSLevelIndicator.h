@@ -11,24 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSLevelIndicator : NSControl
 
--(double)minValue;
--(double)maxValue;
--(double)warningValue;
--(double)criticalValue;
--(int)numberOfTickMarks;
--(int)numberOfMajorTickMarks;
--(NSTickMarkPosition)tickMarkPosition;
+- (double)minValue;
+- (double)maxValue;
+- (double)warningValue;
+- (double)criticalValue;
+- (int)numberOfTickMarks;
+- (int)numberOfMajorTickMarks;
+- (NSTickMarkPosition)tickMarkPosition;
 
--(void)setMinValue:(double)value;
--(void)setMaxValue:(double)value;
--(void)setWarningValue:(double)value;
--(void)setCriticalValue:(double)value;
--(void)setNumberOfTickMarks:(int)count;
--(void)setNumberOfMajorTickMarks:(int)count;
--(void)setTickMarkPosition:(NSTickMarkPosition)position;
+- (void)setMinValue:(double)value;
+- (void)setMaxValue:(double)value;
+- (void)setWarningValue:(double)value;
+- (void)setCriticalValue:(double)value;
+- (void)setNumberOfTickMarks:(int)count;
+- (void)setNumberOfMajorTickMarks:(int)count;
+- (void)setTickMarkPosition:(NSTickMarkPosition)position;
 
--(double)tickMarkValueAtIndex:(int)index;
--(NSRect)rectOfTickMarkAtIndex:(int)index;
+- (double)tickMarkValueAtIndex:(int)index;
+- (NSRect)rectOfTickMarkAtIndex:(int)index;
 
 @end
-

@@ -8,15 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSTimeZone.h>
 
-
 @interface NSTimeZone_posix : NSTimeZone {
-    NSArray     *_timeZoneTransitions;
-    NSArray     *_timeZoneTypes;
+    NSArray *_timeZoneTransitions;
+    NSArray *_timeZoneTypes;
 }
 
 // interface for providing alternate time zone data sources...
--initWithName:(NSString *)name data:(NSData *)data transitions:(NSArray *)transitions types:(NSArray *)types;
+- initWithName:(NSString *)name data:(NSData *)data transitions:(NSArray *)transitions types:(NSArray *)types;
 
-+(NSString*)_zoneinfoPath;
++ (NSString *)_zoneinfoPath;
 
 @end

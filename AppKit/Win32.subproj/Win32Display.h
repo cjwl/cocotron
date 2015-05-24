@@ -12,57 +12,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class NSEvent, NSColor, Win32EventInputSource,O2Context_gdi;
+@class NSEvent, NSColor, Win32EventInputSource, O2Context_gdi;
 
 @interface Win32Display : NSDisplay {
-   Win32EventInputSource *_eventInputSource;
+    Win32EventInputSource *_eventInputSource;
 
-   NSPasteboard          *_generalPasteboard;
-   NSMutableDictionary   *_pasteboards;
+    NSPasteboard *_generalPasteboard;
+    NSMutableDictionary *_pasteboards;
 
-   NSMutableDictionary   *_nameToColor;
+    NSMutableDictionary *_nameToColor;
 
-   id                     _cursor;
-   int                    _cursorDisplayCount;
-   NSMutableDictionary   *_cursorCache;
-   HCURSOR                _lastCursor;
+    id _cursor;
+    int _cursorDisplayCount;
+    NSMutableDictionary *_cursorCache;
+    HCURSOR _lastCursor;
 
-   int                    _clickCount;
-   DWORD                  _lastTickCount;
-   LPARAM                 _lastPosition;
-   NSPoint                _pastLocation;
-	
-	NSMutableString		*_ignoringModifiersString;
-	unsigned short		_keyCode;
-	BOOL				_isKeypad;
+    int _clickCount;
+    DWORD _lastTickCount;
+    LPARAM _lastPosition;
+    NSPoint _pastLocation;
+
+    NSMutableString *_ignoringModifiersString;
+    unsigned short _keyCode;
+    BOOL _isKeypad;
 }
 
-+(Win32Display *)currentDisplay;
++ (Win32Display *)currentDisplay;
 
--(NSArray *)screens;
+- (NSArray *)screens;
 
--(NSPasteboard *)pasteboardWithName:(NSString *)name;
+- (NSPasteboard *)pasteboardWithName:(NSString *)name;
 
--(NSDraggingManager *)draggingManager;
+- (NSDraggingManager *)draggingManager;
 
 /** Some Win32 fonts are not playing nice when auto-detected - Arial in particular */
--(void)forceLoadOfFontsAtPaths:(NSArray *)paths;
+- (void)forceLoadOfFontsAtPaths:(NSArray *)paths;
 
--(void)invalidateSystemColors;
--(NSColor *)colorWithName:(NSString *)colorName;
+- (void)invalidateSystemColors;
+- (NSColor *)colorWithName:(NSString *)colorName;
 
--(void)hideCursor;
--(void)unhideCursor;
+- (void)hideCursor;
+- (void)unhideCursor;
 
 // Arrow, IBeam, HorizontalResize, VerticalResize
--(id)cursorWithName:(NSString *)name;
--(void)setCursor:(id)cursor;
+- (id)cursorWithName:(NSString *)name;
+- (void)setCursor:(id)cursor;
 
--(void)stopWaitCursor;
--(void)startWaitCursor;
+- (void)stopWaitCursor;
+- (void)startWaitCursor;
 
--(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState;
+- (BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState;
 
--(void)beep;
+- (void)beep;
 
 @end

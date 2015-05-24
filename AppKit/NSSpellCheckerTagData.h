@@ -8,14 +8,14 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSMutableSet,NSArray;
+@class NSMutableSet, NSArray;
 
 @interface NSSpellCheckerTagData : NSObject {
-   NSMutableSet *_ignoredWords;
+    NSMutableSet *_ignoredWords;
 }
 
--(void)ignoreWord:(NSString *)word;
--(NSArray *)ignoredWords;
--(void)setIgnoredWords:(NSArray *)words;
+- (void)ignoreWord:(NSString *)word;
+- (NSArray *)ignoredWords;
+- (void)setIgnoredWords:(NSArray *)words;
 
 @end

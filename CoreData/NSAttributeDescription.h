@@ -29,12 +29,12 @@ typedef enum {
     NSString *_valueTransformerName;
 }
 
-- (NSString *) attributeValueClassName;
+- (NSString *)attributeValueClassName;
 
-- (NSAttributeType) attributeType;
-- (id) defaultValue;
+- (NSAttributeType)attributeType;
+- (id)defaultValue;
 
-- (void) setAttributeType: (NSAttributeType) value;
-- (void) setDefaultValue: (id) value;
+- (void)setAttributeType:(NSAttributeType)value;
+- (void)setDefaultValue:(id)value;
 
 @end

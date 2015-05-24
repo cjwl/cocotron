@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_CF.h>
 
 @interface NSNumber_BOOL : NSNumber_CF {
-   BOOL _value;
+    BOOL _value;
 }
 @end
 
-NSNumber *NSNumber_BOOLNew(NSZone *zone,BOOL value);
+NSNumber *NSNumber_BOOLNew(NSZone *zone, BOOL value);

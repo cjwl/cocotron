@@ -13,18 +13,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef O2PDFString *O2PDFStringRef;
 
 @interface O2PDFString : O2PDFObject {
-   unsigned _length:31;
-   unsigned _noCopyNoFree:1;
-   unsigned char *_bytes;
+    unsigned _length : 31;
+    unsigned _noCopyNoFree : 1;
+    unsigned char *_bytes;
 }
 
-+pdfObjectWithBytes:(const unsigned char *)bytes length:(unsigned)length;
-+pdfObjectWithBytesNoCopyNoFree:(const unsigned char *)bytes length:(unsigned)length;
-+pdfObjectWithCString:(const char *)cString;
-+pdfObjectWithString:(NSString *)string;
++ pdfObjectWithBytes:(const unsigned char *)bytes length:(unsigned)length;
++ pdfObjectWithBytesNoCopyNoFree:(const unsigned char *)bytes length:(unsigned)length;
++ pdfObjectWithCString:(const char *)cString;
++ pdfObjectWithString:(NSString *)string;
 
--(unsigned)length;
--(const unsigned char *)bytes;
+- (unsigned)length;
+- (const unsigned char *)bytes;
 
 size_t O2PDFStringGetLength(O2PDFStringRef string);
 const unsigned char *O2PDFStringGetBytePtr(O2PDFStringRef string);

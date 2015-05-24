@@ -9,34 +9,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSTextStorage,NSLayoutManager,NSTextContainer;
+@class NSTextStorage, NSLayoutManager, NSTextContainer;
 
 const float NSStringDrawerLargeDimension;
 
 @interface NSStringDrawer : NSObject {
-   NSTextStorage   *_textStorage;
-   NSLayoutManager *_layoutManager;
-   NSTextContainer *_textContainer;
+    NSTextStorage *_textStorage;
+    NSLayoutManager *_layoutManager;
+    NSTextContainer *_textContainer;
 }
 
-+(NSStringDrawer *)sharedStringDrawer;
++ (NSStringDrawer *)sharedStringDrawer;
 
 // Use a size of NSZeroSize for unlimited dimensions.
--(NSSize)sizeOfString:(NSString *)string withAttributes:(NSDictionary *)attributes inSize:(NSSize)maxSize;
--(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes inRect:(NSRect)rect;
+- (NSSize)sizeOfString:(NSString *)string withAttributes:(NSDictionary *)attributes inSize:(NSSize)maxSize;
+- (void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes inRect:(NSRect)rect;
 // Use a size of NSZeroSize for unlimited dimensions.
--(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes atPoint:(NSPoint)point inSize:(NSSize)maxSize;
+- (void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes atPoint:(NSPoint)point inSize:(NSSize)maxSize;
 
 // Use a size of NSZeroSize for unlimited dimensions.
--(NSSize)sizeOfAttributedString:(NSAttributedString *)astring inSize:(NSSize)maxSize;
--(void)drawAttributedString:(NSAttributedString *)astring inRect:(NSRect)rect;
+- (NSSize)sizeOfAttributedString:(NSAttributedString *)astring inSize:(NSSize)maxSize;
+- (void)drawAttributedString:(NSAttributedString *)astring inRect:(NSRect)rect;
 // Use a size of NSZeroSize for unlimited dimensions.
--(void)drawAttributedString:(NSAttributedString *)astring atPoint:(NSPoint)point inSize:(NSSize)maxSize;
+- (void)drawAttributedString:(NSAttributedString *)astring atPoint:(NSPoint)point inSize:(NSSize)maxSize;
 
 @end
 
 // strange we need this frequently yet nothing like it is public
-@interface NSString(NSStringDrawer_private)
+@interface NSString (NSStringDrawer_private)
 
 - (void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes truncatingTail:(BOOL)truncateTail;
 
@@ -44,7 +44,7 @@ const float NSStringDrawerLargeDimension;
 
 @end
 
-@interface NSAttributedString(NSStringDrawer_private)
+@interface NSAttributedString (NSStringDrawer_private)
 
 - (void)_clipAndDrawInRect:(NSRect)rect truncatingTail:(BOOL)truncateTail;
 

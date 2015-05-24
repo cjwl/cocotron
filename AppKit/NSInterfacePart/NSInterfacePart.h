@@ -10,7 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 
 @interface NSInterfacePart : NSObject
--(NSSize)size;
--(void)drawAtPoint:(NSPoint)point;
+- (NSSize)size;
+- (void)drawAtPoint:(NSPoint)point;
 @end
-

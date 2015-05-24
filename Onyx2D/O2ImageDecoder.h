@@ -39,10 +39,9 @@ O2ColorSpaceRef O2ImageDecoderGetColorSpace(O2ImageDecoderRef self);
 
 O2BitmapInfo O2ImageDecoderGetBitmapInfo(O2ImageDecoderRef self);
 
--(CFDataRef)createPixelData;
+- (CFDataRef)createPixelData;
 
 CFDataRef O2ImageDecoderCreatePixelData(O2ImageDecoderRef self);
 O2DataProviderRef O2ImageDecoderCreatePixelDataProvider(O2ImageDecoderRef self);
 
 @end
-

@@ -8,15 +8,13 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-
-@interface Properties : SenTestCase 
-{
-	NSString *firstName;
-	NSString *lastName;
+@interface Properties : SenTestCase {
+    NSString *firstName;
+    NSString *lastName;
 }
 
-@property (copy) NSString *firstName;
-@property (copy) NSString *lastName;
-@property (readonly) NSString *fullName;
+@property(copy) NSString *firstName;
+@property(copy) NSString *lastName;
+@property(readonly) NSString *fullName;
 
 @end

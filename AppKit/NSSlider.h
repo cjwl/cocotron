@@ -11,33 +11,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSSlider : NSControl
 
--(double)minValue;
--(double)maxValue;
--(double)altIncrementValue;
+- (double)minValue;
+- (double)maxValue;
+- (double)altIncrementValue;
 
--(NSInteger)numberOfTickMarks;
--(NSTickMarkPosition)tickMarkPosition;
--(BOOL)allowsTickMarkValuesOnly;
--(CGFloat)knobThickness;
+- (NSInteger)numberOfTickMarks;
+- (NSTickMarkPosition)tickMarkPosition;
+- (BOOL)allowsTickMarkValuesOnly;
+- (CGFloat)knobThickness;
 
--(void)setMinValue:(double)value;
--(void)setMaxValue:(double)value;
--(void)setAltIncrementValue:(double)value;
+- (void)setMinValue:(double)value;
+- (void)setMaxValue:(double)value;
+- (void)setAltIncrementValue:(double)value;
 
--(void)setNumberOfTickMarks:(NSInteger)number;
--(void)setTickMarkPosition:(NSTickMarkPosition)position;
--(void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
--(void)setKnobThickness:(CGFloat)thickness;
+- (void)setNumberOfTickMarks:(NSInteger)number;
+- (void)setTickMarkPosition:(NSTickMarkPosition)position;
+- (void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
+- (void)setKnobThickness:(CGFloat)thickness;
 
--(NSInteger)isVertical;
+- (NSInteger)isVertical;
 
--(NSInteger)indexOfTickMarkAtPoint:(NSPoint)point;
+- (NSInteger)indexOfTickMarkAtPoint:(NSPoint)point;
 
--(double)tickMarkValueAtIndex:(NSInteger)index;
--(double)closestTickMarkValueToValue:(double)value;
+- (double)tickMarkValueAtIndex:(NSInteger)index;
+- (double)closestTickMarkValueToValue:(double)value;
 
--(NSRect)rectOfTickMarkAtIndex:(NSInteger)index;
+- (NSRect)rectOfTickMarkAtIndex:(NSInteger)index;
 
--(BOOL)acceptsFirstMouse:(NSEvent *)event;
+- (BOOL)acceptsFirstMouse:(NSEvent *)event;
 
 @end

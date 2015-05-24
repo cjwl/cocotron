@@ -29,10 +29,10 @@
 #import <Onyx2D/O2Paint.h>
 
 @interface O2Paint_pattern : O2Paint {
-   O2Image *_image;
-   O2Size   _phase;
+    O2Image *_image;
+    O2Size _phase;
 }
 
--initWithImage:(O2Image *)image surfaceToPaintTransform:(O2AffineTransform)xform phase:(O2Size)phase;
+- initWithImage:(O2Image *)image surfaceToPaintTransform:(O2AffineTransform)xform phase:(O2Size)phase;
 
 @end

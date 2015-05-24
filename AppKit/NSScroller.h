@@ -9,76 +9,76 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSControl.h>
 
 typedef enum {
- NSScrollerNoPart=0,
- NSScrollerIncrementLine,
- NSScrollerDecrementLine,
- NSScrollerIncrementPage,
- NSScrollerDecrementPage,
- NSScrollerKnob,
- NSScrollerKnobSlot
+    NSScrollerNoPart = 0,
+    NSScrollerIncrementLine,
+    NSScrollerDecrementLine,
+    NSScrollerIncrementPage,
+    NSScrollerDecrementPage,
+    NSScrollerKnob,
+    NSScrollerKnobSlot
 } NSScrollerPart;
 
 typedef enum {
- NSScrollerIncrementArrow,
- NSScrollerDecrementArrow
+    NSScrollerIncrementArrow,
+    NSScrollerDecrementArrow
 } NSScrollerArrow;
 
 typedef enum {
-   NSScrollerArrowsMaxEnd        =0,
-   NSScrollerArrowsMinEnd        =1,
-   NSScrollerArrowsNone          =2,
-   NSScrollerArrowsDefaultSetting=NSScrollerArrowsMaxEnd,
+    NSScrollerArrowsMaxEnd = 0,
+    NSScrollerArrowsMinEnd = 1,
+    NSScrollerArrowsNone = 2,
+    NSScrollerArrowsDefaultSetting = NSScrollerArrowsMaxEnd,
 } NSScrollArrowPosition;
 
 enum {
- NSNoScrollerParts=0,
- NSOnlyScrollerArrows=1,
- NSAllScrollerParts=2,
+    NSNoScrollerParts = 0,
+    NSOnlyScrollerArrows = 1,
+    NSAllScrollerParts = 2,
 };
 typedef NSUInteger NSUsableScrollerParts;
 
 @interface NSScroller : NSControl {
-   id    _target;
-   SEL   _action;
-   struct {
-    unsigned isHoriz:1;
-    NSUsableScrollerParts partsUsable:2;
-   } sFlags;
-   
-   float _floatValue;
-   float _knobProportion;
-   NSScrollArrowPosition  _arrowsPosition;
-   NSControlSize _controlSize;
+    id _target;
+    SEL _action;
+    struct {
+        unsigned isHoriz : 1;
+        NSUsableScrollerParts partsUsable : 2;
+    } sFlags;
 
-   NSScrollerPart        _hitPart;
-   BOOL                  _isEnabled;
-   BOOL                  _isHighlighted;
+    float _floatValue;
+    float _knobProportion;
+    NSScrollArrowPosition _arrowsPosition;
+    NSControlSize _controlSize;
+
+    NSScrollerPart _hitPart;
+    BOOL _isEnabled;
+    BOOL _isHighlighted;
 }
 
-+(float)scrollerWidth;
++ (float)scrollerWidth;
 
--(float)knobProportion;
--(NSScrollArrowPosition)arrowsPosition;
--(NSControlSize)controlSize;
+- (float)knobProportion;
+- (NSScrollArrowPosition)arrowsPosition;
+- (NSControlSize)controlSize;
 
--(void)setFloatValue:(float)zeroToOneValue knobProportion:(float)zeroToOneKnob;
--(void)setArrowsPosition:(NSScrollArrowPosition)position;
--(void)setControlSize:(NSControlSize)value;
+- (void)setFloatValue:(float)zeroToOneValue knobProportion:(float)zeroToOneKnob;
+- (void)setArrowsPosition:(NSScrollArrowPosition)position;
+- (void)setControlSize:(NSControlSize)value;
 
--(NSRect)rectForPart:(NSScrollerPart)part;
--(void)checkSpaceForParts;
--(NSUsableScrollerParts)usableParts;
+- (NSRect)rectForPart:(NSScrollerPart)part;
+- (void)checkSpaceForParts;
+- (NSUsableScrollerParts)usableParts;
 
--(void)highlight:(BOOL)flag;
+- (void)highlight:(BOOL)flag;
 
--(void)drawKnobSlotInRect:(NSRect)rect highlight:(BOOL)flag;
--(void)drawParts;
--(void)drawArrow:(NSScrollerArrow)arrow highlight:(BOOL)flag;
--(void)drawKnob;
+- (void)drawKnobSlotInRect:(NSRect)rect highlight:(BOOL)flag;
+- (void)drawParts;
+- (void)drawArrow:(NSScrollerArrow)arrow highlight:(BOOL)flag;
+- (void)drawKnob;
 
--(NSScrollerPart)hitPart;
--(NSScrollerPart)testPart:(NSPoint)point;
--(void)trackKnob:(NSEvent *)event;
--(void)trackScrollButtons:(NSEvent *)event;
+- (NSScrollerPart)hitPart;
+- (NSScrollerPart)testPart:(NSPoint)point;
+- (void)trackKnob:(NSEvent *)event;
+- (void)trackScrollButtons:(NSEvent *)event;
 
 @end

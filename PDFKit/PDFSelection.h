@@ -2,39 +2,39 @@
 #import <Foundation/NSGeometry.h>
 #import <PDFKit/PDFPage.h>
 
-@class PDFDocument,NSColor,NSArray,NSMutableArray,NSAttributedString,PDFPage;
+@class PDFDocument, NSColor, NSArray, NSMutableArray, NSAttributedString, PDFPage;
 
 @interface PDFSelection : NSObject <NSCopying> {
-   PDFDocument *_document;
-   NSColor     *_color;
-   NSArray     *_ranges;
+    PDFDocument *_document;
+    NSColor *_color;
+    NSArray *_ranges;
 }
 
--initWithDocument:(PDFDocument *)document;
+- initWithDocument:(PDFDocument *)document;
 
--(NSColor *)color;
--(void)setColor:(NSColor *)value;
+- (NSColor *)color;
+- (void)setColor:(NSColor *)value;
 
--(NSArray *)pages;
--(NSString *)string;
--(NSAttributedString *)attributedString;
+- (NSArray *)pages;
+- (NSString *)string;
+- (NSAttributedString *)attributedString;
 
--(void)addSelection:(PDFSelection *)selection;
--(void)addSelections:(NSArray *)selections;
+- (void)addSelection:(PDFSelection *)selection;
+- (void)addSelections:(NSArray *)selections;
 
--(NSArray *)selectionsByLine;
+- (NSArray *)selectionsByLine;
 
--(void)extendSelectionAtEnd:(NSInteger)delta;
--(void)extendSelectionAtStart:(NSInteger)delta;
+- (void)extendSelectionAtEnd:(NSInteger)delta;
+- (void)extendSelectionAtStart:(NSInteger)delta;
 
--(NSRect)boundsForPage:(PDFPage *)page;
+- (NSRect)boundsForPage:(PDFPage *)page;
 
--(void)drawForPage:(PDFPage *)page active:(BOOL)active;
--(void)drawForPage:(PDFPage *)page withBox:(PDFDisplayBox)box active:(BOOL)active;
+- (void)drawForPage:(PDFPage *)page active:(BOOL)active;
+- (void)drawForPage:(PDFPage *)page withBox:(PDFDisplayBox)box active:(BOOL)active;
 
 @end
 
-@interface PDFSelection(private)
--(NSArray *)_selectedRanges;
--(void)_setSelectedRanges:(NSArray *)ranges;
+@interface PDFSelection (private)
+- (NSArray *)_selectedRanges;
+- (void)_setSelectedRanges:(NSArray *)ranges;
 @end

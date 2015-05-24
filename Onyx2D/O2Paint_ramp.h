@@ -29,25 +29,25 @@
 
 @class O2Shading;
 
-typedef struct  {
-   O2Float    offset;
-   O2argb32f color32f;
-   O2argb8u  color8u;
+typedef struct {
+    O2Float offset;
+    O2argb32f color32f;
+    O2argb8u color8u;
 } GradientStop;
 
 @interface O2Paint_ramp : O2Paint {
-   O2Point _startPoint;
-   O2Point _endPoint;
-   BOOL    _extendStart;
-   BOOL    _extendEnd;
-   
-   size_t       _numberOfColorStops;
-   GradientStop *_colorStops;
+    O2Point _startPoint;
+    O2Point _endPoint;
+    BOOL _extendStart;
+    BOOL _extendEnd;
+
+    size_t _numberOfColorStops;
+    GradientStop *_colorStops;
 }
 
-O2argb32f O2PaintIntegrateColorRamp(O2Paint_ramp *self,O2Float gmin, O2Float gmax);
-O2argb32f O2PaintColorRamp(O2Paint_ramp *self,O2Float gradient, O2Float rho,int *skip);
+O2argb32f O2PaintIntegrateColorRamp(O2Paint_ramp *self, O2Float gmin, O2Float gmax);
+O2argb32f O2PaintColorRamp(O2Paint_ramp *self, O2Float gradient, O2Float rho, int *skip);
 
--initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
+- initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
 
 @end

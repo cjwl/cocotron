@@ -11,11 +11,11 @@
 
 @interface NSColorPickerWheel : NSColorPicker {
 
-	IBOutlet NSView *currentView;
+    IBOutlet NSView *currentView;
 
-	IBOutlet NSColorPickerWheelView* _wheelView;
-	
-	IBOutlet NSSlider *valueSlider;
+    IBOutlet NSColorPickerWheelView *_wheelView;
+
+    IBOutlet NSSlider *valueSlider;
 }
 
 @end

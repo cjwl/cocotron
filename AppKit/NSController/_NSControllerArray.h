@@ -3,10 +3,9 @@
 @class NSMutableIndexSet;
 
 @interface _NSControllerArray : NSMutableArray {
-   NSMutableArray *_array;
-   NSMutableArray *_observationProxies;
-   NSMutableIndexSet *_roi;
+    NSMutableArray *_array;
+    NSMutableArray *_observationProxies;
+    NSMutableIndexSet *_roi;
 }
 
 @end
-

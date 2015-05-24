@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableAttributedString.h>
 
 @interface NSMutableString_proxyToMutableAttributedString : NSMutableString {
-   NSMutableAttributedString *_attributedString;
+    NSMutableAttributedString *_attributedString;
 }
 
--initWithMutableAttributedString:(NSMutableAttributedString *)attributedString;
+- initWithMutableAttributedString:(NSMutableAttributedString *)attributedString;
 
 @end

@@ -9,45 +9,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSLayoutManager,NSFont;
+@class NSLayoutManager, NSFont;
 
 enum {
-   NSTextStorageEditedCharacters=0x01,
-   NSTextStorageEditedAttributes=0x02,
+    NSTextStorageEditedCharacters = 0x01,
+    NSTextStorageEditedAttributes = 0x02,
 };
 
-APPKIT_EXPORT NSString * const NSTextStorageWillProcessEditingNotification;
-APPKIT_EXPORT NSString * const NSTextStorageDidProcessEditingNotification;
+APPKIT_EXPORT NSString *const NSTextStorageWillProcessEditingNotification;
+APPKIT_EXPORT NSString *const NSTextStorageDidProcessEditingNotification;
 
 @interface NSTextStorage : NSMutableAttributedString <NSCoding> {
-   id              _delegate;
-   NSMutableArray *_layoutManagers;
-   int             _changeInLength;
-   unsigned        _editedMask;
-   NSRange         _editedRange;
-   int             _beginEditing;
+    id _delegate;
+    NSMutableArray *_layoutManagers;
+    int _changeInLength;
+    unsigned _editedMask;
+    NSRange _editedRange;
+    int _beginEditing;
 }
 
--delegate;
--(NSArray *)layoutManagers;
+- delegate;
+- (NSArray *)layoutManagers;
 
--(int)changeInLength;
--(unsigned)editedMask;
--(NSRange)editedRange;
+- (int)changeInLength;
+- (unsigned)editedMask;
+- (NSRange)editedRange;
 
--(void)setDelegate:delegate;
--(void)addLayoutManager:(NSLayoutManager *)layoutManager;
--(void)removeLayoutManager:(NSLayoutManager *)layoutManager;
+- (void)setDelegate:delegate;
+- (void)addLayoutManager:(NSLayoutManager *)layoutManager;
+- (void)removeLayoutManager:(NSLayoutManager *)layoutManager;
 
--(void)processEditing;
+- (void)processEditing;
 
--(void)edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)delta;
+- (void)edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)delta;
 
--(void)setFont:(NSFont *)font;
+- (void)setFont:(NSFont *)font;
 
 @end
 
-@interface NSObject(NSTextStorage_delegate)
--(void)textStorageWillProcessEditing:(NSNotification *)note;
--(void)textStorageDidProcessEditing:(NSNotification *)note;
+@interface NSObject (NSTextStorage_delegate)
+- (void)textStorageWillProcessEditing:(NSNotification *)note;
+- (void)textStorageDidProcessEditing:(NSNotification *)note;
 @end

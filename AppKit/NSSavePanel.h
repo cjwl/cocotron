@@ -11,57 +11,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSView;
 
 enum {
-   NSFileHandlingPanelCancelButton=NSCancelButton,
-   NSFileHandlingPanelOKButton   =NSOKButton,
+    NSFileHandlingPanelCancelButton = NSCancelButton,
+    NSFileHandlingPanelOKButton = NSOKButton,
 };
 
 @interface NSSavePanel : NSPanel {
-   NSString *_dialogTitle;
+    NSString *_dialogTitle;
 
-   NSString *_filename;
-   NSString *_directory;
-   NSString *_requiredFileType;
-   NSString *_message;
-   NSString *_prompt;
+    NSString *_filename;
+    NSString *_directory;
+    NSString *_requiredFileType;
+    NSString *_message;
+    NSString *_prompt;
 
-   BOOL      _treatsFilePackagesAsDirectories;
-   NSView   *_accessoryView;
+    BOOL _treatsFilePackagesAsDirectories;
+    NSView *_accessoryView;
 }
 
-+(NSSavePanel *)savePanel;
++ (NSSavePanel *)savePanel;
 
--(NSURL *)URL;
--(NSString *)filename;
+- (NSURL *)URL;
+- (NSString *)filename;
 
--(int)runModalForDirectory:(NSString *)directory file:(NSString *)file;
--(int)runModal;
+- (int)runModalForDirectory:(NSString *)directory file:(NSString *)file;
+- (int)runModal;
 
--(NSString *)directory;
--(BOOL)treatsFilePackagesAsDirectories;
--(NSView *)accessoryView;
+- (NSString *)directory;
+- (BOOL)treatsFilePackagesAsDirectories;
+- (NSView *)accessoryView;
 
--(void)setTitle:(NSString *)title;
+- (void)setTitle:(NSString *)title;
 
--(void)setDirectory:(NSString *)directory;
+- (void)setDirectory:(NSString *)directory;
 
--(void)setRequiredFileType:(NSString *)type;
--(void)setTreatsFilePackagesAsDirectories:(BOOL)flag;
+- (void)setRequiredFileType:(NSString *)type;
+- (void)setTreatsFilePackagesAsDirectories:(BOOL)flag;
 
--(void)setAccessoryView:(NSView *)view;
--(void)setCanCreateDirectories:(BOOL)value;
--(void)setAllowedFileTypes:(NSArray *)value;
--(void)setAllowsOtherFileTypes:(BOOL)value;
+- (void)setAccessoryView:(NSView *)view;
+- (void)setCanCreateDirectories:(BOOL)value;
+- (void)setAllowedFileTypes:(NSArray *)value;
+- (void)setAllowsOtherFileTypes:(BOOL)value;
 
--(void)setMessage:(NSString*)message;
--(NSString*)message;
+- (void)setMessage:(NSString *)message;
+- (NSString *)message;
 
--(void)setPrompt:(NSString*)message;
--(NSString*)prompt;
+- (void)setPrompt:(NSString *)message;
+- (NSString *)prompt;
 
 - (void)beginSheetForDirectory:(NSString *)path
-						  file:(NSString *)name 
-				modalForWindow:(NSWindow *)docWindow
-				 modalDelegate:(id)modalDelegate 
-				didEndSelector:(SEL)didEndSelector 
-				   contextInfo:(void *)contextInfo;
+                          file:(NSString *)name
+                modalForWindow:(NSWindow *)docWindow
+                 modalDelegate:(id)modalDelegate
+                didEndSelector:(SEL)didEndSelector
+                   contextInfo:(void *)contextInfo;
 @end

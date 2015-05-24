@@ -13,14 +13,14 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-@class NSView,NSOpenGLPixelFormat;
+@class NSView, NSOpenGLPixelFormat;
 
 @interface NSOpenGLDrawable_X11 : NSOpenGLDrawable {
-   NSOpenGLPixelFormat *_format;
-   Display             *_display;
-   XVisualInfo         *_visualInfo;
-   Window               _window;
-   Window               _lastParent;
+    NSOpenGLPixelFormat *_format;
+    Display *_display;
+    XVisualInfo *_visualInfo;
+    Window _window;
+    Window _lastParent;
 }
 
 @end

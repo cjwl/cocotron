@@ -9,45 +9,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <Foundation/NSMapTable.h>
 
-@class O2PDFContext, O2PDFxref,O2PDFObject, O2PDFDictionary,O2PDFArray,NSMutableData,NSMutableDictionary,O2DataConsumer;
+@class O2PDFContext, O2PDFxref, O2PDFObject, O2PDFDictionary, O2PDFArray, NSMutableData, NSMutableDictionary, O2DataConsumer;
 
 const NSString *kO2PDFContextTitle;
 
 @interface O2PDFContext : O2Context {
-   O2DataConsumer  *_dataConsumer;
-   NSMutableDictionary *_fontCache;
-   NSMapTable     *_objectToRef;
-   NSMutableArray *_indirectObjects;
-   NSMutableArray *_indirectEntries;
-   unsigned        _nextNumber;
-   O2PDFxref       *_xref;
-   O2PDFDictionary *_info;
-   O2PDFDictionary *_catalog;
-   O2PDFDictionary *_pages;
-   O2PDFArray      *_kids;
-   O2PDFDictionary *_page;
-   NSMutableDictionary *_categoryToNext;
-   NSMutableArray  *_textStateStack;
-   NSMutableArray  *_contentStreamStack;
-   size_t _length;
+    O2DataConsumer *_dataConsumer;
+    NSMutableDictionary *_fontCache;
+    NSMapTable *_objectToRef;
+    NSMutableArray *_indirectObjects;
+    NSMutableArray *_indirectEntries;
+    unsigned _nextNumber;
+    O2PDFxref *_xref;
+    O2PDFDictionary *_info;
+    O2PDFDictionary *_catalog;
+    O2PDFDictionary *_pages;
+    O2PDFArray *_kids;
+    O2PDFDictionary *_page;
+    NSMutableDictionary *_categoryToNext;
+    NSMutableArray *_textStateStack;
+    NSMutableArray *_contentStreamStack;
+    size_t _length;
 }
 
--initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
+- initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
 
--(unsigned)length;
+- (unsigned)length;
 
--(void)appendData:(NSData *)data;
--(void)appendBytes:(const void *)ptr length:(unsigned)length;
--(void)appendCString:(const char *)cString;
--(void)appendString:(NSString *)string;
--(void)appendFormat:(NSString *)format,...;
--(void)appendPDFStringWithBytes:(const void *)bytes length:(unsigned)length;
+- (void)appendData:(NSData *)data;
+- (void)appendBytes:(const void *)ptr length:(unsigned)length;
+- (void)appendCString:(const char *)cString;
+- (void)appendString:(NSString *)string;
+- (void)appendFormat:(NSString *)format, ...;
+- (void)appendPDFStringWithBytes:(const void *)bytes length:(unsigned)length;
 
--(O2PDFObject *)referenceForFontWithName:(NSString *)name size:(float)size;
--(void)setReference:(O2PDFObject *)reference forFontWithName:(NSString *)name size:(float)size;
--(O2PDFObject *)referenceForObject:(O2PDFObject *)object;
+- (O2PDFObject *)referenceForFontWithName:(NSString *)name size:(float)size;
+- (void)setReference:(O2PDFObject *)reference forFontWithName:(NSString *)name size:(float)size;
+- (O2PDFObject *)referenceForObject:(O2PDFObject *)object;
 
--(void)encodePDFObject:(O2PDFObject *)object;
--(O2PDFObject *)encodeIndirectPDFObject:(O2PDFObject *)object;
+- (void)encodePDFObject:(O2PDFObject *)object;
+- (O2PDFObject *)encodeIndirectPDFObject:(O2PDFObject *)object;
 
 @end

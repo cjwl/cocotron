@@ -12,13 +12,13 @@
 
 @interface Quartz2DAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-    NSArray  *_allDemos;
+    NSArray *_allDemos;
     IBOutlet NSPopUpButton *_popupButton;
     IBOutlet DemoView *_demoView;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+@property(assign) IBOutlet NSWindow *window;
 
--(void)selectDemo:sender;
+- (void)selectDemo:sender;
 
 @end

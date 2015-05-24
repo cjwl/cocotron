@@ -14,14 +14,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ole2.h>
 
 @interface Win32IDataObjectClient : NSObject {
-   struct IDataObject *_dataObject;
+    struct IDataObject *_dataObject;
 }
 
--initWithIDataObject:(struct IDataObject *)dataObject;
--initWithClipboard;
+- initWithIDataObject:(struct IDataObject *)dataObject;
+- initWithClipboard;
 
--(NSArray *)availableTypes;
--(NSData *)dataForType:(NSString *)type;
--(NSArray *)filenames;
+- (NSArray *)availableTypes;
+- (NSData *)dataForType:(NSString *)type;
+- (NSArray *)filenames;
 
 @end

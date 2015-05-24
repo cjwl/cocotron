@@ -10,104 +10,103 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGWindowLevel.h>
 #import <OpenGL/CGLTypes.h>
 
-@class O2Context,CGEvent;
+@class O2Context, CGEvent;
 
 typedef enum {
-   CGSBackingStoreRetained=0,
-   CGSBackingStoreNonretained=1,
-   CGSBackingStoreBuffered=2
+    CGSBackingStoreRetained = 0,
+    CGSBackingStoreNonretained = 1,
+    CGSBackingStoreBuffered = 2
 } CGSBackingStoreType;
 
 @interface CGWindow : NSObject
 
--(void)setDelegate:delegate;
--delegate;
+- (void)setDelegate:delegate;
+- delegate;
 
--(void)invalidate;
+- (void)invalidate;
 
--(O2Context *)cgContext;
+- (O2Context *)cgContext;
 
--(unsigned)styleMask;
+- (unsigned)styleMask;
 
--(void)setLevel:(int)value;
--(void)setStyleMask:(unsigned)mask;
--(void)setTitle:(NSString *)title;
--(void)setFrame:(CGRect)frame;
--(void)setOpaque:(BOOL)value;
--(void)setAlphaValue:(CGFloat)value;
--(void)setHasShadow:(BOOL)value;
+- (void)setLevel:(int)value;
+- (void)setStyleMask:(unsigned)mask;
+- (void)setTitle:(NSString *)title;
+- (void)setFrame:(CGRect)frame;
+- (void)setOpaque:(BOOL)value;
+- (void)setAlphaValue:(CGFloat)value;
+- (void)setHasShadow:(BOOL)value;
 
--(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow;
--(void)sheetOrderOutToFrame:(NSRect)frame;
+- (void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow;
+- (void)sheetOrderOutToFrame:(NSRect)frame;
 
--(void)showWindowForAppActivation:(NSRect)frame;
--(void)hideWindowForAppDeactivation:(NSRect)frame;
+- (void)showWindowForAppActivation:(NSRect)frame;
+- (void)hideWindowForAppDeactivation:(NSRect)frame;
 
--(void)hideWindow;
--(void)showWindowWithoutActivation;
+- (void)hideWindow;
+- (void)showWindowWithoutActivation;
 
-+windowWithWindowNumber:(int)windowNumber;
++ windowWithWindowNumber:(int)windowNumber;
 
--(int)windowNumber;
+- (int)windowNumber;
 
--(void)placeAboveWindow:(int)otherNumber;
--(void)placeBelowWindow:(int)otherNumber;
+- (void)placeAboveWindow:(int)otherNumber;
+- (void)placeBelowWindow:(int)otherNumber;
 
--(void)makeKey;
--(void)makeMain;
--(void)captureEvents;
--(void)miniaturize;
--(void)deminiaturize;
--(BOOL)isMiniaturized;
+- (void)makeKey;
+- (void)makeMain;
+- (void)captureEvents;
+- (void)miniaturize;
+- (void)deminiaturize;
+- (BOOL)isMiniaturized;
 
--(void)disableFlushWindow;
--(void)enableFlushWindow;
--(void)flushBuffer;
+- (void)disableFlushWindow;
+- (void)enableFlushWindow;
+- (void)flushBuffer;
 
--(NSPoint)mouseLocationOutsideOfEventStream;
+- (NSPoint)mouseLocationOutsideOfEventStream;
 
--(void)sendEvent:(CGEvent *)event;
+- (void)sendEvent:(CGEvent *)event;
 
--(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
--(void)flashWindow;
+- (void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
+- (void)flashWindow;
 
--(void)addCGLContext:(CGLContextObj)cglContext;
--(void)removeCGLContext:(CGLContextObj)cglContext;
+- (void)addCGLContext:(CGLContextObj)cglContext;
+- (void)removeCGLContext:(CGLContextObj)cglContext;
 
--(void)flushCGLContext:(CGLContextObj)cglContext;
-
-@end
-
-@interface NSObject(CGWindow_delegate)
-
--(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize;
--(NSSize)platformWindow:(CGWindow *)window frameSizeWillChange:(NSSize)size;
--(void)platformWindowWillBeginSizing:(CGWindow *)window;
--(void)platformWindowDidEndSizing:(CGWindow *)window;
--(void)platformWindowExitMove:(CGWindow *)window;
-
--(void)platformWindow:(CGWindow *)window needsDisplayInRect:(NSRect)rect;
--(void)platformWindowStyleChanged:(CGWindow *)window;
--(void)platformWindowWillClose:(CGWindow *)window;
-
--(void)platformWindowWillMove:(CGWindow *)window;
--(void)platformWindowDidMove:(CGWindow *)window;
-
--(void)platformWindowDeminiaturized:(CGWindow *)window;
--(void)platformWindowMiniaturized:(CGWindow *)window;
--(void)platformWindowActivated:(CGWindow *)window displayIfNeeded:(BOOL)displayIfNeeded;
--(void)platformWindowDeactivated:(CGWindow *)window checkForAppDeactivation:(BOOL)checkForApp;
-
--(BOOL)platformWindowIgnoreModalMessages:(CGWindow *)window;
-
--(BOOL)platformWindowSetCursorEvent:(CGWindow *)window;
-
--(void)platformWindowDidInvalidateCGContext:(CGWindow *)window;
-
--(void)platformWindowShouldZoom:(CGWindow *)window;
+- (void)flushCGLContext:(CGLContextObj)cglContext;
 
 @end
 
-CGRect CGInsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask);
-CGRect CGOutsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask);
+@interface NSObject (CGWindow_delegate)
 
+- (void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize;
+- (NSSize)platformWindow:(CGWindow *)window frameSizeWillChange:(NSSize)size;
+- (void)platformWindowWillBeginSizing:(CGWindow *)window;
+- (void)platformWindowDidEndSizing:(CGWindow *)window;
+- (void)platformWindowExitMove:(CGWindow *)window;
+
+- (void)platformWindow:(CGWindow *)window needsDisplayInRect:(NSRect)rect;
+- (void)platformWindowStyleChanged:(CGWindow *)window;
+- (void)platformWindowWillClose:(CGWindow *)window;
+
+- (void)platformWindowWillMove:(CGWindow *)window;
+- (void)platformWindowDidMove:(CGWindow *)window;
+
+- (void)platformWindowDeminiaturized:(CGWindow *)window;
+- (void)platformWindowMiniaturized:(CGWindow *)window;
+- (void)platformWindowActivated:(CGWindow *)window displayIfNeeded:(BOOL)displayIfNeeded;
+- (void)platformWindowDeactivated:(CGWindow *)window checkForAppDeactivation:(BOOL)checkForApp;
+
+- (BOOL)platformWindowIgnoreModalMessages:(CGWindow *)window;
+
+- (BOOL)platformWindowSetCursorEvent:(CGWindow *)window;
+
+- (void)platformWindowDidInvalidateCGContext:(CGWindow *)window;
+
+- (void)platformWindowShouldZoom:(CGWindow *)window;
+
+@end
+
+CGRect CGInsetRectForNativeWindowBorder(CGRect frame, unsigned styleMask);
+CGRect CGOutsetRectForNativeWindowBorder(CGRect frame, unsigned styleMask);

@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary;
 
 @interface NSDirectoryEnumerator : NSEnumerator
--(void)skipDescendents;
--(void)skipDescendants;
--(NSDictionary *)directoryAttributes;
--(NSDictionary *)fileAttributes;
+- (void)skipDescendents;
+- (void)skipDescendants;
+- (NSDictionary *)directoryAttributes;
+- (NSDictionary *)fileAttributes;
 @end

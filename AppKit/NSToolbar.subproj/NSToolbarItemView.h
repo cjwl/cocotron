@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSToolbarItem;
 
 @interface NSToolbarItemView : NSView {
-   NSToolbarItem *_toolbarItem;
-   BOOL _isHighlighted;
+    NSToolbarItem *_toolbarItem;
+    BOOL _isHighlighted;
 }
 
--(void)setToolbarItem:(NSToolbarItem *)item;
--(void)setSubview:(NSView *)view;
+- (void)setToolbarItem:(NSToolbarItem *)item;
+- (void)setSubview:(NSView *)view;
 
 @end

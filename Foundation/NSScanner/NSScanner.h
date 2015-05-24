@@ -9,42 +9,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDecimal.h>
 
-@class NSDictionary,NSCharacterSet;
+@class NSDictionary, NSCharacterSet;
 
 @interface NSScanner : NSObject <NSCopying>
 
-+scannerWithString:(NSString *)string;
-+localizedScannerWithString:(NSString *)string;
++ scannerWithString:(NSString *)string;
++ localizedScannerWithString:(NSString *)string;
 
--initWithString:(NSString *)string;
+- initWithString:(NSString *)string;
 
--(NSString *)string;
+- (NSString *)string;
 
--(NSCharacterSet *)charactersToBeSkipped;
--(BOOL)caseSensitive;
--(NSDictionary *)locale;
+- (NSCharacterSet *)charactersToBeSkipped;
+- (BOOL)caseSensitive;
+- (NSDictionary *)locale;
 
--(void)setCharactersToBeSkipped:(NSCharacterSet *)set;
--(void)setCaseSensitive:(BOOL)flag;
--(void)setLocale:(NSDictionary *)locale;
+- (void)setCharactersToBeSkipped:(NSCharacterSet *)set;
+- (void)setCaseSensitive:(BOOL)flag;
+- (void)setLocale:(NSDictionary *)locale;
 
--(BOOL)isAtEnd;
--(NSUInteger)scanLocation;
--(void)setScanLocation:(NSUInteger)location;
+- (BOOL)isAtEnd;
+- (NSUInteger)scanLocation;
+- (void)setScanLocation:(NSUInteger)location;
 
--(BOOL)scanInt:(int *)valuep;
--(BOOL)scanInteger:(NSInteger *)valuep;
--(BOOL)scanLongLong:(long long *)valuep;
--(BOOL)scanFloat:(float *)valuep;
--(BOOL)scanDouble:(double *)valuep;
--(BOOL)scanDecimal:(NSDecimal *)valuep;
--(BOOL)scanHexInt:(unsigned *)valuep;
--(BOOL)scanHexLongLong:(unsigned long long *)valuep;
+- (BOOL)scanInt:(int *)valuep;
+- (BOOL)scanInteger:(NSInteger *)valuep;
+- (BOOL)scanLongLong:(long long *)valuep;
+- (BOOL)scanFloat:(float *)valuep;
+- (BOOL)scanDouble:(double *)valuep;
+- (BOOL)scanDecimal:(NSDecimal *)valuep;
+- (BOOL)scanHexInt:(unsigned *)valuep;
+- (BOOL)scanHexLongLong:(unsigned long long *)valuep;
 
--(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp;
--(BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp;
+- (BOOL)scanString:(NSString *)string intoString:(NSString **)stringp;
+- (BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp;
 
--(BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp;
--(BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp;
+- (BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp;
+- (BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp;
 
 @end

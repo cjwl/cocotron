@@ -11,8 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2Decoder_TIFF;
 
 @interface O2ImageSource_TIFF : O2ImageSource {
-   O2Decoder_TIFF *_reader;
+    O2Decoder_TIFF *_reader;
 }
-
 
 @end

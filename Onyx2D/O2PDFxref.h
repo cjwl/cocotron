@@ -8,37 +8,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2PDFObject.h>
 #import <Foundation/NSMapTable.h>
-@class NSData,NSMutableArray;
+@class NSData, NSMutableArray;
 
 @class O2PDFObject;
 @class O2PDFxrefEntry;
 @class O2PDFDictionary;
 
 @interface O2PDFxref : NSObject {
-   NSData          *_data;
-   O2PDFxref       *_previous;
-   NSMapTable      *_numberToEntries;
-   NSMapTable      *_entryToObject;
-   NSMutableArray  *_entriesInOrder;
-   O2PDFDictionary *_trailer;
+    NSData *_data;
+    O2PDFxref *_previous;
+    NSMapTable *_numberToEntries;
+    NSMapTable *_entryToObject;
+    NSMutableArray *_entriesInOrder;
+    O2PDFDictionary *_trailer;
 }
 
--initWithData:(NSData *)data;
+- initWithData:(NSData *)data;
 
--(NSData *)data;
+- (NSData *)data;
 
--(O2PDFxref *)previous;
--(NSArray *)allEntries;
+- (O2PDFxref *)previous;
+- (NSArray *)allEntries;
 
--(O2PDFObject *)objectAtNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation;
+- (O2PDFObject *)objectAtNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation;
 
--(O2PDFDictionary *)trailer;
+- (O2PDFDictionary *)trailer;
 
--(void)setPreviousTable:(O2PDFxref *)table;
--(void)addEntry:(O2PDFxrefEntry *)entry;
--(void)addEntry:(O2PDFxrefEntry *)entry object:(O2PDFObject *)object;
--(void)setTrailer:(O2PDFDictionary *)trailer;
+- (void)setPreviousTable:(O2PDFxref *)table;
+- (void)addEntry:(O2PDFxrefEntry *)entry;
+- (void)addEntry:(O2PDFxrefEntry *)entry object:(O2PDFObject *)object;
+- (void)setTrailer:(O2PDFDictionary *)trailer;
 
--(void)encodeWithPDFContext:(O2PDFContext *)encoder;
+- (void)encodeWithPDFContext:(O2PDFContext *)encoder;
 
 @end
