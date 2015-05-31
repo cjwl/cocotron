@@ -1,10 +1,13 @@
 #import <objc/dyld.h>
 
+#ifndef MAXPATHLEN
+#define MAXPATHLEN 8192
+#endif
+
 #if defined(WIN32)
 
 #import <windows.h>
 
-#define MAXPATHLEN 8192
 
 int _NSGetExecutablePath(char *path, uint32_t *capacity) {
     int bufferCapacity = MAXPATHLEN;
@@ -36,8 +39,8 @@ int _NSGetExecutablePath(char *path, uint32_t *capacity) {
 #elif defined(LINUX)
 
 int _NSGetExecutablePath(char *path, uint32_t *capacity) {
-    if(*capacity < PATH_MAX)
-        return PATH_MAX;
+    if(*capacity < MAXPATHLEN)
+        return MAXPATHLEN;
 
     if((*capacity = readlink("/proc/self/exe", path, *capacity)) < 0) {
         *capacity = 0;
@@ -55,8 +58,8 @@ extern int _NSGetExecutablePath(char *path, uint32_t *capacity);
 
 int _NSGetExecutablePath(char *path, uint32_t *capacity) {
 #if defined(FREEBSD)
-    if(*capacity < PATH_MAX)
-        return PATH_MAX;
+    if(*capacity < MAXPATHLEN)
+        return MAXPATHLEN;
 
     int mib[4];
 
@@ -75,8 +78,8 @@ int _NSGetExecutablePath(char *path, uint32_t *capacity) {
 
     return 0;
 #else
-    if(*capacity < PATH_MAX)
-        return PATH_MAX;
+    if(*capacity < MAXPATHLEN)
+        return MAXPATHLEN;
 
     int length;
 
@@ -93,10 +96,10 @@ int _NSGetExecutablePath(char *path, uint32_t *capacity) {
 #elif defined(SOLARIS)
 
 int _NSGetExecutablePath(char *path, uint32_t *capacity) {
-    if(*capacity < PATH_MAX)
-        return PATH_MAX;
+    if(*capacity < MAXPATHLEN)
+        return MAXPATHLEN;
 
-    char probe[PATH_MAX + 1];
+    char probe[MAXPATHLEN + 1];
 
     sprintf(probe, "/proc/%ld/path/a.out", (long)getpid());
 
