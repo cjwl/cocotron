@@ -16,11 +16,11 @@ void __objc_exec_class(OBJCModule *module) {
 }
 
 id objc_get_class(const char *name) {
-   return (id)objc_lookUpClass(name);
+    return (id)objc_lookUpClass(name);
 }
 
 id objc_get_meta_class(const char *name) {
-   return object_getClass(objc_lookUpClass(name));
+    return (id)object_getClass((id)objc_lookUpClass(name));
 }
 
 // __objc_execClass is called for each module loaded; this is where we tie into the runtime.

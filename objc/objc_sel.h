@@ -44,11 +44,11 @@ static inline SEL sel_getSelector(SEL selector) {
 typedef SEL objc_selector_internal;
 
 static inline const char *objc_getSelectorReferenceName(objc_selector_internal *ref) {
-    return *ref;
+    return (const char *)(*ref);
 }
 
 static inline void objc_setSelectorReferenceName(objc_selector_internal **ref, const char *name) {
-    **ref = name;
+    **ref = (objc_selector_internal)name;
 }
 
 static inline SEL sel_getSelector(SEL selector) {

@@ -21,7 +21,6 @@ FOUNDATION_EXPORT NSString *const NSThreadWillExitNotification;
     NSLock *_sharedObjectLock;
     NSAutoreleasePool *_currentPool;
     NSExceptionFrame *_currentHandler;
-    NSUncaughtExceptionHandler *_uncaughtExceptionHandler;
     NSString *_name;
     SEL _selector;
     id _argument;

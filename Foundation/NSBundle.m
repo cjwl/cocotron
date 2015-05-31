@@ -48,26 +48,13 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 #include <unistd.h>
 #endif
 
+#import <objc/dyld.h>
 
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-#ifdef __APPLE__
 
-#include <mach-o/dyld.h>
-
-#elif defined(LINUX)
+#if defined(LINUX)
 
 #include <sys/stat.h>
-
-
-static int _NSGetExecutablePath(char *buf, ssize_t *bufsize)
-{
-    if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
-        *bufsize = MAXPATHLEN;
-        return -1;
-    }
-    return 0;
-}
-
 
 static inline unsigned int processMaps(char *maps, const char **soNames)
 {

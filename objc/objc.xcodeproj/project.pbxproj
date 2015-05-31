@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF652CFB1B116D6A0090D2FE /* objc_arc.h in Headers */ = {isa = PBXBuildFile; fileRef = CF652CFA1B116D6A0090D2FE /* objc_arc.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CF7FA2021B1800C600840DB1 /* dyld.h in Headers */ = {isa = PBXBuildFile; fileRef = CF7FA2011B1800C600840DB1 /* dyld.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A5810C5D9B3100AEA51A /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A5820C5D9B3100AEA51A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A5830C5D9B3100AEA51A /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,7 +21,6 @@
 		FE13449F1151B89600404745 /* objc_sel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1344561151B89600404745 /* objc_sel.h */; };
 		FE1344A01151B89600404745 /* ObjCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1344591151B89600404745 /* ObjCArray.h */; };
 		FE1344A11151B89600404745 /* ObjCDynamicModule.h in Headers */ = {isa = PBXBuildFile; fileRef = FE13445B1151B89600404745 /* ObjCDynamicModule.h */; };
-		FE1344A21151B89600404745 /* ObjCException.h in Headers */ = {isa = PBXBuildFile; fileRef = FE13445D1151B89600404745 /* ObjCException.h */; };
 		FE1344A31151B89600404745 /* ObjCHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE13445F1151B89600404745 /* ObjCHashTable.h */; };
 		FE1344A41151B89600404745 /* ObjCModule.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1344611151B89600404745 /* ObjCModule.h */; };
 		FE6CF83011526D3000B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF82A11526D3000B6D893 /* objc_malloc.h */; };
@@ -34,34 +35,34 @@
 /* Begin PBXFileReference section */
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C6065BB0163575CC0007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_association.m; sourceTree = "<group>"; };
+		CF652CFA1B116D6A0090D2FE /* objc_arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_arc.h; sourceTree = "<group>"; };
+		CF7FA2011B1800C600840DB1 /* dyld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dyld.h; sourceTree = "<group>"; };
 		FE01A5890C5D9B3100AEA51A /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1344481151B89600404745 /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FE1344491151B89600404745 /* objc_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_class.h; sourceTree = "<group>"; };
-		FE13444A1151B89600404745 /* objc_class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_class.m; sourceTree = "<group>"; };
+		FE13444A1151B89600404745 /* objc_class.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_class.c; sourceTree = "<group>"; };
 		FE13444B1151B89600404745 /* objc_debugHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_debugHelpers.h; sourceTree = "<group>"; };
 		FE13444C1151B89600404745 /* objc_debugHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_debugHelpers.m; sourceTree = "<group>"; };
-		FE13444D1151B89600404745 /* objc_functions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_functions.m; sourceTree = "<group>"; };
-		FE13444E1151B89600404745 /* objc_ivar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_ivar.m; sourceTree = "<group>"; };
-		FE13444F1151B89600404745 /* objc_method.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_method.m; sourceTree = "<group>"; };
-		FE1344501151B89600404745 /* objc_msg_lookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_msg_lookup.m; sourceTree = "<group>"; };
+		FE13444D1151B89600404745 /* objc_functions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_functions.c; sourceTree = "<group>"; };
+		FE13444E1151B89600404745 /* objc_ivar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_ivar.c; sourceTree = "<group>"; };
+		FE13444F1151B89600404745 /* objc_method.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_method.c; sourceTree = "<group>"; };
+		FE1344501151B89600404745 /* objc_msg_lookup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_msg_lookup.c; sourceTree = "<group>"; };
 		FE1344511151B89600404745 /* objc_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_object.h; sourceTree = "<group>"; };
-		FE1344521151B89600404745 /* objc_object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_object.m; sourceTree = "<group>"; };
-		FE1344531151B89600404745 /* objc_property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_property.m; sourceTree = "<group>"; };
+		FE1344521151B89600404745 /* objc_object.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_object.c; sourceTree = "<group>"; };
+		FE1344531151B89600404745 /* objc_property.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_property.c; sourceTree = "<group>"; };
 		FE1344541151B89600404745 /* objc_protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_protocol.h; sourceTree = "<group>"; };
-		FE1344551151B89600404745 /* objc_protocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_protocol.m; sourceTree = "<group>"; };
+		FE1344551151B89600404745 /* objc_protocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_protocol.c; sourceTree = "<group>"; };
 		FE1344561151B89600404745 /* objc_sel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_sel.h; sourceTree = "<group>"; };
-		FE1344571151B89600404745 /* objc_sel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_sel.m; sourceTree = "<group>"; };
+		FE1344571151B89600404745 /* objc_sel.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_sel.c; sourceTree = "<group>"; };
 		FE1344581151B89600404745 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
 		FE1344591151B89600404745 /* ObjCArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCArray.h; sourceTree = "<group>"; };
-		FE13445A1151B89600404745 /* ObjCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCArray.m; sourceTree = "<group>"; };
+		FE13445A1151B89600404745 /* ObjCArray.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ObjCArray.c; sourceTree = "<group>"; };
 		FE13445B1151B89600404745 /* ObjCDynamicModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCDynamicModule.h; sourceTree = "<group>"; };
-		FE13445C1151B89600404745 /* ObjCDynamicModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCDynamicModule.m; sourceTree = "<group>"; };
-		FE13445D1151B89600404745 /* ObjCException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCException.h; sourceTree = "<group>"; };
-		FE13445E1151B89600404745 /* ObjCException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCException.m; sourceTree = "<group>"; };
+		FE13445C1151B89600404745 /* ObjCDynamicModule.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ObjCDynamicModule.c; sourceTree = "<group>"; };
 		FE13445F1151B89600404745 /* ObjCHashTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCHashTable.h; sourceTree = "<group>"; };
-		FE1344601151B89600404745 /* ObjCHashTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCHashTable.m; sourceTree = "<group>"; };
+		FE1344601151B89600404745 /* ObjCHashTable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ObjCHashTable.c; sourceTree = "<group>"; };
 		FE1344611151B89600404745 /* ObjCModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCModule.h; sourceTree = "<group>"; };
-		FE1344621151B89600404745 /* ObjCModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCModule.m; sourceTree = "<group>"; };
+		FE1344621151B89600404745 /* ObjCModule.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ObjCModule.c; sourceTree = "<group>"; };
 		FE1344631151B89600404745 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
 		FE1344651151B89600404745 /* objc_msgSend-darwin-i386.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc_msgSend-darwin-i386.s"; sourceTree = "<group>"; };
 		FE1344661151B89600404745 /* objc_msgSend-darwin-ppc.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc_msgSend-darwin-ppc.s"; sourceTree = "<group>"; };
@@ -71,7 +72,7 @@
 		FE4034B90B42F24C00CEC41A /* objc-class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-class.h"; sourceTree = "<group>"; };
 		FE4034CE0B42F2C400CEC41A /* objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc.h; sourceTree = "<group>"; };
 		FE6CF82A11526D3000B6D893 /* objc_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_malloc.h; sourceTree = "<group>"; };
-		FE6CF82B11526D3000B6D893 /* objc_malloc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_malloc.m; sourceTree = "<group>"; };
+		FE6CF82B11526D3000B6D893 /* objc_malloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_malloc.c; sourceTree = "<group>"; };
 		FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE74345E10A8A61B004CDF00 /* objc-auto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-auto.h"; sourceTree = "<group>"; };
 		FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "objc-runtime.h"; sourceTree = "<group>"; };
@@ -103,45 +104,45 @@
 		0867D691FE84028FC02AAC07 /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				CF7FA2011B1800C600840DB1 /* dyld.h */,
 				C6065BB0163575CC0007217E /* objc_association.m */,
 				FE1E53B4143029F7000D60A1 /* xcconfig */,
 				FE6CF82A11526D3000B6D893 /* objc_malloc.h */,
-				FE6CF82B11526D3000B6D893 /* objc_malloc.m */,
+				FE6CF82B11526D3000B6D893 /* objc_malloc.c */,
 				FE88A1F50F891D970081CFC1 /* deprecated.h */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				FE88A1EB0F891B440081CFC1 /* message.h */,
 				FE74345E10A8A61B004CDF00 /* objc-auto.h */,
 				FE4034B90B42F24C00CEC41A /* objc-class.h */,
+				CF652CFA1B116D6A0090D2FE /* objc_arc.h */,
 				FEB6CBF90B4A1584004FADF2 /* objc-export.h */,
 				FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */,
 				FE4034CE0B42F2C400CEC41A /* objc.h */,
 				FE1344581151B89600404745 /* objc.m */,
 				FE1344481151B89600404745 /* objc_cache.h */,
 				FE1344491151B89600404745 /* objc_class.h */,
-				FE13444A1151B89600404745 /* objc_class.m */,
+				FE13444A1151B89600404745 /* objc_class.c */,
 				FE13444B1151B89600404745 /* objc_debugHelpers.h */,
 				FE13444C1151B89600404745 /* objc_debugHelpers.m */,
-				FE13444D1151B89600404745 /* objc_functions.m */,
-				FE13444E1151B89600404745 /* objc_ivar.m */,
-				FE13444F1151B89600404745 /* objc_method.m */,
-				FE1344501151B89600404745 /* objc_msg_lookup.m */,
+				FE13444D1151B89600404745 /* objc_functions.c */,
+				FE13444E1151B89600404745 /* objc_ivar.c */,
+				FE13444F1151B89600404745 /* objc_method.c */,
+				FE1344501151B89600404745 /* objc_msg_lookup.c */,
 				FE1344511151B89600404745 /* objc_object.h */,
-				FE1344521151B89600404745 /* objc_object.m */,
-				FE1344531151B89600404745 /* objc_property.m */,
+				FE1344521151B89600404745 /* objc_object.c */,
+				FE1344531151B89600404745 /* objc_property.c */,
 				FE1344541151B89600404745 /* objc_protocol.h */,
-				FE1344551151B89600404745 /* objc_protocol.m */,
+				FE1344551151B89600404745 /* objc_protocol.c */,
 				FE1344561151B89600404745 /* objc_sel.h */,
-				FE1344571151B89600404745 /* objc_sel.m */,
+				FE1344571151B89600404745 /* objc_sel.c */,
 				FE1344591151B89600404745 /* ObjCArray.h */,
-				FE13445A1151B89600404745 /* ObjCArray.m */,
+				FE13445A1151B89600404745 /* ObjCArray.c */,
 				FE13445B1151B89600404745 /* ObjCDynamicModule.h */,
-				FE13445C1151B89600404745 /* ObjCDynamicModule.m */,
-				FE13445D1151B89600404745 /* ObjCException.h */,
-				FE13445E1151B89600404745 /* ObjCException.m */,
+				FE13445C1151B89600404745 /* ObjCDynamicModule.c */,
 				FE13445F1151B89600404745 /* ObjCHashTable.h */,
-				FE1344601151B89600404745 /* ObjCHashTable.m */,
+				FE1344601151B89600404745 /* ObjCHashTable.c */,
 				FE1344611151B89600404745 /* ObjCModule.h */,
-				FE1344621151B89600404745 /* ObjCModule.m */,
+				FE1344621151B89600404745 /* ObjCModule.c */,
 				FEDB75C50F8A9EFE00AC545D /* Object.h */,
 				FE1344631151B89600404745 /* Object.m */,
 				FE1344641151B89600404745 /* platform_darwin */,
@@ -245,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE01A5810C5D9B3100AEA51A /* objc-class.h in Headers */,
+				CF7FA2021B1800C600840DB1 /* dyld.h in Headers */,
 				FE01A5820C5D9B3100AEA51A /* objc.h in Headers */,
 				FE01A5830C5D9B3100AEA51A /* objc-export.h in Headers */,
 				FE01A5840C5D9B3100AEA51A /* objc-runtime.h in Headers */,
@@ -254,6 +256,7 @@
 				FEDB75C70F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75C80F8A9EFE00AC545D /* Protocol.h in Headers */,
 				FE74346310A8A61B004CDF00 /* objc-auto.h in Headers */,
+				CF652CFB1B116D6A0090D2FE /* objc_arc.h in Headers */,
 				FE13449A1151B89600404745 /* objc_cache.h in Headers */,
 				FE13449B1151B89600404745 /* objc_class.h in Headers */,
 				FE13449C1151B89600404745 /* objc_debugHelpers.h in Headers */,
@@ -262,7 +265,6 @@
 				FE13449F1151B89600404745 /* objc_sel.h in Headers */,
 				FE1344A01151B89600404745 /* ObjCArray.h in Headers */,
 				FE1344A11151B89600404745 /* ObjCDynamicModule.h in Headers */,
-				FE1344A21151B89600404745 /* ObjCException.h in Headers */,
 				FE1344A31151B89600404745 /* ObjCHashTable.h in Headers */,
 				FE1344A41151B89600404745 /* ObjCModule.h in Headers */,
 				FE6CF83011526D3000B6D893 /* objc_malloc.h in Headers */,

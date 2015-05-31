@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCHashTable.h"
 #import "objc_class.h"
 #import "objc_sel.h"
-#import "ObjCException.h"
 
 #define PROTOCOL_CLASS "Protocol"
 

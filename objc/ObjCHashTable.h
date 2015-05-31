@@ -19,7 +19,7 @@ typedef struct {
 typedef struct OBJCHashBucket {
     struct OBJCHashBucket *next;
     const char *key;
-    void *value;
+    const void *value;
 } OBJCHashBucket;
 
 typedef struct {
@@ -29,10 +29,10 @@ typedef struct {
 } OBJCHashEnumerator;
 
 OBJCHashTable *OBJCCreateHashTable(unsigned capacity);
-void *OBJCHashInsertValueForKey(OBJCHashTable *table, const char *key, void *value);
+const void *OBJCHashInsertValueForKey(OBJCHashTable *table, const char *key, const void *value);
 OBJCHashEnumerator OBJCEnumerateHashTable(OBJCHashTable *table);
 const char *OBJCNextHashEnumeratorKey(OBJCHashEnumerator *enumerator);
-void *OBJCNextHashEnumeratorValue(OBJCHashEnumerator *enumerator);
+const void *OBJCNextHashEnumeratorValue(OBJCHashEnumerator *enumerator);
 
 static inline unsigned OBJCHashString(const void *data) {
     const unsigned char *s = data;
@@ -53,7 +53,7 @@ static inline int OBJCIsStringEqual(const void *data1, const void *data2) {
     return (strcmp((char *)data1, (char *)data2)) ? NO : YES;
 };
 
-static inline void *OBJCHashValueForKey(OBJCHashTable *table, const char *key) {
+static inline const void *OBJCHashValueForKey(OBJCHashTable *table, const char *key) {
     int i = OBJCHashString(key) % table->nBuckets;
     OBJCHashBucket *j;
 

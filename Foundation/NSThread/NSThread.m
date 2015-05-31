@@ -349,22 +349,6 @@ void NSThreadSetCurrentPool(NSAutoreleasePool *pool){
    NSPlatformCurrentThread()->_currentPool=pool;
 }
 
-NSExceptionFrame *NSThreadCurrentHandler(void) {
-   return NSPlatformCurrentThread()->_currentHandler;
-}
-
-void NSThreadSetCurrentHandler(NSExceptionFrame *handler) {
-   NSPlatformCurrentThread()->_currentHandler=handler;
-}
-
-NSUncaughtExceptionHandler *NSThreadUncaughtExceptionHandler(void) {
-   return NSPlatformCurrentThread()->_uncaughtExceptionHandler;
-}
-
-void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
-   NSPlatformCurrentThread()->_uncaughtExceptionHandler=function;
-}
-
 @end
 
 @implementation NSObject(NSThread)

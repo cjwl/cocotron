@@ -75,7 +75,19 @@ struct objc_method_list {
     struct objc_method method_list[1];
 };
 
+struct objc_protocol {
+    Class isa;
+    const char *nameCString;
+    struct objc_protocol_list *childProtocols;
+    struct OBJCMethodDescriptionList *instanceMethods;
+    struct OBJCMethodDescriptionList *classMethods;
+};
+
+#ifdef __OBJC__
 @class Protocol;
+#else
+typedef struct objc_protocol Protocol;
+#endif
 
 struct objc_protocol_list {
     struct objc_protocol_list *next;

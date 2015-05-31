@@ -1,5 +1,4 @@
 #import <objc/runtime.h>
-#import <objc/Protocol.h>
 
 typedef struct {
     Class isa;

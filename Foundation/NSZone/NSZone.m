@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSDebug.h>
+#import <objc/objc_arc.h>
 #include <string.h>
 #ifdef WIN32
 #include <windows.h>
@@ -21,167 +22,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // NSZone functions implemented in platform subproject
 
-typedef unsigned int OSSpinLock;
-
-#import <Foundation/NSAtomicCompareAndSwap.h>
-
-BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
-{
-   return __sync_bool_compare_and_swap(__lock, 0, 1);
-}
-
-void OSSpinLockLock( volatile OSSpinLock *__lock )
-{
-   while(!__sync_bool_compare_and_swap(__lock, 0, 1))
-   {
-#ifdef WIN32
-      Sleep(0);
-#else
-      usleep(1);
-#endif
-   }
-}
-
-void OSSpinLockUnlock( volatile OSSpinLock *__lock )
-{
-   __sync_bool_compare_and_swap(__lock, 1, 0);
-}
-
-typedef struct RefCountBucket {
-   struct RefCountBucket *next;
-   id                     object;
-   NSUInteger             count;
-} RefCountBucket;
-
-typedef struct {
-   NSUInteger       count;
-   NSUInteger       nBuckets;
-   RefCountBucket **buckets;
-} RefCountTable;
-
-static OSSpinLock RefCountLock=0;
-
-static inline RefCountTable *CreateRefCountTable() {
-   RefCountTable *table;
-
-   table=NSZoneMalloc(NULL,sizeof(RefCountTable));
-   table->count=0;
-   table->nBuckets=1024;
-   table->buckets=NSZoneCalloc(NULL,table->nBuckets,sizeof(RefCountBucket *));
-
-   return table;
-}
-
-static inline RefCountBucket *AllocBucketFromTable(RefCountTable *table){
-   return NSZoneMalloc(NULL,sizeof(RefCountBucket));
-}
-
-static inline void FreeBucketFromTable(RefCountTable *table,RefCountBucket *bucket){
-   NSZoneFree(NULL,bucket);
-}
-
-static inline NSUInteger hashObject(id ptr){
-   return (NSUInteger)ptr>>4;
-}
-
-static inline RefCountBucket *XXHashGet(RefCountTable *table,id object) {
-   NSUInteger      i=hashObject(object)%table->nBuckets;
-   RefCountBucket *check;
-
-   for(check=table->buckets[i];check!=NULL;check=check->next)
-    if(check->object==object)
-     return check;
-
-   return NULL;
-}
-
-static inline void XXHashInsert(RefCountTable *table,RefCountBucket *insert) {
-   NSUInteger hash=hashObject(insert->object);
-   NSUInteger i=hash%table->nBuckets;
-
-   if(table->count>=table->nBuckets){
-    NSInteger        oldnBuckets=table->nBuckets;
-    RefCountBucket **buckets=table->buckets;
-
-    table->nBuckets=oldnBuckets*2;
-    table->buckets=NSZoneCalloc(NULL,table->nBuckets,sizeof(RefCountBucket *));
-    for(i=0;i<oldnBuckets;i++){
-     RefCountBucket *check,*next;
-
-     for(check=buckets[i];check!=NULL;check=next){
-      NSUInteger newi=hashObject(check->object)%table->nBuckets;
-      next=check->next;
-      check->next=table->buckets[newi];
-      table->buckets[newi]=check;
-     }
-    }
-    NSZoneFree(NULL,buckets);
-    i=hash%table->nBuckets;
-   }
-
-   insert->next=table->buckets[i];
-   table->buckets[i]=insert;
-   table->count++;
-}
-
-static inline void XXHashRemove(RefCountTable *table,RefCountBucket *remove) {
-   NSUInteger      i=hashObject(remove->object)%table->nBuckets;
-   RefCountBucket *check=table->buckets[i],*prev=check;
-
-   for(;check!=NULL;check=check->next){
-    if(check==remove){
-     if(prev==check)
-      table->buckets[i]=check->next;
-     else
-      prev->next=check->next;
-
-     FreeBucketFromTable(table,check);
-     table->count--;
-     return;
-    }
-    prev=check;
-   }
-}
-
-static inline RefCountTable *refTable(void) {
-   static RefCountTable *refCountTable=NULL;
-
-   if(refCountTable==NULL)
-    refCountTable=CreateRefCountTable();
-
-   return refCountTable;
-}
-
 void NSIncrementExtraRefCount(id object) {
-   RefCountBucket *refCount;
-   RefCountTable  *table=refTable();
-
-   OSSpinLockLock(&RefCountLock);
-   if((refCount=XXHashGet(table,object))==NULL){
-    refCount=AllocBucketFromTable(table);
-    refCount->object=object;
-    refCount->count=1;
-    XXHashInsert(refTable(),refCount);
-   }
-   refCount->count++;
-   OSSpinLockUnlock(&RefCountLock);
+    object_incrementExternalRefCount(object);
 }
 
 BOOL NSDecrementExtraRefCountWasZero(id object) {
-   BOOL            result=NO;
-   RefCountBucket *refCount;
+    return object_decrementExternalRefCount(object);
+}
 
-   OSSpinLockLock(&RefCountLock);
-   if((refCount=XXHashGet(refTable(),object))==NULL)
-    result=YES;
-   else {
-    refCount->count--;
-    if(refCount->count==1)
-     XXHashRemove(refTable(), refCount);
-   }
-   OSSpinLockUnlock(&RefCountLock);
+NSUInteger NSExtraRefCount(id object) {
+    return object_externalRefCount(object);
+}
 
-   return result;
+BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
+   return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 
 static void (*__NSAllocateObjectHook)(id object) = 0;
@@ -189,22 +43,6 @@ static void (*__NSAllocateObjectHook)(id object) = 0;
 void NSSetAllocateObjectHook(void (*hook)(id object))
 {
     __NSAllocateObjectHook = hook;
-}
-
-NSUInteger NSExtraRefCount(id object) {
-   NSUInteger      result=1;
-   RefCountBucket *refCount;
-
-   OSSpinLockLock(&RefCountLock);
-   if((refCount=XXHashGet(refTable(),object))!=NULL)
-    result=refCount->count;
-   OSSpinLockUnlock(&RefCountLock);
-
-   return result;
-}
-
-BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
-   return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 
 
