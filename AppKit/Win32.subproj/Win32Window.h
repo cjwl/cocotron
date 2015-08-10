@@ -52,6 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     BOOL _isLayered;
     BOOL _ignoreMinMaxMessage;
     BOOL _sentBeginSizing;
+    BOOL _isClosing;
     BOOL _disableDisplay;
     unsigned _styleMask;
     BOOL _isPanel;
@@ -59,7 +60,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     id _delegate;
     NSMutableDictionary *_deviceDictionary;
-    NSRect _dirtyRect;
+
+    int     _dirtyRectCap, _dirtyRectCnt;
+    NSRect *_dirtyRectSet;
 }
 
 - initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
