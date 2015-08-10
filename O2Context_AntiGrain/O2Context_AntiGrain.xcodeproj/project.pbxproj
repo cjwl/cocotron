@@ -65,27 +65,6 @@
 			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
 			remoteInfo = "AppKit-Windows-i386";
 		};
-		FEE16437137C6DC800B2F340 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
-			remoteInfo = "AppKit-Linux-i386";
-		};
-		FEE16439137C6DC800B2F340 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
-			remoteInfo = "AppKit-Darwin-i386";
-		};
-		FEE1643D137C6DC800B2F340 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE5A8BE310C6F50E005E348A;
-			remoteInfo = "AppKit-FreeBSD-i386";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -229,9 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				FEE16436137C6DC800B2F340 /* AppKit.framework */,
-				FEE16438137C6DC800B2F340 /* AppKit.framework */,
-				FEE1643A137C6DC800B2F340 /* AppKit.framework */,
-				FEE1643E137C6DC800B2F340 /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,27 +280,6 @@
 			remoteRef = FEE16435137C6DC800B2F340 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FEE16438137C6DC800B2F340 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FEE16437137C6DC800B2F340 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FEE1643A137C6DC800B2F340 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FEE16439137C6DC800B2F340 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FEE1643E137C6DC800B2F340 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FEE1643D137C6DC800B2F340 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -393,14 +348,16 @@
 			baseConfigurationReference = FE1DDD52171110D9003B3AF8 /* windows-i386-bundle.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = IGNORE;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = IGNORE;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				GCC_CW_ASM_SYNTAX = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				HEADER_SEARCH_PATHS = "$DSTROOT/agg-2.4/include/";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = IGNORE;
+				HEADER_SEARCH_PATHS = (
+					$DSTROOT/include,
+					"$DSTROOT/agg-2.4/include/",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
 				LIBRARY_SEARCH_PATHS = (
@@ -428,13 +385,16 @@
 			baseConfigurationReference = FE1DDD52171110D9003B3AF8 /* windows-i386-bundle.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = IGNORE;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = IGNORE;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				GCC_CW_ASM_SYNTAX = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				HEADER_SEARCH_PATHS = "$DSTROOT/agg-2.4/include/";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = IGNORE;
+				HEADER_SEARCH_PATHS = (
+					$DSTROOT/include,
+					"$DSTROOT/agg-2.4/include/",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
 				LIBRARY_SEARCH_PATHS = (

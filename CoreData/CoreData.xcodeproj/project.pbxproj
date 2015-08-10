@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE06432B121AD56400373F23 /* NSManagedObjectSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064327121AD56400373F23 /* NSManagedObjectSet.h */; };
 		FE06432C121AD56400373F23 /* NSManagedObjectSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064328121AD56400373F23 /* NSManagedObjectSet.m */; };
 		FE06432D121AD56400373F23 /* NSManagedObjectSetEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064329121AD56400373F23 /* NSManagedObjectSetEnumerator.h */; };
@@ -434,7 +433,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,14 +493,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",

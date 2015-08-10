@@ -1000,7 +1000,7 @@
 		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
 		49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBidiHelper.h; sourceTree = "<group>"; };
 		49B85E95166FBC9A00507E8C /* UNIDATA */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UNIDATA; sourceTree = "<group>"; };
-		49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
+      49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
 		49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2EXIFDecoder.m; sourceTree = "<group>"; };
 		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
 		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
@@ -4718,10 +4718,8 @@
 			buildSettings = {
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = AppKit;
 			};
@@ -4745,7 +4743,6 @@
 			buildSettings = {
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -4775,7 +4772,6 @@
 			buildSettings = {
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -4799,7 +4795,6 @@
 			buildSettings = {
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;

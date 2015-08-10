@@ -40,7 +40,6 @@
 		CF0F7AC11AE9E7C1003EA762 /* NSString_isoLatin2.h in Headers */ = {isa = PBXBuildFile; fileRef = CF0F7ABF1AE9E7C1003EA762 /* NSString_isoLatin2.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		CF0F7AC21AE9E7C1003EA762 /* NSString_isoLatin2.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0F7AC01AE9E7C1003EA762 /* NSString_isoLatin2.m */; };
 		CF0F7AC71AE9EB23003EA762 /* NSBacktraceFunctions_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0F7AC61AE9EB23003EA762 /* NSBacktraceFunctions_win32.m */; };
-		CF28197A1AF9A5BF00E93CEE /* windows-i386-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF2819791AF9A5BF00E93CEE /* windows-i386-Foundation.xcconfig */; };
 		CF2A01FF1B078C89005D322F /* OBJCRegisterModule_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCRegisterModule_Darwin.m */; };
 		CF2A02001B079314005D322F /* objc_msg_sendv-Disabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */; };
 		CF595A8C1B1ABFB600F7BE40 /* objc_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = CF595A8B1B1ABFB600F7BE40 /* objc_lock.h */; };
@@ -48,33 +47,11 @@
 		CF652CF31B116C5D0090D2FE /* objc_log.h in Headers */ = {isa = PBXBuildFile; fileRef = CF652CEF1B116C5D0090D2FE /* objc_log.h */; };
 		CF652CF41B116C5D0090D2FE /* objc_tls.c in Sources */ = {isa = PBXBuildFile; fileRef = CF652CF01B116C5D0090D2FE /* objc_tls.c */; };
 		CF652CF51B116C5D0090D2FE /* objc_tls.h in Headers */ = {isa = PBXBuildFile; fileRef = CF652CF11B116C5D0090D2FE /* objc_tls.h */; };
-		CF652CF71B116D180090D2FE /* objc_exception.c in Sources */ = {isa = PBXBuildFile; fileRef = CF652CF61B116D180090D2FE /* objc_exception.c */; };
+		CF652CF71B116D180090D2FE /* objc_exception.m in Sources */ = {isa = PBXBuildFile; fileRef = CF652CF61B116D180090D2FE /* objc_exception.m */; };
 		CF652CF91B116D4E0090D2FE /* objc_arc.c in Sources */ = {isa = PBXBuildFile; fileRef = CF652CF81B116D4E0090D2FE /* objc_arc.c */; };
 		CF7FA2001B18006E00840DB1 /* dyld.c in Sources */ = {isa = PBXBuildFile; fileRef = CF7FA1FF1B18006E00840DB1 /* dyld.c */; };
-		CFB9BB001B058BF1001EE95E /* freebsd-i386-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFB9BAFF1B058BF1001EE95E /* freebsd-i386-Foundation.xcconfig */; };
-		CFB9BB021B058F52001EE95E /* darwin-x86_64-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFB9BB011B058F52001EE95E /* darwin-x86_64-Foundation.xcconfig */; };
-		CFB9BB041B058F84001EE95E /* linux-arm-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFB9BB031B058F84001EE95E /* linux-arm-Foundation.xcconfig */; };
 		CFCEA46A1B04318B00B3B087 /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = CFCEA4681B04318B00B3B087 /* NSPlatform_linux.h */; };
 		CFCEA46B1B04318B00B3B087 /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = CFCEA4691B04318B00B3B087 /* NSPlatform_linux.m */; };
-		CFCEA47F1B043F4E00B3B087 /* darwin-i386-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA46C1B043F4E00B3B087 /* darwin-i386-Foundation.xcconfig */; };
-		CFCEA4801B043F4E00B3B087 /* darwin-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA46D1B043F4E00B3B087 /* darwin-i386.xcconfig */; };
-		CFCEA4811B043F4E00B3B087 /* darwin-ppc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA46E1B043F4E00B3B087 /* darwin-ppc.xcconfig */; };
-		CFCEA4821B043F4E00B3B087 /* darwin-x86_64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA46F1B043F4E00B3B087 /* darwin-x86_64.xcconfig */; };
-		CFCEA4831B043F4E00B3B087 /* darwin.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4701B043F4E00B3B087 /* darwin.xcconfig */; };
-		CFCEA4841B043F4E00B3B087 /* freebsd-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4711B043F4E00B3B087 /* freebsd-i386.xcconfig */; };
-		CFCEA4851B043F4E00B3B087 /* freebsd.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4721B043F4E00B3B087 /* freebsd.xcconfig */; };
-		CFCEA4861B043F4E00B3B087 /* linux-arm.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4731B043F4E00B3B087 /* linux-arm.xcconfig */; };
-		CFCEA4871B043F4E00B3B087 /* linux-ppc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4741B043F4E00B3B087 /* linux-ppc.xcconfig */; };
-		CFCEA4881B043F4E00B3B087 /* linux.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4751B043F4E00B3B087 /* linux.xcconfig */; };
-		CFCEA4891B043F4E00B3B087 /* platform-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4761B043F4E00B3B087 /* platform-framework.xcconfig */; };
-		CFCEA48A1B043F4E00B3B087 /* platform.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4771B043F4E00B3B087 /* platform.xcconfig */; };
-		CFCEA48B1B043F4E00B3B087 /* solaris-sparc-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4781B043F4E00B3B087 /* solaris-sparc-Foundation.xcconfig */; };
-		CFCEA48C1B043F4E00B3B087 /* solaris-sparc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA4791B043F4E00B3B087 /* solaris-sparc.xcconfig */; };
-		CFCEA48D1B043F4E00B3B087 /* solaris.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA47A1B043F4E00B3B087 /* solaris.xcconfig */; };
-		CFCEA48E1B043F4E00B3B087 /* windows-i386-AppKit.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA47B1B043F4E00B3B087 /* windows-i386-AppKit.xcconfig */; };
-		CFCEA48F1B043F4E00B3B087 /* windows-i386-bundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA47C1B043F4E00B3B087 /* windows-i386-bundle.xcconfig */; };
-		CFCEA4901B043F4E00B3B087 /* windows-i386-clang.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA47D1B043F4E00B3B087 /* windows-i386-clang.xcconfig */; };
-		CFCEA4911B043F4E00B3B087 /* windows.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFCEA47E1B043F4E00B3B087 /* windows.xcconfig */; };
 		CFDCC89A1B04149700A5721C /* NSMemoryFunctions_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */; };
 		CFDCC89B1B0414D000A5721C /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DF15590EAF00A162B8 /* libmain.m */; };
 		CFDCC89D1B0415A300A5721C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
@@ -114,8 +91,6 @@
 		CFE3093B1B06E39E008442BF /* OBJCRegisterModule_Darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = CFE3093A1B06E39E008442BF /* OBJCRegisterModule_Darwin.h */; };
 		CFE3093C1B06E63C008442BF /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */; };
 		CFE3093D1B06E699008442BF /* NSPlatform_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		CFECC8511AFF0F2000D34AE4 /* linux-i386-Foundation.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFECC8501AFF0F2000D34AE4 /* linux-i386-Foundation.xcconfig */; };
-		CFECC8531AFF0F4000D34AE4 /* linux-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFECC8521AFF0F4000D34AE4 /* linux-i386.xcconfig */; };
 		FE01A59B0C5D9B6900AEA51A /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59C0C5D9B6900AEA51A /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59D0C5D9B6900AEA51A /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -804,7 +779,6 @@
 		FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEA64B412B674A200E6E2C8 /* NSRecursiveLock_win32.m */; };
 		FEFAA5411429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFAA5421429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
-		FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1323,7 +1297,7 @@
 		CF652CEF1B116C5D0090D2FE /* objc_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_log.h; sourceTree = "<group>"; };
 		CF652CF01B116C5D0090D2FE /* objc_tls.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_tls.c; sourceTree = "<group>"; };
 		CF652CF11B116C5D0090D2FE /* objc_tls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_tls.h; sourceTree = "<group>"; };
-		CF652CF61B116D180090D2FE /* objc_exception.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_exception.c; sourceTree = "<group>"; };
+		CF652CF61B116D180090D2FE /* objc_exception.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_exception.m; sourceTree = "<group>"; };
 		CF652CF81B116D4E0090D2FE /* objc_arc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objc_arc.c; sourceTree = "<group>"; };
 		CF7FA1FF1B18006E00840DB1 /* dyld.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dyld.c; sourceTree = "<group>"; };
 		CFB9BAFF1B058BF1001EE95E /* freebsd-i386-Foundation.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-Foundation.xcconfig"; sourceTree = "<group>"; };
@@ -2419,7 +2393,7 @@
 				CF595A8B1B1ABFB600F7BE40 /* objc_lock.h */,
 				CF7FA1FF1B18006E00840DB1 /* dyld.c */,
 				CF652CF81B116D4E0090D2FE /* objc_arc.c */,
-				CF652CF61B116D180090D2FE /* objc_exception.c */,
+				CF652CF61B116D180090D2FE /* objc_exception.m */,
 				CF652CEE1B116C5D0090D2FE /* objc_log.c */,
 				CF652CEF1B116C5D0090D2FE /* objc_log.h */,
 				CF652CF01B116C5D0090D2FE /* objc_tls.c */,
@@ -3598,44 +3572,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE01A7DC0C5D9B6900AEA51A /* punctuationCharacterSet.bitmap in Resources */,
-				CF28197A1AF9A5BF00E93CEE /* windows-i386-Foundation.xcconfig in Resources */,
-				CFCEA47F1B043F4E00B3B087 /* darwin-i386-Foundation.xcconfig in Resources */,
 				FE01A7DD0C5D9B6900AEA51A /* uppercaseLetterCharacterSet.bitmap in Resources */,
 				FE01A7E00C5D9B6900AEA51A /* alphanumericCharacterSet.bitmap in Resources */,
-				CFCEA4831B043F4E00B3B087 /* darwin.xcconfig in Resources */,
-				CFCEA4901B043F4E00B3B087 /* windows-i386-clang.xcconfig in Resources */,
-				CFB9BB021B058F52001EE95E /* darwin-x86_64-Foundation.xcconfig in Resources */,
 				FE01A7E10C5D9B6900AEA51A /* controlCharacterSet.bitmap in Resources */,
-				CFB9BB001B058BF1001EE95E /* freebsd-i386-Foundation.xcconfig in Resources */,
-				CFB9BB041B058F84001EE95E /* linux-arm-Foundation.xcconfig in Resources */,
-				CFCEA4861B043F4E00B3B087 /* linux-arm.xcconfig in Resources */,
-				CFCEA48E1B043F4E00B3B087 /* windows-i386-AppKit.xcconfig in Resources */,
 				FE01A7E20C5D9B6900AEA51A /* decimalDigitCharacterSet.bitmap in Resources */,
-				CFCEA48B1B043F4E00B3B087 /* solaris-sparc-Foundation.xcconfig in Resources */,
 				FE01A7E30C5D9B6900AEA51A /* letterCharacterSet.bitmap in Resources */,
-				CFCEA4821B043F4E00B3B087 /* darwin-x86_64.xcconfig in Resources */,
-				CFCEA48D1B043F4E00B3B087 /* solaris.xcconfig in Resources */,
-				CFCEA4851B043F4E00B3B087 /* freebsd.xcconfig in Resources */,
 				FE01A7E40C5D9B6900AEA51A /* lowercaseLetterCharacterSet.bitmap in Resources */,
-				CFCEA4801B043F4E00B3B087 /* darwin-i386.xcconfig in Resources */,
-				CFCEA4911B043F4E00B3B087 /* windows.xcconfig in Resources */,
-				CFECC8511AFF0F2000D34AE4 /* linux-i386-Foundation.xcconfig in Resources */,
-				CFCEA4841B043F4E00B3B087 /* freebsd-i386.xcconfig in Resources */,
-				CFCEA48C1B043F4E00B3B087 /* solaris-sparc.xcconfig in Resources */,
 				FE01A7E50C5D9B6900AEA51A /* NSTimeZoneAbbreviations.plist in Resources */,
 				FE01A7E60C5D9B6900AEA51A /* NSTimeZoneRegions.plist in Resources */,
 				FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */,
 				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
-				CFCEA48A1B043F4E00B3B087 /* platform.xcconfig in Resources */,
-				CFCEA4811B043F4E00B3B087 /* darwin-ppc.xcconfig in Resources */,
-				CFECC8531AFF0F4000D34AE4 /* linux-i386.xcconfig in Resources */,
-				CFCEA4891B043F4E00B3B087 /* platform-framework.xcconfig in Resources */,
-				CFCEA48F1B043F4E00B3B087 /* windows-i386-bundle.xcconfig in Resources */,
 				FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
-				CFCEA4881B043F4E00B3B087 /* linux.xcconfig in Resources */,
-				CFCEA4871B043F4E00B3B087 /* linux-ppc.xcconfig in Resources */,
 				C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */,
-				FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3651,7 +3599,7 @@
 				FE01A6C00C5D9B6900AEA51A /* NSArray.m in Sources */,
 				FE01A6C10C5D9B6900AEA51A /* NSEnumerator_array.m in Sources */,
 				FE01A6C20C5D9B6900AEA51A /* NSEnumerator_arrayReverse.m in Sources */,
-				CF652CF71B116D180090D2FE /* objc_exception.c in Sources */,
+				CF652CF71B116D180090D2FE /* objc_exception.m in Sources */,
 				CFDCC8A31B0415A300A5721C /* NSLock_posix.m in Sources */,
 				FE01A6C30C5D9B6900AEA51A /* NSMutableArray_concrete.m in Sources */,
 				FE01A6C40C5D9B6900AEA51A /* NSMutableArray.m in Sources */,
@@ -4104,15 +4052,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFB9BAFF1B058BF1001EE95E /* freebsd-i386-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "FreeBSD-i386";
 		};
@@ -4132,15 +4081,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFCEA46C1B043F4E00B3B087 /* darwin-i386-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Darwin-i386";
 		};
@@ -4154,15 +4104,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFB9BB011B058F52001EE95E /* darwin-x86_64-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Darwin-x86_64";
 		};
@@ -4176,15 +4127,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFECC8501AFF0F2000D34AE4 /* linux-i386-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Linux-i386";
 		};
@@ -4198,15 +4150,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFB9BB031B058F84001EE95E /* linux-arm-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Linux-arm";
 		};
@@ -4220,15 +4173,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFCEA4781B043F4E00B3B087 /* solaris-sparc-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Solaris-sparc";
 		};
@@ -4236,26 +4190,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CF2819791AF9A5BF00E93CEE /* windows-i386-Foundation.xcconfig */;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_UNROLL_LOOPS = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Windows-i386";
 		};

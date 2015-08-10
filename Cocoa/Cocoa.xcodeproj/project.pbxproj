@@ -26,48 +26,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C8724ABF0EC706C200DBDDAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
-			remoteInfo = "AppKit-Linux-i386";
-		};
-		C8724AC20EC706C200DBDDAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C88977390EA0C0CD00D0A0A2;
-			remoteInfo = "ApplicationServices-Linux-i386";
-		};
-		C8E0BF920F0E6AF300677729 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
-			remoteInfo = "AppKit-Darwin-i386";
-		};
-		C8E0BF960F0E6AF300677729 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8A2E2900F07E9B70054397C;
-			remoteInfo = "ApplicationServices-Darwin-i386";
-		};
-		C8E0BFAF0F0E6B6600677729 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C8A2E29F0F07EA1F0054397C;
-			remoteInfo = "AppKit-Darwin-i386";
-		};
-		C8E0BFB10F0E6B6C00677729 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C8A2E2710F07E9B70054397C;
-			remoteInfo = "ApplicationServices-Darwin-i386";
-		};
 		FE01AB240C5D9C3500AEA51A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
@@ -82,20 +40,6 @@
 			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
 		};
-		FE5A88AC10C6F369005E348A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE5A88A410C6F34A005E348A;
-			remoteInfo = "ApplicationServices-FreeBSD-i386";
-		};
-		FE5A8CB710C828A5005E348A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE5A8BE310C6F50E005E348A;
-			remoteInfo = "AppKit-FreeBSD-i386";
-		};
 		FE78D107126F4CF500CC39CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */;
@@ -109,20 +53,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreData-Windows-i386";
-		};
-		FECC1DD9108D027000BD4A91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C889741E0EA0BF3100D0A0A2;
-			remoteInfo = "AppKit-Linux-i386";
-		};
-		FEE044C210C99F84000BCEB8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FE5A88D610C6F50E005E348A;
-			remoteInfo = "AppKit-FreeBSD-i386";
 		};
 		FEF80ABD0C5D9F3000FF7CA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -333,9 +263,6 @@
 			isa = PBXGroup;
 			children = (
 				FE01AB280C5D9C3500AEA51A /* ApplicationServices.framework */,
-				C8724AC30EC706C200DBDDAD /* ApplicationServices.framework */,
-				C8E0BF970F0E6AF300677729 /* ApplicationServices.framework */,
-				FE5A88AD10C6F369005E348A /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -344,9 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				FE01AB250C5D9C3500AEA51A /* AppKit.framework */,
-				C8724AC00EC706C200DBDDAD /* AppKit.framework */,
-				C8E0BF930F0E6AF300677729 /* AppKit.framework */,
-				FE5A8CB810C828A5005E348A /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -409,8 +333,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C8E0BFB00F0E6B6600677729 /* PBXTargetDependency */,
-				C8E0BFB20F0E6B6C00677729 /* PBXTargetDependency */,
 			);
 			name = "Cocoa-Darwin-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -452,7 +374,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FEE044C310C99F84000BCEB8 /* PBXTargetDependency */,
 			);
 			name = "Cocoa-FreeBSD-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -472,7 +393,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FECC1DDA108D027000BD4A91 /* PBXTargetDependency */,
 			);
 			name = "Cocoa-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -526,34 +446,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C8724AC00EC706C200DBDDAD /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = C8724ABF0EC706C200DBDDAD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C8724AC30EC706C200DBDDAD /* ApplicationServices.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ApplicationServices.framework;
-			remoteRef = C8724AC20EC706C200DBDDAD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C8E0BF930F0E6AF300677729 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = C8E0BF920F0E6AF300677729 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C8E0BF970F0E6AF300677729 /* ApplicationServices.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ApplicationServices.framework;
-			remoteRef = C8E0BF960F0E6AF300677729 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FE01AB250C5D9C3500AEA51A /* AppKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -566,20 +458,6 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = FE01AB270C5D9C3500AEA51A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE5A88AD10C6F369005E348A /* ApplicationServices.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ApplicationServices.framework;
-			remoteRef = FE5A88AC10C6F369005E348A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE5A8CB810C828A5005E348A /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE5A8CB710C828A5005E348A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE78D108126F4CF500CC39CF /* CoreData.framework */ = {
@@ -658,30 +536,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C8E0BFB00F0E6B6600677729 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "AppKit-Darwin-i386";
-			targetProxy = C8E0BFAF0F0E6B6600677729 /* PBXContainerItemProxy */;
-		};
-		C8E0BFB20F0E6B6C00677729 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ApplicationServices-Darwin-i386";
-			targetProxy = C8E0BFB10F0E6B6C00677729 /* PBXContainerItemProxy */;
-		};
 		FE78D10A126F4D0700CC39CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreData-Windows-i386";
 			targetProxy = FE78D109126F4D0700CC39CF /* PBXContainerItemProxy */;
-		};
-		FECC1DDA108D027000BD4A91 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "AppKit-Linux-i386";
-			targetProxy = FECC1DD9108D027000BD4A91 /* PBXContainerItemProxy */;
-		};
-		FEE044C310C99F84000BCEB8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "AppKit-FreeBSD-i386";
-			targetProxy = FEE044C210C99F84000BCEB8 /* PBXContainerItemProxy */;
 		};
 		FEF80ABE0C5D9F3000FF7CA5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -712,7 +570,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
@@ -754,7 +611,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
