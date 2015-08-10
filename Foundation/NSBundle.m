@@ -774,7 +774,7 @@ static NSMapTable *pathToObject=NULL;
                 else if ([language isEqualToString: @"fr"])
                    longlang = @"French.lproj";
                 else if ([language isEqualToString: @"jp"])
-                   longlang = @"Japanes.lproj";
+                   longlang = @"Japanese.lproj";
                 // anything else, including 'en', would default to en.lproj or English.lproj anyway.
             }
 
