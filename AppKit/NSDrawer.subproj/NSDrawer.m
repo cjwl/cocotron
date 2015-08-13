@@ -32,16 +32,14 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 // - modify the leading/trailing offset portions of the drawer's geometry.
 // - constrain the "expandable" portion of the drawer to the min/max content sizes.
 + (NSRect)drawerFrameWithContentSize:(NSSize)contentSize parentWindow:(NSWindow *)parentWindow leadingOffset:(float)leadingOffset trailingOffset:(float)trailingOffset edge:(NSRectEdge)edge state:(NSDrawerState)state {
-	NSRect drawerFrame, parentFrame, parentContentRect;
-	
-	parentContentRect = [parentWindow contentRectForFrameRect:[parentWindow frame]];
-	parentFrame = [parentWindow frame];
-	drawerFrame = [NSWindow frameRectForContentRect:NSMakeRect(0, 0, contentSize.width, contentSize.height) styleMask:NSDrawerWindowMask];
+	 NSRect parentFrame       = [parentWindow frame];
+	 NSRect parentContentRect = [parentWindow contentRectForFrameRect:parentFrame];
+	 NSRect drawerFrame       = [NSWindow frameRectForContentRect:NSMakeRect(0, 0, contentSize.width, contentSize.height) styleMask:NSDrawerWindowMask];
     
     if (edge == NSMinXEdge || edge == NSMaxXEdge) {
         drawerFrame.origin.x = parentFrame.origin.x - 12.0;
         drawerFrame.origin.y = parentContentRect.origin.y + trailingOffset - 12.0;
-        drawerFrame.size.height = parentContentRect.size.height - (leadingOffset + trailingOffset);
+        drawerFrame.size.height = parentContentRect.size.height - (leadingOffset + trailingOffset) + 9.0;
     }
     else {
         drawerFrame.origin.x = parentContentRect.origin.x + leadingOffset - 12.0;
@@ -198,7 +196,7 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self setDelegate:nil];
+    [self setDelegate:nil];
     [_drawerWindow release];
     [super dealloc];
 }
@@ -475,13 +473,13 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
         if (size.width > _maxContentSize.width && _maxContentSize.width > 0)
             size.width = _maxContentSize.width;
         
-        size.height = _contentSize.height;
+        size.height = [self contentSize].height;
     }
     else {
         if (size.height > _maxContentSize.height && _maxContentSize.height > 0)
             size.height = _maxContentSize.height;
         
-        size.width = _contentSize.width;
+        size.width = [self contentSize].width;
     }
     
     [self setContentSize:size];
