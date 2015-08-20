@@ -8,7 +8,7 @@ scriptResources=$installResources/scripts
 productFolder=/Developer/Cocotron/1.0
 downloadFolder=$productFolder/Downloads
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/
+PREFIX=`pwd`/../system/i386-mingw32msvc
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder "https://cocotron.googlecode.com/files/libxml2-2.7.7.win32.zip ftp://ftp.zlatkovic.com/libxml/iconv-1.9.2.win32.zip"
 

@@ -24,7 +24,7 @@ else
 fi
 
 BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
-PREFIX=$BASEDIR/libjpeg
+PREFIX=`pwd`/../system/i386-mingw32msvc/libjpeg
 
 BUILD=/tmp/build_libjepgturbo
 

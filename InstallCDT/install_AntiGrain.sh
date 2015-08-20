@@ -37,9 +37,9 @@ cd ..
 cat > Makefile.in.Cocotron <<EOF
 AGGLIBS= -lagg 
 AGGCXXFLAGS = -O3
-CXX = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-g++
-C = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc
-LIB = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr
+CXX = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-pc-mingw32msvc-g++
+C = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-pc-mingw32msvc-gcc
+LIB = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-pc-mingw32msvc-ar cr
 
 .PHONY : clean
 EOF

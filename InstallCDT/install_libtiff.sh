@@ -24,6 +24,7 @@ else
 fi
 
 BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
+PREFIX=`pwd`/../system/i386-mingw32msvc
 
 BUILD=/tmp/build_tiff
 
@@ -44,7 +45,7 @@ RANLIB=$(echo $BASEDIR/gcc-$gccVersion/bin/*ranlib)
 TARGET=$($GCC -dumpmachine)
 
 COCOTRON=/Developer/Cocotron/1.0//build/$targetPlatform/$targetArchitecture
-INSTALL_PREFIX=/Developer/Cocotron/1.0/Windows/i386/libtiff
+INSTALL_PREFIX=$PREFIX/libtiff
 BINARY_PATH=$INSTALL_PREFIX/bin
 INCLUDE_PATH=$INSTALL_PREFIX/include
 LIBRARY_PATH=$INSTALL_PREFIX/lib
@@ -55,8 +56,8 @@ mkdir -p $LIBRARY_PATH
 mkdir -p $INCLUDE_PATH
 
 ./configure --prefix="$INSTALL_PREFIX" -host $TARGET AR=$AR CC=$GCC RANLIB=$RANLIB AS=$AS \
-          --with-jpeg-include-dir=$BASEDIR/libjpeg/include --with-jpeg-lib-dir=$BASEDIR/libjpeg/lib \
-          --with-zlib-include-dir=$BASEDIR/zlib-1.2.5/include --with-zlib-lib-dir=$BASEDIR/zlib-1.2.5/lib \
+          --with-jpeg-include-dir=$PREFIX/libjpeg/include --with-jpeg-lib-dir=$PREFIX/libjpeg/lib \
+          --with-zlib-include-dir=$PREFIX/zlib-1.2.5/include --with-zlib-lib-dir=$PREFIX/zlib-1.2.5/lib \
          --enable-mdi --disable-jpeg12 --disable-cxx --disable-shared 
 
 make && make install

@@ -24,7 +24,7 @@ else
 fi
 
 BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
-
+PREFIX=`pwd`/../system/i386-mingw32msvc
 BUILD=/tmp/build_zlib
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libpng/zlib/1.2.5/zlib-1.2.5.tar.bz2
@@ -42,7 +42,7 @@ AR=$(echo $BASEDIR/gcc-$gccVersion/bin/*ar)
 
 
 COCOTRON=/Developer/Cocotron/1.0//build/$targetPlatform/$targetArchitecture
-INSTALL_PREFIX=/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/
+INSTALL_PREFIX=$(PREFIX)/zlib-1.2.5/
 BINARY_PATH=$INSTALL_PREFIX/bin
 INCLUDE_PATH=$INSTALL_PREFIX/include
 LIBRARY_PATH=$INSTALL_PREFIX/lib

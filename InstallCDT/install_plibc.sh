@@ -5,7 +5,7 @@ scriptResources=$installResources/scripts
 productFolder=/Developer/Cocotron/1.0
 downloadFolder=$productFolder/Downloads
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/
+PREFIX=`pwd`/../system/i386-mingw32msvc
 INCLUDE=$PREFIX/include
 BIN=$PREFIX/bin
 LIB=$PREFIX/lib
