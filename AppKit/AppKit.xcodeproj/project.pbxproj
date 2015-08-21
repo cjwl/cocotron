@@ -1000,7 +1000,7 @@
 		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
 		49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBidiHelper.h; sourceTree = "<group>"; };
 		49B85E95166FBC9A00507E8C /* UNIDATA */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UNIDATA; sourceTree = "<group>"; };
-      49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
+		49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
 		49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2EXIFDecoder.m; sourceTree = "<group>"; };
 		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
 		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
@@ -4056,7 +4056,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libjpeg for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch $DERIVED_FILE_DIR/zlib.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libtiff.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libtiff ]; then\n\techo \"libitff present.\"\n\techo \"#define LIBTIFF_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libtiff.h\nelse\n# Create empty libtiff for link phase\n echo \"libtiff not found\"\n touch $DERIVED_FILE_DIR/libtiff.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libtiff.c -c -o $DERIVED_FILE_DIR/libtiff.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libtiff.a $DERIVED_FILE_DIR/libtiff.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libpng.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libpng ]; then\n\techo \"libpng present.\"\n\techo \"#define LIBPNG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libpng.h\nelse\n# Create empty libpng for link phase\n echo \"libpng not found\"\n touch $DERIVED_FILE_DIR/libpng.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libpng.c -c -o $DERIVED_FILE_DIR/libpng.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libpng.a $DERIVED_FILE_DIR/libpng.o\nfi\n\n";
+			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d ../system/i386-mingw32msvc/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d ../system/i386-mingw32msvc/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libjpeg for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d ../system/i386-mingw32msvc/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch $DERIVED_FILE_DIR/zlib.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libtiff.h\nif [ -d ../system/i386-mingw32msvc/libtiff ]; then\n\techo \"libitff present.\"\n\techo \"#define LIBTIFF_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libtiff.h\nelse\n# Create empty libtiff for link phase\n echo \"libtiff not found\"\n touch $DERIVED_FILE_DIR/libtiff.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libtiff.c -c -o $DERIVED_FILE_DIR/libtiff.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libtiff.a $DERIVED_FILE_DIR/libtiff.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libpng.h\nif [ -d ../system/i386-mingw32msvc/libpng ]; then\n\techo \"libpng present.\"\n\techo \"#define LIBPNG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libpng.h\nelse\n# Create empty libpng for link phase\n echo \"libpng not found\"\n touch $DERIVED_FILE_DIR/libpng.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libpng.c -c -o $DERIVED_FILE_DIR/libpng.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libpng.a $DERIVED_FILE_DIR/libpng.o\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4807,8 +4807,39 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(DSTROOT)",
+					"$(DSTROOT)/usr/include",
+					"$(DSTROOT)/freetype-2.3.5/include/freetype2/",
+					"$(DSTROOT)/freetype-2.3.5/include",
+				);
 				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(DSTROOT)/libtiff/lib",
+					"$(DSTROOT)/libpng/lib",
+					"$(DSTROOT)/libjpeg/lib",
+					"$(DSTROOT)/freetype-2.3.5/lib",
+					"$(DSTROOT)/zlib-1.2.5/lib",
+					"$(WINDOWS_i386_LIBRARY_SEARCH_PATHS)",
+				);
+				OTHER_LDFLAGS = (
+					"-lfreetype",
+					"-ltiff",
+					"-lpng",
+					"-ljpeg",
+					"-lz",
+					"-lmsimg32",
+					"-lole32",
+					"-lgdi32",
+					"-luser32",
+					"-lcomdlg32",
+					"-lcomctl32",
+					"-lopengl32",
+					"-lwinmm",
+					"$(WINDOWS_i386_FRAMEWORK_LDFLAGS)",
+				);
 				PRODUCT_NAME = AppKit;
+				WINDOWS_i386_FRAMEWORK_LDFLAGS = "-shared -Wl,--export-all-symbols -Wl,--enable-auto-import -Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a $(WINDOWS_i386_COMPILER_LDFLAGS)";
 			};
 			name = "Windows-i386";
 		};

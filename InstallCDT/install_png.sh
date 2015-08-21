@@ -24,10 +24,11 @@ else
 fi
 
 BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
+PREFIX=`pwd`/../system/i386-mingw32msvc
 
 BUILD=/tmp/build_png
 LIBPNGVERSION=libpng16
-VERSION=1.6.1
+VERSION=1.6.18
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder ftp://ftp.simplesystems.org/pub/libpng/png/src/${LIBPNGVERSION}/libpng-${VERSION}.tar.gz
 
@@ -47,13 +48,13 @@ TARGET=$($GCC -dumpmachine)
 
 
 COCOTRON=/Developer/Cocotron/1.0//build/$targetPlatform/$targetArchitecture
-INSTALL_PREFIX=/Developer/Cocotron/1.0/Windows/i386/libpng
+INSTALL_PREFIX=$PREFIX/libpng
 BINARY_PATH=$INSTALL_PREFIX/bin
 INCLUDE_PATH=$INSTALL_PREFIX/include
 LIBRARY_PATH=$INSTALL_PREFIX/lib
 
-export LDFLAGS="-L$BASEDIR/zlib-1.2.5/lib"
-export CFLAGS="-I$BASEDIR/zlib-1.2.5/include"
+export LDFLAGS="-L$PREFIX/zlib-1.2.5/lib"
+export CFLAGS="-I$PREFIX/zlib-1.2.5/include"
 
 GCC="$GCC $CFLAGS"
 

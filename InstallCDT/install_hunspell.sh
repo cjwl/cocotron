@@ -15,7 +15,7 @@ cd $BUILD
 tar -xvzf $downloadFolder/hunspell-1.3.1.tar.gz
 cd hunspell-1.3.1/src
 
-/Developer/Cocotron/1.0/Windows/i386/g++-4.3.1/bin/i386-mingw32msvc-g++ -shared -O2 -ansi -pedantic hunspell/affentry.cxx hunspell/affixmgr.cxx hunspell/hashmgr.cxx hunspell/suggestmgr.cxx hunspell/csutil.cxx hunspell/phonet.cxx hunspell/hunspell.cxx hunspell/filemgr.cxx hunspell/hunzip.cxx hunspell/replist.cxx parsers/textparser.cxx parsers/firstparser.cxx parsers/htmlparser.cxx parsers/latexparser.cxx parsers/manparser.cxx -Ihunspell -Iwin_api win_api/hunspelldll.c -o hunspell.1.3.1.dll -Wl,--out-implib,libhunspell.1.3.1.a
+/Developer/Cocotron/1.0/Windows/i386/g++-4.3.1/bin/i386-pc-mingw32msvc-g++ -shared -O2 -ansi -pedantic hunspell/affentry.cxx hunspell/affixmgr.cxx hunspell/hashmgr.cxx hunspell/suggestmgr.cxx hunspell/csutil.cxx hunspell/phonet.cxx hunspell/hunspell.cxx hunspell/filemgr.cxx hunspell/hunzip.cxx hunspell/replist.cxx parsers/textparser.cxx parsers/firstparser.cxx parsers/htmlparser.cxx parsers/latexparser.cxx parsers/manparser.cxx -Ihunspell -Iwin_api win_api/hunspelldll.c -o hunspell.1.3.1.dll -Wl,--out-implib,libhunspell.1.3.1.a
 
 mkdir -p $PREFIX
 mkdir -p $PREFIX/include
