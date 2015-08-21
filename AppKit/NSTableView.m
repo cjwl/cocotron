@@ -1233,42 +1233,48 @@ _dataSource);
 // Verified by comparing screen shots on Mac OS X 10.4.10.
 - (void)drawGridInClipRect:(NSRect)clipRect {
     NSBezierPath *line = [NSBezierPath bezierPath];
-    NSInteger i;
+    NSInteger i, n;
+    float     x, y;
 
     [_gridColor setStroke];
 
-    if ((_gridStyleMask & NSTableViewSolidVerticalGridLineMask) ==
-        NSTableViewSolidVerticalGridLineMask) {
+    if ((_gridStyleMask & NSTableViewSolidVerticalGridLineMask) == NSTableViewSolidVerticalGridLineMask)
+    {
         NSRange rangeOfColumns = [self columnsInRect:clipRect];
-
-        for (i = rangeOfColumns.location; i < rangeOfColumns.location + rangeOfColumns.length; i++) {
+        n = rangeOfColumns.location + rangeOfColumns.length;
+        for (i = rangeOfColumns.location; i < n; i++)
+        {
             NSRect columnRect = [self rectOfColumn:i];
-            float xToDraw = columnRect.origin.x + columnRect.size.width - 0.5;
-
-            [line moveToPoint:NSMakePoint(xToDraw, clipRect.origin.y)];
-            [line lineToPoint:NSMakePoint(xToDraw, clipRect.origin.y + clipRect.size.height)];
+            x = columnRect.origin.x + columnRect.size.width + ((i < n-1) ? -0.5 : 0.5);
+            y = clipRect.origin.y;
+            [line moveToPoint:NSMakePoint(x, y)];
+            [line lineToPoint:NSMakePoint(x, y + clipRect.size.height)];
         }
     }
 
-    if ((_gridStyleMask & NSTableViewSolidHorizontalGridLineMask) ==
-        NSTableViewSolidHorizontalGridLineMask) {
-          NSRange rangeOfRows = [self rowsInRect:clipRect];
-          float yToDraw = -0.5;
+    if ((_gridStyleMask & NSTableViewSolidHorizontalGridLineMask) == NSTableViewSolidHorizontalGridLineMask)
+    {
+        NSRange rangeOfRows = [self rowsInRect:clipRect];
+        n = rangeOfRows.location + rangeOfRows.length;
+        y = -0.5;
+        for (i = rangeOfRows.location; i < n; i++)
+        {
+            NSRect rowRect = [self rectOfRow:i];
+            x = clipRect.origin.x;
+            y = rowRect.origin.y + rowRect.size.height - 0.5;
+            [line moveToPoint:NSMakePoint(x, y)];
+            [line lineToPoint:NSMakePoint(x + clipRect.size.width, y)];
+        }
 
-          for (i = rangeOfRows.location; i < rangeOfRows.location + rangeOfRows.length; i++) {
-              NSRect rowRect = [self rectOfRow:i];
-
-              yToDraw = rowRect.origin.y + rowRect.size.height - 0.5;
-              [line moveToPoint:NSMakePoint(clipRect.origin.x, yToDraw)];
-              [line lineToPoint:NSMakePoint(clipRect.origin.x + clipRect.size.width, yToDraw)];
-          }
-          if (_standardRowHeight > 0.) {
-              while (yToDraw < clipRect.size.height) {
-                  yToDraw += _standardRowHeight + _intercellSpacing.height;
-                  [line moveToPoint:NSMakePoint(clipRect.origin.x, yToDraw)];
-                  [line lineToPoint:NSMakePoint(clipRect.origin.x + clipRect.size.width, yToDraw)];
-              }
-          }
+        if (_standardRowHeight > 0.0)
+        {
+            while (y < clipRect.size.height)
+            {
+                y += _standardRowHeight + _intercellSpacing.height;
+                [line moveToPoint:NSMakePoint(clipRect.origin.x, y)];
+                [line lineToPoint:NSMakePoint(clipRect.origin.x + clipRect.size.width, y)];
+            }
+        }
     }
 
     [line stroke];

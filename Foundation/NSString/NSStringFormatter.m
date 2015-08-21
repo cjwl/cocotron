@@ -223,9 +223,9 @@ double roundDouble(double value) {
    value = (value < 0.0) ? ceil(value-0.5) : floor(value+0.5);
 #endif
 
-#if defined(__i386__) && defined(__GNUC__)
+#ifdef __LITTLE_ENDIAN__
    p[0] |= 0x01;
-#elif defined(__ppc__) && defined(__GNUC__)
+#else
    p[7] |= 0x01;
 #endif   
 

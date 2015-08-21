@@ -11,25 +11,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTableHeaderCell
 
--(NSRect)sortIndicatorRectForBounds:(NSRect)bounds {
+- (NSRect)sortIndicatorRectForBounds:(NSRect)bounds {
    NSUnimplementedMethod();
    return bounds;
 }
 
--(void)drawSortIndicatorWithFrame:(NSRect)frame inView:(NSView *)controlView ascending:(BOOL)ascending priority:(NSInteger)priority {
+- (void)drawSortIndicatorWithFrame:(NSRect)frame inView:(NSView *)controlView ascending:(BOOL)ascending priority:(NSInteger)priority {
    NSUnimplementedMethod();
 }
 
--(NSRect)titleRectForBounds:(NSRect)rect {
-    return NSInsetRect(rect,3.0,2.0);
+- (NSRect)titleRectForBounds:(NSRect)rect {
+   rect.origin.x   += 3.0;
+   rect.origin.y   += 2.5;
+   rect.size.width -= 6.0;
+   return rect;
 }
 
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
    _controlView=controlView;
-   
-   [[controlView graphicsStyle] drawTableViewHeaderInRect:frame highlighted:[self isHighlighted]];
-      
-   [super drawWithFrame:frame inView:controlView];
+   [[controlView graphicsStyle] drawTableViewHeaderInRect:cellFrame highlighted:[self isHighlighted]];
+   [[self attributedStringValue] _clipAndDrawInRect:[self titleRectForBounds:cellFrame] truncatingTail:(_lineBreakMode > NSLineBreakByClipping)];
 }
 
 @end

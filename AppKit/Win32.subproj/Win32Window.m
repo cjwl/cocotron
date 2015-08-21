@@ -248,7 +248,7 @@ static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShad
    NSString *check=[[NSUserDefaults standardUserDefaults] stringForKey:@"CGBackingRasterizer"];
    if([check isEqual:@"Onyx"] || [check isEqual:@"GDI"])
     [_deviceDictionary setObject:check forKey:@"CGContext"];
-    
+
    return self;
 }
 
@@ -1095,13 +1095,24 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
 }
 
+
+#define DIRTY_RECT_BLOCK_COUNT 128
+
 -(void)dirtyRect:(CGRect)rect
 {
-    if (_dirtyRect.size.width == 0) {
-        _dirtyRect = rect;
-    } else {
-        _dirtyRect = CGRectUnion(rect, _dirtyRect);
-    }
+   if (_dirtyRectCap == _dirtyRectCnt)
+   {
+      void *tmp = (_dirtyRectCnt == 0)
+                ? malloc((_dirtyRectCap = DIRTY_RECT_BLOCK_COUNT)*sizeof(CGRect))
+                : realloc(_dirtyRectSet, (_dirtyRectCap += DIRTY_RECT_BLOCK_COUNT)*sizeof(CGRect));
+
+      if (tmp)
+         _dirtyRectSet = tmp;
+      else          // out of memory -- don't increase the rect set, perhaps we will see display glitches, but nothing serious would happen.
+         return;    // this rect cannot be considered
+   }
+
+   _dirtyRectSet[_dirtyRectCnt++] = rect;
 }
 
 -(void)bitBltWindow {
@@ -1132,20 +1143,31 @@ static int reportGLErrorIfNeeded(const char *function,int line){
                 static int cptr = 0;
                 cptr++;
 #endif
-                NSRect r = CGRectIntegral(_dirtyRect);
-                if (CGRectIsEmpty(r) == NO) {
-                    // Blit the dirty area
-                    int x = r.origin.x;
-                    int y = height - (r.origin.y + r.size.height); // Life would be boring without flipping
-                    int w = r.size.width;
-                    int h = r.size.height;
-                    BitBlt([_cgContext dc],x-left,y-top,w,h,[deviceContext dc],x,y,SRCCOPY);
-                } else {
-                    // Blit the whole content
-                    BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+                if (_dirtyRectCnt)
+                {
+                   int i;
+                   NSRect r;
+                   for (i = 0; i < _dirtyRectCnt; i++)
+                   {
+                      r = CGRectIntegral(_dirtyRectSet[i]);
+                      if (CGRectIsEmpty(r) == NO)
+                      {  // Blit the dirty area
+                         int x = r.origin.x;
+                         int y = height - (r.origin.y + r.size.height);
+                         int w = r.size.width;
+                         int h = r.size.height;
+                         BitBlt([_cgContext dc],x-left,y-top,w,h,[deviceContext dc],x,y,SRCCOPY);
+                      }
+                   }
+
+                   // We're clean now
+                   free(_dirtyRectSet);
+                   _dirtyRectSet = NULL;
+                   _dirtyRectCnt = _dirtyRectCap = 0;
                 }
-                // We're clean now
-                _dirtyRect = CGRectZero;
+                else  // Blit the whole content
+                   BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+
 #if BENCHBLIT
                 NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
                 if (currentTime - lastTime > 2.) {
@@ -1262,7 +1284,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
 
-   if(contentSize.width>0 && contentSize.height>0){
+   if(!_isClosing && contentSize.width>0 && contentSize.height>0){
        NSSize checkSize=[self queryFrame].size;
        
        if(NSEqualSizes(checkSize,_frame.size))
@@ -1396,7 +1418,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 #endif
 	
     if(_styleMask&NSClosableWindowMask) {
+      _isClosing = YES;
       [_delegate platformWindowWillClose:self];
+      _isClosing = NO;
     }
 
    return 0;

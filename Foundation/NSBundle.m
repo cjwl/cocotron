@@ -749,31 +749,46 @@ static NSMapTable *pathToObject=NULL;
 -(NSArray *)lookInDirectories {
 
     if (_lookInDirectories == nil) {
+        NSLocale *cl = [NSLocale currentLocale];
         NSFileManager *fm = [NSFileManager defaultManager];
         NSMutableArray *validDirectories = [NSMutableArray array];
 
         BOOL isDirectory = NO;
         if (_resourcePath && [fm fileExistsAtPath:_resourcePath isDirectory:&isDirectory] && isDirectory) {
             // Check if there's an override on the language preference.
+            NSString *localeid = nil;
             NSString *language = nil;
-            
-            // NSUserDefaults uses the NSBundle system during initialization so to avoid
-            // a recursion of doom we'll only check the preferred language once the defaults
-            // are available.
-            if ([NSUserDefaults standardUserDefaultsAvailable]) {
+            NSString *longlang = nil;
+
+            // NSUserDefaults uses the NSBundle system during initialization so to avoid a recursion
+            // of doom we'll only check the preferred language once the defaults are available.
+            if ([NSUserDefaults standardUserDefaultsAvailable])
                 language = [[NSUserDefaults standardUserDefaults] objectForKey: @"PreferredLanguage"];
-            }
             
             if (language == nil || [language isEqualToString: @""]) {
                 // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
-                language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+                localeid = [[cl objectForKey:NSLocaleIdentifier] stringByAppendingPathExtension:@"lproj"];
+                language = [cl objectForKey:NSLocaleLanguageCode];
+                if ([language isEqualToString: @"de"])
+                   longlang = @"German.lproj";
+                else if ([language isEqualToString: @"fr"])
+                   longlang = @"French.lproj";
+                else if ([language isEqualToString: @"jp"])
+                   longlang = @"Japanese.lproj";
+                // anything else, including 'en', would default to en.lproj or English.lproj anyway.
             }
+
             NSArray *lookInDirectories = nil;
-            if ([language isEqualToString:@"English"])
-                lookInDirectories = [NSArray arrayWithObjects:@"en.lproj", @"English.lproj", @"", nil];
+            if (localeid)
+               if (longlang)
+                  lookInDirectories = [NSArray arrayWithObjects:localeid, [language stringByAppendingPathExtension:@"lproj"], longlang, @"en.lproj", @"English.lproj", @"", nil];
+               else
+                  lookInDirectories = [NSArray arrayWithObjects:localeid, [language stringByAppendingPathExtension:@"lproj"], @"en.lproj", @"English.lproj", @"", nil];
+            else if ([language isEqualToString:@"English"])
+                lookInDirectories = [NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil];
             else
                 lookInDirectories = [NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"en.lproj", @"English.lproj", @"", nil];
-            
+
             for (NSString *proj in lookInDirectories) {
                 NSString *path = [_resourcePath stringByAppendingPathComponent:proj];
                 BOOL isDirectory = NO;
@@ -781,6 +796,7 @@ static NSMapTable *pathToObject=NULL;
                     [validDirectories addObject:proj];
                 }
             }
+
             if ([NSUserDefaults standardUserDefaultsAvailable] == YES) {
                 // Now it's safe to cache
                 _lookInDirectories = [validDirectories retain];

@@ -607,9 +607,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(float)defaultLineHeightForFont {
-    // Cocoa seems to do something like that 
-   float height = roundf(CTFontGetAscent(_ctFont))+roundf(CTFontGetDescent(_ctFont))+roundf(CTFontGetLeading(_ctFont));
-    return height;
+   return roundf(CTFontGetAscent(_ctFont) + CTFontGetDescent(_ctFont) + CTFontGetLeading(_ctFont));
 }
 
 -(BOOL)isFixedPitch {

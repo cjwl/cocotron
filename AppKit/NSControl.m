@@ -475,7 +475,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
      object:self userInfo:[NSDictionary dictionaryWithObject:[note object] forKey:@"NSFieldEditor"]];
   
    // If this control's value is bound to an object that conforms to NSEditorRegistration, register as an editor.
-   NSDictionary * bindingInfo = [self infoForBinding:@"value"];
+   NSDictionary * bindingInfo = nil; // [self infoForBinding:@"value"];
    if (bindingInfo)
      {
        id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
@@ -507,7 +507,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
      object:self userInfo:[NSDictionary dictionaryWithObject:[note object] forKey:@"NSFieldEditor"]];
 
    // If this control's value is bound to an object that conforms to NSEditorRegistration, unregister as an editor.
-   NSDictionary * bindingInfo = [self infoForBinding:@"value"];
+   NSDictionary * bindingInfo = nil; // [self infoForBinding:@"value"];
    if (bindingInfo)
      {
        id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];

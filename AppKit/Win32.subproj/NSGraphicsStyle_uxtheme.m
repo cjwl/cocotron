@@ -2,7 +2,6 @@
 #import <AppKit/NSGraphicsContext.h>
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
-#import <AppKit/NSTableHeaderView.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
@@ -720,6 +719,11 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 
 @implementation NSGraphicsStyle_uxtheme (NSOutlineView)
 
+-(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded {
+   if(![self drawPartId:TVP_GLYPH stateId:expanded?GLPS_OPENED:GLPS_CLOSED uxthClassId:uxthTREEVIEW inRect:rect])
+    [super drawOutlineViewBranchInRect:rect expanded:expanded];
+}
+
 -(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
    if(bezeled){
     if([self drawPartId:PP_BAR stateId:0 uxthClassId:uxthPROGRESS inRect:rect])
@@ -780,11 +784,13 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 @implementation NSGraphicsStyle_uxtheme (NSTableView)
 
 -(void)drawTableViewHeaderInRect:(NSRect)rect highlighted:(BOOL)highlighted {
+   rect.origin.y -= 1.0;
    if(![self drawPartId:HP_HEADERITEM stateId:highlighted?HIS_PRESSED:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewHeaderInRect:rect highlighted:highlighted];
 }
 
 -(void)drawTableViewCornerInRect:(NSRect)rect {
+   rect.origin.y -= 1.0;
    if(![self drawPartId:HP_HEADERITEM stateId:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewCornerInRect:rect];
 }
@@ -883,9 +889,8 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 @implementation NSGraphicsStyle_uxtheme (NSTextField)
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine {
-   if (![_view isKindOfClass:[NSTableHeaderView class]])
-    if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL uxthClassId:uxthEDIT inRect:rect])
-     [super drawTextFieldBorderInRect:rect bezeledNotLine:bezeledNotLine];
+   if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL uxthClassId:uxthEDIT inRect:rect])
+    [super drawTextFieldBorderInRect:rect bezeledNotLine:bezeledNotLine];
 }
 
 -(void)drawBoxWithBezelInRect:(NSRect)rect clipRect:(NSRect)clipRect {
