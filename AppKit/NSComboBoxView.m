@@ -48,6 +48,10 @@ enum {
    _font=[font retain];
 }
 
+-(void)setSelectedIndex:(int)index {
+   _selectedIndex = index;
+}
+
 -(NSDictionary *)itemAttributes {
    return [NSDictionary dictionaryWithObjectsAndKeys:
     _font,NSFontAttributeName,

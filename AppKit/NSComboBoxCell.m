@@ -241,18 +241,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
 }
 
+-(NSSize)cellSize {
+   NSSize size=[_controlView frame].size;
+   size.width  -= 3.0;
+   size.height -= 2.0;
+   return size;
+}
+
 -(NSRect)buttonRectForBounds:(NSRect)rect {
    rect.origin.x=(rect.origin.x+rect.size.width)-rect.size.height;
    rect.size.width=rect.size.height;
-   return NSInsetRect(rect,2,2);
+   return rect;
 }
 
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
-   BOOL              saveSendsActionOnEndEditing = _sendsActionOnEndEditing;
    NSComboBoxWindow *window;
    NSPoint           origin=[controlView bounds].origin;
+   NSSize            size=[self cellSize];
    NSPoint           check=[controlView convertPoint:[event locationInWindow] fromView:nil];
-   unsigned          selectedIndex;
+   int               selectedIndex = [self indexOfSelectedItem];
 
    if([_objectValues count]==0)
     return NO;
@@ -260,20 +267,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(!NSMouseInRect(check,[self buttonRectForBounds:cellFrame],[controlView isFlipped]))
     return NO;
 
-   origin.y+=[controlView bounds].size.height;
+   origin.y+=size.height;
    origin=[controlView convertPoint:origin toView:nil];
    origin=[[controlView window] convertBaseToScreen:origin];
+   size.width+=1.0;
 
-   window=[[NSComboBoxWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
-     cellFrame.size.width,cellFrame.size.height)];
+   window=[[NSComboBoxWindow alloc] initWithFrame:(NSRect){origin,size}];
 
    [window setObjectArray:_objectValues];
+   [window setSelectedIndex:selectedIndex];
    if([self font]!=nil)
     [window setFont:[self font]];
 
    _buttonPressed=YES;
    [controlView setNeedsDisplay:YES];
-    [window makeKeyAndOrderFront:self];
+   [window makeKeyAndOrderFront:self];
    selectedIndex=[window runTrackingWithEvent:event];
    [window close]; // release when closed=YES
    _buttonPressed=NO;
@@ -285,6 +293,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // the superclass NSTextFieldCell would send the action on endEditing
     // before our new value is set. Therefore _sendsActionOnEndEditing
     // should be temporarily set to NO
+    BOOL saveSendsActionOnEndEditing = _sendsActionOnEndEditing;
     _sendsActionOnEndEditing = NO;
     [control setObjectValue:[_objectValues objectAtIndex:selectedIndex]];
     _sendsActionOnEndEditing = saveSendsActionOnEndEditing; // restore _sendsActionOnEndEditing 
@@ -297,13 +306,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSRect)titleRectForBounds:(NSRect)rect {
    // Keep some room for the button
    NSRect buttonFrame = [self buttonRectForBounds:rect];
-   rect.size.width = NSMinX(buttonFrame) - rect.origin.x;
+   rect.size.width   = NSMinX(buttonFrame) - rect.origin.x;
    rect=[super titleRectForBounds:rect];
 
    return rect;
 }
 
+-(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
+   frame.size = [self cellSize];
+   [super drawInteriorWithFrame:frame inView:controlView];
+}
+
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
+   frame.size = [self cellSize];
    [super drawWithFrame:frame inView:controlView];
 
    [[controlView graphicsStyle] drawComboBoxButtonInRect:[self buttonRectForBounds:frame] enabled:_buttonEnabled bordered:_isButtonBordered pressed:_buttonPressed];
