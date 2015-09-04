@@ -259,7 +259,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSPoint           origin=[controlView bounds].origin;
    NSSize            size=[self cellSize];
    NSPoint           check=[controlView convertPoint:[event locationInWindow] fromView:nil];
-   int               selectedIndex = [self indexOfSelectedItem];
+   unsigned          selectedIndex = [_objectValues indexOfObject:[self objectValue]];
 
    if([_objectValues count]==0)
     return NO;
@@ -276,28 +276,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [window setObjectArray:_objectValues];
    [window setSelectedIndex:selectedIndex];
-   if([self font]!=nil)
-    [window setFont:[self font]];
+   if([self font] != nil)
+      [window setFont:[self font]];
 
    _buttonPressed=YES;
-   [controlView setNeedsDisplay:YES];
    [window makeKeyAndOrderFront:self];
-   selectedIndex=[window runTrackingWithEvent:event];
+   selectedIndex = [window runTrackingWithEvent:event];
    [window close]; // release when closed=YES
    _buttonPressed=NO;
-   [controlView setNeedsDisplay:YES];
 
-   if(selectedIndex!=NSNotFound){
-    NSControl *control=(NSControl *)controlView;
+   if (selectedIndex != NSNotFound)
+   {
+      NSTextView *editor = [controlView currentEditor];
+      NSObject   *object = [_objectValues objectAtIndex:selectedIndex];
+      if (editor && object)
+      {
+         NSString           *string = nil;
+         NSAttributedString *attstr = nil;
 
-    // the superclass NSTextFieldCell would send the action on endEditing
-    // before our new value is set. Therefore _sendsActionOnEndEditing
-    // should be temporarily set to NO
-    BOOL saveSendsActionOnEndEditing = _sendsActionOnEndEditing;
-    _sendsActionOnEndEditing = NO;
-    [control setObjectValue:[_objectValues objectAtIndex:selectedIndex]];
-    _sendsActionOnEndEditing = saveSendsActionOnEndEditing; // restore _sendsActionOnEndEditing 
-    [control sendAction:[control action] to:[control target]];
+         if (_formatter)
+            string = [_formatter stringForObjectValue:object];
+
+         if (!string)
+            if ([object isKindOfClass:[NSString class]])
+               string = object;
+            else if ([object isKindOfClass:[NSAttributedString class]])
+               if ([editor isRichText])
+                  attstr = object;
+               else
+                  string = [object string];
+            else if ([object respondsToSelector:@selector(descriptionWithLocale:)])
+               string = [object descriptionWithLocale:[NSLocale currentLocale]];
+            else if ([object respondsToSelector:@selector(description)])
+               string = [object description];
+            else
+               string = @"";
+
+         if (attstr)
+            [[(NSTextView *)editor textStorage] setAttributedString:attstr];
+         else
+            [editor setString:string];
+
+         [editor setSelectedRange:NSMakeRange(0, [[editor string] length])];
+         [self endEditing:editor];
+         if (_sendsActionOnEndEditing)
+            [(NSControl *)controlView sendAction:[(NSControl *)controlView action] to:[(NSControl *)controlView target]];
+      }
    }
 
    return YES;
