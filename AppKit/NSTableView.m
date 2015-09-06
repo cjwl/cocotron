@@ -19,7 +19,7 @@ NSString * const NSTableViewSelectionDidChangeNotification=@"NSTableViewSelectio
 NSString * const NSTableViewColumnDidMoveNotification=@"NSTableViewColumnDidMoveNotification";
 NSString * const NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNotification";
 
-const int NSTableViewDefaultRowHeight=16.;
+const float NSTableViewDefaultRowHeight=16.0f;
 
 
 @interface NSTableView(NSTableView_notifications)
@@ -702,9 +702,12 @@ _dataSource);
 }
 
 -(void)editColumn:(int)column row:(int)row withEvent:(NSEvent *)event select:(BOOL)select {
+   if (_editingCell)
+      [self textDidEndEditing:nil];
+
    NSCell        *editingCell;
    NSTableColumn *editingColumn = [_tableColumns objectAtIndex:column];
-   NSInteger      numberOfRows=[self numberOfRows];
+   NSInteger      numberOfRows  = [self numberOfRows];
    
    // light sanity check; invalid columns caught above in objectAtIndex:
    if (row < 0 || row >= numberOfRows)
@@ -741,10 +744,10 @@ _dataSource);
       [_editingCell setBackgroundColor:_backgroundColor];
       
       NSText *oldEditor = _currentEditor;
-       [_currentEditor setDelegate:nil];
-      NSText* editor =[[self window] fieldEditor:YES forObject:self];
-      _currentEditor=[[_editingCell setUpFieldEditorAttributes: editor] retain];
-       [_currentEditor setDelegate:self];
+      [_currentEditor setDelegate:nil];
+      NSText *editor = [[self window] fieldEditor:YES forObject:self];
+      _currentEditor = [[_editingCell setUpFieldEditorAttributes: editor] retain];
+      [_currentEditor setDelegate:self];
       [oldEditor release];
       
       if (select == YES)
@@ -854,7 +857,7 @@ _dataSource);
     for ( ; i <= last; i++)
      if ([_selectedRowIndexes containsIndex:i] != [newIndexes containsIndex:i]) {
       if (_editedRow == i && _editingCell != nil)
-       [self abortEditing];
+       [self textDidEndEditing:nil];
 
       [self setNeedsDisplay:YES];
       changed = YES;
@@ -1037,7 +1040,7 @@ _dataSource);
 
     // if there's any editing going on, we'd better stop it.
     if (_editingCell != nil)
-     [self abortEditing];
+     [self textDidEndEditing:nil];
 
     if (numberOfRows > 0){
         size.width = [self rectOfRow:0].size.width;
@@ -1350,8 +1353,6 @@ _dataSource);
     _editingFrame = NSMakeRect(-1,-1,-1,-1);
     _editedRow=-1;
     _editedColumn=-1;
-    [_currentEditor setDelegate:nil];
-    [_currentEditor release];
     return NO;
 }
 
@@ -1375,6 +1376,7 @@ _dataSource);
     }
 
     [self abortEditing];
+    [_window makeFirstResponder:nil];
 
 // NSReturnTextMovement has lousy behaviour , fix.
 // don't really need any of the text movement stuff, so we ignore it for now
@@ -1530,6 +1532,8 @@ _dataSource);
     _clickedRow = [self rowAtPoint:location];
     
     if (_clickedRow < 0) { // click beyond the end of the table
+        if (_editingCell != nil)
+            [self textDidEndEditing:nil];
         [self selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
         [_selectedColumns removeAllObjects];
         return;
@@ -1547,7 +1551,7 @@ _dataSource);
     [clickedCell setControlView:self];
     if ([clickedCell isKindOfClass:[NSButtonCell class]])
     {
-       [clickedCell setObjectValue:[self dataSourceObjectValueForTableColumn:clickedColumnObject row:_clickedRow]];
+     [clickedCell setObjectValue:[self dataSourceObjectValueForTableColumn:clickedColumnObject row:_clickedRow]];
      
      if([clickedCell trackMouse:event inRect:[self frameOfCellAtColumn:_clickedColumn row:_clickedRow] ofView:self untilMouseUp:YES]){
        [clickedCell setNextState];
@@ -1561,9 +1565,9 @@ _dataSource);
       [self sendAction:[clickedCell action] to:[clickedCell target]];
      }
 
-       [self setNeedsDisplay:YES];
+     [self setNeedsDisplay:YES];
 
-       return;
+     return;
     }
 
     // NSLog(@"click in col %d row %d", _clickedColumn, _clickedRow);
