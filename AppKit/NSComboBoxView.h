@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)setObjectArray:(NSArray *)objects;
 - (void)setFont:(NSFont *)font;
+- (void)setSelectedIndex:(int)index;
 
 - (NSSize)sizeForContents;
 

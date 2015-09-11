@@ -170,72 +170,72 @@ const float kMouseMovementThreshold = .001f;
 			screen=[self _screenForPoint:point];
 		}
 		
-		if (keyboardNavigationAction == kNSMenuKeyboardNavigationNone) {
-			// We're not current dealing with a keyboard event
-		// Take a look at the visible menu stack (we're within a big loop so views can come and
-		// go and the mouse can wander all over) deepest first
-		while(--count>=0){
-			
-			// get the deepest one
-			NSMenuView *checkView=[viewStack objectAtIndex:count];
-			
-			// And find out where the mouse is relative to it
-			NSPoint     checkPoint=[[checkView window] convertScreenToBase:point];
-			
-			checkPoint=[checkView convertPoint:checkPoint fromView:nil];
-			
-			// If it's inside the menu view
-			if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
-				
-				MENUDEBUG(@"found a menu: %@", checkView);
-				
-				// Which item is the cursor on top of?
-				unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
+        if (keyboardNavigationAction == kNSMenuKeyboardNavigationNone) {
+            // We're not current dealing with a keyboard event
+            // Take a look at the visible menu stack (we're within a big loop so views can come and
+            // go and the mouse can wander all over) deepest first
+            while(--count>=0){
+                
+                // get the deepest one
+                NSMenuView *checkView=[viewStack objectAtIndex:count];
+                
+                // And find out where the mouse is relative to it
+                NSPoint     checkPoint=[[checkView window] convertScreenToBase:point];
+                
+                checkPoint=[checkView convertPoint:checkPoint fromView:nil];
+                
+                // If it's inside the menu view
+                if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
+                    
+                    MENUDEBUG(@"found a menu: %@", checkView);
+                    
+                    // Which item is the cursor on top of?
+                    unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
 
-				MENUDEBUG(@"found an item index: %u", itemIndex);
+                    MENUDEBUG(@"found an item index: %u", itemIndex);
 
-				// If it's not the currently selected item
-				if(itemIndex!=[checkView selectedItemIndex]){
-					NSMenuView *branch;
-					
-					// This looks like it's dealing with pushed cascading menu
-					// views that are no longer needed because the user has moved
-					// on - so pop them all off.
-					while (count+1<[viewStack count]) {
-						NSView* view = [viewStack lastObject];
-						MENUDEBUG(@"popping cascading view: %@", view);
-						[[view window] close];
-						[viewStack removeLastObject];
-					}
-					
-					// And now select the new item
-					[checkView setSelectedItemIndex:itemIndex];
-					
-					// If it's got a cascading menu then push that on the stack
-					if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil) {
-						MENUDEBUG(@"adding a new cascading view: %@", branch);
-						[viewStack addObject:branch];
-					}
-				}
-				// And bail out of the while loop - we're in the right place
-				break;
-			} else {
-				// We've wandered off the menu so don't show anything selected if it's the deepest
-				// visible view
-				if (checkView == [viewStack lastObject]) {
-					MENUDEBUG(@"clearing selection in view: %@", checkView);
-					// The mouse is outside of the top menu - be sure no item is selected anymore
-					[checkView setSelectedItemIndex:NSNotFound];
-				}
-			}
-		}
-		
-		// Looks like we've popped everything so nothing can be selected
-		if(count<0){
-			MENUDEBUG(@"clearing all selection");
-			[[viewStack lastObject] setSelectedItemIndex:NSNotFound];
-		}
-		}
+                    // If it's not the currently selected item
+                    if(itemIndex!=[checkView selectedItemIndex]){
+                        NSMenuView *branch;
+                        
+                        // This looks like it's dealing with pushed cascading menu
+                        // views that are no longer needed because the user has moved
+                        // on - so pop them all off.
+                        while (count+1<[viewStack count]) {
+                            NSView* view = [viewStack lastObject];
+                            MENUDEBUG(@"popping cascading view: %@", view);
+                            [[view window] close];
+                            [viewStack removeLastObject];
+                        }
+                        
+                        // And now select the new item
+                        [checkView setSelectedItemIndex:itemIndex];
+                        
+                        // If it's got a cascading menu then push that on the stack
+                        if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil) {
+                            MENUDEBUG(@"adding a new cascading view: %@", branch);
+                            [viewStack addObject:branch];
+                        }
+                    }
+                    // And bail out of the while loop - we're in the right place
+                    break;
+                } else {
+                    // We've wandered off the menu so don't show anything selected if it's the deepest
+                    // visible view
+                    if (checkView == [viewStack lastObject]) {
+                        MENUDEBUG(@"clearing selection in view: %@", checkView);
+                        // The mouse is outside of the top menu - be sure no item is selected anymore
+                        [checkView setSelectedItemIndex:NSNotFound];
+                    }
+                }
+            }
+            
+            // Looks like we've popped everything so nothing can be selected
+            if(count<0){
+                MENUDEBUG(@"clearing all selection");
+                [[viewStack lastObject] setSelectedItemIndex:NSNotFound];
+            }
+        }
 		
 		[event release];
 		
@@ -400,7 +400,7 @@ const float kMouseMovementThreshold = .001f;
 					}	
 					break;
 				case kNSMenuKeyboardNavigationRight:
-					{
+                {
 						MENUDEBUG(@"Right...");
 					NSMenuView *branch = nil;
 					// If there's a submenu at the current  selected index
@@ -416,7 +416,7 @@ const float kMouseMovementThreshold = .001f;
 							[viewStack removeLastObject];
 						}
 					}
-					}
+                }
 					break;
 				case kNSMenuKeyboardNavigationLetter:
 				{
@@ -498,7 +498,7 @@ const float kMouseMovementThreshold = .001f;
 						// The menu is really active after a mouse up (which means the menu will stay sticky)...
 						// The timestamp is to avoid false clicks - make sure there's a delay so the user can
 						if ([event timestamp] - firstTimestamp > kMenuInitialClickThreshold &&
-							[viewStack count]==1 && [item isEnabled] && ![item hasSubmenu]) {
+							[viewStack count]==1 && [item isEnabled]) {
 							MENUDEBUG(@"Handling selected item - exiting");
 							state=STATE_EXIT;
 						} else {
@@ -515,7 +515,7 @@ const float kMouseMovementThreshold = .001f;
 					item=[activeView itemAtSelectedIndex];
 					if([event type]==NSLeftMouseUp){
 						MENUDEBUG(@"mouseUp on item: %@", item);
-						if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu])) {
+						if(item == nil || ([viewStack count]<=2) || [item isEnabled]) {
 							MENUDEBUG(@"mouse up - exiting because of many possible reasons...");
 							state=STATE_EXIT;
 						} else {
@@ -533,7 +533,7 @@ const float kMouseMovementThreshold = .001f;
 	MENUDEBUG(@"done with the event loop");
 	
 	// If we've got a menu still visible
-	if([viewStack count]>0) {
+	if(item == nil && [viewStack count]>0) {
 		// Get the selected item
 		item=[[viewStack lastObject] itemAtSelectedIndex];
 		MENUDEBUG(@"got the selected item at the top most menu view: %@", item);
@@ -550,7 +550,7 @@ const float kMouseMovementThreshold = .001f;
 	[[self window] setAcceptsMouseMovedEvents:oldAcceptsMouseMovedEvents];
 	[self setNeedsDisplay:YES];
 	
-	return ([item isEnabled] && ![item hasSubmenu])?item:(NSMenuItem *)nil;
+	return ([item isEnabled])?item:(NSMenuItem *)nil;
 }
 
 -(void)mouseDown:(NSEvent *)event {

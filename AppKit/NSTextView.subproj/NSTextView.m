@@ -634,13 +634,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)drawInsertionPointInRect:(NSRect)rect color:(NSColor *)color turnedOn:(BOOL)turnedOn {
     if(![[NSGraphicsContext currentContext] isDrawingToScreen])
         return;
-    
+
     if(NSIsEmptyRect(rect))
         return;
-    
+
     CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
-    
+
     CGContextSaveGState(context);
+    rect.origin.x = roundf(rect.origin.x);
+    rect.origin.y = roundf(rect.origin.y);
     CGContextClipToRect(context,rect);
     
     NSLayoutManager *layoutManager=[self layoutManager];
