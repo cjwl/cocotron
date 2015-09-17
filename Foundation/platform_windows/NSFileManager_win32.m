@@ -645,9 +645,14 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
                 }
             }
         }
+/* FIXME: GetFileSecurityW(path, OWNER_SECURITY_INFORMATION, ...) retunrs for files on network
+          shares on Windows 7 HP 32bit always 0, and because of this the present function would
+          returns nil below. So files on network shares could not be accessed. See:
+          https://github.com/cjwl/cocotron/issues/5
     } else {
         // TODO: set error
 		return nil;
+*/
     }
 	
 	[result setObject:fileType forKey:NSFileType];
