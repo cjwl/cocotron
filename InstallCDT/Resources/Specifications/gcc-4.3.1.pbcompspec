@@ -1,7 +1,7 @@
 (
 	{
 		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%compilerVersion%REPLACE%;
-		BasedOn    = com.apple.compilers.llvmgcc42;
+		BasedOn    = com.apple.compilers.llvm.clang.1_0;
 		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc %REPLACE%compilerVersion%REPLACE%";
 		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%compilerVersion%REPLACE%";
 		Vendor     = "cocotron.org";
@@ -88,6 +88,48 @@
             Category = CodeGeneration;
         },
         {   Name = WARNING_CFLAGS;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_BOOL_CONVERSION;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_CONSTANT_CONVERSION;
+            CommandLineArgs = ( );
+        },
+        {   Name = GCC_WARN_64_TO_32_BIT_CONVERSION;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_ENUM_CONVERSION;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_INT_CONVERSION;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES;
+            CommandLineArgs = ( );
+        },
+        {   Name = GCC_WARN_FOUR_CHARACTER_CONSTANTS;
+            CommandLineArgs = ( );
+        },
+        {   Name = GCC_WARN_ABOUT_MISSING_NEWLINE;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_WARN_OBJC_RECEIVER_WEAK;
+            CommandLineArgs = ( );
+        },
+        {   Name = CLANG_MACRO_BACKTRACE_LIMIT;
+            CommandLineArgs = ( );
+        },
+        {   Name = MACOSX_DEPLOYMENT_TARGET;
+            CommandLineArgs = ( );
+        },
+        {   Name = print_note_include_stack;
             CommandLineArgs = ( );
         },
 
