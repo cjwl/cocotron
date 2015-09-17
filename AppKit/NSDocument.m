@@ -1186,7 +1186,8 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(void)_undoManagerDidCloseGroup:(NSNotification *)note {
-    [self updateChangeCount:NSChangeDone];
+// FIXME: the following would mark just opened and otherwise pristine documents as changed
+//  [self updateChangeCount:NSChangeDone];
 }
 
 
