@@ -435,6 +435,13 @@ id NSApp=nil;
       } else if ([nsOpen isKindOfClass:[NSArray class]]) {
          openFiles = nsOpen;
       }
+
+      if (_filesToOpen)
+      {
+        [_filesToOpen addObjectsFromArray:openFiles];
+        openFiles = _filesToOpen;
+      }
+
       if ([openFiles count] > 0) {
          if ([openFiles count] == 1 && [_delegate respondsToSelector: @selector(application:openFile:)]) {
 
@@ -454,6 +461,8 @@ id NSApp=nil;
          }
       }
       [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NSOpen"];
+      [_filesToOpen release];
+      _filesToOpen = nil;
    }
    return opened;
 }
@@ -1271,6 +1280,10 @@ standardAboutPanel] retain];
         [super doCommandBySelector:selector];
 }
 
+- (void)_setFilesToOpen:(NSArray *)filesToOpen {
+    _filesToOpen = filesToOpen;
+}
+
 -(void)_addWindow:(NSWindow *)window {
    [_windows addObject:window];
 }
@@ -1324,30 +1337,38 @@ standardAboutPanel] retain];
 @end
 
 int NSApplicationMain(int argc, const char *argv[]) {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSBundle *bundle=[NSBundle mainBundle];
-   Class     class=[bundle principalClass];
-   NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
+    NSAutoreleasePool *pool=[NSAutoreleasePool new];
+    NSBundle *bundle=[NSBundle mainBundle];
+    Class     class=[bundle principalClass];
+    NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
 
-   [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
+    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
 
-   if(class==Nil) {
-      class=[NSApplication class];
-   }
+    if(class==Nil) {
+        class=[NSApplication class];
+    }
 
-   [class sharedApplication];
+    [class sharedApplication];
 
-   nibFile=[nibFile stringByDeletingPathExtension];
+    nibFile=[nibFile stringByDeletingPathExtension];
 
-   if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
-      NSLog(@"Unable to load main nib file %@",nibFile);
-   }
+    if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
+        NSLog(@"Unable to load main nib file %@",nibFile);
+    }
 
-   [pool release];
+    [pool release];
 
-   [NSApp run];
+    if (argc > 1)
+    {
+        NSMutableArray *filesToOpen = [[NSMutableArray alloc] initWithCapacity:argc-1];
+        for (int i = 1; i < argc; i++)
+            [filesToOpen addObject:[NSString stringWithUTF8String:argv[i]]];
+        [NSApp _setFilesToOpen:filesToOpen];
+    }
 
-   return 0;
+    [NSApp run];
+
+    return 0;
 }
 
 void NSUpdateDynamicServices(void) {
