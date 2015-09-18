@@ -18,3 +18,7 @@ cd $PREFIX
 echo `pwd`
 
 unzip -o $downloadFolder/zlib-1.2.5.win32.zip
+
+cd zlib-1.2.5/lib
+mv zlib.lib libz.a
+mv zdll.lib libz.dll.a

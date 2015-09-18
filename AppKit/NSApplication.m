@@ -1324,30 +1324,46 @@ standardAboutPanel] retain];
 @end
 
 int NSApplicationMain(int argc, const char *argv[]) {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSBundle *bundle=[NSBundle mainBundle];
-   Class     class=[bundle principalClass];
-   NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
+    __NSInitializeProcess(argc, argv);
 
-   [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
+    NSAutoreleasePool *pool=[NSAutoreleasePool new];
+    NSBundle *bundle=[NSBundle mainBundle];
+    Class     class=[bundle principalClass];
+    NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
 
-   if(class==Nil) {
-      class=[NSApplication class];
-   }
+    if (argc > 1) {
+        NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:argc-1];
+        for (int i = 1; i < argc; i++)
+            if (argv[i][0] != '-')
+                [arguments addObject:[NSString stringWithUTF8String:argv[i]]];
+            else if (argv[i][1] == '-' && argv[i][2] != '\0')
+                i++;
+            else // (argv[i] == "--")
+                break;
 
-   [class sharedApplication];
+        if ([arguments count])
+            [[NSUserDefaults standardUserDefaults] setObject:([arguments count] == 1) ? [arguments lastObject] : arguments forKey:@"NSOpen"];
+    }
 
-   nibFile=[nibFile stringByDeletingPathExtension];
+    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
 
-   if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
-      NSLog(@"Unable to load main nib file %@",nibFile);
-   }
+    if(class==Nil) {
+        class=[NSApplication class];
+    }
 
-   [pool release];
+    [class sharedApplication];
 
-   [NSApp run];
+    nibFile=[nibFile stringByDeletingPathExtension];
 
-   return 0;
+    if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
+        NSLog(@"Unable to load main nib file %@",nibFile);
+    }
+
+    [pool release];
+
+    [NSApp run];
+
+    return 0;
 }
 
 void NSUpdateDynamicServices(void) {
