@@ -91,8 +91,6 @@ typedef enum {
     void *_lock;
     NSMutableArray *_orderedWindows; // get rid of
     NSTimer *_attentionTimer;
-
-    NSMutableArray *_filesToOpen;
 }
 
 + (NSApplication *)sharedApplication;
@@ -205,7 +203,6 @@ typedef enum {
 - (NSDockTile *)dockTile;
 
 // private
-- (void)_setFilesToOpen:(NSArray *)filesToOpen;
 - (void)_addWindow:(NSWindow *)window;
 
 - (void)_windowWillBecomeActive:(NSWindow *)window;

@@ -435,13 +435,6 @@ id NSApp=nil;
       } else if ([nsOpen isKindOfClass:[NSArray class]]) {
          openFiles = nsOpen;
       }
-
-      if (_filesToOpen)
-      {
-        [_filesToOpen addObjectsFromArray:openFiles];
-        openFiles = _filesToOpen;
-      }
-
       if ([openFiles count] > 0) {
          if ([openFiles count] == 1 && [_delegate respondsToSelector: @selector(application:openFile:)]) {
 
@@ -461,8 +454,6 @@ id NSApp=nil;
          }
       }
       [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NSOpen"];
-      [_filesToOpen release];
-      _filesToOpen = nil;
    }
    return opened;
 }
@@ -1280,10 +1271,6 @@ standardAboutPanel] retain];
         [super doCommandBySelector:selector];
 }
 
-- (void)_setFilesToOpen:(NSArray *)filesToOpen {
-    _filesToOpen = filesToOpen;
-}
-
 -(void)_addWindow:(NSWindow *)window {
    [_windows addObject:window];
 }
@@ -1337,10 +1324,26 @@ standardAboutPanel] retain];
 @end
 
 int NSApplicationMain(int argc, const char *argv[]) {
+    __NSInitializeProcess(argc, argv);
+
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     NSBundle *bundle=[NSBundle mainBundle];
     Class     class=[bundle principalClass];
     NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
+
+    if (argc > 1) {
+        NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:argc-1];
+        for (int i = 1; i < argc; i++)
+            if (argv[i][0] != '-')
+                [arguments addObject:[NSString stringWithUTF8String:argv[i]]];
+            else if (argv[i][1] == '-' && argv[i][2] != '\0')
+                i++;
+            else // (argv[i] == "--")
+                break;
+
+        if ([arguments count])
+            [[NSUserDefaults standardUserDefaults] setObject:([arguments count] == 1) ? [arguments lastObject] : arguments forKey:@"NSOpen"];
+    }
 
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
 
@@ -1357,14 +1360,6 @@ int NSApplicationMain(int argc, const char *argv[]) {
     }
 
     [pool release];
-
-    if (argc > 1)
-    {
-        NSMutableArray *filesToOpen = [[NSMutableArray alloc] initWithCapacity:argc-1];
-        for (int i = 1; i < argc; i++)
-            [filesToOpen addObject:[NSString stringWithUTF8String:argv[i]]];
-        [NSApp _setFilesToOpen:filesToOpen];
-    }
 
     [NSApp run];
 
