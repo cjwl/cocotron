@@ -1310,18 +1310,20 @@ standardAboutPanel] retain];
 	   [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidResignActiveNotification object:self];
    }
 }
-  //private method called when the application is reopened
--(void)_reopen
-{
-	BOOL doReopen=YES;
-	if ([_delegate respondsToSelector:@selector(applicationShouldHandleReopen:hasVisibleWindows:)])
-	doReopen=	[_delegate applicationShouldHandleReopen:self hasVisibleWindows:!_isHidden];
-	if(!doReopen) return;
-	if(_isHidden) [self unhide:nil];
-	
+
+//private method called when the application is reopened
+-(void)_reopen {
+    BOOL doReopen=YES;
+    if ([_delegate respondsToSelector:@selector(applicationShouldHandleReopen:hasVisibleWindows:)])
+        doReopen=[_delegate applicationShouldHandleReopen:self hasVisibleWindows:!_isHidden];
+    if(!doReopen)
+        return;
+    if(_isHidden)
+        [self unhide:nil];
 }
 
 @end
+
 
 int NSApplicationMain(int argc, const char *argv[]) {
     __NSInitializeProcess(argc, argv);
@@ -1336,28 +1338,27 @@ int NSApplicationMain(int argc, const char *argv[]) {
         for (int i = 1; i < argc; i++)
             if (argv[i][0] != '-')
                 [arguments addObject:[NSString stringWithUTF8String:argv[i]]];
-            else if (argv[i][1] == '-' && argv[i][2] != '\0')
-                i++;
-            else // (argv[i] == "--")
+            else if (argv[i][1] == '-' && argv[i][2] == '\0')
                 break;
+            else // (argv[i][0] == '-' && argv[i] != "--")
+                if (*(int64_t *)argv[i] != *(int64_t *)"-NSOpen")
+                    i++;
 
-        if ([arguments count])
-            [[NSUserDefaults standardUserDefaults] setObject:([arguments count] == 1) ? [arguments lastObject] : arguments forKey:@"NSOpen"];
+        if (argc = [arguments count])
+            [[NSUserDefaults standardUserDefaults] setObject:((argc == 1) ? [arguments lastObject] : arguments) forKey:@"NSOpen"];
     }
 
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
 
-    if(class==Nil) {
+    if(class==Nil)
         class=[NSApplication class];
-    }
 
     [class sharedApplication];
 
     nibFile=[nibFile stringByDeletingPathExtension];
 
-    if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
+    if(![NSBundle loadNibNamed:nibFile owner:NSApp])
         NSLog(@"Unable to load main nib file %@",nibFile);
-    }
 
     [pool release];
 
@@ -1367,11 +1368,10 @@ int NSApplicationMain(int argc, const char *argv[]) {
 }
 
 void NSUpdateDynamicServices(void) {
-   NSUnimplementedFunction();
+    NSUnimplementedFunction();
 }
 
 BOOL NSPerformService(NSString *itemName, NSPasteboard *pasteboard) {
-   NSUnimplementedFunction();
-   return NO;
+    NSUnimplementedFunction();
+    return NO;
 }
-
