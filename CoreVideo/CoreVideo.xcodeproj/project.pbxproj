@@ -149,8 +149,11 @@
 				FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */,
 				FE43015B11E2531F00EBDD56 /* CVDisplayLink.m */,
 			);
+			indentWidth = 4;
 			name = CoreVideo;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

@@ -82,8 +82,11 @@
 				FEF2EB5D0C87B894001FC5A8 /* gl.h */,
 				FEF2EB670C87B8BA001FC5A8 /* glu.h */,
 			);
+			indentWidth = 4;
 			name = OpenGL;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

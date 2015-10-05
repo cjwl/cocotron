@@ -176,8 +176,11 @@
 				FEF3B23A0B35C74700A76FD1 /* Cocoa.h */,
 				FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */,
 			);
+			indentWidth = 4;
 			name = Cocoa;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

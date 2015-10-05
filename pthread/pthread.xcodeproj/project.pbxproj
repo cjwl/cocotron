@@ -39,8 +39,11 @@
 				FE67837D143385CD0009A0A0 /* xcconfig */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
+			indentWidth = 4;
 			name = pthread;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		FE67837D143385CD0009A0A0 /* xcconfig */ = {
 			isa = PBXGroup;

@@ -157,8 +157,11 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				FE88A1D90F88F8D00081CFC1 /* runtime.h */,
 			);
+			indentWidth = 4;
 			name = objc;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

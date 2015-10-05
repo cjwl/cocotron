@@ -2044,8 +2044,11 @@
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
 			);
+			indentWidth = 4;
 			name = AppKit;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		6E2B53230976074C00DA0954 /* Products */ = {
 			isa = PBXGroup;

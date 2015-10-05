@@ -564,8 +564,11 @@
 				FE5C0A48116297FA00065D1C /* VGPath.h */,
 				FE5C0A49116297FA00065D1C /* VGPath.m */,
 			);
+			indentWidth = 4;
 			name = Onyx2D;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
