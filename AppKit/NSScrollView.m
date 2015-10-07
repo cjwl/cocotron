@@ -172,7 +172,7 @@ static Class _rulerViewClass = nil;
      break;
 
     case NSBezelBorder:
-     bounds=NSInsetRect(bounds,2,2);
+     bounds=NSInsetRect(bounds,1,1);
      break;
 
     case NSGrooveBorder:
