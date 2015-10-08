@@ -374,12 +374,12 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     
     if ([self state] != NSDrawerOpenState)
         return;
-    
-    [_drawerWindow endEditingFor:nil];
+
+    [_parentWindow endEditingFor:nil];
     [_parentWindow makeFirstResponder:_parentWindow];
 
     frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
-    frame.size = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];    
+    frame.size   = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillCloseNotification object:self];
 
