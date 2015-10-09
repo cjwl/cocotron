@@ -2560,8 +2560,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(BOOL)becomeFirstResponder {
     [self updateInsertionPointStateAndRestartTimer:YES];
-    if([self shouldDrawInsertionPoint])
-        [self _displayInsertionPointWithState:[[self window] isKeyWindow]];
+    if(![self needsDisplay] && [self shouldDrawInsertionPoint])
+        [self _displayInsertionPointWithState:YES];
+    else
+        _insertionPointOn = NO;
     _firstResponderButNotEditingYet = YES;
 	_didSendTextDidEndNotification = NO;
 	
@@ -2591,7 +2593,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         [[[self enclosingScrollView] horizontalRulerView] setClientView:nil];
     }
     
-    if([self shouldDrawInsertionPoint]){
+    if(_insertionPointTimer){
         [self _displayInsertionPointWithState:NO];
         [_insertionPointTimer invalidate];
         [_insertionPointTimer release];
@@ -2619,7 +2621,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)resignKeyWindow {
-    if([self shouldDrawInsertionPoint]){
+    if(_insertionPointTimer){
         [self _displayInsertionPointWithState:NO];
         [_insertionPointTimer invalidate];
         [_insertionPointTimer release];
@@ -2792,9 +2794,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     }while([event type]!=NSLeftMouseUp);
     
     [NSEvent stopPeriodicEvents];
-    
+
     [self setSelectedRange:selection affinity:affinity stillSelecting:NO];
-    
 }
 
 -(NSUndoManager *)undoManager {

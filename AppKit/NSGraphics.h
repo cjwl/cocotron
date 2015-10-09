@@ -85,6 +85,8 @@ APPKIT_EXPORT void NSRectFillListWithGrays(const NSRect *rects, const float *gra
 APPKIT_EXPORT void NSRectFillList(const NSRect *rects, int count);
 APPKIT_EXPORT void NSRectFill(NSRect rect);
 
+APPKIT_EXPORT void NSEraseRect(NSRect rect);
+
 APPKIT_EXPORT void NSRectFillListUsingOperation(const NSRect *rects, int count, NSCompositingOperation operation);
 APPKIT_EXPORT void NSRectFillUsingOperation(NSRect rect, NSCompositingOperation operation);
 

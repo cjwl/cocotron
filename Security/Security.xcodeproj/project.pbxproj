@@ -185,8 +185,11 @@
 				FE9C1E051125DFAD002DA20B /* SecTrustedApplication.m */,
 				FE9C1C291125BC26002DA20B /* Security.h */,
 			);
+			indentWidth = 4;
 			name = Security;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

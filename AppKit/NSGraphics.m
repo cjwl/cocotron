@@ -124,6 +124,15 @@ void NSRectFill(NSRect rect) {
    CGContextRestoreGState(context);
 }
 
+void NSEraseRect(NSRect rect) {
+   CGContextRef context=NSCurrentGraphicsPort();
+   CGContextSaveGState(context);
+   [[NSColor whiteColor] setFill];
+   CGContextSetBlendMode(context,kCGBlendModeCopy);
+   CGContextFillRect(NSCurrentGraphicsPort(),rect);
+   CGContextRestoreGState(context);
+}
+
 void NSRectFillListUsingOperation(const NSRect *rects,int count,NSCompositingOperation operation) {
    CGContextRef context=NSCurrentGraphicsPort();
    CGContextSaveGState(context);

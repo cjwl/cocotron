@@ -784,13 +784,15 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 @implementation NSGraphicsStyle_uxtheme (NSTableView)
 
 -(void)drawTableViewHeaderInRect:(NSRect)rect highlighted:(BOOL)highlighted {
-   rect.origin.y -= 1.0;
+   rect.origin.y    -= 1.0;
+   rect.size.height += 1.0;
    if(![self drawPartId:HP_HEADERITEM stateId:highlighted?HIS_PRESSED:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewHeaderInRect:rect highlighted:highlighted];
 }
 
 -(void)drawTableViewCornerInRect:(NSRect)rect {
-   rect.origin.y -= 1.0;
+   rect.origin.y    -= 1.0;
+   rect.size.height += 1.0;
    if(![self drawPartId:HP_HEADERITEM stateId:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewCornerInRect:rect];
 }

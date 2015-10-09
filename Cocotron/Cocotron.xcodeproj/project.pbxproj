@@ -160,7 +160,10 @@
 				FE5C8396121D89BF0063E96F /* CFSSLHandler_openssl.xcodeproj */,
 				FE1FBFFC11E7806100A9A87A /* Cocoa.xcodeproj */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		FE1FBFFD11E7806100A9A87A /* Products */ = {
 			isa = PBXGroup;

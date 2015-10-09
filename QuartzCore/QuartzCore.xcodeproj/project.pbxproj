@@ -243,8 +243,11 @@
 				FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */,
 				089C1665FE841158C02AAC07 /* Resources */,
 			);
+			indentWidth = 4;
 			name = QuartzCore;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;

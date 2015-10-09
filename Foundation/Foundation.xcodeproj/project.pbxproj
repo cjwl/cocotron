@@ -1844,8 +1844,11 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				6E28034B09747A8200EC542B /* xml */,
 			);
+			indentWidth = 4;
 			name = Foundation;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
