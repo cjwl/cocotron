@@ -12,7 +12,7 @@ objc_exception_frame *NSThreadCurrentHandler(void) {
 }
 
 void NSThreadSetCurrentHandler(objc_exception_frame *handler) {
-    return objc_tlsCurrent()->exception_frame = handler;
+    objc_tlsCurrent()->exception_frame = handler;
 }
 
 NSUncaughtExceptionHandler *NSThreadUncaughtExceptionHandler(void) {
